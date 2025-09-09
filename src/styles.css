@@ -1,0 +1,36 @@
+/* You can add global styles to this file, and also import other style files */
+
+body {
+  color: white;
+  background-color: black;
+}
+
+
+/* Optional: Customize hover and focus states */
+.form-check-input:checked {
+  background-color: var(--bs-form-check-input-accent-color);
+  border-color: var(--bs-form-check-input-accent-color);
+}
+
+.form-check-input:focus {
+  outline: none;
+  /* box-shadow: 0 0 0 0.25rem rgba(247, 247, 14, 0.917); */
+  box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25);
+}
+
+/* Customize hover and focus color for dropdown items */
+.dropdown-item:hover,
+.dropdown-item:focus {
+  background-color: var(--bs-form-check-input-accent-color); /* Custom hover background color */
+  color: #000000; /* Custom hover text color */
+}
+
+/* Customize active state for dropdown items */
+.dropdown-item.active {
+  background-color: var(--bs-form-check-input-accent-color); /* Custom active background color */
+  color: #000000; /* Custom active text color */
+}
+
+.hover-pointer:hover {
+  cursor: pointer;
+}
