@@ -8,10 +8,25 @@
         <input type="email" id="email" class="form-control" formControlName="username" />
       </div>
       <!-- Password -->
-      <div class="mb-3">
+      <!--
+        <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          <input type="password" id="password" class="form-control" formControlName="password" />
+        </div>
+        -->
+
+      <!-- Password with toggle -->
+      <div class="mb-3 position-relative">
         <label for="password" class="form-label">Password</label>
-        <input type="password" id="password" class="form-control" formControlName="password" />
+        <div class="input-group">
+          <input [type]="showPassword ? 'text' : 'password'" id="password" class="form-control"
+            formControlName="password" />
+          <button type="button" class="btn btn-outline-secondary" (click)="togglePassword()">
+            {{ showPassword ? 'Hide' : 'Show' }}
+          </button>
+        </div>
       </div>
+
       <!-- Remember Me + Forgot Password -->
       <div class="d-flex justify-content-between align-items-center mb-3">
         <div class="form-check">

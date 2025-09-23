@@ -2,20 +2,23 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { LoginModel } from '../model/login.model';
-import { RegisterModel } from '../model/register.model';
-import { User } from '../model/user.model';
+import { LoginModel } from '../../model/login.model';
+import { RegisterModel } from '../../model/register.model';
+import { User } from '../../model/user.model';
 import { Router } from '@angular/router';
+import { Constant } from '../../constant/Constant';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private loginUrl = 'http://localhost:8080/auth/login';
+  private loginUrl = Constant.API_URL + '/login';
 
-  private registerUrl = 'http://localhost:8080/auth/account';
+  private registerUrl = Constant.API_URL + '/account';
 
-  private currentUserUrl = 'http://localhost:8080/auth/me';
+  private currentUserUrl = Constant.API_URL + '/me';
+
+  private verificationUrl = Constant.API_URL + '/verify';
 
   isAuthenticated = false;
   redirectUrl: string | null = null;
@@ -24,6 +27,10 @@ export class AuthService {
 
   registerUser(data: RegisterModel) {
     return this.http.post<any>(this.registerUrl, data);
+  }
+
+  verifyAccount(token: string) {
+    return this.http.get(`${this.verificationUrl}?token=${token}`);
   }
 
   loginUser(credentials: LoginModel): Observable<any> {

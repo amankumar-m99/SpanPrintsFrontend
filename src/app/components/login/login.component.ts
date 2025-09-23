@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from '../../services/auth/auth.service';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { LoginModel } from '../../model/login.model';
 import { CommonModule } from '@angular/common';
@@ -16,6 +16,7 @@ import { CommonModule } from '@angular/common';
 export class LoginComponent {
 
   loginForm!: FormGroup;
+  showPassword = false;
   loading = false;
   errorMessage: string | null = null;
 
@@ -23,7 +24,7 @@ export class LoginComponent {
     private fb: FormBuilder,
     private authService: AuthService,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({
@@ -58,6 +59,10 @@ export class LoginComponent {
         }
       });
     }
+  }
+
+  togglePassword() {
+    this.showPassword = !this.showPassword;
   }
 
   onForgotPassword(event: Event) {

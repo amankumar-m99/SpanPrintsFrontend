@@ -16,10 +16,22 @@
                 <input type="text" class="form-control" formControlName="username" />
             </div>
 
-            <!-- Password -->
+            <!-- Password with toggle -->
+            <div class="mb-3 position-relative">
+                <label for="password" class="form-label">Password</label>
+                <div class="input-group">
+                    <input [type]="showPassword ? 'text' : 'password'" id="password" class="form-control"
+                        formControlName="password" />
+                    <button type="button" class="btn btn-outline-secondary" (click)="togglePassword()">
+                        {{ showPassword ? 'Hide' : 'Show' }}
+                    </button>
+                </div>
+            </div>
+
+            <!-- Confirm Password -->
             <div class="mb-3">
-                <label class="form-label">Password</label>
-                <input type="password" class="form-control" formControlName="password" />
+                <label class="form-label">Confirm Password</label>
+                <input type="password" class="form-control" formControlName="cpassword" />
             </div>
 
             <!-- Role (optional) -->

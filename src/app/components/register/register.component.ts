@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from '../../services/auth/auth.service';
 import { RegisterModel } from '../../model/register.model';
 
 
@@ -16,6 +16,7 @@ import { RegisterModel } from '../../model/register.model';
 
 export class RegisterComponent implements OnInit {
   registerForm!: FormGroup;
+  showPassword = false;
   errorMessage: string | null = null;
   successMessage: string | null = null;
   loading = false;
@@ -27,6 +28,7 @@ export class RegisterComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       username: ['', [Validators.required, Validators.minLength(3)]],
       password: ['', [Validators.required, Validators.minLength(6)]],
+      cpassword: ['', [Validators.required, Validators.minLength(6)]],
       role: ['']   // optional
     });
   }
@@ -40,18 +42,24 @@ export class RegisterComponent implements OnInit {
       const userData: RegisterModel = this.registerForm.value;
 
       this.authService.registerUser(userData).subscribe({
-        next: () => {
-          this.successMessage = 'Registration successful! Redirecting to login...';
+        next: (res) => {
+          this.successMessage = res.message;
+          this.loading = false;
+          // this.successMessage = 'Registration successful! Redirecting to login...';
           // setTimeout(() => this.router.navigate(['/login']), 2000);
         },
         error: (err) => {
-          console.error(err);
+          console.log(err);
           // this.errorMessage = 'Registration failed. Please try again.';
           this.errorMessage = err.error.message;
           this.loading = false;
         }
       });
     }
+  }
+
+  togglePassword() {
+    this.showPassword = !this.showPassword;
   }
 }
 
