@@ -51,7 +51,7 @@ export class LoginComponent {
         this.loading = false;
         AppStorage.setItem('token', response.token, loginData.rememberMe);
         AppStorage.setItem('userEmail', loginData.username, loginData.rememberMe);
-        const redirect = this.authService.redirectUrl ?? '/profile';
+        const redirect = this.authService.redirectUrl ?? '/dashboard';
         this.authService.redirectUrl = null;
         this.router.navigate([redirect]);
       },
