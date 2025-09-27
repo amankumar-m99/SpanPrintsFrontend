@@ -4,6 +4,7 @@ import { AuthService } from '../../services/auth/auth.service';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { LoginModel } from '../../model/login.model';
 import { CommonModule } from '@angular/common';
+import { AppStorage } from '../../storage/AppStorage';
 
 @Component({
   selector: 'app-login',
@@ -17,7 +18,7 @@ export class LoginComponent {
 
   loginForm!: FormGroup;
   showPassword = false;
-  loading = false;
+  loading = false; // track backend call state
   errorMessage: string | null = null;
 
   constructor(
@@ -30,35 +31,35 @@ export class LoginComponent {
     this.loginForm = this.fb.group({
       username: ['', [Validators.required]],
       password: ['', [Validators.required, Validators.minLength(4)]],
-      rememberMe: [false]
+      rememberMe: [true]
     });
   }
 
+  get username() { return this.loginForm.get('username'); }
+  get password() { return this.loginForm.get('password'); }
+
   onLogin(): void {
-    if (this.loginForm.valid) {
-      this.loading = true;
-      this.errorMessage = null;
-
-      const loginData: LoginModel = this.loginForm.value;
-
-      this.authService.loginUser(loginData).subscribe({
-        next: () => {
-          // Save rememberMe preference
-          if (loginData.rememberMe) {
-            localStorage.setItem('userEmail', loginData.username);
-          }
-
-          const redirect = this.authService.redirectUrl ?? '/profile';
-          this.authService.redirectUrl = null;
-          this.router.navigate([redirect]);
-        },
-        error: (err) => {
-          console.error(err);
-          this.errorMessage = 'Invalid credentials or server error';
-          this.loading = false;
-        }
-      });
+    if (this.loginForm.invalid) {
+      this.loginForm.markAllAsTouched();   // force show validation messages
+      return;
     }
+    this.loading = true;
+    this.errorMessage = null;
+    const loginData: LoginModel = this.loginForm.value;
+    this.authService.loginUser(loginData).subscribe({
+      next: (response) => {
+        this.loading = false;
+        AppStorage.setItem('token', response.token, loginData.rememberMe);
+        AppStorage.setItem('userEmail', loginData.username, loginData.rememberMe);
+        const redirect = this.authService.redirectUrl ?? '/profile';
+        this.authService.redirectUrl = null;
+        this.router.navigate([redirect]);
+      },
+      error: (err) => {
+        this.errorMessage = err?.error?.message || 'Invalid credentials or server error.';
+        this.loading = false;
+      }
+    });
   }
 
   togglePassword() {
@@ -74,4 +75,3 @@ export class LoginComponent {
     this.router.navigateByUrl('register');
   }
 }
-

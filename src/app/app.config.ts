@@ -3,12 +3,14 @@ import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
 import { HttpHandlerFn, HttpRequest, provideHttpClient, withInterceptors } from '@angular/common/http';
+import { Constant } from './constant/Constant';
+import { AppStorage } from './storage/AppStorage';
 
-const excludedUrls = ['/auth/login', '/auth/register', '/auth/refresh'];
+const excludedUrls = Constant.EXCLUDED_URLS_FOR_ATTACHING_JWT;
 
 const authInterceptor = (req: HttpRequest<unknown>, next: HttpHandlerFn) => {
 
-  const token = localStorage.getItem('token');
+  const token = AppStorage.getItem('token');
   // Skip if request URL matches one of the excluded endpoints
   if (!excludedUrls.some(url => req.url.includes(url)) && token) {
     req = req.clone({

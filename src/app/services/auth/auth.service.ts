@@ -7,6 +7,7 @@ import { RegisterModel } from '../../model/register.model';
 import { User } from '../../model/user.model';
 import { Router } from '@angular/router';
 import { Constant } from '../../constant/Constant';
+import { AppStorage } from '../../storage/AppStorage';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,7 @@ export class AuthService {
 
   private verificationUrl = Constant.API_URL + '/verify';
 
-  isAuthenticated = false;
+  // isAuthenticated = false;
   redirectUrl: string | null = null;
 
   constructor(private http: HttpClient, private router: Router) { }
@@ -37,23 +38,21 @@ export class AuthService {
     return this.http.post<any>(this.loginUrl, credentials).pipe(
       tap(response => {
         // Assume backend returns a JWT token
-        if (response && response.token) {
-          localStorage.setItem('token', response.token);
-          this.isAuthenticated = true;
-        }
+        // if (response && response.token) {
+        // AppStorage.setItem('token', response.token, true);
+        // }
       })
     );
   }
 
   logout(): void {
-    localStorage.removeItem('token');
-    this.isAuthenticated = false;
+    AppStorage.removeItem('token')
     this.redirectUrl = null;
     this.router.navigate(['/login']);
   }
 
   isLoggedIn(): boolean {
-    return !!localStorage.getItem('token');
+    return !!AppStorage.getItem('token');
   }
 
   getCurrentUser() {
