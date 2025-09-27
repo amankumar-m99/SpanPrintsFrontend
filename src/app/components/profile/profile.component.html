@@ -1,21 +1,77 @@
-<div class="container mt-5">
-    <div class="card shadow p-4" *ngIf="!loading && user; else loadingOrError">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h3>My Profile</h3>
-        </div>
-        <ul class="list-group">
-            <li class="list-group-item"><strong>Email:</strong> {{ user.email }}</li>
-            <li class="list-group-item"><strong>Username:</strong> {{ user.username }}</li>
-            <li class="list-group-item"><strong>Role:</strong> {{ user.roles|json }}</li>
-        </ul>
-    </div>
+<div class="container mt-4">
+    <h2 class="mb-4">My Profile</h2>
 
-    <ng-template #loadingOrError>
-        <div *ngIf="loading" class="text-center">
-            <div class="spinner-border"></div>
+    <div class="row g-4">
+        <!-- Account Details (read-only) -->
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-header bg-dark text-white">
+                    Account Details
+                </div>
+                <div class="card-body">
+                    <p><strong>Email:</strong> {{ user.account.email }}</p>
+                    <p><strong>Username:</strong> {{ user.account.username }}</p>
+                    <p><strong>Role:</strong> {{ user.account.role }}</p>
+                    <p><strong>Account Created:</strong> {{ user.account.createdAt | date }}</p>
+                </div>
+            </div>
         </div>
-        <div *ngIf="errorMessage" class="alert alert-danger">
-            {{ errorMessage }}
+
+        <!-- Personal Details -->
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-header d-flex justify-content-between align-items-center bg-dark text-white">
+                    <span>Personal Details</span>
+                    <button *ngIf="!editMode" class="btn btn-sm btn-light" (click)="enableEdit()">Edit</button>
+                </div>
+                <div class="card-body">
+                    <form [formGroup]="personalForm" (ngSubmit)="saveChanges()">
+                        <!-- Profile Picture -->
+                        <div class="text-center mb-3">
+                            <img [src]="personalForm.value.profilePic" alt="Profile Picture" class="rounded-circle"
+                                width="120" height="120">
+                            <div *ngIf="editMode" class="mt-2">
+                                <input type="file" (change)="onFileChange($event)" class="form-control form-control-sm">
+                            </div>
+                        </div>
+
+                        <!-- Name -->
+                        <div class="mb-3">
+                            <label class="form-label">Name</label>
+                            <input type="text" formControlName="name" class="form-control" [readonly]="!editMode"
+                                [class.is-invalid]="personalForm.get('name')?.invalid && personalForm.get('name')?.touched">
+                            <div class="invalid-feedback">Name is required.</div>
+                        </div>
+
+                        <!-- Birthday -->
+                        <div class="mb-3">
+                            <label class="form-label">Birthday</label>
+                            <input type="date" formControlName="birthday" class="form-control" [readonly]="!editMode"
+                                [class.is-invalid]="personalForm.get('birthday')?.invalid && personalForm.get('birthday')?.touched">
+                            <div class="invalid-feedback">Birthday is required.</div>
+                        </div>
+
+                        <!-- Gender -->
+                        <div class="mb-3">
+                            <label class="form-label">Gender</label>
+                            <select formControlName="gender" class="form-select" [disabled]="!editMode"
+                                [class.is-invalid]="personalForm.get('gender')?.invalid && personalForm.get('gender')?.touched">
+                                <option value="">Select gender</option>
+                                <option>Male</option>
+                                <option>Female</option>
+                                <option>Other</option>
+                            </select>
+                            <div class="invalid-feedback">Gender is required.</div>
+                        </div>
+
+                        <!-- Buttons -->
+                        <div *ngIf="editMode" class="d-flex justify-content-end">
+                            <button type="button" class="btn btn-secondary me-2" (click)="cancelEdit()">Cancel</button>
+                            <button type="submit" class="btn btn-success">Save Changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
-    </ng-template>
+    </div>
 </div>

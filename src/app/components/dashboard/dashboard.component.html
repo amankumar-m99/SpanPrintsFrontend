@@ -1,10 +1,11 @@
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
+
         <!-- Logo -->
         <a class="navbar-brand d-flex align-items-center" routerLink="/">
             <img src="logo/logo_bg_no.png" alt="Logo" width="40" height="40" class="me-2">
-            <img src="logo/text_bg_no.png" alt="Logo" height="40" class="me-2">
+            <img src="logo/text_bg_no.png" alt="Logo" height="30" class="me-2">
             <!-- SpanPrints -->
         </a>
 
@@ -35,18 +36,31 @@
                         <i class="bi bi-person-circle"></i> Account
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                        <li><a class="dropdown-item" routerLink="/profile">Profile</a></li>
-                        <li><a class="dropdown-item" routerLink="/settings">Settings</a></li>
+                        <li><a class="dropdown-item" routerLink="/profile"><i class="bi bi-person-fill"></i> Profile</a>
+                        </li>
+                        <li><a class="dropdown-item" routerLink="/settings"><i class="bi bi-gear-wide"></i> Settings</a>
+                        </li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
-                        <li><a class="dropdown-item text-danger" (click)="logout()">Logout</a></li>
+                        <li class="spanprints-logout-btn"><span class="dropdown-item text-danger" data-bs-toggle="modal"
+                                data-bs-target="#confirmDialog"><i class="bi bi-box-arrow-right"></i> Logout</span></li>
                     </ul>
                 </li>
             </ul>
         </div>
     </div>
 </nav>
+
+<!-- Reusable confirm modal -->
+<app-confirm-dialog
+  [title]="'Confirm Logout'"
+  [message]="'Are you sure you want to log out?'"
+  [confirmText]="'Logout'"
+  [cancelText]="'Cancel'"
+  [confirmBtnClass]="'btn-danger'"
+  (confirmed)="logout()">
+</app-confirm-dialog>
 
 <!-- Dashboard Content -->
 <div class="container mt-4">
