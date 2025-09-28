@@ -36,7 +36,7 @@
                         <i class="bi bi-person-circle"></i> Account
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                        <li><a class="dropdown-item" routerLink="/profile"><i class="bi bi-person-fill"></i> Profile</a>
+                        <li><a class="dropdown-item" routerLink="profile"><i class="bi bi-person-fill"></i> Profile</a>
                         </li>
                         <li><a class="dropdown-item" routerLink="/settings"><i class="bi bi-gear-wide"></i> Settings</a>
                         </li>
@@ -53,17 +53,15 @@
 </nav>
 
 <!-- Reusable confirm modal -->
-<app-confirm-dialog
-  [title]="'Confirm Logout'"
-  [message]="'Are you sure you want to log out?'"
-  [confirmText]="'Logout'"
-  [cancelText]="'Cancel'"
-  [confirmBtnClass]="'btn-danger'"
-  (confirmed)="logout()">
+<app-confirm-dialog [title]="'Confirm Logout'" [message]="'Are you sure you want to log out?'" [confirmText]="'Logout'"
+    [cancelText]="'Cancel'" [confirmBtnClass]="'btn-danger'" (confirmed)="logout()">
 </app-confirm-dialog>
 
 <!-- Dashboard Content -->
-<div class="container mt-4">
-    <h2>Welcome to your Dashboard</h2>
-    <p>Select an option from the menu above.</p>
-</div>
+<!-- 
+    <div class="container mt-4">
+        <h2>Welcome to your Dashboard</h2>
+        <p>Select an option from the menu above.</p>
+    </div>
+    -->
+<router-outlet></router-outlet>

@@ -1,24 +1,12 @@
-import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import { ApplicationConfig, inject, provideZoneChangeDetection } from '@angular/core';
+import { provideRouter, Router } from '@angular/router';
 
 import { routes } from './app.routes';
-import { HttpHandlerFn, HttpRequest, provideHttpClient, withInterceptors } from '@angular/common/http';
-import { Constant } from './constant/Constant';
-import { AppStorage } from './storage/AppStorage';
+import { HttpInterceptorFn, provideHttpClient, withInterceptors } from '@angular/common/http';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { AuthService } from './services/auth/auth.service';
 
-const excludedUrls = Constant.EXCLUDED_URLS_FOR_ATTACHING_JWT;
-
-const authInterceptor = (req: HttpRequest<unknown>, next: HttpHandlerFn) => {
-
-  const token = AppStorage.getItem('token');
-  // Skip if request URL matches one of the excluded endpoints
-  if (!excludedUrls.some(url => req.url.includes(url)) && token) {
-    req = req.clone({
-      setHeaders: { Authorization: `Bearer ${token}` }
-    });
-  }
-  return next(req);
-};
+const authInterceptor: HttpInterceptorFn = (req, next) => new AuthInterceptor(inject(Router), inject(AuthService)).intercept(req, next);
 
 export const appConfig: ApplicationConfig = {
   providers: [provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes), provideHttpClient(withInterceptors([authInterceptor]))]
