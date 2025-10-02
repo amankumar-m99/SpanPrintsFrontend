@@ -4,10 +4,10 @@ import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { LoginModel } from '../../model/login.model';
 import { RegisterModel } from '../../model/register.model';
-import { User } from '../../model/user.model';
 import { Router } from '@angular/router';
 import { Constant } from '../../constant/Constant';
 import { AppStorage } from '../../storage/AppStorage';
+import { Profile } from '../../model/profile.model';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +15,7 @@ import { AppStorage } from '../../storage/AppStorage';
 export class AuthService {
   private loginUrl = Constant.API_URL + '/login';
 
-  private registerUrl = Constant.API_URL + '/account';
+  private registerUrl = Constant.API_URL + '/register';
 
   private currentUserUrl = Constant.API_URL + '/me';
 
@@ -56,6 +56,6 @@ export class AuthService {
   }
 
   getCurrentUser() {
-    return this.http.get<User>(this.currentUserUrl);
+    return this.http.get<Profile>(this.currentUserUrl);
   }
 }

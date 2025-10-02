@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../../services/auth/auth.service';
+import { Profile } from '../../model/profile.model';
 
 @Component({
   selector: 'app-profile',
@@ -12,7 +13,7 @@ import { AuthService } from '../../services/auth/auth.service';
   styleUrl: './profile.component.css'
 })
 export class ProfileComponent implements OnInit {
-  user: any | null = null;
+  profile!: Profile | null;
   profileForm!: FormGroup;
   editMode = false;
   loading = false;       // for form save
@@ -28,20 +29,7 @@ export class ProfileComponent implements OnInit {
     this.loading = true;
     this.authService.getCurrentUser().subscribe({
       next: (res) => {
-        this.user = {
-          account: {
-            email: res.email,
-            username: res.username,
-            role: "USER",
-            createdAt: "2025-01-15"
-          },
-          personal: {
-            name: "John Doe",
-            birthday: "1990-06-15",
-            gender: "Male",
-            profilePic: "assets/profile.png"
-          }
-        };
+        this.profile = res;
         this.initProfileForm();
         this.loading = false;
       },
@@ -55,12 +43,12 @@ export class ProfileComponent implements OnInit {
 
   initProfileForm(): void {
     this.profileForm = this.fb.group({
-      email: [this.user.account.email, [Validators.required, Validators.email]],
-      username: [this.user.account.username, Validators.required],
-      name: [this.user.personal.name, Validators.required],
-      birthday: [this.user.personal.birthday, Validators.required],
-      gender: [this.user.personal.gender, Validators.required],
-      profilePic: [this.user.personal.profilePic]
+      email: [this.profile?.account.email, [Validators.required, Validators.email]],
+      username: [this.profile?.account.username, Validators.required],
+      name: [this.profile?.personalDetails.name, Validators.required],
+      birthday: [this.profile?.personalDetails.birthday, Validators.required],
+      gender: [this.profile?.personalDetails.gender, Validators.required],
+      profilePic: [this.profile?.personalDetails.profilePic]
     });
   }
 
@@ -71,8 +59,8 @@ export class ProfileComponent implements OnInit {
   cancelEdit() {
     this.editMode = false;
     this.profileForm.patchValue({
-      ...this.user.account,
-      ...this.user.personal
+      ...this.profile?.account,
+      ...this.profile?.personalDetails
     });
   }
 
@@ -99,7 +87,7 @@ export class ProfileComponent implements OnInit {
     this.http.post<{ imageUrl: string }>('http://localhost:8080/api/profile/upload-pic', formData)
       .subscribe({
         next: (res) => {
-          this.user.personal.profilePic = res.imageUrl;
+          // this.profile?.personalDetails?.profilePic = res.imageUrl;
           this.profileForm.patchValue({ profilePic: res.imageUrl });
           this.picLoading = false;
           this.showToast = true;
@@ -126,12 +114,13 @@ export class ProfileComponent implements OnInit {
     this.http.put('http://localhost:8080/api/profile/update', this.profileForm.value)
       .subscribe({
         next: () => {
-          this.user.account.email = this.profileForm.value.email;
-          this.user.account.username = this.profileForm.value.username;
-          this.user.personal.name = this.profileForm.value.name;
-          this.user.personal.birthday = this.profileForm.value.birthday;
-          this.user.personal.gender = this.profileForm.value.gender;
-
+          if(this.profile != null){
+            this.profile.account.email = this.profileForm.value.email;
+            this.profile.account.username = this.profileForm.value.username;
+            this.profile.personalDetails.name = this.profileForm.value.name;
+            this.profile.personalDetails.birthday = this.profileForm.value.birthday;
+            this.profile.personalDetails.gender = this.profileForm.value.gender;
+          }
           this.editMode = false;
           this.loading = false;
           this.showToast = true;
