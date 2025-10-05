@@ -1,134 +1,160 @@
 <div class="container mt-2">
-    <div *ngIf="!loading && profile; else loadingOrError">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2>My Profile</h2>
-            <button *ngIf="!editMode" class="btn btn-primary" (click)="enableEdit()">Edit</button>
-        </div>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>My Profile</h2>
+    </div>
 
-        <!-- Profile Picture with Overlay Camera Icon -->
-        <div class="d-flex justify-content-center mb-4">
-            <div class="position-relative">
-                <img [src]="profileForm.value.profilePic" alt="Profile Picture"
-                    class="rounded-circle shadow profile-pic" width="140" height="140">
+    <div *ngIf="errorMessage" class="alert alert-danger">
+        {{ personalDetailsErrorMessage }}
+    </div>
 
-                <!-- Spinner while uploading -->
-                <div *ngIf="picLoading" class="spinner-overlay">
-                    <div class="spinner-border text-light"></div>
-                </div>
+    <!-- Profile Picture with Overlay Camera Icon -->
+    <app-profile-pic [profilePicUrl]="profile?.personalDetails?.profilePic"></app-profile-pic>
 
-                <!-- Camera icon -->
-                <div class="overlay-icon">
-                    <i class="bi bi-camera-fill fs-4 text-white"></i>
-                    <input type="file" (change)="onFileChange($event)" class="file-input">
-                </div>
-            </div>
-        </div>
 
-        <form [formGroup]="profileForm" (ngSubmit)="saveChanges()">
-            <div class="row g-4">
-                <!-- Account Details -->
-                <div class="col-md-6">
-                    <div class="card shadow-sm">
-                        <div class="card-header bg-dark text-white">Account Details</div>
-                        <div class="card-body">
+    <div class="row g-4">
+        <!-- Account Details -->
+        <div class="col-md-6">
+            <div *ngIf="!accountDetailsLoading && profile; else accountLoadingElse">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+                        <span>Account Details</span>
+                        <button *ngIf="!editAccount" class="btn btn-sm btn-light"
+                            (click)="enableEditAccountDetails()">Edit</button>
+                    </div>
+                    <div class="card-body">
+                        <form [formGroup]="accountDetailsForm" (ngSubmit)="saveAccountDetailsChanges()">
                             <div class="mb-3">
                                 <label class="form-label">Email</label>
-                                <input type="email" formControlName="email" class="form-control" [readonly]="!editMode"
-                                    [class.is-invalid]="profileForm.get('email')?.invalid && profileForm.get('email')?.touched">
+                                <input type="email" formControlName="email" class="form-control"
+                                    [readonly]="!editAccount"
+                                    [class.is-invalid]="accountDetailsForm.get('email')?.invalid && accountDetailsForm.get('email')?.touched">
                                 <div class="invalid-feedback">Valid email is required.</div>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Username</label>
                                 <input type="text" formControlName="username" class="form-control"
-                                    [readonly]="!editMode"
-                                    [class.is-invalid]="profileForm.get('username')?.invalid && profileForm.get('username')?.touched">
+                                    [readonly]="!editAccount"
+                                    [class.is-invalid]="accountDetailsForm.get('username')?.invalid && accountDetailsForm.get('username')?.touched">
                                 <div class="invalid-feedback">Username is required.</div>
                             </div>
                             <p><strong>Role:</strong> {{ profile.account.roles[0].roleName }}</p>
                             <p><strong>Account Created:</strong> {{ profile.account.createdAt | date }}</p>
-                        </div>
+                            <p><strong>UID:</strong> {{ profile.account.uuid }}</p>
+                            <div *ngIf="editAccount" class="d-flex justify-content-end mt-3">
+                                <button type="button" class="btn btn-secondary me-2" (click)="cancelEditAccount()"
+                                    [disabled]="accountDetailSaving">Cancel</button>
+                                <button type="submit" class="btn btn-primary d-flex align-items-center"
+                                    [disabled]="accountDetailSaving">
+                                    <span *ngIf="accountDetailSaving"
+                                        class="spinner-border spinner-border-sm me-2"></span>
+                                    {{ accountDetailSaving ? 'Saving...' : 'Save Changes' }}
+                                </button>
+                            </div>
+                        </form>
                     </div>
                 </div>
+                <!-- Save / Cancel Buttons -->
+            </div>
+            <ng-template #accountLoadingElse>
+                <div class="card shadow p-4">
+                    <div class="text-center d-flex align-items-center">
+                        Loading Account Details ...
+                        <div class="spinner-border mx-2"></div>
+                    </div>
+                    <div *ngIf="accountDetailsErrorMessage" class="alert alert-danger">
+                        {{ accountDetailsErrorMessage }}
+                    </div>
+                </div>
+            </ng-template>
+        </div>
 
-                <!-- Personal Details -->
-                <div class="col-md-6">
-                    <div class="card shadow-sm">
-                        <div class="card-header bg-dark text-white">Personal Details</div>
-                        <div class="card-body">
+        <!-- Personal Details -->
+        <div class="col-md-6">
+            <div *ngIf="!personalDetailsLoading && profile; else personalLoadingElse">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+                        <span>Personal Details</span>
+                        <button *ngIf="!editPersonal" class="btn btn-sm btn-light"
+                            (click)="enableEditPersonalDetails()">Edit</button>
+                    </div>
+                    <div class="card-body">
+                        <form [formGroup]="personalDetailsForm" (ngSubmit)="savePersonalDetailsChanges()">
                             <div class="mb-3">
                                 <label class="form-label">Name</label>
-                                <input type="text" formControlName="name" class="form-control" [readonly]="!editMode"
-                                    [class.is-invalid]="profileForm.get('name')?.invalid && profileForm.get('name')?.touched">
+                                <input type="text" formControlName="name" class="form-control"
+                                    [readonly]="!editPersonal"
+                                    [class.is-invalid]="personalDetailsForm.get('name')?.invalid && personalDetailsForm.get('name')?.touched">
                                 <div class="invalid-feedback">Name is required.</div>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Birthday</label>
                                 <input type="date" formControlName="birthday" class="form-control"
-                                    [readonly]="!editMode"
-                                    [class.is-invalid]="profileForm.get('birthday')?.invalid && profileForm.get('birthday')?.touched">
+                                    [readonly]="!editPersonal"
+                                    [class.is-invalid]="personalDetailsForm.get('birthday')?.invalid && personalDetailsForm.get('birthday')?.touched">
                                 <div class="invalid-feedback">Birthday is required.</div>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Gender</label>
-                                <select formControlName="gender" class="form-select" [disabled]="!editMode"
-                                    [class.is-invalid]="profileForm.get('gender')?.invalid && profileForm.get('gender')?.touched">
+                                <select formControlName="gender" class="form-select" [disabled]="!editPersonal"
+                                    [class.is-invalid]="personalDetailsForm.get('gender')?.invalid && personalDetailsForm.get('gender')?.touched">
                                     <option value="">Select gender</option>
-                                    <option>Male</option>
-                                    <option>Female</option>
-                                    <option>Other</option>
+                                    <option value="MALE">Male</option>
+                                    <option value="FEMALE">Female</option>
+                                    <option value="OTHER">Other</option>
                                 </select>
                                 <div class="invalid-feedback">Gender is required.</div>
                             </div>
-                        </div>
+                            <!-- Save / Cancel Buttons -->
+                            <div *ngIf="editPersonal" class="d-flex justify-content-end mt-3">
+                                <button type="button" class="btn btn-secondary me-2"
+                                    (click)="cancelEditPersonalDetails()"
+                                    [disabled]="personalDetailsSaving">Cancel</button>
+                                <button type="submit" class="btn btn-primary d-flex align-items-center"
+                                    [disabled]="personalDetailsSaving">
+                                    <span *ngIf="personalDetailsSaving"
+                                        class="spinner-border spinner-border-sm me-2"></span>
+                                    {{ personalDetailsSaving ? 'Saving...' : 'Save Changes' }}
+                                </button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
-
-            <!-- Save / Cancel Buttons -->
-            <div *ngIf="editMode" class="d-flex justify-content-end mt-3">
-                <button type="button" class="btn btn-secondary me-2" (click)="cancelEdit()"
-                    [disabled]="loading">Cancel</button>
-                <button type="submit" class="btn btn-primary d-flex align-items-center" [disabled]="loading">
-                    <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
-                    {{ loading ? 'Saving...' : 'Save Changes' }}
-                </button>
-            </div>
-        </form>
-
-        <!-- Toast Notification -->
-        <div class="toast-container position-fixed top-0 end-0 p-3">
-            <div *ngIf="showToast" class="toast align-items-center text-bg-success border-0 show">
-                <div class="d-flex">
-                    <div class="toast-body">
-                        Profile updated successfully!
+            <ng-template #personalLoadingElse>
+                <div class="card shadow p-4">
+                    <div class="text-center d-flex align-items-center">
+                        Loading Personal Details ...
+                        <div class="spinner-border mx-2"></div>
                     </div>
-                    <button type="button" class="btn-close btn-close-white me-2 m-auto"
-                        (click)="showToast = false"></button>
+                    <div *ngIf="personalDetailsErrorMessage" class="alert alert-danger">
+                        {{ personalDetailsErrorMessage }}
+                    </div>
                 </div>
-            </div>
+            </ng-template>
         </div>
-        <!-- Toast Error Notification -->
-        <div class="toast-container position-fixed top-0 end-0 p-3">
-            <div *ngIf="showToast" class="toast align-items-center text-bg-danger border-0 show">
-                <div class="d-flex">
-                    <div class="toast-body">
-                        Failed to update profile.
-                    </div>
-                    <button type="button" class="btn-close btn-close-white me-2 m-auto"
-                        (click)="showToast = false"></button>
+    </div>
+    <!-- Toast Notification -->
+    <div class="toast-container position-fixed top-0 end-0 p-3">
+        <div *ngIf="showSuccessToast" class="toast align-items-center text-bg-success border-0 show">
+            <div class="d-flex">
+                <div class="toast-body">
+                    Data updated successfully!
                 </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto"
+                    (click)="showSuccessToast = false"></button>
             </div>
         </div>
     </div>
-
-    <ng-template #loadingOrError>
-        <div class="card shadow p-4">
-            <div *ngIf="loading" class="text-center">
-                <div class="spinner-border"></div>
-            </div>
-            <div *ngIf="errorMessage" class="alert alert-danger">
-                {{ errorMessage }}
+    <!-- Toast Error Notification -->
+    <div class="toast-container position-fixed top-0 end-0 p-3">
+        <div *ngIf="showErrorToast" class="toast align-items-center text-bg-danger border-0 show">
+            <div class="d-flex">
+                <div class="toast-body">
+                    Failed to update data.
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto"
+                    (click)="showSuccessToast = false"></button>
             </div>
         </div>
-    </ng-template>
+    </div>
 </div>

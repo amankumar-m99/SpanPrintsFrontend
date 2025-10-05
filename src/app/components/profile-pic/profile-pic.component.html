@@ -1,0 +1,126 @@
+<!-- Profile Picture with Overlay Camera Icon -->
+<div class="d-flex justify-content-center mb-4">
+    <div class="position-relative">
+        <img #profilePic [src]="profilePicUrl" alt="Profile Picture" class="rounded-circle shadow profile-pic" width="140"
+            height="140" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#imageModal">
+
+        <!-- Spinner while uploading -->
+        <div *ngIf="picLoading" class="spinner-overlay">
+            <div class="spinner-border text-light"></div>
+        </div>
+
+        <!-- Camera icon -->
+        <div class="overlay-icon">
+            <i class="bi bi-camera-fill fs-4 text-white"></i>
+            <input #fileInput type="file" class="file-input" (change)="onFileChange($event)" accept="image/png, image/jpeg">
+        </div>
+    </div>
+</div>
+<div class="text-center mt-1 mb-2">
+    <button class="btn btn-outline-danger btn-sm mx-1" (click)="removeProfilePic()">Remove Picture</button>
+    <button class="btn btn-outline-primary btn-sm mx-1" (click)="fileInput.click()">Update Picture</button>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content bg-transparent border-0">
+            <div class="modal-header border-0">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <img [src]="profilePicUrl" class="img-fluid rounded shadow">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Image Cropper Modal -->
+<div class="modal fade" [class.show]="showModal" [style.display]="showModal ? 'block' : 'none'" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Profile Picture</h5>
+                <button type="button" class="btn-close" (click)="showModal=false"></button>
+            </div>
+            <div class="modal-body d-flex flex-column">
+                <div class="row flex-grow-1">
+                    <!-- Cropper on left -->
+                    <div class="col-md-7 d-flex align-items-center justify-content-center">
+                        <image-cropper #cropperRef [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true"
+                            [aspectRatio]="1/1" [resizeToWidth]="300" format="png"
+                            (imageCropped)="imageCropped($event)">
+                        </image-cropper>
+                    </div>
+
+                    <!-- Preview & Controls on right -->
+                    <div class="col-md-5 d-flex flex-column align-items-center justify-content-center">
+                        <!-- File name with ellipsis -->
+                        <h6 *ngIf="fileName" class="mb-2 text-truncate" style="max-width: 200px;">
+                            {{ fileName }}
+                        </h6>
+
+                        <!-- Preview -->
+                        <img [src]="croppedImage || profilePicUrl" class="rounded-circle border mb-3"
+                            style="width: 200px; height: 200px; object-fit: cover;">
+
+                        <!-- Rotate/Flip Controls -->
+                        <div class="d-flex justify-content-center gap-2 mb-3 flex-wrap">
+                            <button class="btn btn-outline-primary btn-sm" (click)="rotateLeft(cropperRef)">⟲ Rotate
+                                Left</button>
+                            <button class="btn btn-outline-primary btn-sm" (click)="rotateRight(cropperRef)">⟳ Rotate
+                                Right</button>
+                        </div>
+                        <div class="d-flex justify-content-center gap-2 mb-3 flex-wrap">
+                            <button class="btn btn-outline-secondary btn-sm" (click)="flipHorizontal(cropperRef)">⇋ Flip
+                                H</button>
+                            <button class="btn btn-outline-secondary btn-sm" (click)="flipVertical(cropperRef)">⇵ Flip
+                                V</button>
+                        </div>
+                        <!-- Action Buttons Always at Bottom Right -->
+                        <div class="w-100 d-flex justify-content-end gap-2 mt-auto pt-3">
+                            <button class="btn btn-secondary" (click)="showModal=false">Cancel</button>
+                            <!-- <button class="btn btn-primary" (click)="saveCroppedImage()"
+                                [disabled]="!croppedImage">Save</button> -->
+                            <button type="submit" class="btn btn-primary d-flex align-items-center"
+                                [disabled]="this.picLoading || !croppedImage" (click)="saveCroppedImage()">
+                                <span *ngIf="this.picLoading" class="spinner-border spinner-border-sm me-2"></span>
+                                {{ this.picLoading ? 'Saving...' : 'Save Changes' }}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Toast Notification -->
+<div class="toast-container position-fixed top-0 end-0 p-3">
+    <div *ngIf="showSuccessToast" class="toast align-items-center text-bg-success border-0 show">
+        <div class="d-flex">
+            <div class="toast-body">Profile picture updated successfully.</div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto"
+                (click)="showSuccessToast = false"></button>
+        </div>
+    </div>
+</div>
+<!-- Toast Error Notification -->
+<div class="toast-container position-fixed top-0 end-0 p-3">
+    <div *ngIf="showErrorToast" class="toast align-items-center text-bg-danger border-0 show">
+        <div class="d-flex">
+            <div class="toast-body">
+                Failed to upload profile picture.
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto"
+                (click)="showErrorToast = false"></button>
+        </div>
+    </div>
+</div>
+<!--
+    <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true" [aspectRatio]="4 / 3" format="png"
+    (imageCropped)="imageCropped($event)" (imageLoaded)="imageLoaded($event)" (cropperReady)="cropperReady()"
+    (loadImageFailed)="loadImageFailed()"></image-cropper>
+    
+    <img [src]="croppedImage" />
+-->
