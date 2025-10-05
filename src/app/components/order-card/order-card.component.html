@@ -1,0 +1,78 @@
+<div class="card h-100 shadow-sm">
+    <div class="card-body">
+        <div class="d-flex justify-content-between">
+            <div>
+                <span class="badge" [ngClass]="{ 'bg-success': order.paymentStatus === 'paid',
+                                                        'bg-warning': order.paymentStatus === 'partially paid',
+                                                        'bg-danger': order.paymentStatus === 'unpaid'}">.
+                </span>
+                <span class="badge ms-2" [ngClass]="{ 'bg-success': order.paymentStatus === 'paid',
+                                                        'bg-warning': order.paymentStatus === 'partially paid',
+                                                        'bg-danger': order.paymentStatus === 'unpaid'}">.
+                </span>
+                <span class="ms-2 h5 card-title">{{ order.customerName }} <small class="text-muted">({{ order.phone
+                        }})</small>
+                </span>
+            </div>
+            <div class="dropdown" style="position: absolute; top: 10px; right: 10px;">
+                <button class="btn dropdown-toggle" type="button" id="cardOptions" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                    &#8942; <!-- vertical three dots -->
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="cardOptions">
+                    <li><a class="dropdown-item" href="#">Mark as paid</a></li>
+                    <li><a class="dropdown-item" href="#">Mark as Ready</a></li>
+                    <li><a class="dropdown-item" href="#">Mark as delivered</a></li>
+                    <li><a class="dropdown-item" href="#">All details</a></li>
+                </ul>
+            </div>
+        </div>
+        <table class="table table-sm table-striped table-hover">
+            <tbody>
+                <tr>
+                    <td>Job</td>
+                    <td>{{ order.jobType }} <small class="text-muted">({{ order.count }})</small></td>
+                </tr>
+                <tr>
+                    <td>Delivery</td>
+                    <td>{{ order.dateOfDelivery | date:'shortDate' }}</td>
+                </tr>
+                <tr>
+                    <td>Book</td>
+                    <td>{{ order.bookNumber }} / {{ order.wBookNumber }}</td>
+                </tr>
+                <tr>
+                    <td>Total Amount</td>
+                    <td>{{ order.totalAmount }}</td>
+                </tr>
+                <tr>
+                    <td>Deposited Amount</td>
+                    <td>{{ order.depositAmount }}</td>
+                </tr>
+                <tr>
+                    <td>Discount Amount</td>
+                    <td>{{ order.discountedAmount }}</td>
+                </tr>
+                <tr>
+                    <td>Pending Amount</td>
+                    <td>{{ order.remainingAmount }}</td>
+                </tr>
+                <tr>
+                    <td>Payment Status</td>
+                    <td>{{ order.paymentStatus }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="card-footer d-flex justify-content-between">
+        <small class="text-muted">Created: {{ order.createdAt | date:'short' }}</small>
+        <div>
+            <button class="btn btn-sm btn-outline-primary me-1" (click)="edit.emit(order)">
+                <i class="bi bi-pencil"></i>
+            </button>
+            <button class="btn btn-sm btn-outline-danger" (click)="delete.emit(order)">
+                <i class="bi bi-trash"></i>
+            </button>
+        </div>
+    </div>
+</div>

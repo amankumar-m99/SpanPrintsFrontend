@@ -1,3 +1,51 @@
 .spanprints-logout-btn :hover{
     cursor: pointer;
 }
+
+/* Sidebar base */
+.sidebar {
+  width: 250px;
+  min-height: 100vh;
+  transition: width 0.3s;
+  z-index: 1050; /* ensure above content on mobile */
+}
+
+/* Collapsed sidebar (desktop) */
+.sidebar.collapsed {
+  width: 70px;
+}
+.sidebar.collapsed .menu-text {
+  display: none;
+}
+
+/* Sidebar links */
+.sidebar .nav-link {
+  padding: 10px;
+}
+.sidebar .nav-link i {
+  font-size: 1.2rem;
+}
+
+/* Main content spacing (desktop only) */
+@media (min-width: 992px) {
+  main {
+    margin-left: 25px;
+    transition: margin-left 0.3s;
+  }
+  .sidebar.collapsed ~ main {
+    margin-left: 70px;
+  }
+}
+
+/* Mobile sidebar (offcanvas style) */
+@media (max-width: 991.98px) {
+  .sidebar {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+  }
+  main {
+    margin-left: 0 !important; /* full width content */
+  }
+}

@@ -11,12 +11,32 @@ import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.compone
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
+
 export class DashboardComponent {
+  sidebarCollapsed = false;
+
+  toggleSidebar() {
+    this.sidebarCollapsed = !this.sidebarCollapsed;
+    const sidebar = document.getElementById('sidebar');
+    if (sidebar) {
+      sidebar.classList.toggle('collapsed', this.sidebarCollapsed);
+    }
+  }
 
   constructor(private authService: AuthService) { }
 
   logout() {
     this.authService.logout();
+  }
+  closeSidebarOnMobile() {
+    if (window.innerWidth < 992) { // Only for mobile/tablet
+      const sidebar = document.getElementById('sidebar');
+      if (sidebar && sidebar.classList.contains('show')) {
+        // Hide Bootstrap collapse
+        const bsCollapse = new (window as any).bootstrap.Collapse(sidebar, { toggle: false });
+        bsCollapse.hide();
+      }
+    }
   }
 
 }

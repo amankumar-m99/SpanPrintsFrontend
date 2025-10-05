@@ -79,7 +79,18 @@ export class ProfilePicComponent implements AfterViewInit {
     // show message
   }
 
-  removeProfilePic() { }
+  removeProfilePic() {
+    this.profileService.removeProfilePic().subscribe({
+      next: (res) => {
+        this.showSuccessToast = true;
+        setTimeout(() => this.showSuccessToast = false, 3000);
+      },
+      error: (err) => {
+        this.showErrorToast = true;
+        setTimeout(() => this.showErrorToast = false, 3000);
+      }
+    });
+  }
 
   // ✅ Profile picture update with instant preview
   uploadProfilePicToBackend(file: File) {

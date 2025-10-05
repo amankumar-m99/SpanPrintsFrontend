@@ -1,0 +1,31 @@
+.masonry-grid {
+    column-count: 3;
+    /* 3 columns on large screens */
+    column-gap: 1rem;
+}
+
+.masonry-item {
+    display: inline-block;
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+@media (max-width: 992px) {
+    .masonry-grid {
+        column-count: 2;
+        /* 2 columns on tablets */
+    }
+}
+
+@media (max-width: 576px) {
+    .masonry-grid {
+        column-count: 1;
+        /* 1 column on mobiles */
+    }
+}
+
+.filter-toolbar {
+    z-index: 1050;
+    /* higher than cards */
+    border: 1px solid #dee2e6;
+}

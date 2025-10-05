@@ -1,0 +1,238 @@
+<div class="me-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3>Orders</h3>
+        <div class="d-flex">
+            <div class="">
+                <div class="d-flex flex-column align-items-end">
+                    <button class="btn btn-outline-primary position-relative" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#filterToolbar" aria-expanded="false" aria-controls="filterToolbar">
+                        <i class="bi bi-funnel"></i> Filters
+                        <span *ngIf="activeFiltersCount > 0"
+                            class="badge bg-danger position-absolute top-0 start-100 translate-middle">
+                            {{ activeFiltersCount }}
+                        </span>
+                    </button>
+                    <!-- Filter summary below button -->
+                    <div *ngIf="activeFiltersSummary" class="small text-muted mt-1">
+                        {{ activeFiltersSummary }}
+                    </div>
+                </div>
+            </div>
+            <div class="ms-2">
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newOrderModal">
+                    + New Order
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="row d-none">
+        <div class="col-md-6 col-lg-4 mb-3" *ngFor="let order of orders; let i = index">
+            <app-order-card [order]="order" (edit)="editOrder(order, i)" (delete)="deleteOrder(order)"></app-order-card>
+        </div>
+    </div>
+    <div id="filterToolbar" class="collapse d-md-block">
+        <div class="filter-toolbar sticky-top bg-white p-2 mb-3 shadow-sm rounded">
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+
+                <!-- Search -->
+                <div class="d-flex align-items-center gap-2">
+                    <input type="text" class="form-control" placeholder="Search by name or phone..."
+                        style="min-width: 250px;" [(ngModel)]="searchTerm" (input)="applyFilters()" />
+                </div>
+
+                <!-- Filter -->
+                <div class="d-flex align-items-center gap-2">
+                    <label for="statusFilter" class="form-label mb-0">Status:</label>
+                    <select id="statusFilter" class="form-select" style="width: auto;" [(ngModel)]="filterStatus"
+                        (change)="applyFilters()">
+                        <option value="">All</option>
+                        <option value="paid">Paid</option>
+                        <option value="partially paid">Partially Paid</option>
+                        <option value="unpaid">Unpaid</option>
+                    </select>
+                </div>
+
+                <!-- Sort -->
+                <div class="d-flex align-items-center gap-2">
+                    <label for="sortBy" class="form-label mb-0">Sort by:</label>
+                    <select id="sortBy" class="form-select" style="width: auto;" [(ngModel)]="sortBy"
+                        (change)="applyFilters()">
+                        <option value="createdAt_desc">Newest First</option>
+                        <option value="createdAt_asc">Oldest First</option>
+                        <option value="amount_desc">Amount High → Low</option>
+                        <option value="amount_asc">Amount Low → High</option>
+                    </select>
+                </div>
+
+                <!-- Clear All -->
+                <div>
+                    <button class="btn btn-outline-secondary btn-sm" (click)="clearFilters()">
+                        Clear All
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="masonry-grid">
+        <div class="masonry-item" *ngFor="let order of filteredOrders">
+            <app-order-card [order]="order"></app-order-card>
+        </div>
+    </div>
+
+
+    <!-- Orders List -->
+    <div class="table-responsive d-none">
+        <table class="table table-bordered table-striped align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th>#</th>
+                    <th>Customer</th>
+                    <th>Phone</th>
+                    <th>Address</th>
+                    <th>Job Type</th>
+                    <th>Count</th>
+                    <th>Date of Delivery</th>
+                    <th>Book Number</th>
+                    <th>W-Book Number</th>
+                    <th>Total Amount</th>
+                    <th>Deposited Amount</th>
+                    <th>Discounted Amount</th>
+                    <th>Created</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let order of orders; let i = index">
+                    <td>{{ i + 1 }}</td>
+                    <td>{{ order.customerName }}</td>
+                    <td>{{ order.phone }}</td>
+                    <td>{{ order.address }}</td>
+                    <td>{{ order.jobType }}</td>
+                    <td>{{ order.count }}</td>
+                    <td>{{ order.dateOfDelivery | date:'short' }}</td>
+                    <td>{{ order.bookNumber }}</td>
+                    <td>{{ order.wBookNumber }}</td>
+                    <td>{{ order.totalAmount | currency:'INR' }}</td>
+                    <td>{{ order.depositAmount | currency:'INR' }}</td>
+                    <td>{{ order.discountedAmount | currency:'INR' }}</td>
+                    <td>{{ order.createdAt | date:'short' }}</td>
+                    <td><span [ngClass]="{
+            'badge bg-success': order.paymentStatus === 'paid',
+            'badge bg-warning text-dark': order.paymentStatus === 'partially paid',
+            'badge bg-danger': order.paymentStatus === 'unpaid'
+          }">{{ order.paymentStatus }}</span>
+                    </td>
+                    <td>
+                        <button class="btn btn-sm btn-outline-primary me-1" (click)="editOrder(order, i)">
+                            <i class="bi bi-pencil"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline-danger" (click)="deleteOrder(i)">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <!-- New Order Modal -->
+    <div class="modal fade" id="newOrderModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="newOrderLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <form [formGroup]="orderForm" (ngSubmit)="submitOrder()">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="newOrderLabel">{{ editIndex !== null ? 'Edit Order' :
+                            'Add New Order' }} </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row g-3">
+                            <!-- Customer Name -->
+                            <div class="col-md-6">
+                                <label class="form-label">Customer Name</label>
+                                <input type="text" class="form-control" formControlName="customerName">
+                            </div>
+                            <!-- Phone -->
+                            <div class="col-md-6">
+                                <label class="form-label">Phone</label>
+                                <input type="tel" class="form-control" formControlName="phone">
+                            </div>
+                            <!-- Address -->
+                            <div class="col-12">
+                                <label class="form-label">Address</label>
+                                <textarea class="form-control" rows="2" formControlName="address"></textarea>
+                            </div>
+                            <!-- Job Type -->
+                            <div class="col-md-6">
+                                <label class="form-label">Job Type</label>
+                                <select class="form-select" formControlName="jobType">
+                                    <option value="">-- Select Job Type --</option>
+                                    <option *ngFor="let type of jobTypes" [value]="type">{{ type }}</option>
+                                </select>
+                            </div>
+                            <!-- Count -->
+                            <div class="col-md-6">
+                                <label class="form-label">Count</label>
+                                <input type="number" class="form-control" formControlName="count">
+                            </div>
+                            <!-- Book Number -->
+                            <div class="col-md-6">
+                                <label class="form-label">Book Number</label>
+                                <input type="number" class="form-control" formControlName="bookNumber">
+                            </div>
+                            <!-- W-Book Number -->
+                            <div class="col-md-6">
+                                <label class="form-label">W-Book Number</label>
+                                <input type="number" class="form-control" formControlName="wBookNumber">
+                            </div>
+                            <!-- Date of delivery -->
+                            <div class="col-md-6">
+                                <label class="form-label">Date of delivery</label>
+                                <input type="date" class="form-control" formControlName="dateOfDelivery">
+                            </div>
+                            <!-- Total Amount -->
+                            <div class="col-md-6">
+                                <label class="form-label">Total Amount</label>
+                                <input type="number" class="form-control" formControlName="totalAmount">
+                            </div>
+                            <!-- Deposit Amount -->
+                            <div class="col-md-6">
+                                <label class="form-label">Deposit Amount</label>
+                                <input type="number" class="form-control" formControlName="depositAmount">
+                            </div>
+                            <!-- Remaining Amount -->
+                            <div class="col-md-6">
+                                <label class="form-label">Remaining Amount</label>
+                                <input type="number" class="form-control" formControlName="remainingAmount">
+                            </div>
+                            <!-- Discounted Amount -->
+                            <div class="col-md-6">
+                                <label class="form-label">Discounted Amount</label>
+                                <input type="number" class="form-control" formControlName="discountedAmount">
+                            </div>
+                            <!-- Payment Status -->
+                            <div class="col-md-6">
+                                <label class="form-label">Payment Status</label>
+                                <select class="form-select" formControlName="paymentStatus">
+                                    <option value="">-- Select Status --</option>
+                                    <option value="partially paid">Partially Paid</option>
+                                    <option value="paid">Paid</option>
+                                    <option value="unpaid">Unpaid</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary" [disabled]="orderForm.invalid || isSubmitting">
+                            <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm me-2"></span>
+                            {{ editIndex !== null ? 'Update Order' : 'Save Order' }}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -16,6 +16,10 @@ export class ProfileService {
   updateProfilePic(data: any) {
     return this.http.post<{ url: string }>(this.profilePicUpdateUrl, data);
   }
+  
+  removeProfilePic(){
+    return this.http.delete<any>(this.profilePicUpdateUrl);
+  }
 
   updateAccountDetails(data: any) {
     return this.http.put<any>(this.accountDetailsUpdateUrl, data);
