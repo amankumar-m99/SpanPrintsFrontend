@@ -61,6 +61,7 @@ export class OrdersComponent implements OnInit {
     // Replace with API call
     this.orders = [
       {
+        id: '25101121',
         customerName: 'Rahul',
         phone: '8566953776',
         address: 'Noida',
@@ -77,6 +78,7 @@ export class OrdersComponent implements OnInit {
         createdAt: new Date()
       },
       {
+        id: '25101121',
         customerName: 'AmanK',
         phone: '8566953776',
         address: 'Noida',
@@ -93,6 +95,7 @@ export class OrdersComponent implements OnInit {
         createdAt: new Date()
       },
       {
+        id: '25101121',
         customerName: 'AmanK',
         phone: '8566953776',
         address: 'Noida',

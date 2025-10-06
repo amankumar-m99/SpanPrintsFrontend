@@ -3,11 +3,12 @@ import { RouterLink, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth/auth.service';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { HelpComponent } from '../help/help.component';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [RouterLink, CommonModule, ConfirmDialogComponent, RouterOutlet],
+  imports: [RouterLink, CommonModule, ConfirmDialogComponent, RouterOutlet, HelpComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })

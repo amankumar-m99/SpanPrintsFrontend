@@ -1,17 +1,25 @@
 <div class="card h-100 shadow-sm">
     <div class="card-body">
         <div class="d-flex justify-content-between">
-            <div>
-                <span class="badge" [ngClass]="{ 'bg-success': order.paymentStatus === 'paid',
-                                                        'bg-warning': order.paymentStatus === 'partially paid',
-                                                        'bg-danger': order.paymentStatus === 'unpaid'}">.
+            <div class="fs-6">
+                <span class="" [ngClass]="{ 'text-success': order.paymentStatus === 'paid',
+                                                        'text-warning': order.paymentStatus === 'partially paid',
+                                                        'text-danger': order.paymentStatus === 'unpaid'}"><i
+                        class="bi bi-pause-circle-fill"></i>
                 </span>
-                <span class="badge ms-2" [ngClass]="{ 'bg-success': order.paymentStatus === 'paid',
-                                                        'bg-warning': order.paymentStatus === 'partially paid',
-                                                        'bg-danger': order.paymentStatus === 'unpaid'}">.
+                <span class="ms-2"
+                    [ngClass]="{ 'text-success': order.paymentStatus === 'paid',
+                                                                                                'text-warning': order.paymentStatus === 'partially paid',
+                                                                                                'text-danger': order.paymentStatus === 'unpaid'}"><i
+                        class="bi bi-calendar2-fill"></i>
                 </span>
-                <span class="ms-2 h5 card-title">{{ order.customerName }} <small class="text-muted">({{ order.phone
-                        }})</small>
+                <span class="ms-2" [ngClass]="{ 'text-success': order.paymentStatus === 'paid',
+                                                        'text-warning': order.paymentStatus === 'partially paid',
+                                                        'text-danger': order.paymentStatus === 'unpaid'}"><i
+                        class="bi bi-coin"></i>
+                </span>
+                <span class="ms-2 h5 card-title">{{ order.customerName }} <small class="text-muted">({{
+                        order.id}})</small>
                 </span>
             </div>
             <div class="dropdown" style="position: absolute; top: 10px; right: 10px;">
@@ -34,20 +42,12 @@
                     <td>{{ order.jobType }} <small class="text-muted">({{ order.count }})</small></td>
                 </tr>
                 <tr>
-                    <td>Delivery</td>
+                    <td>Delivery Date</td>
                     <td>{{ order.dateOfDelivery | date:'shortDate' }}</td>
                 </tr>
                 <tr>
-                    <td>Book</td>
-                    <td>{{ order.bookNumber }} / {{ order.wBookNumber }}</td>
-                </tr>
-                <tr>
-                    <td>Total Amount</td>
-                    <td>{{ order.totalAmount }}</td>
-                </tr>
-                <tr>
-                    <td>Deposited Amount</td>
-                    <td>{{ order.depositAmount }}</td>
+                    <td>Amount Paid</td>
+                    <td>{{ order.depositAmount }} of {{ order.totalAmount }}</td>
                 </tr>
                 <tr>
                     <td>Discount Amount</td>
@@ -58,15 +58,16 @@
                     <td>{{ order.remainingAmount }}</td>
                 </tr>
                 <tr>
-                    <td>Payment Status</td>
-                    <td>{{ order.paymentStatus }}</td>
+                    <td>Phone number</td>
+                    <td>{{ order.phone }}</td>
                 </tr>
             </tbody>
         </table>
     </div>
-    <div class="card-footer d-flex justify-content-between">
+    <div class="card-footer d-flex justify-content-between align-items-center">
         <small class="text-muted">Created: {{ order.createdAt | date:'short' }}</small>
-        <div>
+        <small><a>More details</a></small>
+        <div class="">
             <button class="btn btn-sm btn-outline-primary me-1" (click)="edit.emit(order)">
                 <i class="bi bi-pencil"></i>
             </button>
