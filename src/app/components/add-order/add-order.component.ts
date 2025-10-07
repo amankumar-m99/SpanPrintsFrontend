@@ -1,18 +1,16 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { OrderCardComponent } from '../order-card/order-card.component';
-import { RouterLink } from "@angular/router";
 
 @Component({
-  selector: 'app-orders',
+  selector: 'app-add-order',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, OrderCardComponent, FormsModule, RouterLink],
-  templateUrl: './orders.component.html',
-  styleUrl: './orders.component.css'
+  imports: [CommonModule, ReactiveFormsModule, FormsModule],
+  templateUrl: './add-order.component.html',
+  styleUrl: './add-order.component.css'
 })
 
-export class OrdersComponent implements OnInit {
+export class AddOrderComponent implements OnInit {
   orders: any[] = [];           // original list from backend
   orderForm!: FormGroup;
   isSubmitting = false;

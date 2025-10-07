@@ -1,0 +1,141 @@
+<div class="mt-3 me-2">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3>Add an Order</h3>
+    </div>
+
+    <div class="container pt-3 pe-5">
+        <form [formGroup]="orderForm" (ngSubmit)="submitOrder()">
+            <div class="row g-3 ms-2 me-5">
+                <!-- Customer Name -->
+                <div class="col-md-6">
+                    <label class="form-label">Customer Name</label>
+                    <input type="text" class="form-control" formControlName="customerName">
+                </div>
+                <!-- Phone -->
+                <div class="col-md-6">
+                    <label class="form-label">Phone</label>
+                    <input type="tel" class="form-control" formControlName="phone">
+                </div>
+                <!-- Address -->
+                <div class="col-12">
+                    <label class="form-label">Address</label>
+                    <textarea class="form-control" rows="2" formControlName="address"></textarea>
+                </div>
+                <!-- Job Type -->
+                <div class="col-md-6">
+                    <label class="form-label">Job Type</label>
+                    <select class="form-select" formControlName="jobType">
+                        <option value="">-- Select Job Type --</option>
+                        <option *ngFor="let type of jobTypes" [value]="type">{{ type }}</option>
+                    </select>
+                </div>
+                <!--  -->
+                <div class="d-none col-md-6">
+                    <label for="searchDropdown" class="form-label">Select Item</label>
+                    <input type="text" class="form-control" id="searchDropdown" placeholder="Start typing...">
+                    <ul class="list-group position-absolute w-100" id="dropdownList"
+                        style="z-index:1000; max-height:150px; overflow-y:auto; display:none;">
+                        <li class="list-group-item">Item 1</li>
+                        <li class="list-group-item">Item 2</li>
+                        <li class="list-group-item">Item 3</li>
+                        <li class="list-group-item">Item 4</li>
+                    </ul>
+                </div>
+                <!--  -->
+                <!-- Count -->
+                <div class="col-md-6">
+                    <label class="form-label">Count</label>
+                    <input type="number" class="form-control" formControlName="count">
+                </div>
+                <!-- Book Number -->
+                <div class="col-md-6">
+                    <label class="form-label">Book Number</label>
+                    <input type="number" class="form-control" formControlName="bookNumber">
+                </div>
+                <!-- W-Book Number -->
+                <div class="col-md-6">
+                    <label class="form-label">W-Book Number</label>
+                    <input type="number" class="form-control" formControlName="wBookNumber">
+                </div>
+                <!-- Date of delivery -->
+                <div class="col-md-6">
+                    <label class="form-label">Date of delivery</label>
+                    <input type="date" class="form-control" formControlName="dateOfDelivery">
+                </div>
+                <!-- Total Amount -->
+                <div class="col-md-6">
+                    <label class="form-label">Total Amount</label>
+                    <input type="number" class="form-control" formControlName="totalAmount">
+                </div>
+                <!-- Deposit Amount -->
+                <div class="col-md-6">
+                    <label class="form-label">Deposit Amount</label>
+                    <input type="number" class="form-control" formControlName="depositAmount">
+                </div>
+                <!-- Remaining Amount -->
+                <div class="col-md-6">
+                    <label class="form-label">Remaining Amount</label>
+                    <input type="number" class="form-control" formControlName="remainingAmount">
+                </div>
+                <!-- Discounted Amount -->
+                <div class="col-md-6">
+                    <label class="form-label">Discounted Amount</label>
+                    <input type="number" class="form-control" formControlName="discountedAmount">
+                </div>
+                <!-- Payment Status -->
+                <div class="col-md-6">
+                    <label class="form-label">Payment Status</label>
+                    <select class="form-select" formControlName="paymentStatus">
+                        <option value="">-- Select Status --</option>
+                        <option value="partially paid">Partially Paid</option>
+                        <option value="paid">Paid</option>
+                        <option value="unpaid">Unpaid</option>
+                    </select>
+                </div>
+                <div class="col-12">
+                    <label class="form-label">Add Note</label>
+                    <textarea class="form-control" rows="2" formControlName="note"
+                        placeholder="Optional note about the order"></textarea>
+                </div>
+
+                <!-- Description -->
+                <div class="col-12">
+                    <label class="form-label">Description</label>
+                    <textarea class="form-control" rows="3" formControlName="description"
+                        placeholder="Detailed order description"></textarea>
+                </div>
+
+                <!-- Attachments -->
+                <div class="col-12">
+                    <label class="form-label">Attachments</label>
+                    <input type="file" class="form-control" (change)="onFileSelected($event)" multiple
+                        accept="image/*,.pdf,.doc,.docx,.zip" />
+
+                    <!-- Show selected files -->
+                    <div *ngIf="selectedFiles?.length" class="mt-2 small text-muted">
+                        {{ selectedFiles.length }} file(s) selected.
+                    </div>
+                    <ul *ngIf="selectedFiles.length" class="list-group mt-2">
+                        <li *ngFor="let file of selectedFiles; let i = index"
+                            class="list-group-item d-flex justify-content-between align-items-center">
+                            <div class="text-truncate" style="max-width: 80%;">
+                                <i class="bi bi-paperclip me-2 text-secondary"></i>
+                                {{ file.name }}
+                            </div>
+                            <button type="button" class="btn btn-sm btn-outline-danger" (click)="removeFile(i)"
+                                title="Remove file">
+                                <i class="bi bi-x"></i>
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+                <div class="d-flex justify-content-end me-5 border">
+                    <button type="submit" class="btn btn-primary w-25 me-5" [disabled]="orderForm.invalid || isSubmitting">
+                        <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm me-2"></span>
+                        {{ editIndex !== null ? 'Update Order' : 'Save Order' }}
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

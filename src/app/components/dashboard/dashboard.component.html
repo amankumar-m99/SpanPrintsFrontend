@@ -141,13 +141,14 @@
     </nav>
 
     <!-- Main content -->
-    <main class="flex-grow-1 py-4">
-        <!-- Mobile Hamburger -->
-        <button class="btn btn-outline-dark d-lg-none mb-3" type="button" data-bs-toggle="collapse"
-            data-bs-target="#sidebar">
-            <i class="bi bi-list"></i>
-        </button>
-
-        <router-outlet></router-outlet>
-    </main>
+    <div class="w-100">
+        <main class="flex-grow-1 py-1">
+            <!-- Mobile Hamburger -->
+            <button class="btn btn-outline-dark d-lg-none mb-3" type="button" data-bs-toggle="collapse"
+                data-bs-target="#sidebar">
+                <i class="bi bi-list"></i>
+            </button>
+            <router-outlet></router-outlet>
+        </main>
+    </div>
 </div>
