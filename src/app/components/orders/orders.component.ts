@@ -23,28 +23,7 @@ export class OrdersComponent implements OnInit {
   searchTerm: string = '';
   activeFiltersCount = 0;
   activeFiltersSummary = '';
-
   selectedFiles: File[] = [];
-
-  onFileSelected(event: any): void {
-    const files = Array.from(event.target.files) as File[];
-    this.selectedFiles.push(...files);
-    event.target.value = ''; // reset input
-  }
-
-  removeFile(index: number): void {
-    this.selectedFiles.splice(index, 1);
-  }
-
-
-  clearFilters() {
-    this.searchTerm = '';
-    this.filterStatus = '';
-    this.sortBy = 'createdAt_desc';
-    this.applyFilters(); // reset filters count
-  }
-
-
   jobTypes = [
     'banner', 'receipt', 'visiting card', 'bill book',
     'wedding card', 'color poster', 'book binding', 'pamplet'
@@ -192,9 +171,25 @@ export class OrdersComponent implements OnInit {
     this.filteredOrders = data;
   }
 
+  clearFilters() {
+    this.searchTerm = '';
+    this.filterStatus = '';
+    this.sortBy = 'createdAt_desc';
+    this.applyFilters(); // reset filters count
+  }
+
+  onFileSelected(event: any): void {
+    const files = Array.from(event.target.files) as File[];
+    this.selectedFiles.push(...files);
+    event.target.value = ''; // reset input
+  }
+
+  removeFile(index: number): void {
+    this.selectedFiles.splice(index, 1);
+  }
+
   submitOrderNew(): void {
     if (this.orderForm.invalid) return;
-
     this.isSubmitting = true;
     const formData = new FormData();
     Object.entries(this.orderForm.value).forEach(([key, value]) => formData.append(key, value as string));
@@ -221,7 +216,6 @@ export class OrdersComponent implements OnInit {
           createdAt: new Date()
         });
       }
-
       this.isSubmitting = false;
       this.orderForm.reset();
       this.editIndex = null;
