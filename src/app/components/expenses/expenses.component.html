@@ -1,7 +1,13 @@
-<div class="me-1">
+<div class="me-3">
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h4>Expenses</h4>
         <div class="d-flex">
+            <div class="btn-group me-2" role="group" aria-label="Basic outlined example">
+                <button type="button" class="btn btn-outline-primary" (click)="changeViewType('list')"><i
+                        class="bi bi-list"></i></button>
+                <button type="button" class="btn btn-outline-primary" (click)="changeViewType('card')"><i
+                        class="bi bi-card-heading"></i></button>
+            </div>
             <div class="">
                 <div class="d-flex flex-column align-items-end">
                     <button class="btn btn-outline-primary position-relative" type="button" data-bs-toggle="collapse"
@@ -73,16 +79,17 @@
         </div>
     </div>
 
-    <div class="container-fluid mt-3">
+    <!-- Expenses Cards -->
+    <div class="container-fluid mt-3" *ngIf="viewType == 'card'">
         <div class="row g-3">
-            <div class="col-12 col-sm-6 col-md-4 col-lg-4" *ngFor="let expense of expenses">
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3" *ngFor="let expense of expenses">
                 <app-expense-card [expense]="expense"></app-expense-card>
             </div>
         </div>
     </div>
 
     <!-- Expenses List -->
-    <div class="d-none table-responsive">
+    <div class="table-responsive" *ngIf="viewType == 'list'">
         <table class="table table-bordered table-striped align-middle">
             <thead class="table-dark">
                 <tr>
@@ -98,14 +105,13 @@
                 <tr *ngFor="let expense of expenses; let i = index">
                     <td>{{ i + 1 }}</td>
                     <td>
-                        <span [ngClass]="{
-            'badge bg-info': expense.type === 'Business',
-            'badge bg-secondary': expense.type === 'Personal'
-          }">{{ expense.type }}</span>
+                        <span class="badge"
+                            [ngClass]="{'bg-success': expense.type === 'Business','bg-primary': expense.type === 'Personal'}">{{
+                            expense.type }}</span>
                     </td>
                     <td>{{ expense.date | date:'shortDate' }}</td>
                     <td>{{ expense.amount | currency:'INR' }}</td>
-                    <td>{{ expense.description }}</td>
+                    <td><textarea class="form-control">{{ expense.description }}</textarea></td>
                     <td>
                         <button class="btn btn-sm btn-outline-primary me-1" (click)="editExpense(expense, i)">
                             <i class="bi bi-pencil"></i>

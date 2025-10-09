@@ -22,6 +22,7 @@ export class ExpensesComponent implements OnInit {
   searchTerm: string = '';
   activeFiltersCount = 0;
   activeFiltersSummary = '';
+  viewType = "card";
 
   @Output() save = new EventEmitter<any>();
 
@@ -166,5 +167,9 @@ export class ExpensesComponent implements OnInit {
     if (confirm('Are you sure you want to delete this expense?')) {
       this.expenses.splice(index, 1);
     }
+  }
+
+  changeViewType(type:string):void{
+    this.viewType = type;
   }
 }
