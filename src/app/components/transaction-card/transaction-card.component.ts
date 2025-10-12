@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Transaction } from '../../model/transaction.model';
 
 @Component({
   selector: 'app-transaction-card',
@@ -10,5 +11,5 @@ import { CommonModule } from '@angular/common';
 })
 
 export class TransactionCardComponent {
-  @Input() transaction: any;
+  @Input() transaction?: Transaction;
 }

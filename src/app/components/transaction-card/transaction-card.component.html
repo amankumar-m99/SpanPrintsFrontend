@@ -1,23 +1,23 @@
-<div class="card shadow-sm">
+<div class="card shadow-sm" [ngClass]="transaction?.transactionType === 'CREDIT' ? 'border-success' : 'border-danger'">
     <div class="card-body">
         <div class="d-flex justify-content-between align-items-center mb-2">
             <div class="d-flex">
-                <span class="badge bg-secondary text-capitalize">{{ transaction.domain }}</span>
+                <span class="badge bg-secondary text-capitalize">{{ transaction?.transactionDomain }}</span>
             </div>
-            <p class="text-muted small mb-2">{{ transaction.date | date:'mediumDate' }}</p>
+            <p class="text-muted small mb-2">{{ transaction?.transactionDate | date:'mediumDate' }}</p>
         </div>
         <div class="d-flex justify-content-between">
-            <span class="h5" [ngClass]="transaction.type === 'credit' ? 'text-success' : 'text-danger'">
-                ₹{{ transaction.amount }}
+            <span class="h5" [ngClass]="transaction?.transactionType === 'CREDIT' ? 'text-success' : 'text-danger'">
+                ₹{{ transaction?.amount }}
             </span>
-            <span [class]="transaction.type === 'credit' ? 'text-success fw-bold' : 'text-danger fw-bold'">
-                {{ transaction.type | titlecase }}
+            <span [class]="transaction?.transactionType === 'CREDIT' ? 'text-success fw-bold' : 'text-danger fw-bold'">
+                {{ transaction?.transactionType | titlecase }}
             </span>
 
         </div>
-
-        <p class="mb-1"><strong>{{ transaction.description }}</strong></p>
-
+         <div class="mb-0">
+            <textarea class="form-control" formControlName="description">description here</textarea>
+        </div>
 
     </div>
 </div>

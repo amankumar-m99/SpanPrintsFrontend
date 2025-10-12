@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TransactionCardComponent } from '../transaction-card/transaction-card.component';
+import { Transaction } from '../../model/transaction.model';
 
 @Component({
   selector: 'app-earnings',
@@ -11,12 +12,13 @@ import { TransactionCardComponent } from '../transaction-card/transaction-card.c
   styleUrls: ['./earnings.component.css']
 })
 export class EarningsComponent {
-  transactions = [
-    { id: 1, domain: 'job', type: 'credit', amount: 1200, date: new Date(), description: 'Order #1012' },
-    { id: 2, domain: 'expense', type: 'debit', amount: 400, date: new Date(), description: 'Paper stock' },
-    { id: 3, domain: 'job', type: 'credit', amount: 500, date: new Date(), description: 'Banner printing' },
-    { id: 4, domain: 'expense', type: 'debit', amount: 200, date: new Date(), description: 'Maintenance' },
-  ];
+
+  transactions: Transaction[] = [];
+  constructor() {
+    this.transactions = [];
+    this.transactions.push({ id: 1, amount: 100, transactionType: "CREDIT", transactionDomain: "JOB", transactionDate: new Date(), transactionTime: new Date(), expenseId: -1, printJobId: 2 });
+    this.transactions.push({ id: 2, amount: 200, transactionType: "DEBIT", transactionDomain: "EXXPENSE", transactionDate: new Date(), transactionTime: new Date(), expenseId: 1, printJobId: -1 });
+  }
 
   // Filters
   filters = {
@@ -27,9 +29,9 @@ export class EarningsComponent {
 
   get filteredTransactions() {
     return this.transactions.filter(t => {
-      const typeOk = this.filters.type === 'all' || t.type === this.filters.type;
-      const domainOk = this.filters.domain === 'all' || t.domain === this.filters.domain;
-      const timeOk = this.filterByTimePeriod(t.date);
+      const typeOk = this.filters.type === 'all' || t.transactionType === this.filters.type;
+      const domainOk = this.filters.domain === 'all' || t.transactionDomain === this.filters.domain;
+      const timeOk = this.filterByTimePeriod(t.transactionDate);
       return typeOk && domainOk && timeOk;
     });
   }
@@ -56,13 +58,13 @@ export class EarningsComponent {
 
   get totalCredit() {
     return this.filteredTransactions
-      .filter(t => t.type === 'credit')
+      .filter(t => t.transactionType === 'CREDIT')
       .reduce((sum, t) => sum + t.amount, 0);
   }
 
   get totalDebit() {
     return this.filteredTransactions
-      .filter(t => t.type === 'debit')
+      .filter(t => t.transactionType === 'DEBIT')
       .reduce((sum, t) => sum + t.amount, 0);
   }
 
