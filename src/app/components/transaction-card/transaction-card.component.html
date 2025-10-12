@@ -1,0 +1,23 @@
+<div class="card shadow-sm">
+    <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+            <div class="d-flex">
+                <span class="badge bg-secondary text-capitalize">{{ transaction.domain }}</span>
+            </div>
+            <p class="text-muted small mb-2">{{ transaction.date | date:'mediumDate' }}</p>
+        </div>
+        <div class="d-flex justify-content-between">
+            <span class="h5" [ngClass]="transaction.type === 'credit' ? 'text-success' : 'text-danger'">
+                ₹{{ transaction.amount }}
+            </span>
+            <span [class]="transaction.type === 'credit' ? 'text-success fw-bold' : 'text-danger fw-bold'">
+                {{ transaction.type | titlecase }}
+            </span>
+
+        </div>
+
+        <p class="mb-1"><strong>{{ transaction.description }}</strong></p>
+
+
+    </div>
+</div>

@@ -2,14 +2,8 @@
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h4>Expenses</h4>
         <div class="d-flex">
-            <div class="btn-group me-2" role="group" aria-label="Basic outlined example">
-                <button type="button" class="btn btn-outline-primary" (click)="changeViewType('list')"><i
-                        class="bi bi-list"></i></button>
-                <button type="button" class="btn btn-outline-primary" (click)="changeViewType('card')"><i
-                        class="bi bi-card-heading"></i></button>
-            </div>
             <div class="">
-                <div class="d-flex flex-column align-items-end">
+                <div class="d-flex flex-column align-items-end me-2">
                     <button class="btn btn-outline-primary position-relative" type="button" data-bs-toggle="collapse"
                         data-bs-target="#filterToolbar" aria-expanded="false" aria-controls="filterToolbar">
                         <i class="bi bi-funnel"></i> Filters
@@ -23,6 +17,12 @@
                         {{ activeFiltersSummary }}
                     </div>
                 </div>
+            </div>
+            <div class="btn-group me-2" role="group" aria-label="Basic outlined example">
+                <button type="button" class="btn btn-outline-primary" (click)="changeViewType('list')"><i
+                        class="bi bi-list"></i></button>
+                <button type="button" class="btn btn-outline-primary" (click)="changeViewType('card')"><i
+                        class="bi bi-card-heading"></i></button>
             </div>
             <div class="ms-2">
                 <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#expenseModal">
@@ -106,10 +106,10 @@
                     <td>{{ i + 1 }}</td>
                     <td>
                         <span class="badge"
-                            [ngClass]="{'bg-success': expense.type === 'Business','bg-primary': expense.type === 'Personal'}">{{
-                            expense.type }}</span>
+                            [ngClass]="{'bg-success': expense.expenseType === 'BUSINESS','bg-primary': expense.expenseType === 'PERSONAL'}">{{
+                            expense.expenseType }}</span>
                     </td>
-                    <td>{{ expense.date | date:'shortDate' }}</td>
+                    <td>{{ expense.dateOfExpense | date:'shortDate' }}</td>
                     <td>{{ expense.amount | currency:'INR' }}</td>
                     <td><textarea class="form-control">{{ expense.description }}</textarea></td>
                     <td>
@@ -142,26 +142,26 @@
                             <label class="form-label">Expense Type</label>
                             <div>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" formControlName="type"
-                                        value="Business" />
+                                    <input class="form-check-input" type="radio" formControlName="expenseType"
+                                        value="BUSINESS" />
                                     <label class="form-check-label">Business</label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" formControlName="type"
-                                        value="Personal" />
+                                    <input class="form-check-input" type="radio" formControlName="expenseType"
+                                        value="PERSONAL" />
                                     <label class="form-check-label">Personal</label>
                                 </div>
                             </div>
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">Date of Expense</label>
-                            <input type="date" class="form-control" formControlName="date" />
+                            <label class="form-label">Amount</label>
+                            <input type="number" class="form-control" formControlName="amount" />
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">Amount</label>
-                            <input type="number" class="form-control" formControlName="amount" />
+                            <label class="form-label">Date of Expense</label>
+                            <input type="date" class="form-control" formControlName="dateOfExpense" />
                         </div>
 
                         <div class="mb-3">

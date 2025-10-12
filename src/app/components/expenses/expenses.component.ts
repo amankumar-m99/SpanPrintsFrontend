@@ -2,6 +2,8 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { ExpenseCardComponent } from '../expense-card/expense-card.component';
+import { Expense } from '../../model/expense.model';
+import { ExpenseService } from '../../services/expense/expense.service';
 
 @Component({
   selector: 'app-expenses',
@@ -12,7 +14,7 @@ import { ExpenseCardComponent } from '../expense-card/expense-card.component';
 })
 
 export class ExpensesComponent implements OnInit {
-  expenses: any[] = [];
+  expenses: Expense[] = [];
   expenseForm!: FormGroup;
   isSubmitting = false;
   editIndex: number | null = null;
@@ -23,38 +25,32 @@ export class ExpensesComponent implements OnInit {
   activeFiltersCount = 0;
   activeFiltersSummary = '';
   viewType = "card";
+  showSuccessToast: boolean = false;
+  showErrorToast: boolean = false;
 
   @Output() save = new EventEmitter<any>();
 
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder, private expenseService: ExpenseService) { }
 
   ngOnInit(): void {
     this.expenseForm = this.fb.group({
-      type: ['Business', Validators.required],
-      date: ['', Validators.required],
+      expenseType: ['Business', Validators.required],
       amount: ['', [Validators.required, Validators.min(1)]],
-      description: ['', Validators.required]
+      dateOfExpense: ['', Validators.required],
+      description: ['']
     });
     this.loadExpenses();
   }
 
   loadExpenses() {
     // Replace with API call
-    this.expenses = [
-      {
-        type: 'Business',
-        date: new Date(),
-        amount: 1500,
-        description: 'Printing materials'
+    this.expenseService.getAllExpenses().subscribe({
+      next: (res) => {
+        this.expenses = res;
+        this.applyFilters();
       },
-      {
-        type: 'Personal',
-        date: new Date(),
-        amount: 800,
-        description: 'Lunch with client'
-      }
-    ];
-    this.applyFilters();
+      error: () => { },
+    });
   }
 
   applyFilters() {
@@ -64,29 +60,29 @@ export class ExpensesComponent implements OnInit {
     if (this.searchTerm) {
       const term = this.searchTerm.toLowerCase();
       data = data.filter(o =>
-        o.customerName.toLowerCase().includes(term) ||
-        o.phone.includes(term)
+        o.description.toLowerCase().includes(term) ||
+        o.amount.toString().includes(term)
       );
     }
 
     // 📌 Status filter
     if (this.filterStatus) {
-      data = data.filter(o => o.paymentStatus === this.filterStatus);
+      data = data.filter(o => o.expenseType === this.filterStatus);
     }
 
     // ↕ Sorting
     switch (this.sortBy) {
       case 'createdAt_desc':
-        data.sort((a, b) => +new Date(b.createdAt) - +new Date(a.createdAt));
+        data.sort((a, b) => +new Date(b.dateOfExpense) - +new Date(a.dateOfExpense));
         break;
       case 'createdAt_asc':
-        data.sort((a, b) => +new Date(a.createdAt) - +new Date(b.createdAt));
+        data.sort((a, b) => +new Date(a.dateOfExpense) - +new Date(b.dateOfExpense));
         break;
       case 'amount_desc':
-        data.sort((a, b) => b.totalAmount - a.totalAmount);
+        data.sort((a, b) => b.amount - a.amount);
         break;
       case 'amount_asc':
-        data.sort((a, b) => a.totalAmount - b.totalAmount);
+        data.sort((a, b) => a.amount - b.amount);
         break;
     }
 
@@ -129,21 +125,29 @@ export class ExpensesComponent implements OnInit {
     if (this.expenseForm.invalid) return;
     this.isSubmitting = true;
 
-    setTimeout(() => {
-      if (this.editIndex !== null) {
-        // Update expense
-        this.expenses[this.editIndex] = { ...this.expenseForm.value };
-      } else {
-        // Add new expense
-        this.expenses.push({ ...this.expenseForm.value });
+    this.expenseService.addExpense(this.expenseForm.value).subscribe({
+      next: () => {
+        if (this.editIndex !== null) {
+          // Update expense
+          this.expenses[this.editIndex] = { ...this.expenseForm.value };
+        } else {
+          // Add new expense
+          this.expenses.push({ ...this.expenseForm.value });
+        }
+        this.isSubmitting = false;
+        this.showSuccessToast = true;
+        this.expenseForm.reset();
+        this.editIndex = null;
+        (document.querySelector('#expenseModal .btn-close') as HTMLElement)?.click();
+        setTimeout(() => this.showSuccessToast = false, 3000);
+      },
+      error: (err) => {
+        console.log(err);
+        this.isSubmitting = false;
+        this.showErrorToast = true;
+        setTimeout(() => this.showErrorToast = false, 3000);
       }
-
-      this.isSubmitting = false;
-      this.expenseForm.reset({ type: 'Business' });
-      this.editIndex = null;
-
-      (document.querySelector('#expenseModal .btn-close') as HTMLElement)?.click();
-    }, 1500);
+    });
   }
 
   onSubmit() {
@@ -169,7 +173,7 @@ export class ExpensesComponent implements OnInit {
     }
   }
 
-  changeViewType(type:string):void{
+  changeViewType(type: string): void {
     this.viewType = type;
   }
 }
