@@ -8,5 +8,6 @@ export interface Transaction{
     transactionDate: Date,
     transactionTime: Date,
     expenseId: number,
-    printJobId: number
+    printJobId: number,
+    description: string
 }

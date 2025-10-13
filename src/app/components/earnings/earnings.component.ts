@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TransactionCardComponent } from '../transaction-card/transaction-card.component';
 import { Transaction } from '../../model/transaction.model';
+import { EarningService } from '../../services/earning/earning.service';
 
 @Component({
   selector: 'app-earnings',
@@ -11,14 +12,9 @@ import { Transaction } from '../../model/transaction.model';
   templateUrl: './earnings.component.html',
   styleUrls: ['./earnings.component.css']
 })
-export class EarningsComponent {
+export class EarningsComponent implements OnInit {
 
   transactions: Transaction[] = [];
-  constructor() {
-    this.transactions = [];
-    this.transactions.push({ id: 1, amount: 100, transactionType: "CREDIT", transactionDomain: "JOB", transactionDate: new Date(), transactionTime: new Date(), expenseId: -1, printJobId: 2 });
-    this.transactions.push({ id: 2, amount: 200, transactionType: "DEBIT", transactionDomain: "EXXPENSE", transactionDate: new Date(), transactionTime: new Date(), expenseId: 1, printJobId: -1 });
-  }
 
   // Filters
   filters = {
@@ -26,6 +22,17 @@ export class EarningsComponent {
     type: 'all',
     domain: 'all'
   };
+
+  constructor(private earningService: EarningService) { }
+
+  ngOnInit(): void {
+    this.earningService.getAllTransactions().subscribe({
+      next: (res) => {
+        this.transactions = res;
+      },
+      error: () => { },
+    });
+  }
 
   get filteredTransactions() {
     return this.transactions.filter(t => {
