@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { OrderCardComponent } from '../order-card/order-card.component';
 import { RouterLink } from "@angular/router";
+import { Order } from '../../model/order.model';
+import { OrderService } from '../../services/order/order.service';
 
 @Component({
   selector: 'app-orders',
@@ -13,7 +15,7 @@ import { RouterLink } from "@angular/router";
 })
 
 export class OrdersComponent implements OnInit {
-  orders: any[] = [];           // original list from backend
+  orders: Order[] = [];           // original list from backend
   orderForm!: FormGroup;
   isSubmitting = false;
   editIndex: number | null = null; // Track editing order index
@@ -24,12 +26,19 @@ export class OrdersComponent implements OnInit {
   activeFiltersCount = 0;
   activeFiltersSummary = '';
   selectedFiles: File[] = [];
-  jobTypes = [
-    'banner', 'receipt', 'visiting card', 'bill book',
-    'wedding card', 'color poster', 'book binding', 'pamplet'
+  jobTypes: string[] = [
+    'BANNER',
+    'RECEIT',
+    'VISITING_CARD',
+    'WEDDING_CARD',
+    'COLOR_POSTER',
+    'BOOK_BINDING',
+    'PAMPLET',
+    'BILL_BOOK'
   ];
 
-  constructor(private fb: FormBuilder) { }
+
+  constructor(private fb: FormBuilder, private orderService: OrderService) { }
 
   ngOnInit(): void {
     this.orderForm = this.fb.group({
@@ -39,13 +48,13 @@ export class OrdersComponent implements OnInit {
       jobType: ['', Validators.required],
       count: [1, [Validators.required, Validators.min(1)]],
       dateOfDelivery: ['', [Validators.required, Validators.min(1)]],
-      bookNumber: [1, [Validators.required, Validators.min(1)]],
-      wBookNumber: [1, [Validators.required, Validators.min(1)]],
-      remainingAmount: ['', Validators.required],
+      bookNumber: [1],
+      wBookNumber: [1],
+      pendingAmount: [''],
       totalAmount: ['', Validators.required],
       depositAmount: ['', Validators.required],
-      discountedAmount: ['', Validators.required],
-      paymentStatus: ['', Validators.required],
+      discountedAmount: [''],
+      paymentStatus: ['PARTIALLY_PAID'],
       note: [''],
       description: ['']
     });
@@ -54,59 +63,12 @@ export class OrdersComponent implements OnInit {
 
   loadOrders() {
     // Replace with API call
-    this.orders = [
-      {
-        id: '25101121',
-        customerName: 'Rahul',
-        phone: '8566953776',
-        address: 'Noida',
-        jobType: 'Visiting Card',
-        count: 200,
-        dateOfDelivery: new Date(),
-        bookNumber: 22,
-        wBookNumber: 22,
-        totalAmount: 100,
-        remainingAmount: 0,
-        depositAmount: 12,
-        discountedAmount: 0,
-        paymentStatus: 'partially paid',
-        createdAt: new Date()
+    this.orderService.getAllOrders().subscribe({
+      next: (res) => {
+        this.orders = res;
       },
-      {
-        id: '25101121',
-        customerName: 'AmanK',
-        phone: '8566953776',
-        address: 'Noida',
-        jobType: 'Visiting Card',
-        count: 200,
-        dateOfDelivery: new Date(),
-        bookNumber: 22,
-        wBookNumber: 22,
-        totalAmount: 100,
-        remainingAmount: 0,
-        depositAmount: 12,
-        discountedAmount: 0,
-        paymentStatus: 'paid',
-        createdAt: new Date()
-      },
-      {
-        id: '25101121',
-        customerName: 'AmanK',
-        phone: '8566953776',
-        address: 'Noida',
-        jobType: 'Visiting Card',
-        count: 200,
-        dateOfDelivery: new Date(),
-        bookNumber: 22,
-        wBookNumber: 22,
-        totalAmount: 100,
-        remainingAmount: 0,
-        depositAmount: 12,
-        discountedAmount: 0,
-        paymentStatus: 'unpaid',
-        createdAt: new Date()
-      }
-    ];
+      error: () => { }
+    });
     this.applyFilters();
   }
 
@@ -202,27 +164,35 @@ export class OrdersComponent implements OnInit {
     if (this.orderForm.invalid) return;
     this.isSubmitting = true;
 
-    setTimeout(() => {
-      if (this.editIndex !== null) {
-        // Update existing order
-        this.orders[this.editIndex] = {
-          ...this.orderForm.value,
-          createdAt: this.orders[this.editIndex].createdAt
-        };
-      } else {
-        // Add new order
-        this.orders.push({
-          ...this.orderForm.value,
-          createdAt: new Date()
-        });
-      }
-      this.isSubmitting = false;
-      this.orderForm.reset();
-      this.editIndex = null;
+    // Replace with API call
+    this.orderService.addOrder(this.orderForm.value).subscribe({
+      next: (res) => {
+        if (this.editIndex !== null) {
+          // Update existing order
+          this.orders[this.editIndex] = {
+            ...res,
+            createdAt: this.orders[this.editIndex].createdAt
+          };
+        } else {
+          // Add new order
+          this.orders.push({
+            ...res,
+            createdAt: new Date()
+          });
+        }
+        this.isSubmitting = false;
+        this.orderForm.reset();
+        this.editIndex = null;
 
-      // Close modal programmatically
-      (document.querySelector('#newOrderModal .btn-close') as HTMLElement)?.click();
-    }, 1500);
+        // Close modal programmatically
+        (document.querySelector('#newOrderModal .btn-close') as HTMLElement)?.click();
+      },
+      error: (err) => {
+        console.log(err)
+        this.isSubmitting = false;
+        this.editIndex = null;
+      }
+    });
   }
 
   editOrder(order: any, index: number) {

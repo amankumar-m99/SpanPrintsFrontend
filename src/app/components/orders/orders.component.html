@@ -31,11 +31,13 @@
         </div>
     </div>
 
-    <div class="row d-none">
-        <div class="col-md-6 col-lg-4 mb-3" *ngFor="let order of orders; let i = index">
-            <app-order-card [order]="order" (edit)="editOrder(order, i)" (delete)="deleteOrder(order)"></app-order-card>
+    <!--
+        <div class="row d-none">
+            <div class="col-md-6 col-lg-4 mb-3" *ngFor="let order of orders; let i = index">
+                <app-order-card [order]="order" (edit)="editOrder(order, i)" (delete)="deleteOrder(order)"></app-order-card>
+            </div>
         </div>
-    </div>
+    -->
 
     <!-- Collapsible Sticky Toolbar -->
     <div id="filterToolbar" class="collapse d-md-block position-sticky top-0 bg-body shadow-sm z-3 mb-2"
@@ -175,7 +177,7 @@
                             <!-- Remaining Amount -->
                             <div class="col-md-6">
                                 <label class="form-label">Remaining Amount</label>
-                                <input type="number" class="form-control" formControlName="remainingAmount">
+                                <input type="number" class="form-control" formControlName="pendingAmount">
                             </div>
                             <!-- Discounted Amount -->
                             <div class="col-md-6">
