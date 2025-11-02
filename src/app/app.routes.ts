@@ -12,6 +12,7 @@ import { EarningsComponent } from './components/earnings/earnings.component';
 import { ReportsComponent } from './components/reports/reports.component';
 import { UpdatePasswordComponent } from './components/update-password/update-password.component';
 import { AddOrderComponent } from './components/add-order/add-order.component';
+import { NotFoundComponent } from './components/not-found/not-found.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent, canActivate: [GuestGuard] },
@@ -26,8 +27,10 @@ export const routes: Routes = [
             { path: 'expenses', component: ExpensesComponent },
             { path: 'earnings', component: EarningsComponent },
             { path: 'reports', component: ReportsComponent },
-            { path: 'update-password', component: UpdatePasswordComponent }
+            { path: 'update-password', component: UpdatePasswordComponent },
+            { path: '', component: AddOrderComponent }
         ]
     },
-    { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
+    { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+    { path: '**', component: NotFoundComponent}
 ];

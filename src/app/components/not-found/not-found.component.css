@@ -1,0 +1,16 @@
+.not-found-container {
+  height: 100vh;
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+  padding: 20px;
+}
+
+.display-1 {
+  font-size: 8rem;
+  line-height: 1;
+}
+
+@media (max-width: 768px) {
+  .display-1 {
+    font-size: 5rem;
+  }
+}
