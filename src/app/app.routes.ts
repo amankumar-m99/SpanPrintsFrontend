@@ -13,6 +13,7 @@ import { ReportsComponent } from './components/reports/reports.component';
 import { UpdatePasswordComponent } from './components/update-password/update-password.component';
 import { AddOrderComponent } from './components/add-order/add-order.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
+import { InventoryComponent } from './components/inventory/inventory.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent, canActivate: [GuestGuard] },
@@ -26,6 +27,7 @@ export const routes: Routes = [
             { path: 'add-order', component: AddOrderComponent },
             { path: 'expenses', component: ExpensesComponent },
             { path: 'earnings', component: EarningsComponent },
+            { path: 'inventory', component: InventoryComponent },
             { path: 'reports', component: ReportsComponent },
             { path: 'update-password', component: UpdatePasswordComponent },
             { path: '', component: AddOrderComponent }
