@@ -14,6 +14,9 @@ import { UpdatePasswordComponent } from './components/update-password/update-pas
 import { AddOrderComponent } from './components/add-order/add-order.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { InventoryComponent } from './components/inventory/inventory.component';
+import { CustomersComponent } from './components/customers/customers.component';
+import { AboutComponent } from './components/about/about.component';
+import { VendorsComponent } from './components/vendors/vendors.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent, canActivate: [GuestGuard] },
@@ -22,17 +25,20 @@ export const routes: Routes = [
     {
         path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard],
         children: [
-            { path: 'profile', component: ProfileComponent },
             { path: 'orders', component: OrdersComponent },
             { path: 'add-order', component: AddOrderComponent },
+            { path: 'customers', component: CustomersComponent },
+            { path: 'vendors', component: VendorsComponent },
+            { path: 'inventory', component: InventoryComponent },
             { path: 'expenses', component: ExpensesComponent },
             { path: 'earnings', component: EarningsComponent },
-            { path: 'inventory', component: InventoryComponent },
             { path: 'reports', component: ReportsComponent },
+            { path: 'profile', component: ProfileComponent },
             { path: 'update-password', component: UpdatePasswordComponent },
+            { path: 'about', component: AboutComponent },
             { path: '', component: AddOrderComponent }
         ]
     },
     { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-    { path: '**', component: NotFoundComponent}
+    { path: '**', component: NotFoundComponent }
 ];
