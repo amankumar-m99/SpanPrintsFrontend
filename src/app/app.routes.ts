@@ -17,6 +17,7 @@ import { InventoryComponent } from './components/inventory/inventory.component';
 import { CustomersComponent } from './components/customers/customers.component';
 import { AboutComponent } from './components/about/about.component';
 import { VendorsComponent } from './components/vendors/vendors.component';
+import { QuickActionsComponent } from './components/quick-actions/quick-actions.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent, canActivate: [GuestGuard] },
@@ -33,10 +34,11 @@ export const routes: Routes = [
             { path: 'expenses', component: ExpensesComponent },
             { path: 'earnings', component: EarningsComponent },
             { path: 'reports', component: ReportsComponent },
+            { path: 'quickactions', component: QuickActionsComponent },
             { path: 'profile', component: ProfileComponent },
             { path: 'update-password', component: UpdatePasswordComponent },
             { path: 'about', component: AboutComponent },
-            { path: '', component: AddOrderComponent }
+            { path: '', redirectTo: 'quickactions', pathMatch: 'full' }
         ]
     },
     { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
