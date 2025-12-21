@@ -1,6 +1,6 @@
 <div class="me-1">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h3>Orders</h3>
+    <div class="d-flex justify-content-between align-items-center mb-2">
+        <h3><i class="bi bi-journal-text me-2"></i>Orders</h3>
         <div class="d-flex">
             <div class="">
                 <div class="d-flex flex-column align-items-end">
@@ -20,13 +20,14 @@
             </div>
             <div class="ms-2">
                 <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#quickOrderModal">
-                    <i class="bi bi-plus"></i> Quick Order
+                    <i class="bi bi-plus-lg me-1"></i>Quick Order
                 </button>
                 <button class="btn btn-primary ms-2" data-bs-toggle="modal" data-bs-target="#fullOrderModal">
-                    +
+                    <i class="bi bi-plus-lg me-1"></i>Full Order
                 </button>
-                <a class="btn btn-primary ms-2" routerLink="../add-order" type="button"><i class="bi bi-plus-lg"></i>
-                    New Order</a>
+                <a class="btn btn-primary ms-2" routerLink="../add-order" type="button"><i
+                        class="bi bi-box-arrow-up-right me-1"></i>
+                    Order Page</a>
             </div>
         </div>
     </div>
@@ -143,11 +144,14 @@
                                     <li class="list-group-item">Item 4</li>
                                 </ul>
                             </div>
-                            <!--  -->
                             <!-- Count -->
                             <div class="col-md-6">
                                 <label class="form-label">Count</label>
-                                <input type="number" class="form-control" formControlName="count">
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text"><i class="bi bi-plus"></i></span>
+                                    <input type="number" class="form-control" formControlName="count" aria-label="count">
+                                    <span class="input-group-text"><i class="bi bi-dash"></i></span>
+                                </div>
                             </div>
                             <!-- Book Number -->
                             <div class="col-md-6">
@@ -214,7 +218,7 @@
                                     accept="image/*,.pdf,.doc,.docx,.zip" />
 
                                 <!-- Show selected files -->
-                                <div *ngIf="selectedFiles?.length" class="mt-2 small text-muted">
+                                <div *ngIf="selectedFiles.length" class="mt-2 small text-muted">
                                     {{ selectedFiles.length }} file(s) selected.
                                 </div>
                                 <ul *ngIf="selectedFiles.length" class="list-group mt-2">
@@ -299,11 +303,14 @@
                                     <li class="list-group-item">Item 4</li>
                                 </ul>
                             </div>
-                            <!--  -->
                             <!-- Count -->
                             <div class="col-md-6">
                                 <label class="form-label">Count</label>
-                                <input type="number" class="form-control" formControlName="count">
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text"><i class="bi bi-plus"></i></span>
+                                    <input type="number" class="form-control" formControlName="count" aria-label="count">
+                                    <span class="input-group-text"><i class="bi bi-dash"></i></span>
+                                </div>
                             </div>
                             <!-- Total Amount -->
                             <div class="col-md-6">
@@ -321,7 +328,6 @@
                                     placeholder="Optional note about the order"></textarea>
                             </div>
                         </div>
-                        <span class="mt-2"><a routerLink="../add-order">Go to full order form</a></span>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
