@@ -1,0 +1,90 @@
+<div class="d-flex justify-content-between align-items-center pb-3 my-1 border-bottom">
+    <h3><i class="bi bi-cart3 me-2"></i>Vendors</h3>
+    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addVendorModal">
+        <i class="bi bi-plus-lg"></i> Add a Vendor
+    </button>
+</div>
+<div class="table-responsive mt-3">
+    <table class="table table-hover align-middle">
+        <thead class="table-light">
+            <tr>
+                <th>#</th>
+                <th>Vendor</th>
+                <th>Email</th>
+                <th>Primary Phone</th>
+                <th>Created</th>
+                <th class="text-end">Actions</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr *ngFor="let vendor of vendors; let i = index" class="cursor-pointer"
+                (click)="openVendorProfile(vendor)">
+
+                <td>{{ i + 1 }}</td>
+                <td>{{ vendor.vendorName }}</td>
+                <td>{{ vendor.email || '-' }}</td>
+                <td>{{ vendor.primaryPhone }}</td>
+                <td>{{ vendor.createdAt | date:'short' }}</td>
+
+                <td class="text-end" (click)="$event.stopPropagation()">
+                    <button class="btn btn-sm btn-outline-primary me-1" (click)="editVendor(vendor)">
+                        <i class="bi bi-pencil"></i>
+                    </button>
+                    <button class="btn btn-sm btn-outline-danger" (click)="deleteVendor(vendor)">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="modal fade" id="addVendorModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form [formGroup]="vendorForm" (ngSubmit)="saveVendor()">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        {{ editingVendor ? 'Edit Vendor' : 'Add Vendor' }}
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Vendor Name</label>
+                        <input type="text" class="form-control" formControlName="vendorName">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-control" formControlName="email">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Primary Phone</label>
+                        <input type="tel" class="form-control" formControlName="primaryPhone">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Alternate Phone</label>
+                        <input type="tel" class="form-control" formControlName="alternatePhone">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Address</label>
+                        <textarea rows="2" class="form-control" formControlName="address"></textarea>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button class="btn btn-primary" type="submit" [disabled]="vendorForm.invalid">
+                        Save Vendor
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
