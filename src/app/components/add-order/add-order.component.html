@@ -112,7 +112,7 @@
                         accept="image/*,.pdf,.doc,.docx,.zip" />
 
                     <!-- Show selected files -->
-                    <div *ngIf="selectedFiles?.length" class="mt-2 small text-muted">
+                    <div *ngIf="selectedFiles.length" class="mt-2 small text-muted">
                         {{ selectedFiles.length }} file(s) selected.
                     </div>
                     <ul *ngIf="selectedFiles.length" class="list-group mt-2">
