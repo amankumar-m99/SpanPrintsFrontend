@@ -1,0 +1,11 @@
+<div class="toast-container position-fixed top-0 end-0 p-3">
+    <div [ngClass]="bgClass" class="toast align-items-center border-0 show">
+        <div class="d-flex">
+            <div class="toast-body">
+                {{message}}
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto"
+                (click)="closeButtonClicked()"></button>
+        </div>
+    </div>
+</div>
