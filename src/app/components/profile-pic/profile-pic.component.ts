@@ -5,11 +5,12 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { base64ToFile, ImageCroppedEvent, ImageCropperComponent, LoadedImage } from 'ngx-image-cropper';
 import { ProfileService } from '../../services/profile/profile.service';
 import { Constant } from '../../constant/Constant';
+import { ToastComponent } from '../utility/toast/toast.component';
 
 @Component({
   selector: 'app-profile-pic',
   standalone: true,
-  imports: [CommonModule, ImageCropperComponent],
+  imports: [CommonModule, ImageCropperComponent, ToastComponent],
   templateUrl: './profile-pic.component.html',
   styleUrl: './profile-pic.component.css'
 })
