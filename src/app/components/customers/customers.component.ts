@@ -36,7 +36,6 @@ export class CustomersComponent implements OnInit {
   }
 
   loadCustomers() {
-    // Replace with API call
     this.customerService.getAllCustomers().subscribe({
       next: (res) => {
         this.customers = res;
@@ -84,7 +83,7 @@ export class CustomersComponent implements OnInit {
   }
 
   openCustomerProfile(customer: Customer) {
-    this.router.navigate(['/customers', customer.uuid]);
+    this.router.navigate(['/dashboard/customer', customer.uuid]);
   }
 
 }
