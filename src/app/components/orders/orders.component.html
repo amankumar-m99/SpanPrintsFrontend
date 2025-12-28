@@ -1,12 +1,12 @@
-<div class="me-1">
+<div class="me-1 mt-1">
     <div class="d-flex justify-content-between align-items-center mb-2">
-        <h3><i class="bi bi-journal-text me-2"></i>Orders</h3>
+        <h3><i class="bi bi-bag-heart-fill me-2 text-success"></i>Orders</h3>
         <div class="d-flex">
             <div class="">
                 <div class="d-flex flex-column align-items-end">
                     <button class="btn btn-outline-primary position-relative" type="button" data-bs-toggle="collapse"
                         data-bs-target="#filterToolbar" aria-expanded="false" aria-controls="filterToolbar">
-                        <i class="bi bi-funnel"></i> Filters
+                        <i class="bi bi-funnel me-1"></i>Filters
                         <span *ngIf="activeFiltersCount > 0"
                             class="badge bg-danger position-absolute top-0 start-100 translate-middle">
                             {{ activeFiltersCount }}
@@ -23,7 +23,7 @@
                     <i class="bi bi-plus-lg me-1"></i>Quick Order
                 </button>
                 <button class="btn btn-primary ms-2" data-bs-toggle="modal" data-bs-target="#fullOrderModal">
-                    <i class="bi bi-plus-lg me-1"></i>Full Order
+                    <i class="bi bi-bag-plus me-2"></i>Place Order
                 </button>
                 <a class="btn btn-primary ms-2" routerLink="../add-order" type="button"><i
                         class="bi bi-box-arrow-up-right me-1"></i>
