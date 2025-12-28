@@ -3,11 +3,14 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { CommonModule } from '@angular/common';
 import { Customer } from '../../model/customer.model';
 import { Router } from '@angular/router';
+import { CustomerModalComponent } from "./customer-modal/customer-modal.component";
+import { CustomerService } from '../../services/customer/customer.service';
+import { ToastComponent } from "../utility/toast/toast.component";
 
 @Component({
   selector: 'app-customers',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, CustomerModalComponent, ToastComponent],
   templateUrl: './customers.component.html',
   styleUrl: './customers.component.css'
 })
@@ -17,9 +20,10 @@ export class CustomersComponent implements OnInit {
   customerForm!: FormGroup;
   isSubmitting = false;
   editingCustomer!: Customer;
+  showToast = false;
 
-  constructor(private fb: FormBuilder, 
-      private router: Router) { }
+  constructor(private fb: FormBuilder, private customerService: CustomerService,
+    private router: Router) { }
 
   ngOnInit(): void {
     this.customerForm = this.fb.group({
@@ -27,6 +31,17 @@ export class CustomersComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       primaryPhoneNumber: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
       alternatePhoneNumber: ['']
+    });
+    this.loadCustomers();
+  }
+
+  loadCustomers() {
+    // Replace with API call
+    this.customerService.getAllCustomers().subscribe({
+      next: (res) => {
+        this.customers = res;
+      },
+      error: () => { },
     });
   }
 
@@ -63,9 +78,13 @@ export class CustomersComponent implements OnInit {
     this.customers = this.customers.filter(c => c.uuid !== customer.uuid);
   }
 
-  openCustomerProfile(customer: Customer) {
-  this.router.navigate(['/customers', customer.uuid]);
-}
+  customerAddedSuccess(customer: Customer): void {
+    this.showToast = true;
+    this.customers.push(customer);
+  }
 
+  openCustomerProfile(customer: Customer) {
+    this.router.navigate(['/customers', customer.uuid]);
+  }
 
 }

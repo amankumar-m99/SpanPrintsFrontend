@@ -1,0 +1,55 @@
+<!-- Add Customer Modal -->
+<div class="modal fade" id="addCustomerModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form [formGroup]="customerForm" (ngSubmit)="addCustomer()">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add New Customer</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label"><i class="bi bi-person me-1"></i>Username<i class="bi bi-asterisk text-danger ms-1 fs-6"></i></label>
+                        <input type="text" class="form-control" [ngClass]="{ 'is-invalid': username?.invalid && username?.touched }" formControlName="username">
+                        <div class="invalid-feedback"
+                            *ngIf="username?.touched && username?.invalid">
+                            Username is required
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label"><i class="bi bi-envelope-at me-1"></i>Email</label>
+                        <input type="email" class="form-control" formControlName="email">
+                        <div class="invalid-feedback"
+                            *ngIf="customerForm.get('email')?.touched && customerForm.get('email')?.invalid">
+                            Valid email is required
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label"><i class="bi bi-telephone me-1"></i>Primary Phone<i class="bi bi-asterisk text-danger ms-1 fs-6"></i></label>
+                        <input type="tel" class="form-control" [ngClass]="{ 'is-invalid': primaryPhoneNumber?.invalid && primaryPhoneNumber?.touched }" formControlName="primaryPhoneNumber">
+                        <div class="invalid-feedback"
+                            *ngIf="primaryPhoneNumber?.touched && primaryPhoneNumber?.invalid">
+                            10-digit phone number required
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label"><i class="bi bi-telephone me-1"></i>Alternate Phone</label>
+                        <input type="tel" class="form-control" formControlName="alternatePhoneNumber">
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary" [disabled]="isSubmitting">
+                        <span *ngIf="!isSubmitting">Save Customer</span>
+                        <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm me-2"></span>
+                        <span *ngIf="isSubmitting"> Saving Customer...</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
