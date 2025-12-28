@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Customer } from '../../../model/customer.model';
@@ -12,14 +12,14 @@ import { CustomerService } from '../../../services/customer/customer.service';
   styleUrl: './customer-modal.component.css'
 })
 
-
 export class CustomerModalComponent implements OnInit {
-  customers: Customer[] = [];
   customerForm!: FormGroup;
   isSubmitting = false;
-  editingCustomer!: Customer;
   showToast = false;
+
+  @Input() editingCustomer!: Customer;
   @Output() successAction = new EventEmitter<Customer>();
+  @Output() errorAction = new EventEmitter<string>();
 
   constructor(private fb: FormBuilder, private customerService: CustomerService) { }
 
@@ -30,6 +30,9 @@ export class CustomerModalComponent implements OnInit {
       primaryPhoneNumber: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
       alternatePhoneNumber: ['']
     });
+    if (this.editingCustomer != null) {
+      this.customerForm.patchValue(this.editingCustomer);
+    }
   }
 
   addCustomer(): void {
@@ -37,41 +40,31 @@ export class CustomerModalComponent implements OnInit {
       this.customerForm.markAllAsTouched();
       return;
     }
-
     this.isSubmitting = true;
-
-    const newCustomer: Customer = {
+    let newCustomer: Customer = {
       uuid: crypto.randomUUID(),
-      dbid: Date.now(),
+      dbid: -1,
       createdAt: new Date(),
       ...this.customerForm.value
     };
     this.customerService.createCustomer(newCustomer).subscribe({
       next: (response) => {
         this.isSubmitting = false;
-        this.successAction.emit(response);
+        this.customerForm.reset();
+        if (this.successAction != null)
+          this.successAction.emit(response);
       },
       error: (err) => {
         this.isSubmitting = false;
         let errorMessage = err?.error?.message || 'Invalid credentials or server error.';
-        alert(errorMessage);
+        if (this.errorAction != null)
+          this.errorAction.emit(errorMessage);
       }
     });
-
-    // Simulate backend save
-    setTimeout(() => {
-      this.customers.unshift(newCustomer);
-      this.customerForm.reset();
-      this.isSubmitting = false;
-    }, 2000);
-  }
-
-  editCustomer(customer: Customer) {
-    this.customerForm.patchValue(customer);
-    this.editingCustomer = customer;
   }
 
   get username() { return this.customerForm.get('username'); }
   get primaryPhoneNumber() { return this.customerForm.get('primaryPhoneNumber'); }
+  get email() { return this.customerForm.get('email'); }
 
 }
