@@ -110,7 +110,8 @@
 </div>
 
 <!-- Reuse existing modals -->
-<app-customer-modal></app-customer-modal>
+<app-customer-modal (successAction)="customerSuccess()" (errorAction)="customerError($event)"></app-customer-modal>
+<app-toast *ngIf="showToast" [type]='toastType' [message]='toastMsg' (closeAction)="toastCloseAction()"></app-toast>
 <!--
     <app-order-modal></app-order-modal>
     <app-vendor-modal></app-vendor-modal>

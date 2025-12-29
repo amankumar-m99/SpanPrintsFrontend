@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Customer } from '../../model/customer.model';
 import { Router } from '@angular/router';
@@ -17,21 +17,18 @@ import { ToastComponent } from "../utility/toast/toast.component";
 
 export class CustomersComponent implements OnInit {
   customers: Customer[] = [];
-  customerForm!: FormGroup;
   isSubmitting = false;
-  editingCustomer!: Customer;
+  editingCustomer!: Customer | null;
   showToast = false;
+  toastType = 'info';
+  toastMsg = '';
 
-  constructor(private fb: FormBuilder, private customerService: CustomerService,
-    private router: Router) { }
+  @ViewChild('launchCustomerModalButton') launchCustomerModalButton!: ElementRef;
+
+  constructor(private router: Router,
+    private customerService: CustomerService) { }
 
   ngOnInit(): void {
-    this.customerForm = this.fb.group({
-      username: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      primaryPhoneNumber: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
-      alternatePhoneNumber: ['']
-    });
     this.loadCustomers();
   }
 
@@ -45,31 +42,13 @@ export class CustomersComponent implements OnInit {
   }
 
   addCustomer(): void {
-    if (this.customerForm.invalid) {
-      this.customerForm.markAllAsTouched();
-      return;
-    }
-
-    this.isSubmitting = true;
-
-    const newCustomer: Customer = {
-      uuid: crypto.randomUUID(),
-      dbid: Date.now(),
-      createdAt: new Date(),
-      ...this.customerForm.value
-    };
-
-    // Simulate backend save
-    setTimeout(() => {
-      this.customers.unshift(newCustomer);
-      this.customerForm.reset();
-      this.isSubmitting = false;
-    }, 800);
+    this.editingCustomer = null;
+    this.launchCustomerModalButton.nativeElement.click();
   }
 
   editCustomer(customer: Customer) {
-    this.customerForm.patchValue(customer);
     this.editingCustomer = customer;
+    this.launchCustomerModalButton.nativeElement.click();
   }
 
   deleteCustomer(customer: Customer) {
@@ -77,9 +56,30 @@ export class CustomersComponent implements OnInit {
     this.customers = this.customers.filter(c => c.uuid !== customer.uuid);
   }
 
-  customerAddedSuccess(customer: Customer): void {
+  customerSuccess(customer: Customer): void {
+    if (this.editingCustomer) {
+      this.editingCustomer.email = customer.email;
+      this.editingCustomer.username = customer.username;
+      this.editingCustomer.primaryPhoneNumber = customer.primaryPhoneNumber;
+      this.editingCustomer.alternatePhoneNumber = customer.alternatePhoneNumber;
+      this.toastMsg = "Customer updated.";
+    }
+    else {
+      this.customers.push(customer);
+      this.toastMsg = "Customer added.";
+    }
+    this.toastType = "success";
     this.showToast = true;
-    this.customers.push(customer);
+  }
+
+  customerError(errorStr: string): void {
+    this.toastMsg = errorStr;
+    this.toastType = "error";
+    this.showToast = true;
+  }
+
+  toastCloseAction(): void {
+    this.showToast = false
   }
 
   openCustomerProfile(customer: Customer) {

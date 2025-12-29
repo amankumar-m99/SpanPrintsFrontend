@@ -13,7 +13,7 @@ export class ToastComponent implements OnChanges {
   @Input() type: string = '';
   @Input() message: string = '';
   @Input() autoclose: boolean = true;
-  @Input() autocloseDuration: number = 3000;
+  @Input() autocloseDuration: number = 6000;
   @Output() closeAction = new EventEmitter<void>();
 
   bgClass = 'text-bg-primary';

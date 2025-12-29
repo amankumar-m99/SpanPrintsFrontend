@@ -3,10 +3,9 @@
         <h3><i class="bi bi-people-fill me-2 text-primary"></i>Customers</h3>
         <div class="d-flex">
             <div class="ms-2">
-                <button class="btn btn-primary ms-2" data-bs-toggle="modal" data-bs-target="#addCustomerModal">
+                <button class="btn btn-primary ms-2" (click)="addCustomer()">
                     <i class="bi bi-person-plus me-2"></i>Add Customer
                 </button>
-
             </div>
         </div>
     </div>
@@ -29,7 +28,6 @@
             <tbody>
                 <tr *ngFor="let customer of customers; let i = index" class="cursor-pointer"
                     (click)="openCustomerProfile(customer)">
-
                     <td>{{ i + 1 }}</td>
                     <td>{{ customer.username }}</td>
                     <td>{{ customer.email }}</td>
@@ -50,9 +48,11 @@
                     </td>
                 </tr>
             </tbody>
-
         </table>
     </div>
 </div>
-<app-customer-modal (successAction)="customerAddedSuccess($event)"></app-customer-modal>
-<app-toast *ngIf="showToast" (closeAction)="showToast = false" type='success' message='Customer added.'></app-toast>
+<button #launchCustomerModalButton class="btn btn-info d-none" data-bs-toggle="modal"
+    data-bs-target="#addCustomerModal">Launch Customer Modal</button>
+<app-customer-modal [customer]="editingCustomer" (successAction)="customerSuccess($event)"
+    (errorAction)="customerError($event)"></app-customer-modal>
+<app-toast *ngIf="showToast" [type]='toastType' [message]='toastMsg' (closeAction)="toastCloseAction()"></app-toast>

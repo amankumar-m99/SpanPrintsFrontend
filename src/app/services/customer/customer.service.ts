@@ -16,6 +16,10 @@ export class CustomerService {
     return this.http.post<Customer>(this.url, customer);
   }
 
+  updateCustomer(customer:Customer){
+    return this.http.put<Customer>(this.url, customer);
+  }
+
   getAllCustomers(){
     return this.http.get<Customer[]>(this.url + 's');
   }
