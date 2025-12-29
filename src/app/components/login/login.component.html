@@ -9,7 +9,7 @@
     <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
       <!-- Email -->
       <div class="mb-3">
-        <label for="email" class="form-label">Username or Email address</label>
+        <label for="email" class="form-label"><i class="bi bi-person me-1"></i>Username or Email address</label>
         <input type="email" id="email" class="form-control"
           [ngClass]="{ 'is-invalid': username?.invalid && username?.touched }" formControlName="username" />
         <div class="invalid-feedback" *ngIf="username?.errors?.['required']">Username is required.</div>
@@ -26,7 +26,7 @@
 
       <!-- Password with toggle -->
       <div class="mb-3 position-relative">
-        <label for="password" class="form-label">Password</label>
+        <label for="password" class="form-label"><i class="bi bi-key me-1"></i>Password</label>
         <div class="input-group">
           <input [type]="showPassword ? 'text' : 'password'" id="password" class="form-control"
             [ngClass]="{ 'is-invalid': password?.invalid && password?.touched }" formControlName="password" />
@@ -55,9 +55,13 @@
       <!-- Submit/Login Button -->
       <div class="d-grid">
         <button type="submit" class="btn btn-primary" [disabled]="loading">
-          <span *ngIf="!loading">Login</span>
-          <span *ngIf="loading" class="spinner-border spinner-border-sm"></span>
-          <span *ngIf="loading"> Logging in...</span>
+          @if(!loading){
+            <span><i class="bi bi-box-arrow-in-right me-1"></i>Login</span>
+          }
+          @else {
+            <span class="spinner-border spinner-border-sm"></span>
+            <span>Logging in...</span>
+          }
         </button>
       </div>
     </form>
