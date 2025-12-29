@@ -23,4 +23,8 @@ export class CustomerService {
   getAllCustomers(){
     return this.http.get<Customer[]>(this.url + 's');
   }
+
+  deleteCustomer(id: number){
+    return this.http.delete<any>(this.url + '/' + id);
+  }
 }

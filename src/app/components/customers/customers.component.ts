@@ -6,11 +6,12 @@ import { Router } from '@angular/router';
 import { CustomerModalComponent } from "./customer-modal/customer-modal.component";
 import { CustomerService } from '../../services/customer/customer.service';
 import { ToastComponent } from "../utility/toast/toast.component";
+import { ConfirmDialogComponent } from "../utility/confirm-dialog/confirm-dialog.component";
 
 @Component({
   selector: 'app-customers',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule, CustomerModalComponent, ToastComponent],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, CustomerModalComponent, ToastComponent, ConfirmDialogComponent],
   templateUrl: './customers.component.html',
   styleUrl: './customers.component.css'
 })
@@ -22,8 +23,11 @@ export class CustomersComponent implements OnInit {
   showToast = false;
   toastType = 'info';
   toastMsg = '';
+  deleteCustomerMsg = '';
+  toBeDeletedCustomer !: Customer | null;
 
   @ViewChild('launchCustomerModalButton') launchCustomerModalButton!: ElementRef;
+  @ViewChild('launchConfirmDeleteButton') launchConfirmDeleteButton!: ElementRef;
 
   constructor(private router: Router,
     private customerService: CustomerService) { }
@@ -51,9 +55,28 @@ export class CustomersComponent implements OnInit {
     this.launchCustomerModalButton.nativeElement.click();
   }
 
-  deleteCustomer(customer: Customer) {
-    if (!confirm(`Delete customer ${customer.username}?`)) return;
-    this.customers = this.customers.filter(c => c.uuid !== customer.uuid);
+  askDeleteCustomer(customer: Customer) {
+    this.deleteCustomerMsg = `Delete customer ${customer.username}?`;
+    this.toBeDeletedCustomer = customer;
+    this.launchConfirmDeleteButton.nativeElement.click();
+  }
+
+  confirmDeleteCustomer() {
+    if (this.toBeDeletedCustomer) {
+      this.customerService.deleteCustomer(this.toBeDeletedCustomer.id).subscribe({
+        next: () => {
+          this.customers = this.customers.filter(c => c.uuid !== this.toBeDeletedCustomer?.uuid);
+          this.toastType = "warning";
+          this.toastMsg = "Customer deleted";
+          this.showToast = true;
+        },
+        error: (err) => {
+          this.toastType = "error";
+          this.toastMsg = err?.error?.message || 'Error deleting customer';
+          this.showToast = true;
+        },
+      });
+    }
   }
 
   customerSuccess(customer: Customer): void {

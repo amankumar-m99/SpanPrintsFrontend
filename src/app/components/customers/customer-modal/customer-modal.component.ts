@@ -83,7 +83,7 @@ export class CustomerModalComponent implements OnInit, OnChanges {
     this.isSubmitting = true;
     let newCustomer: Customer = {
       uuid: this.customer?.uuid,
-      dbid: this.customer?.dbid,
+      id: this.customer?.id,
       createdAt: new Date(),
       ...this.customerForm.value
     };
