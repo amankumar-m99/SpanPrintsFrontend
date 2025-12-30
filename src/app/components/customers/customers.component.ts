@@ -6,12 +6,11 @@ import { Router } from '@angular/router';
 import { CustomerModalComponent } from "./customer-modal/customer-modal.component";
 import { CustomerService } from '../../services/customer/customer.service';
 import { ToastComponent } from "../utility/toast/toast.component";
-import { ConfirmDialogComponent } from "../utility/confirm-dialog/confirm-dialog.component";
 
 @Component({
   selector: 'app-customers',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule, CustomerModalComponent, ToastComponent, ConfirmDialogComponent],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, CustomerModalComponent, ToastComponent],
   templateUrl: './customers.component.html',
   styleUrl: './customers.component.css'
 })

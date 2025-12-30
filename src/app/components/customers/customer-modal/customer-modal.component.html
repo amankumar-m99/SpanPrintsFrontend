@@ -55,19 +55,19 @@
                     <button type="submit" class="btn btn-primary" [disabled]="isSubmitting">
                         @if(!isSubmitting){
                         @if(isEditMode){
-                        <span>Update Customer</span>
+                        <span>Update</span>
                         }
                         @else {
-                        <span>Add Customer</span>
+                        <span>Add</span>
                         }
                         }
                         @else {
                         <span class="spinner-border spinner-border-sm me-2"></span>
                         @if(isEditMode){
-                        <span>Updating Customer...</span>
+                        <span>Updating...</span>
                         }
                         @else {
-                        <span>Adding Customer...</span>
+                        <span>Adding...</span>
                         }
                         }
                     </button>
