@@ -142,6 +142,20 @@
                         <span class="menu-text">Quicks</span>
                     </a>
                 </li>
+                <li>
+                    <a routerLink="about" class="nav-link text-white d-flex align-items-center"
+                        (click)="closeSidebarOnMobile()">
+                        <i class="bi bi-info-circle me-2 text-info"></i>
+                        <span class="menu-text">About</span>
+                    </a>
+                </li>
+                <li>
+                    <a routerLink="" class="nav-link text-white d-flex align-items-center"
+                        (click)="closeSidebarOnMobile()" data-bs-toggle="modal" data-bs-target="#helpModal">
+                        <i class="bi bi-question-circle me-2 text-success"></i>
+                        <span class="menu-text">Help</span>
+                    </a>
+                </li>
             </ul>
         </div>
     </nav>
