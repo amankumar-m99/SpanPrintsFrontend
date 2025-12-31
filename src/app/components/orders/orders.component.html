@@ -19,15 +19,12 @@
                 </div>
             </div>
             <div class="ms-2">
-                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#quickOrderModal">
-                    <i class="bi bi-plus-lg me-1"></i>Quick Order
+                <button class="btn btn-primary ms-2" (click)="refreshTable()">
+                    <i class="bi bi-arrow-clockwise me-2"></i>Refresh Table
                 </button>
                 <button class="btn btn-primary ms-2" data-bs-toggle="modal" data-bs-target="#fullOrderModal">
                     <i class="bi bi-bag-plus me-2"></i>Place Order
                 </button>
-                <a class="btn btn-primary ms-2" routerLink="../add-order" type="button"><i
-                        class="bi bi-box-arrow-up-right me-1"></i>
-                    Order Page</a>
             </div>
         </div>
     </div>
@@ -149,7 +146,8 @@
                                 <label class="form-label">Count</label>
                                 <div class="input-group mb-3">
                                     <span class="input-group-text"><i class="bi bi-plus"></i></span>
-                                    <input type="number" class="form-control" formControlName="count" aria-label="count">
+                                    <input type="number" class="form-control" formControlName="count"
+                                        aria-label="count">
                                     <span class="input-group-text"><i class="bi bi-dash"></i></span>
                                 </div>
                             </div>
@@ -308,7 +306,8 @@
                                 <label class="form-label">Count</label>
                                 <div class="input-group mb-3">
                                     <span class="input-group-text"><i class="bi bi-plus"></i></span>
-                                    <input type="number" class="form-control" formControlName="count" aria-label="count">
+                                    <input type="number" class="form-control" formControlName="count"
+                                        aria-label="count">
                                     <span class="input-group-text"><i class="bi bi-dash"></i></span>
                                 </div>
                             </div>

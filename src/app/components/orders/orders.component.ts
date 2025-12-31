@@ -2,14 +2,13 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { OrderCardComponent } from '../order-card/order-card.component';
-import { RouterLink } from "@angular/router";
 import { Order } from '../../model/order.model';
 import { OrderService } from '../../services/order/order.service';
 
 @Component({
   selector: 'app-orders',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, OrderCardComponent, FormsModule, RouterLink],
+  imports: [CommonModule, ReactiveFormsModule, OrderCardComponent, FormsModule],
   templateUrl: './orders.component.html',
   styleUrl: './orders.component.css'
 })
@@ -70,6 +69,10 @@ export class OrdersComponent implements OnInit {
       error: () => { }
     });
     this.applyFilters();
+  }
+
+  refreshTable(): void {
+    this.loadOrders();
   }
 
   applyFilters() {
