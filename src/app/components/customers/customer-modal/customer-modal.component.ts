@@ -31,7 +31,7 @@ export class CustomerModalComponent implements OnInit, OnChanges {
       username: ['', Validators.required],
       email: ['', [Validators.email]],
       primaryPhoneNumber: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
-      alternatePhoneNumber: ['']
+      alternatePhoneNumber: ['', [Validators.pattern(/^\d{10}$/)]]
     });
   }
 
@@ -111,6 +111,7 @@ export class CustomerModalComponent implements OnInit, OnChanges {
 
   get username() { return this.customerForm.get('username'); }
   get primaryPhoneNumber() { return this.customerForm.get('primaryPhoneNumber'); }
+  get alternatePhoneNumber() { return this.customerForm.get('alternatePhoneNumber'); }
   get email() { return this.customerForm.get('email'); }
 
 }

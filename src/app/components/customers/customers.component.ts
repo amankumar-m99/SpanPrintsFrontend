@@ -1,5 +1,4 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Customer } from '../../model/customer.model';
 import { Router } from '@angular/router';
@@ -10,7 +9,7 @@ import { ToastComponent } from "../utility/toast/toast.component";
 @Component({
   selector: 'app-customers',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule, CustomerModalComponent, ToastComponent],
+  imports: [CommonModule, CustomerModalComponent, ToastComponent],
   templateUrl: './customers.component.html',
   styleUrl: './customers.component.css'
 })
