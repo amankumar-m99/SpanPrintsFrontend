@@ -44,6 +44,10 @@ export class CustomersComponent implements OnInit {
     });
   }
 
+  refreshTable(): void {
+    this.loadCustomers();
+  }
+
   addCustomer(): void {
     this.editingCustomer = null;
     this.launchCustomerModalButton.nativeElement.click();

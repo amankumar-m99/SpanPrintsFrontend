@@ -12,19 +12,23 @@ export class CustomerService {
 
   constructor(private http: HttpClient) { }
 
-  createCustomer(customer:Customer){
+  createCustomer(customer: Customer) {
     return this.http.post<Customer>(this.url, customer);
   }
 
-  updateCustomer(customer:Customer){
+  updateCustomer(customer: Customer) {
     return this.http.put<Customer>(this.url, customer);
   }
 
-  getAllCustomers(){
+  getCustomerByUuid(uuid: string) {
+    return this.http.get<Customer>(this.url + '/uuid/' + uuid);
+  }
+
+  getAllCustomers() {
     return this.http.get<Customer[]>(this.url + 's');
   }
 
-  deleteCustomer(id: number){
+  deleteCustomer(id: number) {
     return this.http.delete<any>(this.url + '/' + id);
   }
 }

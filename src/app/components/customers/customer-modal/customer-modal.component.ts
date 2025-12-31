@@ -50,6 +50,10 @@ export class CustomerModalComponent implements OnInit, OnChanges {
       return;
     }
     if (this.isEditMode) {
+      this.addCustomer();
+    }
+    else {
+      this.editCustomer();
     }
   }
 
@@ -87,7 +91,7 @@ export class CustomerModalComponent implements OnInit, OnChanges {
       createdAt: new Date(),
       ...this.customerForm.value
     };
-    this.customerService.createCustomer(newCustomer).subscribe({
+    this.customerService.updateCustomer(newCustomer).subscribe({
       next: (response) => {
         this.isSubmitting = false;
         this.customerForm.reset();
