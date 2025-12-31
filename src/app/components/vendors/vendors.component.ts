@@ -1,65 +1,117 @@
-import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, ElementRef, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Vendor } from '../../model/vendor.model';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { VendorModalComponent } from "./vendor-modal/vendor-modal.component";
+import { ToastComponent } from '../utility/toast/toast.component';
+import { VendorService } from '../../services/vendor/vendor.service';
 
 @Component({
   selector: 'app-vendors',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule],
+  imports: [CommonModule, VendorModalComponent, ToastComponent],
   templateUrl: './vendors.component.html',
   styleUrl: './vendors.component.css'
 })
 export class VendorsComponent {
-
-  vendorForm!: FormGroup;
   vendors: Vendor[] = [];
-  editingVendor: Vendor | null = null;
+  isSubmitting = false;
+  editingVendor!: Vendor | null;
+  showToast = false;
+  toastType = 'info';
+  toastMsg = '';
+  deleteVendorMsg = '';
+  toBeDeletedVendor !: Vendor | null;
 
-  constructor(private fb: FormBuilder,
-    private router: Router) { }
+  @ViewChild('launchVendorModalButton') launchVendorModalButton!: ElementRef;
+  @ViewChild('launchConfirmDeleteButton') launchConfirmDeleteButton!: ElementRef;
 
-  ngOnInit() {
-    this.vendorForm = this.fb.group({
-      vendorName: ['', Validators.required],
-      email: ['', Validators.email],
-      primaryPhone: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
-      alternatePhone: [''],
-      address: ['']
+  constructor(private router: Router,
+    private vendorService: VendorService) { }
+
+  ngOnInit(): void {
+    this.loadVendors();
+  }
+
+  loadVendors() {
+    this.vendorService.getAllVendors().subscribe({
+      next: (res) => {
+        this.vendors = res;
+      },
+      error: (err) => {
+        this.toastType = "error";
+        this.toastMsg = err?.error?.message || 'Error while loading vendors';
+        this.showToast = true;
+      },
     });
   }
 
-  saveVendor() {
-    if (this.vendorForm.invalid) return;
+  refreshTable(): void {
+    this.loadVendors();
+  }
 
-    if (this.editingVendor) {
-      Object.assign(this.editingVendor, this.vendorForm.value);
-      this.editingVendor = null;
-    } else {
-      this.vendors.unshift({
-        uuid: crypto.randomUUID(),
-        dbid: Date.now(),
-        createdAt: new Date(),
-        ...this.vendorForm.value
-      });
-    }
-    this.vendorForm.reset();
+  addVendor(): void {
+    this.editingVendor = null;
+    this.launchVendorModalButton.nativeElement.click();
   }
 
   editVendor(vendor: Vendor) {
-    this.vendorForm.patchValue(vendor);
     this.editingVendor = vendor;
+    this.launchVendorModalButton.nativeElement.click();
   }
 
-  deleteVendor(vendor: Vendor) {
-    if (!confirm(`Delete vendor ${vendor.vendorName}?`)) return;
-    this.vendors = this.vendors.filter(v => v.uuid !== vendor.uuid);
+  askDeleteVendor(vendor: Vendor) {
+    this.deleteVendorMsg = `Delete vendor ${vendor.vendorName}?`;
+    this.toBeDeletedVendor = vendor;
+    this.launchConfirmDeleteButton.nativeElement.click();
+  }
+
+  confirmDeleteVendor() {
+    if (this.toBeDeletedVendor) {
+      this.vendorService.deleteVendor(this.toBeDeletedVendor.uuid).subscribe({
+        next: () => {
+          this.vendors = this.vendors.filter(c => c.uuid !== this.toBeDeletedVendor?.uuid);
+          this.toastType = "warning";
+          this.toastMsg = "Vendor deleted";
+          this.showToast = true;
+        },
+        error: (err) => {
+          this.toastType = "error";
+          this.toastMsg = err?.error?.message || 'Error deleting vendor';
+          this.showToast = true;
+        },
+      });
+    }
+  }
+
+  vendorSuccess(vendor: Vendor): void {
+    if (this.editingVendor) {
+      this.editingVendor.email = vendor.email;
+      this.editingVendor.vendorName = vendor.vendorName
+      this.editingVendor.primaryPhone = vendor.primaryPhone;
+      this.editingVendor.alternatePhone = vendor.alternatePhone;
+      this.toastMsg = "Vendor updated.";
+    }
+    else {
+      this.vendors.push(vendor);
+      this.toastMsg = "Vendor added.";
+    }
+    this.toastType = "success";
+    this.showToast = true;
+  }
+
+  vendorError(errorStr: string): void {
+    this.toastMsg = errorStr;
+    this.toastType = "error";
+    this.showToast = true;
+  }
+
+  toastCloseAction(): void {
+    this.showToast = false
   }
 
   openVendorProfile(vendor: Vendor) {
-    this.router.navigate(['/vendors', vendor.uuid]);
+    this.router.navigate(['/dashboard/vendor', vendor.uuid]);
   }
-
-
 }
