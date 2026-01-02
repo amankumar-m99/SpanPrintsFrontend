@@ -62,7 +62,7 @@ export class VendorsComponent {
   }
 
   askDeleteVendor(vendor: Vendor) {
-    this.deleteVendorMsg = `Delete vendor ${vendor.vendorName}?`;
+    this.deleteVendorMsg = `Delete vendor ${vendor.name}?`;
     this.toBeDeletedVendor = vendor;
     this.launchConfirmDeleteButton.nativeElement.click();
   }
@@ -85,12 +85,28 @@ export class VendorsComponent {
     }
   }
 
+  deleteAllVendors(): void {
+    this.vendorService.deleteAllVendors().subscribe({
+      next: () => {
+        this.vendors = [];
+        this.toastType = "warning";
+        this.toastMsg = "All Vendors deleted";
+        this.showToast = true;
+      },
+      error: (err) => {
+        this.toastType = "error";
+        this.toastMsg = err?.error?.message || 'Error deleting vendors';
+        this.showToast = true;
+      },
+    });
+  }
+
   vendorSuccess(vendor: Vendor): void {
     if (this.editingVendor) {
       this.editingVendor.email = vendor.email;
-      this.editingVendor.vendorName = vendor.vendorName
-      this.editingVendor.primaryPhone = vendor.primaryPhone;
-      this.editingVendor.alternatePhone = vendor.alternatePhone;
+      this.editingVendor.name = vendor.name
+      this.editingVendor.primaryPhoneNumber = vendor.primaryPhoneNumber;
+      this.editingVendor.alternatePhoneNumber = vendor.alternatePhoneNumber;
       this.toastMsg = "Vendor updated.";
     }
     else {

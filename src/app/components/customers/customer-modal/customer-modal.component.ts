@@ -28,7 +28,7 @@ export class CustomerModalComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.customerForm = this.fb.group({
-      username: ['', Validators.required],
+      name: ['', Validators.required],
       email: ['', [Validators.email]],
       primaryPhoneNumber: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
       alternatePhoneNumber: ['', [Validators.pattern(/^\d{10}$/)]]
@@ -109,7 +109,7 @@ export class CustomerModalComponent implements OnInit, OnChanges {
     });
   }
 
-  get username() { return this.customerForm.get('username'); }
+  get name() { return this.customerForm.get('name'); }
   get primaryPhoneNumber() { return this.customerForm.get('primaryPhoneNumber'); }
   get alternatePhoneNumber() { return this.customerForm.get('alternatePhoneNumber'); }
   get email() { return this.customerForm.get('email'); }

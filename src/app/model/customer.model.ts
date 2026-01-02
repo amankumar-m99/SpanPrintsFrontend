@@ -2,7 +2,7 @@ export interface Customer {
   id: number;
   uuid: string;
   email: string;
-  username: string;
+  name: string;
   primaryPhoneNumber: string;
   alternatePhoneNumber: string;
   dateAdded: Date;

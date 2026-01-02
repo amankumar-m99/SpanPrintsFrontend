@@ -9,6 +9,9 @@
                 <button class="btn btn-primary ms-2" (click)="addCustomer()">
                     <i class="bi bi-person-plus me-2"></i>Add Customer
                 </button>
+                <button class="btn btn-danger ms-2" (click)="deleteAllCustomers()">
+                    <i class="bi bi-trash me-2"></i>Delete All
+                </button>
             </div>
         </div>
     </div>
@@ -17,7 +20,7 @@
             <thead class="table-light">
                 <tr>
                     <th>#</th>
-                    <th>Username</th>
+                    <th>Name</th>
                     <th>Email</th>
                     <th>Primary Phone</th>
                     <th>Alternate Phone</th>
@@ -32,7 +35,7 @@
                 <tr *ngFor="let customer of customers; let i = index" class="cursor-pointer"
                     (click)="openCustomerProfile(customer)">
                     <td>{{ i + 1 }}</td>
-                    <td>{{ customer.username }}</td>
+                    <td>{{ customer.name }}</td>
                     <td>{{ customer.email }}</td>
                     <td>{{ customer.primaryPhoneNumber }}</td>
                     <td>{{ customer.alternatePhoneNumber }}</td>

@@ -31,4 +31,8 @@ export class VendorService {
   deleteVendor(uuid: string) {
     return this.http.delete<any>(this.url + '/' + uuid);
   }
+
+  deleteAllVendors() {
+    return this.http.delete<any>(this.url + 's');
+  }
 }

@@ -27,18 +27,18 @@ export class VendorModalComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.vendorForm = this.fb.group({
-      vendorName: ['', Validators.required],
+      name: ['', Validators.required],
       email: ['', Validators.email],
-      primaryPhone: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
-      alternatePhone: ['', [Validators.pattern(/^\d{10}$/)]],
+      primaryPhoneNumber: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
+      alternatePhoneNumber: ['', [Validators.pattern(/^\d{10}$/)]],
       address: ['']
     });
   }
 
-  get vendorName() { return this.vendorForm.get('vendorName'); }
+  get name() { return this.vendorForm.get('name'); }
   get email() { return this.vendorForm.get('email'); }
-  get primaryPhone() { return this.vendorForm.get('primaryPhone'); }
-  get alternatePhone() { return this.vendorForm.get('alternatePhone'); }
+  get primaryPhoneNumber() { return this.vendorForm.get('primaryPhoneNumber'); }
+  get alternatePhoneNumber() { return this.vendorForm.get('alternatePhoneNumber'); }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (this.vendor != null) {
@@ -55,10 +55,10 @@ export class VendorModalComponent implements OnInit, OnChanges {
       return;
     }
     if (this.isEditMode) {
-      this.addVendor();
+      this.editVendor();
     }
     else {
-      this.editVendor();
+      this.addVendor();
     }
   }
 
@@ -80,6 +80,7 @@ export class VendorModalComponent implements OnInit, OnChanges {
       error: (err) => {
         this.isSubmitting = false;
         let errorMessage = err?.error?.message || 'Invalid credentials or server error.';
+        console.log(errorMessage);
         this.vendorModalCloseBtn.nativeElement.click();
         if (this.errorAction != null)
           this.errorAction.emit(errorMessage);

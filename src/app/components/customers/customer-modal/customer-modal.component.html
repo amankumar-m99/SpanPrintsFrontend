@@ -14,12 +14,12 @@
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label class="form-label"><i class="bi bi-person me-1"></i>Username<i
+                        <label class="form-label"><i class="bi bi-person me-1"></i>Name<i
                                 class="bi bi-asterisk text-danger ms-1 small"></i></label>
-                        <input type="text" class="form-control" formControlName="username"
-                            [ngClass]="{ 'is-invalid': username?.invalid && username?.touched }">
-                        <div class="invalid-feedback" *ngIf="username?.touched && username?.invalid">
-                            Username is required
+                        <input type="text" class="form-control" formControlName="name"
+                            [ngClass]="{ 'is-invalid': name?.invalid && name?.touched }">
+                        <div class="invalid-feedback" *ngIf="name?.touched && name?.invalid">
+                            Name is required
                         </div>
                     </div>
 

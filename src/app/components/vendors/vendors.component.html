@@ -9,6 +9,9 @@
                 <button class="btn btn-primary ms-2" (click)="addVendor()">
                     <i class="bi bi-plus-lg me-2"></i>Add Vendor
                 </button>
+                <button class="btn btn-danger ms-2" (click)="deleteAllVendors()">
+                    <i class="bi bi-trash me-2"></i>Delete All
+                </button>
             </div>
         </div>
     </div>
@@ -23,6 +26,7 @@
                     <th>Alternate Phone</th>
                     <th>Address</th>
                     <th>Created At</th>
+                    <th>Created By</th>
                     <th class="text-end">Actions</th>
                 </tr>
             </thead>
@@ -30,12 +34,13 @@
                 <tr *ngFor="let vendor of vendors; let i = index" class="cursor-pointer"
                     (click)="openVendorProfile(vendor)">
                     <td>{{ i + 1 }}</td>
-                    <td>{{ vendor.vendorName }}</td>
+                    <td>{{ vendor.name }}</td>
                     <td>{{ vendor.email }}</td>
-                    <td>{{ vendor.primaryPhone }}</td>
-                    <td>{{ vendor.alternatePhone }}</td>
+                    <td>{{ vendor.primaryPhoneNumber }}</td>
+                    <td>{{ vendor.alternatePhoneNumber }}</td>
                     <td>{{ vendor.address }}</td>
-                    <td>{{ vendor.createdAt | date:'short' }}</td>
+                    <td>{{ vendor.dateAdded | date:'short' }}</td>
+                    <td>{{ vendor.addedBy }}</td>
                     <!-- Actions -->
                     <td class="text-end" (click)="$event.stopPropagation()">
                         <button class="btn btn-sm btn-outline-primary me-1" (click)="editVendor(vendor)">

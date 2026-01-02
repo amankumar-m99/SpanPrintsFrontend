@@ -31,4 +31,8 @@ export class CustomerService {
   deleteCustomer(id: number) {
     return this.http.delete<any>(this.url + '/' + id);
   }
+
+  deleteAllCustomers() {
+    return this.http.delete<any>(this.url + 's');
+  }
 }

@@ -1,9 +1,10 @@
 export interface Vendor {
   uuid: string;
-  vendorName: string;
+  name: string;
   email?: string;
-  primaryPhone: string;
-  alternatePhone?: string;
+  primaryPhoneNumber: string;
+  alternatePhoneNumber?: string;
   address?: string;
-  createdAt: Date;
+  dateAdded: Date;
+  addedBy: string;
 }

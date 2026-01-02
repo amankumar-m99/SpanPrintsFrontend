@@ -58,7 +58,7 @@ export class CustomersComponent implements OnInit {
   }
 
   askDeleteCustomer(customer: Customer) {
-    this.deleteCustomerMsg = `Delete customer ${customer.username}?`;
+    this.deleteCustomerMsg = `Delete customer ${customer.name}?`;
     this.toBeDeletedCustomer = customer;
     this.launchConfirmDeleteButton.nativeElement.click();
   }
@@ -81,10 +81,26 @@ export class CustomersComponent implements OnInit {
     }
   }
 
+  deleteAllCustomers(): void {
+    this.customerService.deleteAllCustomers().subscribe({
+        next: () => {
+          this.customers = [];
+          this.toastType = "warning";
+          this.toastMsg = "All Customers deleted";
+          this.showToast = true;
+        },
+        error: (err) => {
+          this.toastType = "error";
+          this.toastMsg = err?.error?.message || 'Error deleting customers';
+          this.showToast = true;
+        },
+      });
+  }
+
   customerSuccess(customer: Customer): void {
     if (this.editingCustomer) {
       this.editingCustomer.email = customer.email;
-      this.editingCustomer.username = customer.username;
+      this.editingCustomer.name = customer.name;
       this.editingCustomer.primaryPhoneNumber = customer.primaryPhoneNumber;
       this.editingCustomer.alternatePhoneNumber = customer.alternatePhoneNumber;
       this.toastMsg = "Customer updated.";

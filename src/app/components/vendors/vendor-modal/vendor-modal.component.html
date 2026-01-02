@@ -17,9 +17,9 @@
                         <label class="form-label">Vendor Name<i
                                 class="bi bi-asterisk text-danger ms-1 small"></i></label>
                         <input type="text" class="form-control"
-                            [ngClass]="{ 'is-invalid': vendorName?.invalid && vendorName?.touched }"
-                            formControlName="vendorName">
-                        <div class="invalid-feedback" *ngIf="vendorName?.touched && vendorName?.invalid">
+                            [ngClass]="{ 'is-invalid': name?.invalid && name?.touched }"
+                            formControlName="name">
+                        <div class="invalid-feedback" *ngIf="name?.touched && name?.invalid">
                             Vendor name is required
                         </div>
                     </div>
@@ -36,18 +36,18 @@
                     <div class="mb-3">
                         <label class="form-label"><i class="bi bi-telephone me-1"></i>Primary Phone<i
                                 class="bi bi-asterisk text-danger ms-1 small"></i></label>
-                        <input type="tel" class="form-control" formControlName="primaryPhone"
-                            [ngClass]="{ 'is-invalid': primaryPhone?.invalid && primaryPhone?.touched }">
-                        <div class="invalid-feedback" *ngIf="primaryPhone?.touched && primaryPhone?.invalid">
+                        <input type="tel" class="form-control" formControlName="primaryPhoneNumber"
+                            [ngClass]="{ 'is-invalid': primaryPhoneNumber?.invalid && primaryPhoneNumber?.touched }">
+                        <div class="invalid-feedback" *ngIf="primaryPhoneNumber?.touched && primaryPhoneNumber?.invalid">
                             10-digit phone number required
                         </div>
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label"><i class="bi bi-telephone-plus me-1"></i>Alternate Phone</label>
-                        <input type="tel" class="form-control" formControlName="alternatePhone"
-                            [ngClass]="{ 'is-invalid': alternatePhone?.invalid && alternatePhone?.touched }">
-                        <div class="invalid-feedback" *ngIf="alternatePhone?.touched && alternatePhone?.invalid">
+                        <input type="tel" class="form-control" formControlName="alternatePhoneNumber"
+                            [ngClass]="{ 'is-invalid': alternatePhoneNumber?.invalid && alternatePhoneNumber?.touched }">
+                        <div class="invalid-feedback" *ngIf="alternatePhoneNumber?.touched && alternatePhoneNumber?.invalid">
                             10-digit phone number required
                         </div>
                     </div>

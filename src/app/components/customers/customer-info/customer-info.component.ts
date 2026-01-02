@@ -45,7 +45,6 @@ export class CustomerInfoComponent implements OnInit {
   copyUuid() {
     navigator.clipboard.writeText(this.customer.uuid).then(() => {
       this.copied = true;
-
       setTimeout(() => {
         this.copied = false;
       }, 1500);
@@ -53,9 +52,6 @@ export class CustomerInfoComponent implements OnInit {
   }
 
   fetchCustomerDetails(uuid: string) {
-    // call backend API here
-    console.log("lkdsngkldsfnn");
-    console.log(this.customerUuid);
     this.customerService.getCustomerByUuid(this.customerUuid).subscribe({
       next: (res) => {
         this.customer = res;

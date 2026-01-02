@@ -19,6 +19,7 @@ import { AboutComponent } from './components/about/about.component';
 import { VendorsComponent } from './components/vendors/vendors.component';
 import { QuickActionsComponent } from './components/quick-actions/quick-actions.component';
 import { CustomerInfoComponent } from './components/customers/customer-info/customer-info.component';
+import { VendorInfoComponent } from './components/vendors/vendor-info/vendor-info.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent, canActivate: [GuestGuard] },
@@ -32,6 +33,7 @@ export const routes: Routes = [
             { path: 'customers', component: CustomersComponent },
             { path: 'customer/:uuid', component: CustomerInfoComponent },
             { path: 'vendors', component: VendorsComponent },
+            { path: 'vendor/:uuid', component: VendorInfoComponent },
             { path: 'inventory', component: InventoryComponent },
             { path: 'expenses', component: ExpensesComponent },
             { path: 'earnings', component: EarningsComponent },
