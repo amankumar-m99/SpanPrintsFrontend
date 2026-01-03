@@ -9,7 +9,7 @@
                 <button class="btn btn-primary ms-2" (click)="addCustomer()">
                     <i class="bi bi-person-plus me-2"></i>Add Customer
                 </button>
-                <button class="btn btn-danger ms-2" (click)="deleteAllCustomers()">
+                <button class="btn btn-danger ms-2" (click)="askDeleteAllCustomers()">
                     <i class="bi bi-trash me-2"></i>Delete All
                 </button>
             </div>
@@ -62,28 +62,21 @@
 </div>
 <button #launchCustomerModalButton class="btn btn-info d-none" data-bs-toggle="modal"
     data-bs-target="#addCustomerModal">Launch Customer Modal</button>
-<button #launchConfirmDeleteButton class="btn btn-info d-none" data-bs-toggle="modal" data-bs-target="#confirmDeleteDialog">Launch Confirm Delete Modal</button>
+<button #launchConfirmDeleteCustomerButton class="btn btn-info d-none" data-bs-toggle="modal"
+    data-bs-target="#confirmDeleteCustomerDialog">Launch Confirm Delete Modal</button>
+<button #launchConfirmDeleteAllCustomersButton class="btn btn-info d-none" data-bs-toggle="modal"
+    data-bs-target="#confirmDeleteAllCustomersDialog">Launch Confirm Delete All Modal</button>
+
 <app-customer-modal [customer]="editingCustomer" (successAction)="customerSuccess($event)"
     (errorAction)="customerError($event)"></app-customer-modal>
 <app-toast *ngIf="showToast" [type]='toastType' [message]='toastMsg' (closeAction)="toastCloseAction()"></app-toast>
 
-<div class="modal fade" id="confirmDeleteDialog" data-bs-backdrop="static" tabindex="-1" aria-labelledby="confirmDialogLabel"
-    aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="confirmDialogLabel">Confirm Delete</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                {{ deleteCustomerMsg }}
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" (click)="confirmDeleteCustomer()"
-                    data-bs-dismiss="modal">Delete
-                </button>
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"> Cancel</button>
-            </div>
-        </div>
-    </div>
-</div>
+<app-confirm-dialog [id]="'confirmDeleteCustomerDialog'" [title]="'Confirm Delete'" [message]="deleteCustomerMsg"
+    [confirmText]="'Delete'" [cancelText]="'Cancel'" [confirmBtnClass]="'btn-danger'"
+    (confirmed)="deleteCustomer()">
+</app-confirm-dialog>
+
+<app-confirm-dialog [id]="'confirmDeleteAllCustomersDialog'" [title]="'Confirm Delete All'"
+    [message]="deleteAllCustomersMsg" [confirmText]="'Delete'" [cancelText]="'Cancel'" [confirmBtnClass]="'btn-danger'"
+    (confirmed)="deleteAllCustomers()">
+</app-confirm-dialog>

@@ -3,11 +3,12 @@ import { CustomerModalComponent } from "../customers/customer-modal/customer-mod
 import { ToastComponent } from "../utility/toast/toast.component";
 import { Customer } from '../../model/customer.model';
 import { CommonModule } from '@angular/common';
+import { VendorModalComponent } from "../vendors/vendor-modal/vendor-modal.component";
 
 @Component({
   selector: 'app-quick-actions',
   standalone: true,
-  imports: [CustomerModalComponent, ToastComponent, CommonModule],
+  imports: [CustomerModalComponent, ToastComponent, CommonModule, VendorModalComponent],
   templateUrl: './quick-actions.component.html',
   styleUrl: './quick-actions.component.css'
 })
@@ -21,13 +22,13 @@ export class QuickActionsComponent {
     this.showToast = false
   }
 
-  customerSuccess(): void {
-    this.toastMsg = "Customer added.";
+  customerSuccess(msg: string): void {
+    this.toastMsg = msg;
     this.toastType = "success";
     this.showToast = true;
   }
 
-  customerError(errorStr: string): void {
+  errorToast(errorStr: string): void {
     this.toastMsg = errorStr;
     this.toastType = "error";
     this.showToast = true;

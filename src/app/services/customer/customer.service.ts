@@ -28,8 +28,12 @@ export class CustomerService {
     return this.http.get<Customer[]>(this.url + 's');
   }
 
-  deleteCustomer(id: number) {
-    return this.http.delete<any>(this.url + '/' + id);
+  deleteCustomerById(id: number) {
+    return this.http.delete<any>(this.url + '/id/' + id);
+  }
+
+  deleteCustomerByUuid(uuid: string) {
+    return this.http.delete<any>(this.url + '/uuid/' + uuid);
   }
 
   deleteAllCustomers() {

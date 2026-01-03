@@ -6,11 +6,12 @@ import { CommonModule } from '@angular/common';
 import { VendorModalComponent } from "./vendor-modal/vendor-modal.component";
 import { ToastComponent } from '../utility/toast/toast.component';
 import { VendorService } from '../../services/vendor/vendor.service';
+import { ConfirmDialogComponent } from "../utility/confirm-dialog/confirm-dialog.component";
 
 @Component({
   selector: 'app-vendors',
   standalone: true,
-  imports: [CommonModule, VendorModalComponent, ToastComponent],
+  imports: [CommonModule, VendorModalComponent, ToastComponent, ConfirmDialogComponent],
   templateUrl: './vendors.component.html',
   styleUrl: './vendors.component.css'
 })
@@ -22,10 +23,13 @@ export class VendorsComponent {
   toastType = 'info';
   toastMsg = '';
   deleteVendorMsg = '';
+  deleteAllVendorsMsg = '';
   toBeDeletedVendor !: Vendor | null;
+  isRefreshTableData = false;
 
   @ViewChild('launchVendorModalButton') launchVendorModalButton!: ElementRef;
-  @ViewChild('launchConfirmDeleteButton') launchConfirmDeleteButton!: ElementRef;
+  @ViewChild('launchConfirmDeleteVendorButton') launchConfirmDeleteButton!: ElementRef;
+  @ViewChild('launchConfirmDeleteAllVendordsButton') launchConfirmDeleteAllButton!: ElementRef;
 
   constructor(private router: Router,
     private vendorService: VendorService) { }
@@ -38,16 +42,26 @@ export class VendorsComponent {
     this.vendorService.getAllVendors().subscribe({
       next: (res) => {
         this.vendors = res;
+        if (this.isRefreshTableData) {
+          this.toastType = "success";
+          this.toastMsg = "Table data refreshed.";
+          this.showToast = true;
+          this.isRefreshTableData = false;
+        }
       },
       error: (err) => {
-        this.toastType = "error";
-        this.toastMsg = err?.error?.message || 'Error while loading vendors';
-        this.showToast = true;
+        if (this.isRefreshTableData) {
+          this.toastType = "error";
+          this.toastMsg = err?.error?.message || 'Error deleting customer';
+          this.showToast = true;
+          this.isRefreshTableData = false;
+        }
       },
     });
   }
 
   refreshTable(): void {
+    this.isRefreshTableData = true;
     this.loadVendors();
   }
 
@@ -67,9 +81,9 @@ export class VendorsComponent {
     this.launchConfirmDeleteButton.nativeElement.click();
   }
 
-  confirmDeleteVendor() {
+  deleteVendor() {
     if (this.toBeDeletedVendor) {
-      this.vendorService.deleteVendor(this.toBeDeletedVendor.uuid).subscribe({
+      this.vendorService.deleteVendorByUuid(this.toBeDeletedVendor.uuid).subscribe({
         next: () => {
           this.vendors = this.vendors.filter(c => c.uuid !== this.toBeDeletedVendor?.uuid);
           this.toastType = "warning";
@@ -83,6 +97,11 @@ export class VendorsComponent {
         },
       });
     }
+  }
+
+  askDeleteAllVendors() {
+    this.deleteAllVendorsMsg = 'Delete all vendors';
+    this.launchConfirmDeleteAllButton.nativeElement.click();
   }
 
   deleteAllVendors(): void {

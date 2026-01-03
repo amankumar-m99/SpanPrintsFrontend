@@ -5,11 +5,12 @@ import { Router } from '@angular/router';
 import { CustomerModalComponent } from "./customer-modal/customer-modal.component";
 import { CustomerService } from '../../services/customer/customer.service';
 import { ToastComponent } from "../utility/toast/toast.component";
+import { ConfirmDialogComponent } from "../utility/confirm-dialog/confirm-dialog.component";
 
 @Component({
   selector: 'app-customers',
   standalone: true,
-  imports: [CommonModule, CustomerModalComponent, ToastComponent],
+  imports: [CommonModule, CustomerModalComponent, ToastComponent, ConfirmDialogComponent],
   templateUrl: './customers.component.html',
   styleUrl: './customers.component.css'
 })
@@ -22,10 +23,13 @@ export class CustomersComponent implements OnInit {
   toastType = 'info';
   toastMsg = '';
   deleteCustomerMsg = '';
+  deleteAllCustomersMsg = '';
   toBeDeletedCustomer !: Customer | null;
+  isRefreshTableData = false;
 
   @ViewChild('launchCustomerModalButton') launchCustomerModalButton!: ElementRef;
-  @ViewChild('launchConfirmDeleteButton') launchConfirmDeleteButton!: ElementRef;
+  @ViewChild('launchConfirmDeleteCustomerButton') launchConfirmDeleteButton!: ElementRef;
+  @ViewChild('launchConfirmDeleteAllCustomersButton') launchConfirmDeleteAllButton!: ElementRef;
 
   constructor(private router: Router,
     private customerService: CustomerService) { }
@@ -38,12 +42,26 @@ export class CustomersComponent implements OnInit {
     this.customerService.getAllCustomers().subscribe({
       next: (res) => {
         this.customers = res;
+        if (this.isRefreshTableData) {
+          this.toastType = "success";
+          this.toastMsg = "Table data refreshed.";
+          this.showToast = true;
+          this.isRefreshTableData = false;
+        }
       },
-      error: () => { },
+      error: (err) => {
+        if (this.isRefreshTableData) {
+          this.toastType = "error";
+          this.toastMsg = err?.error?.message || 'Error deleting customer';
+          this.showToast = true;
+          this.isRefreshTableData = false;
+        }
+      },
     });
   }
 
   refreshTable(): void {
+    this.isRefreshTableData = true;
     this.loadCustomers();
   }
 
@@ -63,9 +81,9 @@ export class CustomersComponent implements OnInit {
     this.launchConfirmDeleteButton.nativeElement.click();
   }
 
-  confirmDeleteCustomer() {
+  deleteCustomer() {
     if (this.toBeDeletedCustomer) {
-      this.customerService.deleteCustomer(this.toBeDeletedCustomer.id).subscribe({
+      this.customerService.deleteCustomerByUuid(this.toBeDeletedCustomer.uuid).subscribe({
         next: () => {
           this.customers = this.customers.filter(c => c.uuid !== this.toBeDeletedCustomer?.uuid);
           this.toastType = "warning";
@@ -81,20 +99,25 @@ export class CustomersComponent implements OnInit {
     }
   }
 
+  askDeleteAllCustomers(): void {
+    this.deleteAllCustomersMsg = 'Delete all customers ?';
+    this.launchConfirmDeleteAllButton.nativeElement.click();
+  }
+
   deleteAllCustomers(): void {
     this.customerService.deleteAllCustomers().subscribe({
-        next: () => {
-          this.customers = [];
-          this.toastType = "warning";
-          this.toastMsg = "All Customers deleted";
-          this.showToast = true;
-        },
-        error: (err) => {
-          this.toastType = "error";
-          this.toastMsg = err?.error?.message || 'Error deleting customers';
-          this.showToast = true;
-        },
-      });
+      next: () => {
+        this.customers = [];
+        this.toastType = "warning";
+        this.toastMsg = "All Customers deleted";
+        this.showToast = true;
+      },
+      error: (err) => {
+        this.toastType = "error";
+        this.toastMsg = err?.error?.message || 'Error deleting customers';
+        this.showToast = true;
+      },
+    });
   }
 
   customerSuccess(customer: Customer): void {

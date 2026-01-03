@@ -1,5 +1,5 @@
 <!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark d-none">
     <div class="container-fluid">
 
         <!-- Logo -->
@@ -43,7 +43,8 @@
                             <hr class="dropdown-divider">
                         </li>
                         <li class="spanprints-logout-btn"><span class="dropdown-item text-danger" data-bs-toggle="modal"
-                                data-bs-target="#confirmDialog"><i class="bi bi-box-arrow-right"></i> Logout</span></li>
+                                data-bs-target="#appLogoutButton"><i class="bi bi-box-arrow-right"></i> Logout</span>
+                        </li>
                     </ul>
                 </li>
             </ul>
@@ -55,14 +56,21 @@
     <nav id="sidebar" class="bg-dark text-white sidebar expanded collapse d-lg-block">
         <div class="d-flex flex-column h-80">
             <!-- Logo / Toggle -->
-            <div class="d-flex justify-content-between align-items-center p-3 border-bottom">
-                <span class="fw-bold">SP</span>
-                <button class="btn btn-sm btn-outline-light d-none d-lg-inline" (click)="toggleSidebar()">
-                    <i class="bi" [ngClass]="sidebarCollapsed ? 'bi-arrow-right-square' : 'bi-arrow-left-square'"></i>
+            <div class="d-flex flex-column justify-content-center px-3 pt-3 pb-2 border-bottom"
+                [ngClass]="sidebarCollapsed ? 'align-items-start' : 'align-items-end'">
+                <!-- <span class="fw-bold">SP</span> -->
+                <!-- Logo -->
+                <a class="navbar-brand d-flex align-items-center" routerLink="/">
+                    <img src="logo/logo_bg_no.png" alt="Logo" width="40" height="40">
+                    <img src="logo/text_bg_no.png" alt="Logo" height="30" [ngClass]="sidebarCollapsed ? 'd-none' : ''">
+                    <!-- SpanPrints -->
+                </a>
+                <button class="btn btn-sm btn-outline-light d-none d-lg-inline mt-2" (click)="toggleSidebar()">
+                    <i class="bi" [ngClass]="sidebarCollapsed ? 'bi-list' : 'bi-arrow-left-square'"></i>
                 </button>
             </div>
             <!-- Menu Items -->
-            <ul class="nav nav-pills flex-column mb-auto mt-3">
+            <ul class="nav nav-pills flex-column mb-auto mt-1">
                 <li class="nav-item">
                     <a routerLink="orders" class="nav-link text-white d-flex align-items-center"
                         (click)="closeSidebarOnMobile()"><i class="bi bi-bag-heart-fill me-2 text-success"></i>
@@ -142,6 +150,24 @@
                         <span class="menu-text">Quicks</span>
                     </a>
                 </li>
+            </ul>
+            <ul class="nav nav-pills flex-column mb-auto border-top">
+                <li>
+                    <a routerLink="profile" class="nav-link text-white d-flex align-items-center"
+                        (click)="closeSidebarOnMobile()">
+                        <i class="bi bi-person-circle me-2"></i>
+                        <span class="menu-text">Profile</span>
+                    </a>
+                </li>
+                <li class="d-none">
+                    <a routerLink="/setting" class="nav-link text-white d-flex align-items-center"
+                        (click)="closeSidebarOnMobile()">
+                        <i class="bi bi-gear-wide text-warning me-2"></i>
+                        <span class="menu-text">Settings</span>
+                    </a>
+                </li>
+            </ul>
+            <ul class="nav nav-pills flex-column border-top">
                 <li>
                     <a routerLink="about" class="nav-link text-white d-flex align-items-center"
                         (click)="closeSidebarOnMobile()">
@@ -150,10 +176,17 @@
                     </a>
                 </li>
                 <li>
-                    <a routerLink="" class="nav-link text-white d-flex align-items-center"
-                        (click)="closeSidebarOnMobile()" data-bs-toggle="modal" data-bs-target="#helpModal">
+                    <a href="#" class="nav-link text-white d-flex align-items-center" (click)="closeSidebarOnMobile()"
+                        data-bs-toggle="modal" data-bs-target="#helpModal">
                         <i class="bi bi-question-circle me-2 text-success"></i>
                         <span class="menu-text">Help</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-link d-flex align-items-center text-danger" (click)="closeSidebarOnMobile()"
+                        data-bs-toggle="modal" data-bs-target="#appLogoutButton">
+                        <i class="bi bi-box-arrow-right me-2"></i>
+                        <span class="menu-text">Logout</span>
                     </a>
                 </li>
             </ul>
@@ -173,7 +206,7 @@
     </div>
 </div>
 <!-- Reusable confirm modal -->
-<app-confirm-dialog [title]="'Confirm Logout'" [message]="'Are you sure you want to log out?'" [confirmText]="'Logout'"
-    [cancelText]="'Cancel'" [confirmBtnClass]="'btn-danger'" (confirmed)="logout()">
+<app-confirm-dialog [id]="'appLogoutButton'" [title]="'Confirm Logout'" [message]="'Are you sure you want to log out?'"
+    [confirmText]="'Logout'" [cancelText]="'Cancel'" [confirmBtnClass]="'btn-danger'" (confirmed)="logout()">
 </app-confirm-dialog>
 <app-help></app-help>

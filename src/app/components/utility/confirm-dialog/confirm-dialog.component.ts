@@ -10,6 +10,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 })
 
 export class ConfirmDialogComponent {
+  @Input() id: string = 'confirmDialog';
   @Input() title: string = 'Confirm Action';
   @Input() message: string = 'Are you sure you want to proceed?';
   @Input() confirmText: string = 'Confirm';
