@@ -22,7 +22,7 @@ export class VendorModalComponent implements OnInit, OnChanges {
   @Output() successAction = new EventEmitter<Vendor>();
   @Output() errorAction = new EventEmitter<string>();
 
-  constructor(private fb: FormBuilder, private vendorService: VendorService) { }
+  constructor(private fb: FormBuilder, private service: VendorService) { }
 
   ngOnInit(): void {
     this.modalForm = this.fb.group({
@@ -63,7 +63,7 @@ export class VendorModalComponent implements OnInit, OnChanges {
       createdAt: new Date(),
       ...this.modalForm.value
     };
-    this.vendorService.createVendor(newModel).subscribe({
+    this.service.createVendor(newModel).subscribe({
       next: (response) => {
         this.isSubmitting = false;
         this.modalForm.reset();
@@ -89,7 +89,7 @@ export class VendorModalComponent implements OnInit, OnChanges {
       createdAt: new Date(),
       ...this.modalForm.value
     };
-    this.vendorService.updateVendor(newModel).subscribe({
+    this.service.updateVendor(newModel).subscribe({
       next: (response) => {
         this.isSubmitting = false;
         this.modalForm.reset();
