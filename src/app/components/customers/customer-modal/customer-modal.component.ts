@@ -40,6 +40,7 @@ export class CustomerModalComponent implements OnInit, OnChanges {
       this.modalForm.patchValue(this.model);
     } else {
       this.isEditMode = false;
+      this.modalForm.reset();
     }
   }
 
