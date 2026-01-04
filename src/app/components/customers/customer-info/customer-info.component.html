@@ -132,7 +132,7 @@
             </div>
         </div>
     </div>
-    <app-customer-modal [customer]="customer" (successAction)="customerSuccess($event)"
+    <app-customer-modal [model]="customer" (successAction)="customerSuccess($event)"
         (errorAction)="customerError($event)"></app-customer-modal>
     <app-toast *ngIf="showToast" [type]='toastType' [message]='toastMsg' (closeAction)="toastCloseAction()"></app-toast>
     }

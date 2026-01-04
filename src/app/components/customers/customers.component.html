@@ -67,7 +67,7 @@
 <button #launchConfirmDeleteAllCustomersButton class="btn btn-info d-none" data-bs-toggle="modal"
     data-bs-target="#confirmDeleteAllCustomersDialog">Launch Confirm Delete All Modal</button>
 
-<app-customer-modal [customer]="editingCustomer" (successAction)="customerSuccess($event)"
+<app-customer-modal [model]="editingCustomer" (successAction)="customerSuccess($event)"
     (errorAction)="customerError($event)"></app-customer-modal>
 <app-toast *ngIf="showToast" [type]='toastType' [message]='toastMsg' (closeAction)="toastCloseAction()"></app-toast>
 

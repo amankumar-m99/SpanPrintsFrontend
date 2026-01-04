@@ -132,7 +132,7 @@
             </div>
         </div>
     </div>
-    <app-vendor-modal [vendor]="vendor" (successAction)="vendorSuccess($event)"
+    <app-vendor-modal [model]="vendor" (successAction)="vendorSuccess($event)"
         (errorAction)="vendorError($event)"></app-vendor-modal>
     <app-toast *ngIf="showToast" [type]='toastType' [message]='toastMsg' (closeAction)="toastCloseAction()"></app-toast>
     }

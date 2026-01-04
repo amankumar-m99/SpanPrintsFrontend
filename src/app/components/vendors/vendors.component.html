@@ -66,7 +66,7 @@
 <button #launchConfirmDeleteAllVendordsButton class="btn btn-info d-none" data-bs-toggle="modal"
     data-bs-target="#confirmDeleteAllVendorsDialog">Launch Confirm Delete Modal</button>
 
-<app-vendor-modal [vendor]="editingVendor" (successAction)="vendorSuccess($event)"
+<app-vendor-modal [model]="editingVendor" (successAction)="vendorSuccess($event)"
     (errorAction)="vendorError($event)"></app-vendor-modal>
 
 <app-toast *ngIf="showToast" [type]='toastType' [message]='toastMsg' (closeAction)="toastCloseAction()"></app-toast>

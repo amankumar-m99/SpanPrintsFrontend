@@ -168,7 +168,7 @@ export class OrdersComponent implements OnInit {
     this.isSubmitting = true;
 
     // Replace with API call
-    this.orderService.addOrder(this.orderForm.value).subscribe({
+    this.orderService.createOrder(this.orderForm.value).subscribe({
       next: (res) => {
         if (this.editIndex !== null) {
           // Update existing order
