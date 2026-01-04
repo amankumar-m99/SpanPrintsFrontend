@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
-import { ExpenseCardComponent } from '../expense-card/expense-card.component';
 import { Expense } from '../../model/expense.model';
 import { ExpenseService } from '../../services/expense/expense.service';
+import { ExpenseCardComponent } from './expense-card/expense-card.component';
 
 @Component({
   selector: 'app-expenses',

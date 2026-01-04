@@ -11,7 +11,7 @@ import { ExpensesComponent } from './components/expenses/expenses.component';
 import { EarningsComponent } from './components/earnings/earnings.component';
 import { ReportsComponent } from './components/reports/reports.component';
 import { UpdatePasswordComponent } from './components/update-password/update-password.component';
-import { AddOrderComponent } from './components/add-order/add-order.component';
+import { AddOrderComponent } from './components/orders/add-order/add-order.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { InventoryComponent } from './components/inventory/inventory.component';
 import { CustomersComponent } from './components/customers/customers.component';
