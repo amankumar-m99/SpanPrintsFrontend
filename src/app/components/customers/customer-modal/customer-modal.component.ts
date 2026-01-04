@@ -13,21 +13,20 @@ import { CustomerService } from '../../../services/customer/customer.service';
 })
 
 export class CustomerModalComponent implements OnInit, OnChanges {
-  customerForm!: FormGroup;
+  modalForm!: FormGroup;
   isSubmitting = false;
   showToast = false;
   isEditMode = false;
 
-  @ViewChild('addCustomerModalCloseBtn') addCustomerModalCloseBtn!: ElementRef;
-  @Input() customer: Customer | null = null;
+  @Input() model: Customer | null = null;
   @Output() successAction = new EventEmitter<Customer>();
   @Output() errorAction = new EventEmitter<string>();
 
 
-  constructor(private fb: FormBuilder, private customerService: CustomerService) { }
+  constructor(private fb: FormBuilder, private service: CustomerService) { }
 
   ngOnInit(): void {
-    this.customerForm = this.fb.group({
+    this.modalForm = this.fb.group({
       name: ['', Validators.required],
       email: ['', [Validators.email]],
       primaryPhoneNumber: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
@@ -36,82 +35,86 @@ export class CustomerModalComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (this.customer != null) {
+    if (this.model != null) {
       this.isEditMode = true;
-      this.customerForm.patchValue(this.customer);
+      this.modalForm.patchValue(this.model);
     } else {
       this.isEditMode = false;
     }
   }
 
   submitForm(): void {
-    if (this.customerForm.invalid) {
-      this.customerForm.markAllAsTouched();
+    if (this.modalForm.invalid) {
+      this.modalForm.markAllAsTouched();
       return;
     }
     if (this.isEditMode) {
-      this.addCustomer();
+      this.addEntity();
     }
     else {
-      this.editCustomer();
+      this.editEntity();
     }
   }
 
-  addCustomer(): void {
+  addEntity(): void {
     this.isSubmitting = true;
-    let newCustomer: Customer = {
+    let newModel: Customer = {
       uuid: crypto.randomUUID(),
       dbid: -1,
       createdAt: new Date(),
-      ...this.customerForm.value
+      ...this.modalForm.value
     };
-    this.customerService.createCustomer(newCustomer).subscribe({
+    this.service.createCustomer(newModel).subscribe({
       next: (response) => {
         this.isSubmitting = false;
-        this.customerForm.reset();
-        this.addCustomerModalCloseBtn.nativeElement.click();
+        this.modalForm.reset();
+        this.closeModalProgramatically();
         if (this.successAction != null)
           this.successAction.emit(response);
       },
       error: (err) => {
         this.isSubmitting = false;
         let errorMessage = err?.error?.message || 'Invalid credentials or server error.';
-        this.addCustomerModalCloseBtn.nativeElement.click();
+        this.closeModalProgramatically();
         if (this.errorAction != null)
           this.errorAction.emit(errorMessage);
       }
     });
   }
 
-  editCustomer(): void {
+  editEntity(): void {
     this.isSubmitting = true;
-    let newCustomer: Customer = {
-      uuid: this.customer?.uuid,
-      id: this.customer?.id,
+    let newModel: Customer = {
+      uuid: this.model?.uuid,
+      id: this.model?.id,
       createdAt: new Date(),
-      ...this.customerForm.value
+      ...this.modalForm.value
     };
-    this.customerService.updateCustomer(newCustomer).subscribe({
+    this.service.updateCustomer(newModel).subscribe({
       next: (response) => {
         this.isSubmitting = false;
-        this.customerForm.reset();
-        this.addCustomerModalCloseBtn.nativeElement.click();
+        this.modalForm.reset();
+        this.closeModalProgramatically();
         if (this.successAction != null)
           this.successAction.emit(response);
       },
       error: (err) => {
         this.isSubmitting = false;
         let errorMessage = err?.error?.message || 'Invalid credentials or server error.';
-        this.addCustomerModalCloseBtn.nativeElement.click();
+        this.closeModalProgramatically();
         if (this.errorAction != null)
           this.errorAction.emit(errorMessage);
       }
     });
   }
 
-  get name() { return this.customerForm.get('name'); }
-  get primaryPhoneNumber() { return this.customerForm.get('primaryPhoneNumber'); }
-  get alternatePhoneNumber() { return this.customerForm.get('alternatePhoneNumber'); }
-  get email() { return this.customerForm.get('email'); }
+  closeModalProgramatically(): void {
+    (document.querySelector('#customerModalCloseBtn') as HTMLElement)?.click();
+  }
+
+  get name() { return this.modalForm.get('name'); }
+  get primaryPhoneNumber() { return this.modalForm.get('primaryPhoneNumber'); }
+  get alternatePhoneNumber() { return this.modalForm.get('alternatePhoneNumber'); }
+  get email() { return this.modalForm.get('email'); }
 
 }

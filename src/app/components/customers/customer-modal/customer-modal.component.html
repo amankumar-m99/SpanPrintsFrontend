@@ -2,7 +2,7 @@
 <div class="modal fade" id="addCustomerModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <form [formGroup]="customerForm" (ngSubmit)="addCustomer()">
+            <form [formGroup]="modalForm" (ngSubmit)="submitForm()">
                 <div class="modal-header">
                     @if (isEditMode) {
                     <h5 class="modal-title"><i class="bi bi-person-gear me-2"></i>Update Customer</h5>
@@ -10,7 +10,7 @@
                     @else{
                     <h5 class="modal-title"><i class="bi bi-person-plus me-2"></i>Add Customer</h5>
                     }
-                    <button #addCustomerModalCloseBtn type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    <button id="customerModalCloseBtn" type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
