@@ -12,8 +12,12 @@ export class OrderService {
 
   constructor(private http: HttpClient) { }
 
-  addOrder(data: any) {
+  createOrder(data: FormData) {
     return this.http.post<Order>(this.expenseUrl, data);
+  }
+
+  updateOrder(data: Order) {
+    return this.http.put<Order>(this.expenseUrl, data);
   }
 
   getAllOrders() {

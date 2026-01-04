@@ -1,5 +1,6 @@
 export interface Order {
     id: number,
+    uuid: string,
     customerName: string,
     phone: string,
     address: string,

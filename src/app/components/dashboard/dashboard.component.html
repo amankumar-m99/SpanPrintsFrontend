@@ -153,10 +153,17 @@
             </ul>
             <ul class="nav nav-pills flex-column mb-auto border-top">
                 <li>
-                    <a routerLink="profile" class="nav-link text-white d-flex align-items-center"
+                    <a routerLink="about" class="nav-link text-white d-flex align-items-center"
                         (click)="closeSidebarOnMobile()">
-                        <i class="bi bi-person-circle me-2"></i>
-                        <span class="menu-text">Profile</span>
+                        <i class="bi bi-info-circle me-2 text-info"></i>
+                        <span class="menu-text">About</span>
+                    </a>
+                </li>
+                <li class="d-none">
+                    <a href="#" class="nav-link text-white d-flex align-items-center" (click)="closeSidebarOnMobile()"
+                        data-bs-toggle="modal" data-bs-target="#helpModal">
+                        <i class="bi bi-question-circle me-2 text-success"></i>
+                        <span class="menu-text">Help</span>
                     </a>
                 </li>
                 <li class="d-none">
@@ -169,17 +176,17 @@
             </ul>
             <ul class="nav nav-pills flex-column border-top">
                 <li>
-                    <a routerLink="about" class="nav-link text-white d-flex align-items-center"
+                    <a routerLink="profile" class="nav-link text-white d-flex align-items-center"
                         (click)="closeSidebarOnMobile()">
-                        <i class="bi bi-info-circle me-2 text-info"></i>
-                        <span class="menu-text">About</span>
+                        <i class="bi bi-person-circle me-2"></i>
+                        <span class="menu-text">Profile</span>
                     </a>
                 </li>
                 <li>
-                    <a href="#" class="nav-link text-white d-flex align-items-center" (click)="closeSidebarOnMobile()"
-                        data-bs-toggle="modal" data-bs-target="#helpModal">
-                        <i class="bi bi-question-circle me-2 text-success"></i>
-                        <span class="menu-text">Help</span>
+                    <a routerLink="admin" class="nav-link text-white d-flex align-items-center"
+                        (click)="closeSidebarOnMobile()">
+                        <i class="bi bi-shield-lock me-2 text-warning"></i>
+                        <span class="menu-text">Admin</span>
                     </a>
                 </li>
                 <li>

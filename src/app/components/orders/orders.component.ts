@@ -4,11 +4,12 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { OrderCardComponent } from './order-card/order-card.component';
 import { Order } from '../../model/order.model';
 import { OrderService } from '../../services/order/order.service';
+import { OrderModalComponent } from "./order-modal/order-modal.component";
 
 @Component({
   selector: 'app-orders',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, OrderCardComponent, FormsModule],
+  imports: [CommonModule, ReactiveFormsModule, OrderCardComponent, FormsModule, OrderModalComponent],
   templateUrl: './orders.component.html',
   styleUrl: './orders.component.css'
 })
@@ -25,43 +26,14 @@ export class OrdersComponent implements OnInit {
   activeFiltersCount = 0;
   activeFiltersSummary = '';
   selectedFiles: File[] = [];
-  jobTypes: string[] = [
-    'BANNER',
-    'RECEIT',
-    'VISITING_CARD',
-    'WEDDING_CARD',
-    'COLOR_POSTER',
-    'BOOK_BINDING',
-    'PAMPLET',
-    'BILL_BOOK'
-  ];
-
 
   constructor(private fb: FormBuilder, private orderService: OrderService) { }
 
   ngOnInit(): void {
-    this.orderForm = this.fb.group({
-      customerName: ['', Validators.required],
-      phone: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
-      address: ['', Validators.required],
-      jobType: ['', Validators.required],
-      count: [1, [Validators.required, Validators.min(1)]],
-      dateOfDelivery: ['', [Validators.required, Validators.min(1)]],
-      bookNumber: [1],
-      wBookNumber: [1],
-      pendingAmount: [''],
-      totalAmount: ['', Validators.required],
-      depositAmount: ['', Validators.required],
-      discountedAmount: [''],
-      paymentStatus: ['PARTIALLY_PAID'],
-      note: [''],
-      description: ['']
-    });
     this.loadOrders();
   }
 
   loadOrders() {
-    // Replace with API call
     this.orderService.getAllOrders().subscribe({
       next: (res) => {
         this.orders = res;
@@ -159,7 +131,6 @@ export class OrdersComponent implements OnInit {
     const formData = new FormData();
     Object.entries(this.orderForm.value).forEach(([key, value]) => formData.append(key, value as string));
     this.selectedFiles.forEach(file => formData.append('attachments', file));
-
     // Call your API with formData
   }
 

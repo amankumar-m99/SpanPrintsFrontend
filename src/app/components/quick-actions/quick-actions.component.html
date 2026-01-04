@@ -4,7 +4,7 @@
     <div class="row g-4">
         <!-- Add Customer -->
         <div class="col-md-3 col-sm-6">
-            <div class="card action-card shadow-sm h-100" data-bs-toggle="modal" data-bs-target="#addCustomerModal">
+            <div class="card action-card shadow-sm h-100" data-bs-toggle="modal" data-bs-target="#customerModal">
                 <div class="card-body text-center">
                     <i class="bi bi-person-plus fs-1 text-primary mb-2"></i>
                     <h6 class="fw-semibold">Add Customer</h6>
@@ -17,7 +17,7 @@
 
         <!-- Place Order -->
         <div class="col-md-3 col-sm-6">
-            <div class="card action-card shadow-sm h-100" data-bs-toggle="modal" data-bs-target="#newOrderModal">
+            <div class="card action-card shadow-sm h-100" data-bs-toggle="modal" data-bs-target="#orderModal">
                 <div class="card-body text-center">
                     <i class="bi bi-bag-plus fs-1 text-success mb-2"></i>
                     <h6 class="fw-semibold">Place Order</h6>
@@ -30,7 +30,7 @@
 
         <!-- Add Vendor -->
         <div class="col-md-3 col-sm-6">
-            <div class="card action-card shadow-sm h-100" data-bs-toggle="modal" data-bs-target="#addVendorModal">
+            <div class="card action-card shadow-sm h-100" data-bs-toggle="modal" data-bs-target="#vendorModal">
                 <div class="card-body text-center">
                     <i class="bi bi-truck fs-1 text-warning mb-2"></i>
                     <h6 class="fw-semibold">Add Vendor</h6>
@@ -67,7 +67,7 @@
             </div>
         </div>
 
-        <!-- Add Inventory Item -->
+        <!-- View Earnings -->
         <div class="col-md-3 col-sm-6">
             <div class="card action-card shadow-sm h-100" data-bs-toggle="modal" data-bs-target="#addInventoryModal">
                 <div class="card-body text-center">
@@ -80,7 +80,7 @@
             </div>
         </div>
 
-        <!-- Add Inventory Item -->
+        <!-- Add Statistics Data -->
         <div class="col-md-3 col-sm-6">
             <div class="card action-card shadow-sm h-100" data-bs-toggle="modal" data-bs-target="#addInventoryModal">
                 <div class="card-body text-center">
@@ -93,7 +93,7 @@
             </div>
         </div>
 
-        <!-- Add Inventory Item -->
+        <!-- View Profile -->
         <div class="col-md-3 col-sm-6">
             <div class="card action-card shadow-sm h-100" data-bs-toggle="modal" data-bs-target="#addInventoryModal">
                 <div class="card-body text-center">
@@ -112,10 +112,8 @@
 <!-- Reuse existing modals -->
 <app-customer-modal (successAction)="customerSuccess('Customer added.')"
     (errorAction)="errorToast($event)"></app-customer-modal>
+<app-order-modal (successAction)="customerSuccess('Order placed.')"
+    (errorAction)="errorToast($event)"></app-order-modal>
 <app-vendor-modal (successAction)="customerSuccess('Vendor added.')"
     (errorAction)="errorToast($event)"></app-vendor-modal>
 <app-toast *ngIf="showToast" [type]='toastType' [message]='toastMsg' (closeAction)="toastCloseAction()"></app-toast>
-<!--
-    <app-order-modal></app-order-modal>
-    <app-expense-modal></app-expense-modal>
--->
