@@ -13,20 +13,19 @@ import { VendorService } from '../../../services/vendor/vendor.service';
 })
 export class VendorModalComponent implements OnInit, OnChanges {
 
-  vendorForm!: FormGroup;
+  modalForm!: FormGroup;
   isSubmitting = false;
   showToast = false;
   isEditMode = false;
 
-  @ViewChild('vendorModalCloseBtn') vendorModalCloseBtn!: ElementRef;
-  @Input() vendor: Vendor | null = null;
+  @Input() model: Vendor | null = null;
   @Output() successAction = new EventEmitter<Vendor>();
   @Output() errorAction = new EventEmitter<string>();
 
   constructor(private fb: FormBuilder, private vendorService: VendorService) { }
 
   ngOnInit(): void {
-    this.vendorForm = this.fb.group({
+    this.modalForm = this.fb.group({
       name: ['', Validators.required],
       email: ['', Validators.email],
       primaryPhoneNumber: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
@@ -35,45 +34,40 @@ export class VendorModalComponent implements OnInit, OnChanges {
     });
   }
 
-  get name() { return this.vendorForm.get('name'); }
-  get email() { return this.vendorForm.get('email'); }
-  get primaryPhoneNumber() { return this.vendorForm.get('primaryPhoneNumber'); }
-  get alternatePhoneNumber() { return this.vendorForm.get('alternatePhoneNumber'); }
-
   ngOnChanges(changes: SimpleChanges): void {
-    if (this.vendor != null) {
+    if (this.model != null) {
       this.isEditMode = true;
-      this.vendorForm.patchValue(this.vendor);
+      this.modalForm.patchValue(this.model);
     } else {
       this.isEditMode = false;
     }
   }
 
   submitForm(): void {
-    if (this.vendorForm.invalid) {
-      this.vendorForm.markAllAsTouched();
+    if (this.modalForm.invalid) {
+      this.modalForm.markAllAsTouched();
       return;
     }
     if (this.isEditMode) {
-      this.editVendor();
+      this.editEntity();
     }
     else {
-      this.addVendor();
+      this.addEntity();
     }
   }
 
-  addVendor(): void {
+  addEntity(): void {
     this.isSubmitting = true;
-    let newVendor: Vendor = {
+    let newModel: Vendor = {
       uuid: crypto.randomUUID(),
       createdAt: new Date(),
-      ...this.vendorForm.value
+      ...this.modalForm.value
     };
-    this.vendorService.createVendor(newVendor).subscribe({
+    this.vendorService.createVendor(newModel).subscribe({
       next: (response) => {
         this.isSubmitting = false;
-        this.vendorForm.reset();
-        this.vendorModalCloseBtn.nativeElement.click();
+        this.modalForm.reset();
+        this.closeModalProgramatically();
         if (this.successAction != null)
           this.successAction.emit(response);
       },
@@ -81,35 +75,44 @@ export class VendorModalComponent implements OnInit, OnChanges {
         this.isSubmitting = false;
         let errorMessage = err?.error?.message || 'Invalid credentials or server error.';
         console.log(errorMessage);
-        this.vendorModalCloseBtn.nativeElement.click();
+        this.closeModalProgramatically();
         if (this.errorAction != null)
           this.errorAction.emit(errorMessage);
       }
     });
   }
 
-  editVendor(): void {
+  editEntity(): void {
     this.isSubmitting = true;
-    let newVendor: Vendor = {
-      uuid: this.vendor?.uuid,
+    let newModel: Vendor = {
+      uuid: this.model?.uuid,
       createdAt: new Date(),
-      ...this.vendorForm.value
+      ...this.modalForm.value
     };
-    this.vendorService.updateVendor(newVendor).subscribe({
+    this.vendorService.updateVendor(newModel).subscribe({
       next: (response) => {
         this.isSubmitting = false;
-        this.vendorForm.reset();
-        this.vendorModalCloseBtn.nativeElement.click();
+        this.modalForm.reset();
+        this.closeModalProgramatically();
         if (this.successAction != null)
           this.successAction.emit(response);
       },
       error: (err) => {
         this.isSubmitting = false;
         let errorMessage = err?.error?.message || 'Invalid credentials or server error.';
-        this.vendorModalCloseBtn.nativeElement.click();
+        this.closeModalProgramatically();
         if (this.errorAction != null)
           this.errorAction.emit(errorMessage);
       }
     });
   }
+
+  closeModalProgramatically(): void {
+    (document.querySelector('#vendorModalCloseBtn') as HTMLElement)?.click();
+  }
+
+  get name() { return this.modalForm.get('name'); }
+  get email() { return this.modalForm.get('email'); }
+  get primaryPhoneNumber() { return this.modalForm.get('primaryPhoneNumber'); }
+  get alternatePhoneNumber() { return this.modalForm.get('alternatePhoneNumber'); }
 }

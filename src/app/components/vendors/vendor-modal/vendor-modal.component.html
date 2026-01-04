@@ -1,7 +1,7 @@
 <div class="modal fade" id="addVendorModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <form [formGroup]="vendorForm" (ngSubmit)="submitForm()">
+            <form [formGroup]="modalForm" (ngSubmit)="submitForm()">
                 <div class="modal-header">
                     @if (isEditMode) {
                     <h5 class="modal-title"><i class="bi bi-truck me-2"></i>Update Vendor</h5>
@@ -9,7 +9,7 @@
                     @else{
                     <h5 class="modal-title"><i class="bi bi-truck me-2"></i>Add Vendor</h5>
                     }
-                    <button #vendorModalCloseBtn type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    <button id="vendorModalCloseBtn" type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
 
                 <div class="modal-body">
@@ -17,8 +17,7 @@
                         <label class="form-label">Vendor Name<i
                                 class="bi bi-asterisk text-danger ms-1 small"></i></label>
                         <input type="text" class="form-control"
-                            [ngClass]="{ 'is-invalid': name?.invalid && name?.touched }"
-                            formControlName="name">
+                            [ngClass]="{ 'is-invalid': name?.invalid && name?.touched }" formControlName="name">
                         <div class="invalid-feedback" *ngIf="name?.touched && name?.invalid">
                             Vendor name is required
                         </div>
@@ -38,7 +37,8 @@
                                 class="bi bi-asterisk text-danger ms-1 small"></i></label>
                         <input type="tel" class="form-control" formControlName="primaryPhoneNumber"
                             [ngClass]="{ 'is-invalid': primaryPhoneNumber?.invalid && primaryPhoneNumber?.touched }">
-                        <div class="invalid-feedback" *ngIf="primaryPhoneNumber?.touched && primaryPhoneNumber?.invalid">
+                        <div class="invalid-feedback"
+                            *ngIf="primaryPhoneNumber?.touched && primaryPhoneNumber?.invalid">
                             10-digit phone number required
                         </div>
                     </div>
@@ -47,7 +47,8 @@
                         <label class="form-label"><i class="bi bi-telephone-plus me-1"></i>Alternate Phone</label>
                         <input type="tel" class="form-control" formControlName="alternatePhoneNumber"
                             [ngClass]="{ 'is-invalid': alternatePhoneNumber?.invalid && alternatePhoneNumber?.touched }">
-                        <div class="invalid-feedback" *ngIf="alternatePhoneNumber?.touched && alternatePhoneNumber?.invalid">
+                        <div class="invalid-feedback"
+                            *ngIf="alternatePhoneNumber?.touched && alternatePhoneNumber?.invalid">
                             10-digit phone number required
                         </div>
                     </div>
