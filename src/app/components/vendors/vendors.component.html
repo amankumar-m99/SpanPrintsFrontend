@@ -59,23 +59,22 @@
     </div>
 </div>
 
-<button #launchVendorModalButton class="btn btn-info d-none" data-bs-toggle="modal"
-    data-bs-target="#vendorModal">Launch Vendor Modal</button>
-<button #launchConfirmDeleteVendorButton class="btn btn-info d-none" data-bs-toggle="modal"
-    data-bs-target="#confirmDeleteVendorDialog">Launch Confirm Delete Modal</button>
-<button #launchConfirmDeleteAllVendordsButton class="btn btn-info d-none" data-bs-toggle="modal"
-    data-bs-target="#confirmDeleteAllVendorsDialog">Launch Confirm Delete Modal</button>
-
+<button #launchVendorModalButton class="btn btn-info d-none" data-bs-toggle="modal" data-bs-target="#vendorModal">Launch
+    Vendor Modal</button>
 <app-vendor-modal [model]="editingVendor" (successAction)="vendorSuccess($event)"
     (errorAction)="vendorError($event)"></app-vendor-modal>
 
-<app-toast *ngIf="showToast" [type]='toastType' [message]='toastMsg' (closeAction)="toastCloseAction()"></app-toast>
-
+<button #launchConfirmDeleteVendorButton class="btn btn-info d-none" data-bs-toggle="modal"
+    data-bs-target="#confirmDeleteVendorDialog">Launch Confirm Delete Modal</button>
 <app-confirm-dialog [id]="'confirmDeleteVendorDialog'" [title]="'Confirm Delete'" [message]="deleteVendorMsg"
     [confirmText]="'Delete'" [cancelText]="'Cancel'" [confirmBtnClass]="'btn-danger'" (confirmed)="deleteVendor()">
 </app-confirm-dialog>
 
+<button #launchConfirmDeleteAllVendordsButton class="btn btn-info d-none" data-bs-toggle="modal"
+    data-bs-target="#confirmDeleteAllVendorsDialog">Launch Confirm Delete All Modal</button>
 <app-confirm-dialog [id]="'confirmDeleteAllVendorsDialog'" [title]="'Confirm Delete All'"
     [message]="deleteAllVendorsMsg" [confirmText]="'Delete'" [cancelText]="'Cancel'" [confirmBtnClass]="'btn-danger'"
     (confirmed)="deleteAllVendors()">
 </app-confirm-dialog>
+
+<app-toast *ngIf="showToast" [type]='toastType' [message]='toastMsg' (closeAction)="toastCloseAction()"></app-toast>

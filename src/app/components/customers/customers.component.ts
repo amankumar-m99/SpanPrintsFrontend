@@ -44,18 +44,16 @@ export class CustomersComponent implements OnInit {
         this.customers = res;
         if (this.isRefreshTableData) {
           this.toastType = "success";
-          this.toastMsg = "Table data refreshed.";
+          this.toastMsg = "Customers data refreshed.";
           this.showToast = true;
           this.isRefreshTableData = false;
         }
       },
       error: (err) => {
-        if (this.isRefreshTableData) {
-          this.toastType = "error";
-          this.toastMsg = err?.error?.message || 'Error deleting customer';
-          this.showToast = true;
-          this.isRefreshTableData = false;
-        }
+        this.toastType = "error";
+        this.toastMsg = err?.error?.message || 'Error loading customers';
+        this.showToast = true;
+        this.isRefreshTableData = false;
       },
     });
   }

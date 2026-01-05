@@ -60,23 +60,23 @@
         </table>
     </div>
 </div>
+
 <button #launchCustomerModalButton class="btn btn-info d-none" data-bs-toggle="modal"
     data-bs-target="#customerModal">Launch Customer Modal</button>
-<button #launchConfirmDeleteCustomerButton class="btn btn-info d-none" data-bs-toggle="modal"
-    data-bs-target="#confirmDeleteCustomerDialog">Launch Confirm Delete Modal</button>
-<button #launchConfirmDeleteAllCustomersButton class="btn btn-info d-none" data-bs-toggle="modal"
-    data-bs-target="#confirmDeleteAllCustomersDialog">Launch Confirm Delete All Modal</button>
-
 <app-customer-modal [model]="editingCustomer" (successAction)="customerSuccess($event)"
     (errorAction)="customerError($event)"></app-customer-modal>
-<app-toast *ngIf="showToast" [type]='toastType' [message]='toastMsg' (closeAction)="toastCloseAction()"></app-toast>
 
+<button #launchConfirmDeleteCustomerButton class="btn btn-info d-none" data-bs-toggle="modal"
+    data-bs-target="#confirmDeleteCustomerDialog">Launch Confirm Delete Modal</button>
 <app-confirm-dialog [id]="'confirmDeleteCustomerDialog'" [title]="'Confirm Delete'" [message]="deleteCustomerMsg"
-    [confirmText]="'Delete'" [cancelText]="'Cancel'" [confirmBtnClass]="'btn-danger'"
-    (confirmed)="deleteCustomer()">
+    [confirmText]="'Delete'" [cancelText]="'Cancel'" [confirmBtnClass]="'btn-danger'" (confirmed)="deleteCustomer()">
 </app-confirm-dialog>
 
+<button #launchConfirmDeleteAllCustomersButton class="btn btn-info d-none" data-bs-toggle="modal"
+    data-bs-target="#confirmDeleteAllCustomersDialog">Launch Confirm Delete All Modal</button>
 <app-confirm-dialog [id]="'confirmDeleteAllCustomersDialog'" [title]="'Confirm Delete All'"
     [message]="deleteAllCustomersMsg" [confirmText]="'Delete'" [cancelText]="'Cancel'" [confirmBtnClass]="'btn-danger'"
     (confirmed)="deleteAllCustomers()">
 </app-confirm-dialog>
+
+<app-toast *ngIf="showToast" [type]='toastType' [message]='toastMsg' (closeAction)="toastCloseAction()"></app-toast>
