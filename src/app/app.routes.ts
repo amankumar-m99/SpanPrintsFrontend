@@ -11,7 +11,6 @@ import { ExpensesComponent } from './components/expenses/expenses.component';
 import { EarningsComponent } from './components/earnings/earnings.component';
 import { ReportsComponent } from './components/reports/reports.component';
 import { UpdatePasswordComponent } from './components/update-password/update-password.component';
-import { AddOrderComponent } from './components/orders/add-order/add-order.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { InventoryComponent } from './components/inventory/inventory.component';
 import { CustomersComponent } from './components/customers/customers.component';
@@ -29,7 +28,6 @@ export const routes: Routes = [
         path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard],
         children: [
             { path: 'orders', component: OrdersComponent },
-            { path: 'add-order', component: AddOrderComponent },
             { path: 'customers', component: CustomersComponent },
             { path: 'customer/:uuid', component: CustomerInfoComponent },
             { path: 'vendors', component: VendorsComponent },
