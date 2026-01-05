@@ -16,14 +16,14 @@ import { ConfirmDialogComponent } from "../utility/confirm-dialog/confirm-dialog
 })
 
 export class CustomersComponent implements OnInit {
+  tempCustomer !: Customer | null;
   customers: Customer[] = [];
   isSubmitting = false;
+  isRefreshTableData = false;
   showToast = false;
   toastType = 'info';
   toastMsg = '';
   deleteMsg = '';
-  isRefreshTableData = false;
-  tempCustomer !: Customer | null;
 
   @ViewChild('launchCustomerModalButton') launchCustomerModalButton!: ElementRef;
   @ViewChild('launchConfirmDeleteCustomerButton') launchConfirmDeleteButton!: ElementRef;
@@ -67,7 +67,7 @@ export class CustomersComponent implements OnInit {
     this.launchCustomerModalButton.nativeElement.click();
   }
 
-  askDeleteCustomer(customer: Customer) {
+  askDeleteCustomer(customer: Customer): void {
     this.deleteMsg = `Delete customer ${customer.name}?`;
     this.tempCustomer = customer;
     this.launchConfirmDeleteButton.nativeElement.click();
@@ -77,6 +77,7 @@ export class CustomersComponent implements OnInit {
     if (this.tempCustomer) {
       this.customerService.deleteCustomerByUuid(this.tempCustomer.uuid).subscribe({
         next: () => {
+          // this.customers.splice(this.deleteIndex, 1);
           this.customers = this.customers.filter(c => c.uuid !== this.tempCustomer?.uuid);
           this.setToast("warning", "Customer deleted");
         },
