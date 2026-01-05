@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Component, OnInit, EventEmitter, Output, ElementRef, ViewChild } from '@angular/core';
-import { Expense } from '../../model/expense.model';
+import { Expense } from '../../model/expense/expense.model';
 import { ExpenseService } from '../../services/expense/expense.service';
 import { ExpenseCardComponent } from './expense-card/expense-card.component';
 import { ExpenseModalComponent } from "./expense-modal/expense-modal.component";

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TransactionCardComponent } from '../transaction-card/transaction-card.component';
-import { Transaction } from '../../model/transaction.model';
+import { Transaction } from '../../model/transaction/transaction.model';
 import { EarningService } from '../../services/earning/earning.service';
 
 @Component({

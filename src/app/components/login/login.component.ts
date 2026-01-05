@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth/auth.service';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { LoginModel } from '../../model/login.model';
+import { LoginModel } from '../../model/account/login.model';
 import { CommonModule } from '@angular/common';
 import { AppStorage } from '../../storage/AppStorage';
 

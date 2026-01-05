@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Constant } from '../../constant/Constant';
-import { Order } from '../../model/order.model';
+import { Order } from '../../model/order/order.model';
 
 @Injectable({
   providedIn: 'root'

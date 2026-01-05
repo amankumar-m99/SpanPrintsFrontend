@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { ReactiveFormsModule, FormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Order } from '../../../model/order.model';
+import { Order } from '../../../model/order/order.model';
 import { OrderService } from '../../../services/order/order.service';
 
 @Component({

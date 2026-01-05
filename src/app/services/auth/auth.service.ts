@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { LoginModel } from '../../model/login.model';
-import { RegisterModel } from '../../model/register.model';
+import { LoginModel } from '../../model/account/login.model';
+import { RegisterModel } from '../../model/account/register.model';
 import { Router } from '@angular/router';
 import { Constant } from '../../constant/Constant';
 import { AppStorage } from '../../storage/AppStorage';
-import { Profile } from '../../model/profile.model';
+import { Profile } from '../../model/profile/profile.model';
 
 @Injectable({
   providedIn: 'root'

@@ -1,4 +1,4 @@
-import { Expense } from "./expense.model";
+import { Expense } from "../expense/expense.model";
 
 export interface Transaction{
     id: number,

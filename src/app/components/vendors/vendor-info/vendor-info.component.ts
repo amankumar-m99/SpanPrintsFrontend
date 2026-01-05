@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { ToastComponent } from "../../utility/toast/toast.component";
 import { VendorModalComponent } from '../vendor-modal/vendor-modal.component';
 import { VendorService } from '../../../services/vendor/vendor.service';
-import { Vendor } from '../../../model/vendor.model';
+import { Vendor } from '../../../model/vendor/vendor.model';
 
 @Component({
   selector: 'app-vendor-info',

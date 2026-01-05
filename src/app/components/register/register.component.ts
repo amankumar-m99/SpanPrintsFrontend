@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { RouterLink, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth/auth.service';
-import { RegisterModel } from '../../model/register.model';
+import { RegisterModel } from '../../model/account/register.model';
 import { passwordMatchValidator } from '../../validators/PasswordMatchValidator';
 
 

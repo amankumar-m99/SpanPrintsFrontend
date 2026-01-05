@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule } from '@angular/forms';
 import { OrderCardComponent } from './order-card/order-card.component';
-import { Order } from '../../model/order.model';
+import { Order } from '../../model/order/order.model';
 import { OrderService } from '../../services/order/order.service';
 import { OrderModalComponent } from "./order-modal/order-modal.component";
 import { ConfirmDialogComponent } from "../utility/confirm-dialog/confirm-dialog.component";

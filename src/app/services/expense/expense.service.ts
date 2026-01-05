@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Constant } from '../../constant/Constant';
 import { HttpClient } from '@angular/common/http';
-import { Expense } from '../../model/expense.model';
+import { Expense } from '../../model/expense/expense.model';
 
 @Injectable({
   providedIn: 'root'

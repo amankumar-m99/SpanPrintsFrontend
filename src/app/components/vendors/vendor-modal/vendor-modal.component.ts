@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { ReactiveFormsModule, FormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Vendor } from '../../../model/vendor.model';
+import { Vendor } from '../../../model/vendor/vendor.model';
 import { VendorService } from '../../../services/vendor/vendor.service';
 
 @Component({

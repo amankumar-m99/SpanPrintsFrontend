@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../../services/auth/auth.service';
-import { Profile } from '../../model/profile.model';
+import { Profile } from '../../model/profile/profile.model';
 import { ProfileService } from '../../services/profile/profile.service';
 import { ProfilePicComponent } from '../profile-pic/profile-pic.component';
 import { Constant } from '../../constant/Constant';

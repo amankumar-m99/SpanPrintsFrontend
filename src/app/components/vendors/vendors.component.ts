@@ -1,6 +1,6 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Vendor } from '../../model/vendor.model';
+import { Vendor } from '../../model/vendor/vendor.model';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { VendorModalComponent } from "./vendor-modal/vendor-modal.component";
