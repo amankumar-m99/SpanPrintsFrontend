@@ -33,7 +33,7 @@
 
             <tbody>
                 <tr *ngFor="let customer of customers; let i = index" class="cursor-pointer"
-                    (click)="openCustomerProfile(customer)">
+                    (click)="openDetails(customer)">
                     <td>{{ i + 1 }}</td>
                     <td>{{ customer.name }}</td>
                     <td>{{ customer.email }}</td>
@@ -51,7 +51,7 @@
                         <button class="btn btn-sm btn-outline-danger me-1" (click)="askDeleteCustomer(customer)">
                             <i class="bi bi-trash"></i>
                         </button>
-                        <button class="btn btn-sm btn-outline-info" (click)="openCustomerProfile(customer)">
+                        <button class="btn btn-sm btn-outline-info" (click)="openDetails(customer)">
                             <i class="bi bi-box-arrow-up-right"></i>
                         </button>
                     </td>
@@ -63,19 +63,19 @@
 
 <button #launchCustomerModalButton class="btn btn-info d-none" data-bs-toggle="modal"
     data-bs-target="#customerModal">Launch Customer Modal</button>
-<app-customer-modal [model]="editingCustomer" (successAction)="customerSuccess($event)"
-    (errorAction)="customerError($event)"></app-customer-modal>
+<app-customer-modal [model]="tempCustomer" (successAction)="successAction($event)"
+    (errorAction)="errorAction($event)"></app-customer-modal>
 
 <button #launchConfirmDeleteCustomerButton class="btn btn-info d-none" data-bs-toggle="modal"
     data-bs-target="#confirmDeleteCustomerDialog">Launch Confirm Delete Modal</button>
-<app-confirm-dialog [id]="'confirmDeleteCustomerDialog'" [title]="'Confirm Delete'" [message]="deleteCustomerMsg"
+<app-confirm-dialog [id]="'confirmDeleteCustomerDialog'" [title]="'Confirm Delete'" [message]="deleteMsg"
     [confirmText]="'Delete'" [cancelText]="'Cancel'" [confirmBtnClass]="'btn-danger'" (confirmed)="deleteCustomer()">
 </app-confirm-dialog>
 
 <button #launchConfirmDeleteAllCustomersButton class="btn btn-info d-none" data-bs-toggle="modal"
     data-bs-target="#confirmDeleteAllCustomersDialog">Launch Confirm Delete All Modal</button>
-<app-confirm-dialog [id]="'confirmDeleteAllCustomersDialog'" [title]="'Confirm Delete All'"
-    [message]="deleteAllCustomersMsg" [confirmText]="'Delete'" [cancelText]="'Cancel'" [confirmBtnClass]="'btn-danger'"
+<app-confirm-dialog [id]="'confirmDeleteAllCustomersDialog'" [title]="'Confirm Delete All'" [message]="deleteMsg"
+    [confirmText]="'Delete'" [cancelText]="'Cancel'" [confirmBtnClass]="'btn-danger'"
     (confirmed)="deleteAllCustomers()">
 </app-confirm-dialog>
 
