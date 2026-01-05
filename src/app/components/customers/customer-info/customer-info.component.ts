@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { CustomerService } from '../../../services/customer/customer.service';
-import { Customer } from '../../../model/customer.model';
+import { Customer } from '../../../model/customer/customer.model';
 import { CommonModule } from '@angular/common';
 import { CustomerModalComponent } from "../customer-modal/customer-modal.component";
 import { ToastComponent } from "../../utility/toast/toast.component";

@@ -1,8 +1,9 @@
-import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { Customer } from '../../../model/customer.model';
+import { Customer } from '../../../model/customer/customer.model';
 import { CustomerService } from '../../../services/customer/customer.service';
+import { UpdateCustomer } from '../../../model/customer/update-customer.model';
 
 @Component({
   selector: 'app-customer-modal',
@@ -18,7 +19,7 @@ export class CustomerModalComponent implements OnInit, OnChanges {
   showToast = false;
   isEditMode = false;
 
-  @Input() model: Customer | null = null;
+  @Input() model: UpdateCustomer | null = null;
   @Output() successAction = new EventEmitter<Customer>();
   @Output() errorAction = new EventEmitter<string>();
 
@@ -37,11 +38,20 @@ export class CustomerModalComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (this.model != null) {
       this.isEditMode = true;
-      this.modalForm.patchValue(this.model);
+      this.modalForm?.patchValue(this.model);
     } else {
       this.isEditMode = false;
-      this.modalForm.reset();
+      this.modalForm?.reset();
     }
+  }
+
+  get name() { return this.modalForm.get('name'); }
+  get email() { return this.modalForm.get('email'); }
+  get primaryPhoneNumber() { return this.modalForm.get('primaryPhoneNumber'); }
+  get alternatePhoneNumber() { return this.modalForm.get('alternatePhoneNumber'); }
+
+  programmaticallyClickFormSubmitButton(): void {
+    (document.querySelector('#customerModalFormSubmitButton') as HTMLElement)?.click();
   }
 
   submitForm(): void {
@@ -50,45 +60,18 @@ export class CustomerModalComponent implements OnInit, OnChanges {
       return;
     }
     if (this.isEditMode) {
-      this.addEntity();
+      this.updateEntity();
     }
     else {
-      this.editEntity();
+      this.createEntity();
     }
   }
 
-  addEntity(): void {
+  updateEntity(): void {
     this.isSubmitting = true;
     let newModel: Customer = {
-      uuid: crypto.randomUUID(),
-      dbid: -1,
-      createdAt: new Date(),
-      ...this.modalForm.value
-    };
-    this.service.createCustomer(newModel).subscribe({
-      next: (response) => {
-        this.isSubmitting = false;
-        this.modalForm.reset();
-        this.closeModalProgramatically();
-        if (this.successAction != null)
-          this.successAction.emit(response);
-      },
-      error: (err) => {
-        this.isSubmitting = false;
-        let errorMessage = err?.error?.message || 'Invalid credentials or server error.';
-        this.closeModalProgramatically();
-        if (this.errorAction != null)
-          this.errorAction.emit(errorMessage);
-      }
-    });
-  }
-
-  editEntity(): void {
-    this.isSubmitting = true;
-    let newModel: Customer = {
-      uuid: this.model?.uuid,
       id: this.model?.id,
-      createdAt: new Date(),
+      uuid: this.model?.uuid,
       ...this.modalForm.value
     };
     this.service.updateCustomer(newModel).subscribe({
@@ -101,7 +84,30 @@ export class CustomerModalComponent implements OnInit, OnChanges {
       },
       error: (err) => {
         this.isSubmitting = false;
-        let errorMessage = err?.error?.message || 'Invalid credentials or server error.';
+        let errorMessage = err?.error?.message || 'Error occured while updating customer';
+        this.closeModalProgramatically();
+        if (this.errorAction != null)
+          this.errorAction.emit(errorMessage);
+      }
+    });
+  }
+
+  createEntity(): void {
+    this.isSubmitting = true;
+    let newModel: Customer = {
+      ...this.modalForm.value
+    };
+    this.service.createCustomer(newModel).subscribe({
+      next: (response) => {
+        this.isSubmitting = false;
+        this.modalForm.reset();
+        this.closeModalProgramatically();
+        if (this.successAction != null)
+          this.successAction.emit(response);
+      },
+      error: (err) => {
+        this.isSubmitting = false;
+        let errorMessage = err?.error?.message || 'Error occured while creating customer';
         this.closeModalProgramatically();
         if (this.errorAction != null)
           this.errorAction.emit(errorMessage);
@@ -112,10 +118,5 @@ export class CustomerModalComponent implements OnInit, OnChanges {
   closeModalProgramatically(): void {
     (document.querySelector('#customerModalCloseBtn') as HTMLElement)?.click();
   }
-
-  get name() { return this.modalForm.get('name'); }
-  get primaryPhoneNumber() { return this.modalForm.get('primaryPhoneNumber'); }
-  get alternatePhoneNumber() { return this.modalForm.get('alternatePhoneNumber'); }
-  get email() { return this.modalForm.get('email'); }
 
 }

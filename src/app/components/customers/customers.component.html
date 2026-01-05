@@ -41,7 +41,7 @@
                     <td>{{ customer.alternatePhoneNumber }}</td>
                     <td> N/A</td>
                     <td>{{ customer.addedBy }}</td>
-                    <td>{{ customer.dateAdded | date:'short' }}</td>
+                    <td>{{ customer.addedOn | date:'short' }}</td>
 
                     <!-- Actions -->
                     <td class="text-end" (click)="$event.stopPropagation()">

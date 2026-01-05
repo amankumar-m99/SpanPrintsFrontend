@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Constant } from '../../constant/Constant';
 import { HttpClient } from '@angular/common/http';
-import { Customer } from '../../model/customer.model';
+import { Customer } from '../../model/customer/customer.model';
+import { CreateCustomer } from '../../model/customer/create-customer.model';
+import { UpdateCustomer } from '../../model/customer/update-customer.model';
 
 @Injectable({
   providedIn: 'root'
@@ -12,11 +14,11 @@ export class CustomerService {
 
   constructor(private http: HttpClient) { }
 
-  createCustomer(customer: Customer) {
+  createCustomer(customer: CreateCustomer) {
     return this.http.post<Customer>(this.url, customer);
   }
 
-  updateCustomer(customer: Customer) {
+  updateCustomer(customer: UpdateCustomer) {
     return this.http.put<Customer>(this.url, customer);
   }
 

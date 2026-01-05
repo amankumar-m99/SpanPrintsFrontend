@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Customer } from '../../model/customer.model';
+import { Customer } from '../../model/customer/customer.model';
 import { Router } from '@angular/router';
 import { CustomerModalComponent } from "./customer-modal/customer-modal.component";
 import { CustomerService } from '../../services/customer/customer.service';

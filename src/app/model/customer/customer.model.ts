@@ -5,6 +5,8 @@ export interface Customer {
   name: string;
   primaryPhoneNumber: string;
   alternatePhoneNumber: string;
-  dateAdded: Date;
+  addedOn: Date;
   addedBy: string;
+  addedByAccountId: number;
+  printJobIds: number[];
 }

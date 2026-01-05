@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CustomerModalComponent } from "../customers/customer-modal/customer-modal.component";
 import { ToastComponent } from "../utility/toast/toast.component";
-import { Customer } from '../../model/customer.model';
+import { Customer } from '../../model/customer/customer.model';
 import { CommonModule } from '@angular/common';
 import { VendorModalComponent } from "../vendors/vendor-modal/vendor-modal.component";
 import { OrderModalComponent } from "../orders/order-modal/order-modal.component";
