@@ -54,7 +54,7 @@ export class VendorsComponent {
         this.toastMsg = err?.error?.message || 'Error loading vendors';
         this.showToast = true;
         this.isRefreshTableData = false;
-      },
+      }
     });
   }
 

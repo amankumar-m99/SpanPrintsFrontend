@@ -5,11 +5,12 @@ import { Customer } from '../../model/customer.model';
 import { CommonModule } from '@angular/common';
 import { VendorModalComponent } from "../vendors/vendor-modal/vendor-modal.component";
 import { OrderModalComponent } from "../orders/order-modal/order-modal.component";
+import { ExpenseModalComponent } from "../expenses/expense-modal/expense-modal.component";
 
 @Component({
   selector: 'app-quick-actions',
   standalone: true,
-  imports: [CustomerModalComponent, ToastComponent, CommonModule, VendorModalComponent, OrderModalComponent],
+  imports: [CustomerModalComponent, ToastComponent, CommonModule, VendorModalComponent, OrderModalComponent, ExpenseModalComponent],
   templateUrl: './quick-actions.component.html',
   styleUrl: './quick-actions.component.css'
 })

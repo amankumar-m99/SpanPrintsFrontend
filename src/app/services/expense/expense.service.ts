@@ -8,15 +8,27 @@ import { Expense } from '../../model/expense.model';
 })
 export class ExpenseService {
 
-  private expenseUrl = Constant.API_URL + '/expense';
+  private url = Constant.API_URL + '/expense';
 
   constructor(private http: HttpClient) { }
 
-  addExpense(data: any) {
-    return this.http.post<Expense>(this.expenseUrl, data);
+  addExpense(data: Expense) {
+    return this.http.post<Expense>(this.url, data);
+  }
+
+  updateExpense(data: Expense) {
+    return this.http.put<Expense>(this.url, data);
   }
 
   getAllExpenses() {
-    return this.http.get<Expense[]>(this.expenseUrl);
+    return this.http.get<Expense[]>(this.url);
+  }
+
+  deleteAllExpenses() {
+    return this.http.delete(this.url + 's');
+  }
+
+  deleteExpenseByUuid(uuid: string) {
+    return this.http.delete(this.url + '/uuid/' + uuid);
   }
 }

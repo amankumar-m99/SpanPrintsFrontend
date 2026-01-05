@@ -116,4 +116,6 @@
     (errorAction)="errorToast($event)"></app-order-modal>
 <app-vendor-modal (successAction)="customerSuccess('Vendor added.')"
     (errorAction)="errorToast($event)"></app-vendor-modal>
+<app-expense-modal (successAction)="customerSuccess('Expense added.')"
+    (errorAction)="errorToast($event)"></app-expense-modal>
 <app-toast *ngIf="showToast" [type]='toastType' [message]='toastMsg' (closeAction)="toastCloseAction()"></app-toast>

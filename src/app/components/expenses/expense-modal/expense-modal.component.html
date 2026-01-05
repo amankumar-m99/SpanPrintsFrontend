@@ -1,0 +1,72 @@
+<div class="modal fade" id="expenseModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form [formGroup]="modalForm" (ngSubmit)="submitForm()">
+                <div class="modal-header">
+                    @if (isEditMode) {
+                    <h5 class="modal-title"><i class="bi bi-currency-rupee me-2"></i>Update Expense</h5>
+                    }
+                    @else{
+                    <h5 class="modal-title"><i class="bi bi-currency-rupee me-2"></i>Add Expense</h5>
+                    }
+                    <button id="expenseModalCloseBtn" type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Expense Type</label>
+                        <div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" formControlName="expenseType"
+                                    value="BUSINESS" />
+                                <label class="form-check-label">Business</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" formControlName="expenseType"
+                                    value="PERSONAL" />
+                                <label class="form-check-label">Personal</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Amount</label>
+                        <input type="number" class="form-control" formControlName="amount" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Date of Expense</label>
+                        <input type="date" class="form-control" formControlName="dateOfExpense" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Description</label>
+                        <textarea class="form-control" formControlName="description"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary" [disabled]="isSubmitting">
+                        @if(!isSubmitting){
+                        @if(isEditMode){
+                        <span>Update</span>
+                        }
+                        @else {
+                        <span>Add</span>
+                        }
+                        }
+                        @else {
+                        <span class="spinner-border spinner-border-sm me-2"></span>
+                        @if(isEditMode){
+                        <span>Updating...</span>
+                        }
+                        @else {
+                        <span>Adding...</span>
+                        }
+                        }
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
