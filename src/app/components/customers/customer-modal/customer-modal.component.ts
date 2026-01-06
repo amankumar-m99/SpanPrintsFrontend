@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { CommonModule } from '@angular/common';
 import { Customer } from '../../../model/customer/customer.model';
 import { CustomerService } from '../../../services/customer/customer.service';
-import { UpdateCustomer } from '../../../model/customer/update-customer.model';
+import { UpdateCustomerRequest } from '../../../model/customer/update-customer-request.model';
 
 @Component({
   selector: 'app-customer-modal',
@@ -19,10 +19,9 @@ export class CustomerModalComponent implements OnInit, OnChanges {
   showToast = false;
   isEditMode = false;
 
-  @Input() model: UpdateCustomer | null = null;
+  @Input() model: UpdateCustomerRequest | null = null;
   @Output() successAction = new EventEmitter<Customer>();
   @Output() errorAction = new EventEmitter<string>();
-
 
   constructor(private fb: FormBuilder, private service: CustomerService) { }
 
@@ -30,6 +29,7 @@ export class CustomerModalComponent implements OnInit, OnChanges {
     this.modalForm = this.fb.group({
       name: ['', Validators.required],
       email: ['', [Validators.email]],
+      address: [''],
       primaryPhoneNumber: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
       alternatePhoneNumber: ['', [Validators.pattern(/^\d{10}$/)]]
     });
@@ -47,6 +47,7 @@ export class CustomerModalComponent implements OnInit, OnChanges {
 
   get name() { return this.modalForm.get('name'); }
   get email() { return this.modalForm.get('email'); }
+  get address() { return this.modalForm.get('address'); }
   get primaryPhoneNumber() { return this.modalForm.get('primaryPhoneNumber'); }
   get alternatePhoneNumber() { return this.modalForm.get('alternatePhoneNumber'); }
 
@@ -69,9 +70,8 @@ export class CustomerModalComponent implements OnInit, OnChanges {
 
   updateEntity(): void {
     this.isSubmitting = true;
-    let newModel: Customer = {
+    let newModel: UpdateCustomerRequest = {
       id: this.model?.id,
-      uuid: this.model?.uuid,
       ...this.modalForm.value
     };
     this.service.updateCustomer(newModel).subscribe({
