@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
 import { CustomerModalComponent } from "../customer-modal/customer-modal.component";
 import { ToastComponent } from "../../utility/toast/toast.component";
 import { ConfirmDialogComponent } from "../../utility/confirm-dialog/confirm-dialog.component";
-import { FormBuilder, FormGroup, FormsModule, Validators } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-customer-info',
@@ -26,9 +26,11 @@ export class CustomerInfoComponent implements OnInit {
   toastMsg = '';
   deleteMsg = '';
 
-  uuidForm !: FormGroup;
+  enteredUuid = '';
+  isUuidValid = false;
+  private uuidRegex: RegExp = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
-  constructor(private router: Router, private route: ActivatedRoute, private fb: FormBuilder, private customerService: CustomerService) { }
+  constructor(private router: Router, private route: ActivatedRoute, private customerService: CustomerService) { }
 
   // ngOnInit(): void {
   //   this.customerUuid = this.route.snapshot.paramMap.get('uuid')!;
@@ -38,9 +40,6 @@ export class CustomerInfoComponent implements OnInit {
   // Recommended (reactive approach – better)
   // If the same component can be reused with different UUIDs without reload
   ngOnInit(): void {
-    this.uuidForm = this.fb.group({
-      uuid: ['', Validators.required]
-    });
     this.route.paramMap.subscribe(params => {
       const uuid = params.get('uuid');
       if (uuid) {
@@ -113,11 +112,6 @@ export class CustomerInfoComponent implements OnInit {
   reload() {
     window.location.reload();
   }
-
-  enteredUuid = '';
-  isUuidValid = false;
-
-  private uuidRegex: RegExp = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
   validateUuid() {
     this.isUuidValid = this.uuidRegex.test(this.enteredUuid.trim());
