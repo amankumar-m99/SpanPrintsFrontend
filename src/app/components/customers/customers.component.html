@@ -22,11 +22,14 @@
                     <th>#</th>
                     <th>Name</th>
                     <th>Email</th>
+                    <th>Address</th>
                     <th>Primary Phone</th>
                     <th>Alternate Phone</th>
                     <th>Outstanding Amount</th>
-                    <th>Created By</th>
+                    <th>Orders Count</th>
+                    <th>Updated At</th>
                     <th>Created At</th>
+                    <th>Created By</th>
                     <th class="text-end">Actions</th>
                 </tr>
             </thead>
@@ -37,11 +40,14 @@
                     <td>{{ i + 1 }}</td>
                     <td>{{ customer.name }}</td>
                     <td>{{ customer.email }}</td>
+                    <td>{{ customer.address }}</td>
                     <td>{{ customer.primaryPhoneNumber }}</td>
                     <td>{{ customer.alternatePhoneNumber }}</td>
                     <td> N/A</td>
-                    <td>{{ customer.addedBy }}</td>
-                    <td>{{ customer.addedOn | date:'short' }}</td>
+                    <td>{{ customer.printJobIds.length }}</td>
+                    <td>{{ customer.updatedAt | date: 'short' }}</td>
+                    <td>{{ customer.createdAt | date:'short' }}</td>
+                    <td>{{ customer.createdBy }}</td>
 
                     <!-- Actions -->
                     <td class="text-end" (click)="$event.stopPropagation()">

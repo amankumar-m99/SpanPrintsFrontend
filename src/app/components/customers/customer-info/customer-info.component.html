@@ -12,65 +12,117 @@
             </div>
         </div>
     </div>
-    @if(errorMsg != null && errorMsg != ''){
-    <P class="text-warning"> {{errorMsg}}</P>
+
+    @if (errorMsg) {
+    <div class="d-flex justify-content-center align-items-center mt-5">
+        <div class="card shadow-sm border-warning" style="max-width: 520px;">
+            <div class="card-body text-center p-4">
+                <!-- Icon -->
+                <div class="mb-3">
+                    <i class="bi bi-exclamation-triangle-fill text-warning fs-1"></i>
+                </div>
+
+                <!-- Title -->
+                <h5 class="fw-semibold text-warning mb-2">
+                    Invalid Customer
+                </h5>
+
+                <!-- Message -->
+                <p class="text-muted mb-3">
+                    {{ errorMsg }}
+                </p>
+
+                <!-- UUID Input -->
+                <div class="mb-2">
+                    <div class="input-group">
+                        <input type="text" class="form-control text-center" placeholder="Paste customer UUID here"
+                            [(ngModel)]="enteredUuid" (input)="validateUuid()" />
+
+                        <!-- Paste button -->
+                        <button type="button" class="btn btn-outline-secondary" (click)="pasteFromClipboard()"
+                            title="Paste from clipboard">
+                            <i class="bi bi-clipboard"></i>
+                        </button>
+
+                        <!-- Go button -->
+                        <button type="button" class="btn btn-warning" [disabled]="!isUuidValid"
+                            (click)="navigateWithUuid()">Go</button>
+                    </div>
+                </div>
+
+                <!-- Inline Validation Error -->
+                @if (enteredUuid && !isUuidValid) {
+                <div class="text-danger small mb-3">
+                    Invalid UUID format
+                </div>
+                }
+
+                <!-- Actions -->
+                <div class="d-flex justify-content-center gap-2">
+                    <button class="btn btn-outline-secondary" routerLink="/dashboard/customers">
+                        <i class="bi bi-arrow-left"></i> Back to Customers
+                    </button>
+
+                    <button class="btn btn-warning" (click)="reload()">
+                        <i class="bi bi-arrow-clockwise"></i> Reload Page
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
     }
     @else {
     <div class="container-fluid">
         <!-- Customer Header -->
         <div class="card shadow-sm mb-4">
             <div class="card-body">
-                <div class="d-flex justify-content-between align-items-start">
+                <div class="d-flex justify-content-between align-items-start border-bottom pb-2 mb-2">
                     <div>
-                        <h4 class="mb-1"><i class="bi bi-person me-2"></i>{{ customer.name }}</h4>
+                        <h4 class="mb-1"><i class="bi bi-person me-2"></i>{{ customer?.name }}</h4>
                         <div class="text-muted small d-none">
-                            Customer ID: {{ customer.uuid }}
+                            Customer ID: {{ customer?.uuid }}
                         </div>
                     </div>
 
                     <div>
                         <button class="btn btn-sm btn-outline-primary me-2" data-bs-toggle="modal"
-                            data-bs-target="#addCustomerModal">
+                            data-bs-target="#customerModal">
                             <i class="bi bi-pencil"></i> Edit
                         </button>
-                        <button class="btn btn-sm btn-outline-danger">
+                        <button class="btn btn-sm btn-outline-danger" data-bs-toggle="modal"
+                            data-bs-target="#confirmDeleteCustomerDialog">
                             <i class="bi bi-trash"></i> Delete
                         </button>
                     </div>
                 </div>
 
-                <hr />
 
                 <div class="row g-3">
                     <div class="col-md-4">
-                        <strong><i class="bi bi-envelope-at me-1"></i>Email</strong>
-                        <div>{{ customer.email || 'N/A' }}</div>
+                        <strong><i class="bi bi-envelope-at me-1 text-info"></i>Email</strong>
+                        <div>{{ customer?.email || 'N/A' }}</div>
                     </div>
 
                     <div class="col-md-4">
-                        <strong><i class="bi bi-telephone me-1"></i>Primary Phone</strong>
-                        <div>{{ customer.primaryPhoneNumber }}</div>
+                        <strong><i class="bi bi-telephone me-1 text-info"></i>Primary Phone</strong>
+                        <div>{{ customer?.primaryPhoneNumber }}</div>
                     </div>
 
                     <div class="col-md-4">
-                        <strong><i class="bi bi-telephone-plus me-1"></i>Alternate Phone</strong>
-                        <div>{{ customer.alternatePhoneNumber || 'N/A' }}</div>
+                        <strong><i class="bi bi-telephone-plus me-1 text-info"></i>Alternate Phone</strong>
+                        <div>{{ customer?.alternatePhoneNumber || 'N/A' }}</div>
+                    </div>
+
+                    <div class="col-md-8">
+                        <strong><i class="bi bi-geo-alt me-1 text-info"></i>Address</strong>
+                        <div>{{ customer?.address }}</div>
                     </div>
 
                     <div class="col-md-4">
-                        <strong>Created At</strong>
-                        <div>{{ customer.addedOn | date:'short' }}</div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <strong>Created By</strong>
-                        <div>{{ customer.addedBy }}</div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <strong>Customer UUID</strong>
+                        <strong><i class="bi bi-shield-lock me-1 text-info"></i>Customer UUID</strong>
                         <div>
-                            {{ customer.uuid }}
+                            {{ customer?.uuid }}
                             <span>
                                 <button class="btn btn-sm btn-outline-secondary" (click)="copyUuid()"
                                     [disabled]="copied">
@@ -82,7 +134,21 @@
 
                             </span>
                         </div>
+                    </div>
 
+                    <div class="col-md-4">
+                        <strong><i class="bi bi-person me-1 text-info"></i>Created By</strong>
+                        <div>{{ customer?.createdBy }}</div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <strong><i class="bi bi-calendar-plus me-1 text-info"></i>Created At</strong>
+                        <div>{{ customer?.createdAt | date:'short' }}</div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <strong><i class="bi bi-calendar-check me-1 text-info"></i>Updated At</strong>
+                        <div>{{ customer?.updatedAt | date:'short' }}</div>
                     </div>
                 </div>
             </div>
@@ -113,7 +179,7 @@
             <!-- Orders -->
             <div class="tab-pane fade show active" id="orders">
                 <div class="alert alert-info">
-                    Orders placed by this customer will appear here.
+                    Total number of orders so far: {{customer?.printJobIds?.length}}
                 </div>
             </div>
 
@@ -134,6 +200,10 @@
     </div>
     <app-customer-modal [model]="customer" (successAction)="customerSuccess($event)"
         (errorAction)="customerError($event)"></app-customer-modal>
+    <app-confirm-dialog [id]="'confirmDeleteCustomerDialog'" [title]="'Confirm Delete'" [message]="deleteMsg"
+        [confirmText]="'Delete'" [cancelText]="'Cancel'" [confirmBtnClass]="'btn-danger'"
+        (confirmed)="deleteCustomer()">
+    </app-confirm-dialog>
     <app-toast *ngIf="showToast" [type]='toastType' [message]='toastMsg' (closeAction)="toastCloseAction()"></app-toast>
     }
 </div>

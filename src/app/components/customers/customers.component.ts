@@ -16,10 +16,10 @@ import { ConfirmDialogComponent } from "../utility/confirm-dialog/confirm-dialog
 })
 
 export class CustomersComponent implements OnInit {
-  tempCustomer !: Customer | null;
   customers: Customer[] = [];
+  tempCustomer !: Customer | null;
   isSubmitting = false;
-  isRefreshTableData = false;
+  isRefreshingData = false;
   showToast = false;
   toastType = 'info';
   toastMsg = '';
@@ -40,31 +40,31 @@ export class CustomersComponent implements OnInit {
     this.customerService.getAllCustomers().subscribe({
       next: (res) => {
         this.customers = res;
-        if (this.isRefreshTableData) {
+        if (this.isRefreshingData) {
           this.setToast("success", "Customers data refreshed.");
-          this.isRefreshTableData = false;
+          this.isRefreshingData = false;
         }
       },
       error: (err) => {
         this.setToast("error", err?.error?.message || 'Error loading customers');
-        this.isRefreshTableData = false;
+        this.isRefreshingData = false;
       },
     });
   }
 
   refreshTable(): void {
-    this.isRefreshTableData = true;
+    this.isRefreshingData = true;
     this.loadData();
   }
 
   addCustomer(): void {
     this.tempCustomer = null;
-    this.launchCustomerModalButton.nativeElement.click();
+    this.launchCustomerModal();
   }
 
   editCustomer(customer: Customer) {
     this.tempCustomer = customer;
-    this.launchCustomerModalButton.nativeElement.click();
+    this.launchCustomerModal();
   }
 
   askDeleteCustomer(customer: Customer): void {
@@ -103,6 +103,10 @@ export class CustomersComponent implements OnInit {
         this.setToast("error", err?.error?.message || 'Error deleting customers');
       },
     });
+  }
+
+  launchCustomerModal(): void {
+    this.launchCustomerModalButton.nativeElement.click();
   }
 
   successAction(customer: Customer): void {

@@ -4,11 +4,13 @@ import { CommonModule } from '@angular/common';
 import { Customer } from '../../../model/customer/customer.model';
 import { CustomerService } from '../../../services/customer/customer.service';
 import { UpdateCustomerRequest } from '../../../model/customer/update-customer-request.model';
+import { CreateCustomerRequest } from '../../../model/customer/create-customer-request.model';
+import { RequiredFieldMarkerComponent } from "../../utility/required-field-marker/required-field-marker.component";
 
 @Component({
   selector: 'app-customer-modal',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, RequiredFieldMarkerComponent],
   templateUrl: './customer-modal.component.html',
   styleUrl: './customer-modal.component.css'
 })
@@ -26,16 +28,13 @@ export class CustomerModalComponent implements OnInit, OnChanges {
   constructor(private fb: FormBuilder, private service: CustomerService) { }
 
   ngOnInit(): void {
-    this.modalForm = this.fb.group({
-      name: ['', Validators.required],
-      email: ['', [Validators.email]],
-      address: [''],
-      primaryPhoneNumber: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
-      alternatePhoneNumber: ['', [Validators.pattern(/^\d{10}$/)]]
-    });
+    this.initModalForm();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    if (!this.modalForm) {
+      this.initModalForm();
+    }
     if (this.model != null) {
       this.isEditMode = true;
       this.modalForm?.patchValue(this.model);
@@ -43,6 +42,16 @@ export class CustomerModalComponent implements OnInit, OnChanges {
       this.isEditMode = false;
       this.modalForm?.reset();
     }
+  }
+
+  initModalForm(): void {
+    this.modalForm = this.fb.group({
+      name: ['', Validators.required],
+      email: ['', [Validators.email]],
+      address: [''],
+      primaryPhoneNumber: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
+      alternatePhoneNumber: ['', [Validators.pattern(/^\d{10}$/)]]
+    });
   }
 
   get name() { return this.modalForm.get('name'); }
@@ -61,14 +70,14 @@ export class CustomerModalComponent implements OnInit, OnChanges {
       return;
     }
     if (this.isEditMode) {
-      this.updateEntity();
+      this.editEntity();
     }
     else {
-      this.createEntity();
+      this.addEntity();
     }
   }
 
-  updateEntity(): void {
+  editEntity(): void {
     this.isSubmitting = true;
     let newModel: UpdateCustomerRequest = {
       id: this.model?.id,
@@ -92,9 +101,9 @@ export class CustomerModalComponent implements OnInit, OnChanges {
     });
   }
 
-  createEntity(): void {
+  addEntity(): void {
     this.isSubmitting = true;
-    let newModel: Customer = {
+    let newModel: CreateCustomerRequest = {
       ...this.modalForm.value
     };
     this.service.createCustomer(newModel).subscribe({
