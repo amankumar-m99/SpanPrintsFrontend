@@ -3,11 +3,14 @@ import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, 
 import { ReactiveFormsModule, FormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Vendor } from '../../../model/vendor/vendor.model';
 import { VendorService } from '../../../services/vendor/vendor.service';
+import { RequiredFieldMarkerComponent } from '../../utility/required-field-marker/required-field-marker.component';
+import { UpdateVendorRequest } from '../../../model/vendor/update-vendor-request.model';
+import { CreateVendorRequest } from '../../../model/vendor/create-vendor-request.model';
 
 @Component({
   selector: 'app-vendor-modal',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, RequiredFieldMarkerComponent],
   templateUrl: './vendor-modal.component.html',
   styleUrl: './vendor-modal.component.css'
 })
@@ -18,30 +21,47 @@ export class VendorModalComponent implements OnInit, OnChanges {
   showToast = false;
   isEditMode = false;
 
-  @Input() model: Vendor | null = null;
+  @Input() model: UpdateVendorRequest | null = null;
   @Output() successAction = new EventEmitter<Vendor>();
   @Output() errorAction = new EventEmitter<string>();
 
   constructor(private fb: FormBuilder, private service: VendorService) { }
 
   ngOnInit(): void {
-    this.modalForm = this.fb.group({
-      name: ['', Validators.required],
-      email: ['', Validators.email],
-      primaryPhoneNumber: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
-      alternatePhoneNumber: ['', [Validators.pattern(/^\d{10}$/)]],
-      address: ['']
-    });
+    this.initModalForm();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    if (!this.modalForm) {
+      this.initModalForm();
+    }
     if (this.model != null) {
       this.isEditMode = true;
-      this.modalForm.patchValue(this.model);
+      this.modalForm?.patchValue(this.model);
     } else {
       this.isEditMode = false;
-      this.modalForm.reset();
+      this.modalForm?.reset();
     }
+  }
+
+  initModalForm(): void {
+    this.modalForm = this.fb.group({
+      name: ['', Validators.required],
+      email: ['', Validators.email],
+      address: [''],
+      primaryPhoneNumber: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
+      alternatePhoneNumber: ['', [Validators.pattern(/^\d{10}$/)]],
+    });
+  }
+
+  get name() { return this.modalForm.get('name'); }
+  get email() { return this.modalForm.get('email'); }
+  get address() { return this.modalForm.get('address'); }
+  get primaryPhoneNumber() { return this.modalForm.get('primaryPhoneNumber'); }
+  get alternatePhoneNumber() { return this.modalForm.get('alternatePhoneNumber'); }
+
+  programmaticallyClickFormSubmitButton(): void {
+    (document.querySelector('#vendorModalFormSubmitButton') as HTMLElement)?.click();
   }
 
   submitForm(): void {
@@ -57,37 +77,10 @@ export class VendorModalComponent implements OnInit, OnChanges {
     }
   }
 
-  addEntity(): void {
-    this.isSubmitting = true;
-    let newModel: Vendor = {
-      uuid: crypto.randomUUID(),
-      createdAt: new Date(),
-      ...this.modalForm.value
-    };
-    this.service.createVendor(newModel).subscribe({
-      next: (response) => {
-        this.isSubmitting = false;
-        this.modalForm.reset();
-        this.closeModalProgramatically();
-        if (this.successAction != null)
-          this.successAction.emit(response);
-      },
-      error: (err) => {
-        this.isSubmitting = false;
-        let errorMessage = err?.error?.message || 'Invalid credentials or server error.';
-        console.log(errorMessage);
-        this.closeModalProgramatically();
-        if (this.errorAction != null)
-          this.errorAction.emit(errorMessage);
-      }
-    });
-  }
-
   editEntity(): void {
     this.isSubmitting = true;
-    let newModel: Vendor = {
-      uuid: this.model?.uuid,
-      createdAt: new Date(),
+    let newModel: UpdateVendorRequest = {
+      id: this.model?.id,
       ...this.modalForm.value
     };
     this.service.updateVendor(newModel).subscribe({
@@ -100,7 +93,30 @@ export class VendorModalComponent implements OnInit, OnChanges {
       },
       error: (err) => {
         this.isSubmitting = false;
-        let errorMessage = err?.error?.message || 'Invalid credentials or server error.';
+        let errorMessage = err?.error?.message || 'Error occured while updating vendor details';
+        this.closeModalProgramatically();
+        if (this.errorAction != null)
+          this.errorAction.emit(errorMessage);
+      }
+    });
+  }
+
+  addEntity(): void {
+    this.isSubmitting = true;
+    let newModel: CreateVendorRequest = {
+      ...this.modalForm.value
+    };
+    this.service.createVendor(newModel).subscribe({
+      next: (response) => {
+        this.isSubmitting = false;
+        this.modalForm.reset();
+        this.closeModalProgramatically();
+        if (this.successAction != null)
+          this.successAction.emit(response);
+      },
+      error: (err) => {
+        this.isSubmitting = false;
+        let errorMessage = err?.error?.message || 'Error occured while adding vendor';
         this.closeModalProgramatically();
         if (this.errorAction != null)
           this.errorAction.emit(errorMessage);
@@ -111,9 +127,4 @@ export class VendorModalComponent implements OnInit, OnChanges {
   closeModalProgramatically(): void {
     (document.querySelector('#vendorModalCloseBtn') as HTMLElement)?.click();
   }
-
-  get name() { return this.modalForm.get('name'); }
-  get email() { return this.modalForm.get('email'); }
-  get primaryPhoneNumber() { return this.modalForm.get('primaryPhoneNumber'); }
-  get alternatePhoneNumber() { return this.modalForm.get('alternatePhoneNumber'); }
 }

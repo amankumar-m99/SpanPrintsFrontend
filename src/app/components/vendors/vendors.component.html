@@ -3,8 +3,8 @@
         <h3><i class="bi bi-truck me-2 text-warning"></i>Vendors</h3>
         <div class="d-flex">
             <div class="ms-2">
-                <button class="btn btn-primary ms-2" (click)="refreshTable()">
-                    <i class="bi bi-arrow-clockwise me-2"></i>Refresh Table
+                <button class="btn btn-primary ms-2" (click)="refreshData()">
+                    <i class="bi bi-arrow-clockwise me-2"></i>Refresh Data
                 </button>
                 <button class="btn btn-primary ms-2" (click)="addVendor()">
                     <i class="bi bi-plus-lg me-2"></i>Add Vendor
@@ -20,27 +20,28 @@
             <thead class="table-light">
                 <tr>
                     <th>#</th>
-                    <th>Vendor Name</th>
+                    <th>Name</th>
                     <th>Email</th>
+                    <th>Address</th>
                     <th>Primary Phone</th>
                     <th>Alternate Phone</th>
-                    <th>Address</th>
+                    <th>Updated At</th>
                     <th>Created At</th>
                     <th>Created By</th>
                     <th class="text-end">Actions</th>
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let vendor of vendors; let i = index" class="cursor-pointer"
-                    (click)="openVendorProfile(vendor)">
+                <tr *ngFor="let vendor of vendors; let i = index" class="cursor-pointer" (click)="openDetails(vendor)">
                     <td>{{ i + 1 }}</td>
                     <td>{{ vendor.name }}</td>
                     <td>{{ vendor.email }}</td>
+                    <td>{{ vendor.address }}</td>
                     <td>{{ vendor.primaryPhoneNumber }}</td>
                     <td>{{ vendor.alternatePhoneNumber }}</td>
-                    <td>{{ vendor.address }}</td>
-                    <td>{{ vendor.dateAdded | date:'short' }}</td>
-                    <td>{{ vendor.addedBy }}</td>
+                    <td>{{ vendor.updatedAt | date: 'short' }}</td>
+                    <td>{{ vendor.createdAt | date:'short' }}</td>
+                    <td>{{ vendor.createdBy }}</td>
                     <!-- Actions -->
                     <td class="text-end" (click)="$event.stopPropagation()">
                         <button class="btn btn-sm btn-outline-primary me-1" (click)="editVendor(vendor)">
@@ -49,7 +50,7 @@
                         <button class="btn btn-sm btn-outline-danger me-1" (click)="askDeleteVendor(vendor)">
                             <i class="bi bi-trash"></i>
                         </button>
-                        <button class="btn btn-sm btn-outline-info" (click)="openVendorProfile(vendor)">
+                        <button class="btn btn-sm btn-outline-info" (click)="openDetails(vendor)">
                             <i class="bi bi-box-arrow-up-right"></i>
                         </button>
                     </td>
@@ -61,20 +62,19 @@
 
 <button #launchVendorModalButton class="btn btn-info d-none" data-bs-toggle="modal" data-bs-target="#vendorModal">Launch
     Vendor Modal</button>
-<app-vendor-modal [model]="editingVendor" (successAction)="vendorSuccess($event)"
-    (errorAction)="vendorError($event)"></app-vendor-modal>
+<app-vendor-modal [model]="tempVendor" (successAction)="successAction($event)"
+    (errorAction)="errorAction($event)"></app-vendor-modal>
 
 <button #launchConfirmDeleteVendorButton class="btn btn-info d-none" data-bs-toggle="modal"
     data-bs-target="#confirmDeleteVendorDialog">Launch Confirm Delete Modal</button>
-<app-confirm-dialog [id]="'confirmDeleteVendorDialog'" [title]="'Confirm Delete'" [message]="deleteVendorMsg"
+<app-confirm-dialog [id]="'confirmDeleteVendorDialog'" [title]="'Confirm Delete'" [message]="deleteMsg"
     [confirmText]="'Delete'" [cancelText]="'Cancel'" [confirmBtnClass]="'btn-danger'" (confirmed)="deleteVendor()">
 </app-confirm-dialog>
 
 <button #launchConfirmDeleteAllVendordsButton class="btn btn-info d-none" data-bs-toggle="modal"
     data-bs-target="#confirmDeleteAllVendorsDialog">Launch Confirm Delete All Modal</button>
-<app-confirm-dialog [id]="'confirmDeleteAllVendorsDialog'" [title]="'Confirm Delete All'"
-    [message]="deleteAllVendorsMsg" [confirmText]="'Delete'" [cancelText]="'Cancel'" [confirmBtnClass]="'btn-danger'"
-    (confirmed)="deleteAllVendors()">
+<app-confirm-dialog [id]="'confirmDeleteAllVendorsDialog'" [title]="'Confirm Delete All'" [message]="deleteMsg"
+    [confirmText]="'Delete'" [cancelText]="'Cancel'" [confirmBtnClass]="'btn-danger'" (confirmed)="deleteAllVendors()">
 </app-confirm-dialog>
 
 <app-toast *ngIf="showToast" [type]='toastType' [message]='toastMsg' (closeAction)="toastCloseAction()"></app-toast>

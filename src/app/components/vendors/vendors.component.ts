@@ -1,5 +1,4 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Vendor } from '../../model/vendor/vendor.model';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -15,17 +14,17 @@ import { ConfirmDialogComponent } from "../utility/confirm-dialog/confirm-dialog
   templateUrl: './vendors.component.html',
   styleUrl: './vendors.component.css'
 })
+
 export class VendorsComponent {
+
   vendors: Vendor[] = [];
+  tempVendor !: Vendor | null;
   isSubmitting = false;
-  editingVendor!: Vendor | null;
+  isRefreshingData = false;
   showToast = false;
   toastType = 'info';
   toastMsg = '';
-  deleteVendorMsg = '';
-  deleteAllVendorsMsg = '';
-  toBeDeletedVendor !: Vendor | null;
-  isRefreshTableData = false;
+  deleteMsg = '';
 
   @ViewChild('launchVendorModalButton') launchVendorModalButton!: ElementRef;
   @ViewChild('launchConfirmDeleteVendorButton') launchConfirmDeleteButton!: ElementRef;
@@ -35,70 +34,62 @@ export class VendorsComponent {
     private vendorService: VendorService) { }
 
   ngOnInit(): void {
-    this.loadVendors();
+    this.loadData();
   }
 
-  loadVendors() {
+  loadData() {
     this.vendorService.getAllVendors().subscribe({
       next: (res) => {
         this.vendors = res;
-        if (this.isRefreshTableData) {
-          this.toastType = "success";
-          this.toastMsg = "Vendors data refreshed.";
-          this.showToast = true;
-          this.isRefreshTableData = false;
+        if (this.isRefreshingData) {
+          this.setToast("success", "Vendots data refreshed.");
+          this.isRefreshingData = false;
         }
       },
       error: (err) => {
-        this.toastType = "error";
-        this.toastMsg = err?.error?.message || 'Error loading vendors';
-        this.showToast = true;
-        this.isRefreshTableData = false;
-      }
+        this.setToast("error", err?.error?.message || 'Error loading vendors');
+        this.isRefreshingData = false;
+      },
     });
   }
 
-  refreshTable(): void {
-    this.isRefreshTableData = true;
-    this.loadVendors();
+  refreshData(): void {
+    this.isRefreshingData = true;
+    this.loadData();
   }
 
   addVendor(): void {
-    this.editingVendor = null;
-    this.launchVendorModalButton.nativeElement.click();
+    this.tempVendor = null;
+    this.launchVendorModal();
   }
 
   editVendor(vendor: Vendor) {
-    this.editingVendor = vendor;
-    this.launchVendorModalButton.nativeElement.click();
+    this.tempVendor = vendor;
+    this.launchVendorModal();
   }
 
   askDeleteVendor(vendor: Vendor) {
-    this.deleteVendorMsg = `Delete vendor ${vendor.name}?`;
-    this.toBeDeletedVendor = vendor;
+    this.deleteMsg = `Delete vendor ${vendor.name}?`;
+    this.tempVendor = vendor;
     this.launchConfirmDeleteButton.nativeElement.click();
   }
 
   deleteVendor() {
-    if (this.toBeDeletedVendor) {
-      this.vendorService.deleteVendorByUuid(this.toBeDeletedVendor.uuid).subscribe({
+    if (this.tempVendor) {
+      this.vendorService.deleteVendorByUuid(this.tempVendor.uuid).subscribe({
         next: () => {
-          this.vendors = this.vendors.filter(c => c.uuid !== this.toBeDeletedVendor?.uuid);
-          this.toastType = "warning";
-          this.toastMsg = "Vendor deleted";
-          this.showToast = true;
+          this.vendors = this.vendors.filter(c => c.uuid !== this.tempVendor?.uuid);
+          this.setToast("warning", "Vendor deleted");
         },
         error: (err) => {
-          this.toastType = "error";
-          this.toastMsg = err?.error?.message || 'Error deleting vendor';
-          this.showToast = true;
+          this.setToast("error", err?.error?.message || 'Error occured while deleting vendor');
         },
       });
     }
   }
 
   askDeleteAllVendors() {
-    this.deleteAllVendorsMsg = 'Delete all vendors';
+    this.deleteMsg = 'Delete all vendors?';
     this.launchConfirmDeleteAllButton.nativeElement.click();
   }
 
@@ -106,24 +97,20 @@ export class VendorsComponent {
     this.vendorService.deleteAllVendors().subscribe({
       next: () => {
         this.vendors = [];
-        this.toastType = "warning";
-        this.toastMsg = "All Vendors deleted";
-        this.showToast = true;
+        this.setToast("warning", "All vendors deleted");
       },
       error: (err) => {
-        this.toastType = "error";
-        this.toastMsg = err?.error?.message || 'Error deleting vendors';
-        this.showToast = true;
+        this.setToast("error", err?.error?.message || 'Error deleting vendors');
       },
     });
   }
 
-  vendorSuccess(vendor: Vendor): void {
-    if (this.editingVendor) {
-      this.editingVendor.email = vendor.email;
-      this.editingVendor.name = vendor.name
-      this.editingVendor.primaryPhoneNumber = vendor.primaryPhoneNumber;
-      this.editingVendor.alternatePhoneNumber = vendor.alternatePhoneNumber;
+  successAction(vendor: Vendor): void {
+    if (this.tempVendor) {
+      let index = this.vendors.findIndex(c => c.id === this.tempVendor?.id);
+      if (index !== -1) {
+        this.vendors[index] = { ...this.tempVendor };
+      }
       this.toastMsg = "Vendor updated.";
     }
     else {
@@ -134,9 +121,17 @@ export class VendorsComponent {
     this.showToast = true;
   }
 
-  vendorError(errorStr: string): void {
-    this.toastMsg = errorStr;
-    this.toastType = "error";
+  errorAction(errorStr: string): void {
+    this.setToast("error", errorStr);
+  }
+
+  launchVendorModal(): void {
+    this.launchVendorModalButton.nativeElement.click();
+  }
+
+  setToast(type: string, msg: string): void {
+    this.toastMsg = msg;
+    this.toastType = type;
     this.showToast = true;
   }
 
@@ -144,7 +139,8 @@ export class VendorsComponent {
     this.showToast = false
   }
 
-  openVendorProfile(vendor: Vendor) {
+  openDetails(vendor: Vendor) {
     this.router.navigate(['/dashboard/vendor', vendor.uuid]);
   }
+
 }
