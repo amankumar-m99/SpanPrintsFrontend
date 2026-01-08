@@ -38,7 +38,12 @@
                         [ngClass]="{ 'is-invalid': password?.invalid && password?.touched }"
                         formControlName="password" />
                     <button type="button" class="btn btn-outline-secondary" (click)="togglePassword()">
-                        {{ showPassword ? 'Hide' : 'Show' }}
+                        @if(showPassword){
+                         <i class="bi bi-eye-slash"></i>
+                        }
+                        @else{
+                        <i class="bi bi-eye"></i>
+                        }
                     </button>
                     <div class="invalid-feedback" *ngIf="password?.errors?.['required']">Password is required.</div>
                     <div class="invalid-feedback" *ngIf="password?.errors?.['minlength']">

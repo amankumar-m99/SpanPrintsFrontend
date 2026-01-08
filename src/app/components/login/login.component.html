@@ -31,7 +31,12 @@
           <input [type]="showPassword ? 'text' : 'password'" id="password" class="form-control"
             [ngClass]="{ 'is-invalid': password?.invalid && password?.touched }" formControlName="password" />
           <button type="button" class="btn btn-outline-secondary" (click)="togglePassword()">
-            {{ showPassword ? 'Hide' : 'Show' }}
+            @if(showPassword){
+            <i class="bi bi-eye-slash"></i>
+            }
+            @else{
+            <i class="bi bi-eye"></i>
+            }
           </button>
           <div class="invalid-feedback" *ngIf="password?.errors?.['required']">Password is required.</div>
           <div class="invalid-feedback" *ngIf="password?.errors?.['minlength']">
@@ -56,11 +61,11 @@
       <div class="d-grid">
         <button type="submit" class="btn btn-primary" [disabled]="loading">
           @if(!loading){
-            <span><i class="bi bi-box-arrow-in-right me-1"></i>Login</span>
+          <span><i class="bi bi-box-arrow-in-right me-1"></i>Login</span>
           }
           @else {
-            <span class="spinner-border spinner-border-sm"></span>
-            <span>Logging in...</span>
+          <span class="spinner-border spinner-border-sm"></span>
+          <span>Logging in...</span>
           }
         </button>
       </div>
