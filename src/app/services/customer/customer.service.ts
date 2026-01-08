@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { Constant } from '../../constant/Constant';
 import { HttpClient } from '@angular/common/http';
 import { Customer } from '../../model/customer/customer.model';
-import { CreateCustomer } from '../../model/customer/create-customer.model';
-import { UpdateCustomer } from '../../model/customer/update-customer.model';
+import { CreateCustomerRequest } from '../../model/customer/create-customer-request.model';
+import { UpdateCustomerRequest } from '../../model/customer/update-customer-request.model';
 
 @Injectable({
   providedIn: 'root'
@@ -14,12 +14,16 @@ export class CustomerService {
 
   constructor(private http: HttpClient) { }
 
-  createCustomer(customer: CreateCustomer) {
+  createCustomer(customer: CreateCustomerRequest) {
     return this.http.post<Customer>(this.url, customer);
   }
 
-  updateCustomer(customer: UpdateCustomer) {
+  updateCustomer(customer: UpdateCustomerRequest) {
     return this.http.put<Customer>(this.url, customer);
+  }
+
+  getCustomerById(id: number) {
+    return this.http.get<Customer>(this.url + '/id/' + id);
   }
 
   getCustomerByUuid(uuid: string) {

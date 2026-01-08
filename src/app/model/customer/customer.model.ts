@@ -1,12 +1,13 @@
 export interface Customer {
   id: number;
   uuid: string;
-  email: string;
   name: string;
+  email: string;
+  address: string;
   primaryPhoneNumber: string;
   alternatePhoneNumber: string;
-  addedOn: Date;
-  addedBy: string;
-  addedByAccountId: number;
+  createdAt: string;
+  createdBy: string;
+  createdByAccountId: number;
   printJobIds: number[];
 }

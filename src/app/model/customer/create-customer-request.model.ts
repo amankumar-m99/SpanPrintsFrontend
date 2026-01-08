@@ -1,8 +1,7 @@
-export interface UpdateCustomer {
-    id: number;
-    uuid: string;
+export interface CreateCustomerRequest {
     name: string;
     email: string;
+    address: string;
     primaryPhoneNumber: string;
     alternatePhoneNumber: string;
 }
