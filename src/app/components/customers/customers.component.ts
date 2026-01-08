@@ -16,6 +16,7 @@ import { ConfirmDialogComponent } from "../utility/confirm-dialog/confirm-dialog
 })
 
 export class CustomersComponent implements OnInit {
+
   customers: Customer[] = [];
   tempCustomer !: Customer | null;
   isSubmitting = false;
@@ -52,7 +53,7 @@ export class CustomersComponent implements OnInit {
     });
   }
 
-  refreshTable(): void {
+  refreshData(): void {
     this.isRefreshingData = true;
     this.loadData();
   }
@@ -89,7 +90,7 @@ export class CustomersComponent implements OnInit {
   }
 
   askDeleteAllCustomers(): void {
-    this.deleteMsg = 'Delete all customers ?';
+    this.deleteMsg = 'Delete all customers?';
     this.launchConfirmDeleteAllButton.nativeElement.click();
   }
 
@@ -105,16 +106,12 @@ export class CustomersComponent implements OnInit {
     });
   }
 
-  launchCustomerModal(): void {
-    this.launchCustomerModalButton.nativeElement.click();
-  }
-
   successAction(customer: Customer): void {
     if (this.tempCustomer) {
-      this.tempCustomer.email = customer.email;
-      this.tempCustomer.name = customer.name;
-      this.tempCustomer.primaryPhoneNumber = customer.primaryPhoneNumber;
-      this.tempCustomer.alternatePhoneNumber = customer.alternatePhoneNumber;
+      let index = this.customers.findIndex(c => c.id === this.tempCustomer?.id);
+      if (index !== -1) {
+        this.customers[index] = { ...this.tempCustomer };
+      }
       this.toastMsg = "Customer updated.";
     }
     else {
@@ -127,6 +124,10 @@ export class CustomersComponent implements OnInit {
 
   errorAction(errorStr: string): void {
     this.setToast("error", errorStr);
+  }
+
+  launchCustomerModal(): void {
+    this.launchCustomerModalButton.nativeElement.click();
   }
 
   setToast(type: string, msg: string): void {

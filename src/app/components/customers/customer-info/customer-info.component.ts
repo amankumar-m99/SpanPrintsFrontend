@@ -7,6 +7,7 @@ import { CustomerModalComponent } from "../customer-modal/customer-modal.compone
 import { ToastComponent } from "../../utility/toast/toast.component";
 import { ConfirmDialogComponent } from "../../utility/confirm-dialog/confirm-dialog.component";
 import { FormsModule } from '@angular/forms';
+import { Constant } from '../../../constant/Constant';
 
 @Component({
   selector: 'app-customer-info',
@@ -17,8 +18,8 @@ import { FormsModule } from '@angular/forms';
 })
 export class CustomerInfoComponent implements OnInit {
 
-  customerUuid!: string;
-  customer!: Customer | null;
+  customerUuid !: string;
+  customer !: Customer | null;
   errorMsg = '';
   copied = false;
   showToast = false;
@@ -28,7 +29,7 @@ export class CustomerInfoComponent implements OnInit {
 
   enteredUuid = '';
   isUuidValid = false;
-  private uuidRegex: RegExp = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+  private uuidRegex: RegExp = Constant.UUID_REGEX;
 
   constructor(private router: Router, private route: ActivatedRoute, private customerService: CustomerService) { }
 

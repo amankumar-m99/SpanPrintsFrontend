@@ -16,12 +16,13 @@ import { RequiredFieldMarkerComponent } from "../../utility/required-field-marke
 })
 
 export class CustomerModalComponent implements OnInit, OnChanges {
+
   modalForm!: FormGroup;
   isSubmitting = false;
   showToast = false;
   isEditMode = false;
 
-  @Input() model: UpdateCustomerRequest | null = null;
+  @Input() model: Customer | null = null;
   @Output() successAction = new EventEmitter<Customer>();
   @Output() errorAction = new EventEmitter<string>();
 
@@ -48,7 +49,7 @@ export class CustomerModalComponent implements OnInit, OnChanges {
     this.modalForm = this.fb.group({
       name: ['', Validators.required],
       email: ['', [Validators.email]],
-      address: [''],
+      address: ['', Validators.required],
       primaryPhoneNumber: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
       alternatePhoneNumber: ['', [Validators.pattern(/^\d{10}$/)]]
     });
@@ -93,7 +94,7 @@ export class CustomerModalComponent implements OnInit, OnChanges {
       },
       error: (err) => {
         this.isSubmitting = false;
-        let errorMessage = err?.error?.message || 'Error occured while updating customer';
+        let errorMessage = err?.error?.message || 'Error occured while updating customer details';
         this.closeModalProgramatically();
         if (this.errorAction != null)
           this.errorAction.emit(errorMessage);
@@ -116,7 +117,7 @@ export class CustomerModalComponent implements OnInit, OnChanges {
       },
       error: (err) => {
         this.isSubmitting = false;
-        let errorMessage = err?.error?.message || 'Error occured while creating customer';
+        let errorMessage = err?.error?.message || 'Error occured while adding customer';
         this.closeModalProgramatically();
         if (this.errorAction != null)
           this.errorAction.emit(errorMessage);
@@ -127,5 +128,4 @@ export class CustomerModalComponent implements OnInit, OnChanges {
   closeModalProgramatically(): void {
     (document.querySelector('#customerModalCloseBtn') as HTMLElement)?.click();
   }
-
 }
