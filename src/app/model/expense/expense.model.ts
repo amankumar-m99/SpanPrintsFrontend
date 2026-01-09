@@ -1,7 +1,13 @@
 export interface Expense {
+    id: number;
     uuid: string;
     expenseType: string;
     amount: number;
-    dateOfExpense: Date
     description: string;
+    dateOfExpense: string;
+    ledgerIds: number;
+    updatedAt: string;
+    createdAt: string;
+    createdBy: string;
+    createdById: number;
 }
