@@ -1,72 +1,91 @@
 <div class="modal fade" id="expenseModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
-            <form [formGroup]="modalForm" (ngSubmit)="submitForm()">
-                <div class="modal-header">
+            <div class="modal-header">
+                <h5 class="modal-title">
                     @if (isEditMode) {
-                    <h5 class="modal-title"><i class="bi bi-currency-rupee me-2"></i>Update Expense</h5>
+                    <i class="bi bi-currency-rupee me-2"></i>Update Expense
                     }
                     @else{
-                    <h5 class="modal-title"><i class="bi bi-currency-rupee me-2"></i>Add Expense</h5>
+                    <i class="bi bi-currency-rupee me-2"></i>Add Expense
                     }
-                    <button id="expenseModalCloseBtn" type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-
-                <div class="modal-body">
+                </h5>
+                <button id="expenseModalCloseBtn" type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="modalForm" (ngSubmit)="submitForm()">
                     <div class="mb-3">
-                        <label class="form-label">Expense Type</label>
+                        <label class="form-label"><i class="bi bi-cash-stack me-1"></i>Expense Type</label>
                         <div>
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" formControlName="expenseType"
-                                    value="BUSINESS" />
-                                <label class="form-check-label">Business</label>
+                                    id="expenseTypeBussinessRadio" value="BUSINESS"
+                                    [ngClass]="{ 'is-invalid': expenseType?.invalid && expenseType?.touched }" />
+                                <label class="form-check-label" for="expenseTypeBussinessRadio">Business</label>
                             </div>
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" formControlName="expenseType"
-                                    value="PERSONAL" />
-                                <label class="form-check-label">Personal</label>
+                                    id="expenseTypePersonalRadio" value="PERSONAL"
+                                    [ngClass]="{ 'is-invalid': expenseType?.invalid && expenseType?.touched }" />
+                                <label class="form-check-label" for="expenseTypePersonalRadio">Personal</label>
                             </div>
                         </div>
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">Amount</label>
-                        <input type="number" class="form-control" formControlName="amount" />
+                        <label class="form-label"><i class="bi bi-currency-rupee ms-1"></i>Amount</label>
+                        <input type="number" class="form-control" formControlName="amount"
+                            [ngClass]="{ 'is-invalid': amount?.invalid && amount?.touched }" />
+                        <div class="invalid-feedback" *ngIf="amount?.touched && amount?.invalid">
+                            Name is required
+                        </div>
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">Date of Expense</label>
-                        <input type="date" class="form-control" formControlName="dateOfExpense" />
+                        <label class="form-label"><i class="bi bi-calendar2 me-1"></i>Date of Expense</label>
+                        <input type="date" class="form-control" formControlName="dateOfExpense"
+                            [ngClass]="{ 'is-invalid': dateOfExpense?.invalid && dateOfExpense?.touched }" />
+                        <div class="invalid-feedback" *ngIf="dateOfExpense?.touched && dateOfExpense?.invalid">
+                            Date of expense is required
+                        </div>
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">Description</label>
-                        <textarea class="form-control" formControlName="description"></textarea>
+                        <label class="form-label"><i class="bi bi-card-text me-1"></i>Description</label>
+                        <textarea class="form-control" formControlName="description"
+                            [ngClass]="{ 'is-invalid': description?.invalid && description?.touched }"></textarea>
+                        <div class="invalid-feedback" *ngIf="description?.touched && description?.invalid">
+                            Invalid description
+                        </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary" [disabled]="isSubmitting">
-                        @if(!isSubmitting){
-                        @if(isEditMode){
-                        <span>Update</span>
-                        }
-                        @else {
-                        <span>Add</span>
-                        }
-                        }
-                        @else {
-                        <span class="spinner-border spinner-border-sm me-2"></span>
-                        @if(isEditMode){
-                        <span>Updating...</span>
-                        }
-                        @else {
-                        <span>Adding...</span>
-                        }
-                        }
-                    </button>
-                </div>
-            </form>
+
+                    <div><button id="expenseModalFormSubmitButton" type="submit" class="d-none"
+                            [disabled]="isSubmitting"></button></div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" [disabled]="isSubmitting"
+                    (click)="programmaticallyClickFormSubmitButton()">
+                    @if(!isSubmitting){
+                    @if(isEditMode){
+                    <span>Save</span>
+                    }
+                    @else {
+                    <span>Add</span>
+                    }
+                    }
+                    @else {
+                    <span class="spinner-border spinner-border-sm me-2"></span>
+                    @if(isEditMode){
+                    <span>Saving...</span>
+                    }
+                    @else {
+                    <span>Adding...</span>
+                    }
+                    }
+                </button>
+            </div>
         </div>
     </div>
 </div>

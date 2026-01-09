@@ -17,7 +17,7 @@ import { RequiredFieldMarkerComponent } from "../../utility/required-field-marke
 
 export class CustomerModalComponent implements OnInit, OnChanges {
 
-  modalForm!: FormGroup;
+  modalForm !: FormGroup;
   isSubmitting = false;
   showToast = false;
   isEditMode = false;

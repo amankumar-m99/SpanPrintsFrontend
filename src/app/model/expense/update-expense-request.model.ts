@@ -2,6 +2,6 @@ export interface UpdateExpenseRequest {
     id: number;
     expenseType: string;
     amount: number;
-    dateOfExpense: Date
+    dateOfExpense: string;
     description: string;
 }

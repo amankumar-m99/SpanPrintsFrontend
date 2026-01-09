@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { Constant } from '../../constant/Constant';
 import { HttpClient } from '@angular/common/http';
 import { Expense } from '../../model/expense/expense.model';
+import { CreateExpenseRequest } from '../../model/expense/create-expense-request.model';
+import { UpdateExpenseRequest } from '../../model/expense/update-expense-request.model';
 
 @Injectable({
   providedIn: 'root'
@@ -12,11 +14,11 @@ export class ExpenseService {
 
   constructor(private http: HttpClient) { }
 
-  addExpense(data: Expense) {
+  createExpense(data: CreateExpenseRequest) {
     return this.http.post<Expense>(this.url, data);
   }
 
-  updateExpense(data: Expense) {
+  updateExpense(data: UpdateExpenseRequest) {
     return this.http.put<Expense>(this.url, data);
   }
 

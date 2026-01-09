@@ -3,6 +3,8 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange
 import { ReactiveFormsModule, FormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Expense } from '../../../model/expense/expense.model';
 import { ExpenseService } from '../../../services/expense/expense.service';
+import { UpdateExpenseRequest } from '../../../model/expense/update-expense-request.model';
+import { CreateExpenseRequest } from '../../../model/expense/create-expense-request.model';
 
 @Component({
   selector: 'app-expense-modal',
@@ -13,7 +15,7 @@ import { ExpenseService } from '../../../services/expense/expense.service';
 })
 export class ExpenseModalComponent implements OnInit, OnChanges {
 
-  modalForm!: FormGroup;
+  modalForm !: FormGroup;
   isSubmitting = false;
   showToast = false;
   isEditMode = false;
@@ -23,23 +25,40 @@ export class ExpenseModalComponent implements OnInit, OnChanges {
   @Output() errorAction = new EventEmitter<string>();
 
   constructor(private fb: FormBuilder, private service: ExpenseService) { }
+
   ngOnInit(): void {
+    this.initModalForm();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (!this.modalForm) {
+      this.initModalForm();
+    }
+    if (this.model != null) {
+      this.isEditMode = true;
+      this.modalForm?.patchValue(this.model);
+    } else {
+      this.isEditMode = false;
+      this.modalForm?.reset();
+    }
+  }
+
+  initModalForm(): void {
     this.modalForm = this.fb.group({
-      expenseType: ['BUSINESS', Validators.required],
+      expenseType: ['', Validators.required],
       amount: ['', [Validators.required, Validators.min(1)]],
       dateOfExpense: ['', Validators.required],
       description: ['']
     });
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (this.model != null) {
-      this.isEditMode = true;
-      this.modalForm.patchValue(this.model);
-    } else {
-      this.isEditMode = false;
-      this.modalForm.reset();
-    }
+  get expenseType() { return this.modalForm.get('expenseType'); }
+  get amount() { return this.modalForm.get('amount'); }
+  get dateOfExpense() { return this.modalForm.get('dateOfExpense'); }
+  get description() { return this.modalForm.get('description'); }
+
+  programmaticallyClickFormSubmitButton(): void {
+    (document.querySelector('#expenseModalFormSubmitButton') as HTMLElement)?.click();
   }
 
   submitForm(): void {
@@ -55,37 +74,10 @@ export class ExpenseModalComponent implements OnInit, OnChanges {
     }
   }
 
-  addEntity(): void {
-    this.isSubmitting = true;
-    let newModel: Expense = {
-      uuid: crypto.randomUUID(),
-      createdAt: new Date(),
-      ...this.modalForm.value
-    };
-    this.service.addExpense(newModel).subscribe({
-      next: (response) => {
-        this.isSubmitting = false;
-        this.modalForm.reset();
-        this.closeModalProgramatically();
-        if (this.successAction != null)
-          this.successAction.emit(response);
-      },
-      error: (err) => {
-        this.isSubmitting = false;
-        let errorMessage = err?.error?.message || 'Error while adding expense.';
-        console.log(errorMessage);
-        this.closeModalProgramatically();
-        if (this.errorAction != null)
-          this.errorAction.emit(errorMessage);
-      }
-    });
-  }
-
   editEntity(): void {
     this.isSubmitting = true;
-    let newModel: Expense = {
-      uuid: this.model?.uuid,
-      createdAt: new Date(),
+    let newModel: UpdateExpenseRequest = {
+      id: this.model?.id,
       ...this.modalForm.value
     };
     this.service.updateExpense(newModel).subscribe({
@@ -98,7 +90,30 @@ export class ExpenseModalComponent implements OnInit, OnChanges {
       },
       error: (err) => {
         this.isSubmitting = false;
-        let errorMessage = err?.error?.message || 'Error while adding expense.';
+        let errorMessage = err?.error?.message || 'Error occured while updating expense details';
+        this.closeModalProgramatically();
+        if (this.errorAction != null)
+          this.errorAction.emit(errorMessage);
+      }
+    });
+  }
+
+  addEntity(): void {
+    this.isSubmitting = true;
+    let newModel: CreateExpenseRequest = {
+      ...this.modalForm.value
+    };
+    this.service.createExpense(newModel).subscribe({
+      next: (response) => {
+        this.isSubmitting = false;
+        this.modalForm.reset();
+        this.closeModalProgramatically();
+        if (this.successAction != null)
+          this.successAction.emit(response);
+      },
+      error: (err) => {
+        this.isSubmitting = false;
+        let errorMessage = err?.error?.message || 'Error occured while adding expense';
         this.closeModalProgramatically();
         if (this.errorAction != null)
           this.errorAction.emit(errorMessage);
@@ -109,10 +124,4 @@ export class ExpenseModalComponent implements OnInit, OnChanges {
   closeModalProgramatically(): void {
     (document.querySelector('#expenseModalCloseBtn') as HTMLElement)?.click();
   }
-
-  get expenseType() { return this.modalForm.get('expenseType'); }
-  get amount() { return this.modalForm.get('amount'); }
-  get dateOfExpense() { return this.modalForm.get('dateOfExpense'); }
-  get description() { return this.modalForm.get('description'); }
-
 }
