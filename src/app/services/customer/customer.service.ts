@@ -22,6 +22,10 @@ export class CustomerService {
     return this.http.put<Customer>(this.url, customer);
   }
 
+  searchCustomersByName(name: string) {
+    return this.http.get<Customer[]>(`${this.url}/search?name=${name}`);
+  }
+
   getCustomerById(id: number) {
     return this.http.get<Customer>(this.url + '/id/' + id);
   }

@@ -1,9 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { ReactiveFormsModule, FormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Order } from '../../../model/order/order.model';
 import { OrderService } from '../../../services/order/order.service';
 import { UpdateOrderRequest } from '../../../model/order/update-order-request.model';
+import { CustomerService } from '../../../services/customer/customer.service';
+import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { Customer } from '../../../model/customer/customer.model';
+
 
 @Component({
   selector: 'app-order-modal',
@@ -18,6 +22,8 @@ export class OrderModalComponent implements OnInit, OnChanges {
   isSubmitting = false;
   showToast = false;
   isEditMode = false;
+  customers: Customer[] = [];
+  selectedCustomer: Customer | null = null;
   selectedFiles: File[] = [];
   jobTypes: string[] = [
     'BANNER',
@@ -29,12 +35,14 @@ export class OrderModalComponent implements OnInit, OnChanges {
     'PAMPLET',
     'BILL_BOOK'
   ];
+  isInvalidBookNumbers = false;
+  isInvalidAmounts = false;
 
   @Input() model: Order | null = null;
   @Output() successAction = new EventEmitter<Order>();
   @Output() errorAction = new EventEmitter<string>();
 
-  constructor(private fb: FormBuilder, private service: OrderService) { }
+  constructor(private fb: FormBuilder, private service: OrderService, private customerService: CustomerService) { }
 
   ngOnInit(): void {
     this.initModalForm();
@@ -61,8 +69,8 @@ export class OrderModalComponent implements OnInit, OnChanges {
       jobType: ['', Validators.required],
       count: [1, [Validators.required, Validators.min(1)]],
       dateOfDelivery: ['', [Validators.required, Validators.min(1)]],
-      bookNumber: [1, [Validators.required, Validators.min(1)]],
-      wBookNumber: [1, [Validators.required, Validators.min(1)]],
+      bookNumber: [1, [Validators.min(1)]],
+      wBookNumber: [1, [Validators.min(1)]],
       remainingAmount: ['', Validators.required],
       totalAmount: ['', Validators.required],
       depositAmount: ['', Validators.required],
@@ -70,6 +78,42 @@ export class OrderModalComponent implements OnInit, OnChanges {
       paymentStatus: ['', Validators.required],
       note: [''],
       description: ['']
+    });
+
+    // Listen to customerName changes
+    this.customerName?.valueChanges
+      .pipe(
+        debounceTime(1000), // Wait for 300ms after the user stops typing
+        distinctUntilChanged(), // Only emit if the value has changed
+        switchMap(name => this.customerService.searchCustomersByName(name)) // Call the service
+      ).subscribe({
+        next: (customers) => {
+          this.customers = customers;
+        },
+        error: (err) => {
+          console.log({ err });
+        }
+      });
+    // .subscribe(customers => {
+    //   this.customers = customers;
+    // });
+
+    // Calculate remainingAmount dynamically
+    this.modalForm.valueChanges.subscribe(values => {
+      const { bookNumber, wBookNumber, totalAmount, depositAmount, discountedAmount } = values;
+      const remaining = (totalAmount || 0) - (depositAmount || 0) - (discountedAmount || 0);
+      if (remaining < 0) {
+        this.isInvalidAmounts = true;
+      } else {
+        this.isInvalidAmounts = false;
+        this.modalForm.patchValue({ remainingAmount: remaining }, { emitEvent: false });
+      }
+      if ((!bookNumber && !wBookNumber) || (bookNumber && wBookNumber)) {
+        this.isInvalidBookNumbers = true;
+      }
+      else {
+        this.isInvalidBookNumbers = false;
+      }
     });
   }
 
@@ -89,6 +133,18 @@ export class OrderModalComponent implements OnInit, OnChanges {
   get note() { return this.modalForm.get('note'); }
   get description() { return this.modalForm.get('description'); }
 
+  onCustomerSelect(customer: Customer): void {
+    this.selectedCustomer = customer;
+    this.updateCustomerFields(customer);
+  }
+
+  updateCustomerFields(customer: Customer): void {
+    this.modalForm.patchValue({
+      phone: customer.primaryPhoneNumber,
+      address: customer.address
+    });
+  }
+
   onFileSelected(event: any): void {
     const files = Array.from(event.target.files) as File[];
     this.selectedFiles.push(...files);
@@ -97,6 +153,18 @@ export class OrderModalComponent implements OnInit, OnChanges {
 
   removeFile(index: number): void {
     this.selectedFiles.splice(index, 1);
+  }
+
+  incrementCount() {
+    const currentCount = this.count?.value || 0;
+    this.modalForm.patchValue({ count: currentCount + 1 });
+  }
+
+  decrementCount() {
+    const currentCount = this.count?.value || 0;
+    if (currentCount > 1) {
+      this.modalForm.patchValue({ count: currentCount - 1 });
+    }
   }
 
   programmaticallyClickFormSubmitButton(): void {
