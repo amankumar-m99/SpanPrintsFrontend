@@ -4,7 +4,7 @@
         <div class="d-flex">
             <div class="ms-2">
                 <button class="btn btn-primary ms-2" (click)="refreshData()">
-                    <i class="bi bi-arrow-clockwise me-2"></i>Refresh Data
+                    <i class="bi bi-arrow-clockwise me-2"></i>Refresh Customers
                 </button>
                 <button class="btn btn-primary ms-2" (click)="addCustomer()">
                     <i class="bi bi-person-plus me-2"></i>Add Customer
@@ -85,4 +85,4 @@
     (confirmed)="deleteAllCustomers()">
 </app-confirm-dialog>
 
-<app-toast *ngIf="showToast" [type]='toastType' [message]='toastMsg' (closeAction)="toastCloseAction()"></app-toast>
+<app-toast *ngIf="showToast" [type]='toastType' [message]='toastMsg' (closeAction)="hideToastComponent()"></app-toast>

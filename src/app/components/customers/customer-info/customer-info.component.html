@@ -204,6 +204,6 @@
         [confirmText]="'Delete'" [cancelText]="'Cancel'" [confirmBtnClass]="'btn-danger'"
         (confirmed)="deleteCustomer()">
     </app-confirm-dialog>
-    <app-toast *ngIf="showToast" [type]='toastType' [message]='toastMsg' (closeAction)="toastCloseAction()"></app-toast>
+    <app-toast *ngIf="showToast" [type]='toastType' [message]='toastMsg' (closeAction)="hideToastComponent()"></app-toast>
     }
 </div>

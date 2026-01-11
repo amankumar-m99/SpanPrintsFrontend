@@ -22,10 +22,10 @@ export class CustomerInfoComponent implements OnInit {
   customer !: Customer | null;
   errorMsg = '';
   copied = false;
-  showToast = false;
   toastType = 'info';
   toastMsg = '';
   deleteMsg = '';
+  showToast = false;
 
   enteredUuid = '';
   isUuidValid = false;
@@ -33,13 +33,6 @@ export class CustomerInfoComponent implements OnInit {
 
   constructor(private router: Router, private route: ActivatedRoute, private customerService: CustomerService) { }
 
-  // ngOnInit(): void {
-  //   this.customerUuid = this.route.snapshot.paramMap.get('uuid')!;
-  //   this.fetchCustomerDetails(this.customerUuid);
-  // }
-
-  // Recommended (reactive approach – better)
-  // If the same component can be reused with different UUIDs without reload
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
       const uuid = params.get('uuid');
@@ -48,17 +41,6 @@ export class CustomerInfoComponent implements OnInit {
         this.fetchCustomerDetails(uuid);
       }
     });
-  }
-
-  copyUuid() {
-    if (this.customer?.uuid) {
-      navigator.clipboard.writeText(this.customer.uuid).then(() => {
-        this.copied = true;
-        setTimeout(() => {
-          this.copied = false;
-        }, 1500);
-      });
-    }
   }
 
   fetchCustomerDetails(uuid: string) {
@@ -79,35 +61,33 @@ export class CustomerInfoComponent implements OnInit {
       this.customerService.deleteCustomerByUuid(this.customer.uuid).subscribe({
         next: () => {
           this.customer = null;
-          this.setToast("warning", "Customer deleted");
+          this.showToastComponent("warning", "Customer deleted");
           this.router.navigate(['/dashboard/customers']);
         },
         error: (err) => {
-          this.setToast("error", err?.error?.message || 'Error occured while deleting customer');
+          this.showToastComponent("error", err?.error?.message || 'Error occured while deleting customer');
         },
       });
     }
   }
-  setToast(type: string, msg: string): void {
-    this.toastMsg = msg;
-    this.toastType = type;
-    this.showToast = true;
+
+  copyUuid() {
+    if (this.customer?.uuid) {
+      navigator.clipboard.writeText(this.customer.uuid).then(() => {
+        this.copied = true;
+        setTimeout(() => {
+          this.copied = false;
+        }, 1500);
+      });
+    }
   }
 
   customerSuccess(customer: Customer): void {
-    this.toastMsg = "Customer updated.";
-    this.toastType = "success";
-    this.showToast = true;
+    this.showToastComponent("success", "Customer updated.")
   }
 
   customerError(errorStr: string): void {
-    this.toastMsg = errorStr;
-    this.toastType = "error";
-    this.showToast = true;
-  }
-
-  toastCloseAction(): void {
-    this.showToast = false
+    this.showToastComponent("error", errorStr)
   }
 
   reload() {
@@ -131,6 +111,16 @@ export class CustomerInfoComponent implements OnInit {
     } catch {
       alert('Clipboard access denied');
     }
+  }
+
+  showToastComponent(type: string, msg: string): void {
+    this.toastType = type;
+    this.toastMsg = msg;
+    this.showToast = true;
+  }
+
+  hideToastComponent(): void {
+    this.showToast = false
   }
 
 }

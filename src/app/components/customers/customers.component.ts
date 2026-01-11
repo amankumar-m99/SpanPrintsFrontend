@@ -21,10 +21,10 @@ export class CustomersComponent implements OnInit {
   tempCustomer !: Customer | null;
   isSubmitting = false;
   isRefreshingData = false;
-  showToast = false;
+  deleteMsg = '';
   toastType = 'info';
   toastMsg = '';
-  deleteMsg = '';
+  showToast = false;
 
   @ViewChild('launchCustomerModalButton') launchCustomerModalButton!: ElementRef;
   @ViewChild('launchConfirmDeleteCustomerButton') launchConfirmDeleteButton!: ElementRef;
@@ -42,12 +42,12 @@ export class CustomersComponent implements OnInit {
       next: (res) => {
         this.customers = res;
         if (this.isRefreshingData) {
-          this.setToast("success", "Customers data refreshed.");
+          this.showToastComponent("success", "Customers data refreshed.");
           this.isRefreshingData = false;
         }
       },
       error: (err) => {
-        this.setToast("error", err?.error?.message || 'Error loading customers');
+        this.showToastComponent("error", err?.error?.message || 'Error loading customers');
         this.isRefreshingData = false;
       },
     });
@@ -71,19 +71,18 @@ export class CustomersComponent implements OnInit {
   askDeleteCustomer(customer: Customer): void {
     this.deleteMsg = `Delete customer ${customer.name}?`;
     this.tempCustomer = customer;
-    this.launchConfirmDeleteButton.nativeElement.click();
+    this.launchConfirmDeleteModal();
   }
 
   deleteCustomer() {
     if (this.tempCustomer) {
       this.customerService.deleteCustomerByUuid(this.tempCustomer.uuid).subscribe({
         next: () => {
-          // this.customers.splice(this.deleteIndex, 1);
           this.customers = this.customers.filter(c => c.uuid !== this.tempCustomer?.uuid);
-          this.setToast("warning", "Customer deleted");
+          this.showToastComponent("warning", "Customer deleted");
         },
         error: (err) => {
-          this.setToast("error", err?.error?.message || 'Error occured while deleting customer');
+          this.showToastComponent("error", err?.error?.message || 'Error occured while deleting customer');
         },
       });
     }
@@ -91,17 +90,17 @@ export class CustomersComponent implements OnInit {
 
   askDeleteAllCustomers(): void {
     this.deleteMsg = 'Delete all customers?';
-    this.launchConfirmDeleteAllButton.nativeElement.click();
+    this.launchConfirmDeleteModal();
   }
 
   deleteAllCustomers(): void {
     this.customerService.deleteAllCustomers().subscribe({
       next: () => {
         this.customers = [];
-        this.setToast("warning", "All customers deleted");
+        this.showToastComponent("warning", "All customers deleted");
       },
       error: (err) => {
-        this.setToast("error", err?.error?.message || 'Error deleting customers');
+        this.showToastComponent("error", err?.error?.message || 'Error deleting customers');
       },
     });
   }
@@ -118,25 +117,32 @@ export class CustomersComponent implements OnInit {
       this.customers.push(customer);
       this.toastMsg = "Customer added.";
     }
-    this.toastType = "success";
-    this.showToast = true;
+    this.showToastComponent("success", this.toastMsg);
   }
 
   errorAction(errorStr: string): void {
-    this.setToast("error", errorStr);
+    this.showToastComponent("error", errorStr);
   }
 
   launchCustomerModal(): void {
     this.launchCustomerModalButton.nativeElement.click();
   }
 
-  setToast(type: string, msg: string): void {
-    this.toastMsg = msg;
+  launchConfirmDeleteModal(): void {
+    this.launchConfirmDeleteButton.nativeElement.click();
+  }
+
+  launchConfirmDeleteAllModal(): void {
+    this.launchConfirmDeleteAllButton.nativeElement.click();
+  }
+
+  showToastComponent(type: string, msg: string): void {
     this.toastType = type;
+    this.toastMsg = msg;
     this.showToast = true;
   }
 
-  toastCloseAction(): void {
+  hideToastComponent(): void {
     this.showToast = false
   }
 

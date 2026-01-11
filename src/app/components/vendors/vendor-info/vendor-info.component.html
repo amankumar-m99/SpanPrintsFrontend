@@ -198,11 +198,12 @@
             </div>
         </div>
     </div>
-    <app-vendor-modal [model]="vendor" (successAction)="vendorSuccess($event)"
-        (errorAction)="vendorError($event)"></app-vendor-modal>
+    <app-vendor-modal [model]="vendor" (successAction)="successAction($event)"
+        (errorAction)="errorAction($event)"></app-vendor-modal>
     <app-confirm-dialog [id]="'confirmDeleteVendorDialog'" [title]="'Confirm Delete'" [message]="deleteMsg"
         [confirmText]="'Delete'" [cancelText]="'Cancel'" [confirmBtnClass]="'btn-danger'" (confirmed)="deleteVendor()">
     </app-confirm-dialog>
-    <app-toast *ngIf="showToast" [type]='toastType' [message]='toastMsg' (closeAction)="toastCloseAction()"></app-toast>
+    <app-toast *ngIf="showToast" [type]='toastType' [message]='toastMsg'
+        (closeAction)="hideToastComponent()"></app-toast>
     }
 </div>

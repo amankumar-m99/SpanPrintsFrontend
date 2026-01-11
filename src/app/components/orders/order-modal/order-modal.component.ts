@@ -3,6 +3,7 @@ import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, 
 import { ReactiveFormsModule, FormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Order } from '../../../model/order/order.model';
 import { OrderService } from '../../../services/order/order.service';
+import { UpdateOrderRequest } from '../../../model/order/update-order-request.model';
 
 @Component({
   selector: 'app-order-modal',
@@ -13,7 +14,7 @@ import { OrderService } from '../../../services/order/order.service';
 })
 export class OrderModalComponent implements OnInit, OnChanges {
 
-  modalForm!: FormGroup;
+  modalForm !: FormGroup;
   isSubmitting = false;
   showToast = false;
   isEditMode = false;
@@ -36,6 +37,23 @@ export class OrderModalComponent implements OnInit, OnChanges {
   constructor(private fb: FormBuilder, private service: OrderService) { }
 
   ngOnInit(): void {
+    this.initModalForm();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (!this.modalForm) {
+      this.initModalForm();
+    }
+    if (this.model != null) {
+      this.isEditMode = true;
+      this.modalForm?.patchValue(this.model);
+    } else {
+      this.isEditMode = false;
+      this.modalForm?.reset();
+    }
+  }
+
+  initModalForm(): void {
     this.modalForm = this.fb.group({
       customerName: ['', Validators.required],
       phone: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
@@ -55,15 +73,21 @@ export class OrderModalComponent implements OnInit, OnChanges {
     });
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (this.model != null) {
-      this.isEditMode = true;
-      this.modalForm.patchValue(this.model);
-    } else {
-      this.isEditMode = false;
-      this.modalForm.reset();
-    }
-  }
+  get customerName() { return this.modalForm.get('customerName'); }
+  get phone() { return this.modalForm.get('phone'); }
+  get address() { return this.modalForm.get('address'); }
+  get jobType() { return this.modalForm.get('jobType'); }
+  get count() { return this.modalForm.get('count'); }
+  get dateOfDelivery() { return this.modalForm.get('dateOfDelivery'); }
+  get bookNumber() { return this.modalForm.get('bookNumber'); }
+  get wBookNumber() { return this.modalForm.get('wBookNumber'); }
+  get remainingAmount() { return this.modalForm.get('remainingAmount'); }
+  get totalAmount() { return this.modalForm.get('totalAmount'); }
+  get depositAmount() { return this.modalForm.get('depositAmount'); }
+  get discountedAmount() { return this.modalForm.get('discountedAmount'); }
+  get paymentStatus() { return this.modalForm.get('paymentStatus'); }
+  get note() { return this.modalForm.get('note'); }
+  get description() { return this.modalForm.get('description'); }
 
   onFileSelected(event: any): void {
     const files = Array.from(event.target.files) as File[];
@@ -73,6 +97,10 @@ export class OrderModalComponent implements OnInit, OnChanges {
 
   removeFile(index: number): void {
     this.selectedFiles.splice(index, 1);
+  }
+
+  programmaticallyClickFormSubmitButton(): void {
+    (document.querySelector('#orderModalFormSubmitButton') as HTMLElement)?.click();
   }
 
   submitForm(): void {
@@ -86,6 +114,30 @@ export class OrderModalComponent implements OnInit, OnChanges {
     else {
       this.addEntity();
     }
+  }
+
+  editEntity(): void {
+    this.isSubmitting = true;
+    let newEntity: UpdateOrderRequest = {
+      id: this.model?.id,
+      ...this.modalForm.value
+    };
+    this.service.updateOrder(newEntity).subscribe({
+      next: (response) => {
+        this.isSubmitting = false;
+        this.modalForm.reset();
+        this.closeModalProgramatically();
+        if (this.successAction != null)
+          this.successAction.emit(response);
+      },
+      error: (err) => {
+        this.isSubmitting = false;
+        let errorMessage = err?.error?.message || 'Error occured while updating order details.';
+        this.closeModalProgramatically();
+        if (this.errorAction != null)
+          this.errorAction.emit(errorMessage);
+      }
+    });
   }
 
   addEntity(): void {
@@ -103,33 +155,7 @@ export class OrderModalComponent implements OnInit, OnChanges {
       },
       error: (err) => {
         this.isSubmitting = false;
-        let errorMessage = err?.error?.message || 'Invalid credentials or server error.';
-        this.closeModalProgramatically();
-        if (this.errorAction != null)
-          this.errorAction.emit(errorMessage);
-      }
-    });
-  }
-
-  editEntity(): void {
-    this.isSubmitting = true;
-    let newEntity: Order = {
-      uuid: this.model?.uuid,
-      id: this.model?.id,
-      createdAt: new Date(),
-      ...this.modalForm.value
-    };
-    this.service.updateOrder(newEntity).subscribe({
-      next: (response) => {
-        this.isSubmitting = false;
-        this.modalForm.reset();
-        this.closeModalProgramatically();
-        if (this.successAction != null)
-          this.successAction.emit(response);
-      },
-      error: (err) => {
-        this.isSubmitting = false;
-        let errorMessage = err?.error?.message || 'Invalid credentials or server error.';
+        let errorMessage = err?.error?.message || 'Error occured while adding order.';
         this.closeModalProgramatically();
         if (this.errorAction != null)
           this.errorAction.emit(errorMessage);
@@ -140,9 +166,4 @@ export class OrderModalComponent implements OnInit, OnChanges {
   closeModalProgramatically(): void {
     (document.querySelector('#orderModalCloseBtn') as HTMLElement)?.click();
   }
-
-  get name() { return this.modalForm.get('name'); }
-  get primaryPhoneNumber() { return this.modalForm.get('primaryPhoneNumber'); }
-  get alternatePhoneNumber() { return this.modalForm.get('alternatePhoneNumber'); }
-  get email() { return this.modalForm.get('email'); }
 }

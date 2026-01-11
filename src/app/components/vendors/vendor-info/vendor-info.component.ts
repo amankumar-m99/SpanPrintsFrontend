@@ -22,10 +22,10 @@ export class VendorInfoComponent implements OnInit {
   vendor !: Vendor | null;
   errorMsg = '';
   copied = false;
-  showToast = false;
+  deleteMsg = '';
   toastType = 'info';
   toastMsg = '';
-  deleteMsg = '';
+  showToast = false;
 
   enteredUuid = '';
   isUuidValid = false;
@@ -73,34 +73,31 @@ export class VendorInfoComponent implements OnInit {
       this.vendorService.deleteVendorByUuid(this.vendor.uuid).subscribe({
         next: () => {
           this.vendor = null;
-          this.setToast("warning", "Vendor deleted");
+          this.showToastComponent("warning", "Vendor deleted");
           this.router.navigate(['/dashboard/vendors']);
         },
         error: (err) => {
-          this.setToast("error", err?.error?.message || 'Error occured while deleting vendor');
+          this.showToastComponent("error", err?.error?.message || 'Error occured while deleting vendor');
         },
       });
     }
   }
-  setToast(type: string, msg: string): void {
-    this.toastMsg = msg;
+
+  successAction(vendor: Vendor): void {
+    this.showToastComponent("error", "Vendor updated.");
+  }
+
+  errorAction(errorStr: string): void {
+    this.showToastComponent("error", errorStr);
+  }
+
+  showToastComponent(type: string, msg: string): void {
     this.toastType = type;
+    this.toastMsg = msg;
     this.showToast = true;
   }
 
-  vendorSuccess(vendor: Vendor): void {
-    this.toastMsg = "Vendor updated.";
-    this.toastType = "success";
-    this.showToast = true;
-  }
-
-  vendorError(errorStr: string): void {
-    this.toastMsg = errorStr;
-    this.toastType = "error";
-    this.showToast = true;
-  }
-
-  toastCloseAction(): void {
+  hideToastComponent(): void {
     this.showToast = false
   }
 

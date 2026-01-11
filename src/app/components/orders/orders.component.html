@@ -91,19 +91,19 @@
 
 <button #launchOrderModalButton class="btn btn-info d-none" data-bs-toggle="modal" data-bs-target="#orderModal">Launch
     Order Modal</button>
-<app-order-modal [model]="editingOrder" (successAction)="orderSuccess($event)"
-    (errorAction)="orderError($event)"></app-order-modal>
+<app-order-modal [model]="tempOrder" (successAction)="successAction($event)"
+    (errorAction)="errorAction($event)"></app-order-modal>
 
 <button #launchConfirmDeleteOrderButton class="btn btn-info d-none" data-bs-toggle="modal"
     data-bs-target="#confirmDeleteOrderDialog">Launch Confirm Delete Modal</button>
-<app-confirm-dialog [id]="'confirmDeleteOrderDialog'" [title]="'Confirm Delete'" [message]="deleteOrderMsg"
+<app-confirm-dialog [id]="'confirmDeleteOrderDialog'" [title]="'Confirm Delete'" [message]="deleteMsg"
     [confirmText]="'Delete'" [cancelText]="'Cancel'" [confirmBtnClass]="'btn-danger'" (confirmed)="deleteOrder()">
 </app-confirm-dialog>
 
 <button #launchConfirmDeleteAllOrdersButton class="btn btn-info d-none" data-bs-toggle="modal"
     data-bs-target="#confirmDeleteAllOrdersDialog">Launch Confirm Delete All Modal</button>
-<app-confirm-dialog [id]="'confirmDeleteAllOrdersDialog'" [title]="'Confirm Delete All'" [message]="deleteAllOrdersMsg"
+<app-confirm-dialog [id]="'confirmDeleteAllOrdersDialog'" [title]="'Confirm Delete All'" [message]="deleteMsg"
     [confirmText]="'Delete'" [cancelText]="'Cancel'" [confirmBtnClass]="'btn-danger'" (confirmed)="deleteAllOrders()">
 </app-confirm-dialog>
 
-<app-toast *ngIf="showToast" [type]='toastType' [message]='toastMsg' (closeAction)="toastCloseAction()"></app-toast>
+<app-toast *ngIf="showToast" [type]='toastType' [message]='toastMsg' (closeAction)="hideToastComponent()"></app-toast>

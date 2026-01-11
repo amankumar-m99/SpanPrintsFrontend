@@ -1,6 +1,7 @@
 
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Order } from '../../../model/order/order.model';
 
 @Component({
   selector: 'app-order-card',
@@ -11,7 +12,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 })
 
 export class OrderCardComponent {
-  @Input() order: any;
+  @Input() order !: Order;
   @Output() edit = new EventEmitter<any>();
   @Output() delete = new EventEmitter<any>();
 }

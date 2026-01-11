@@ -18,82 +18,70 @@ import { ToastComponent } from "../utility/toast/toast.component";
 })
 
 export class OrdersComponent implements OnInit {
-  orders: Order[] = [];           // original list from backend
-  orderForm!: FormGroup;
+
+  orders: Order[] = [];
+  tempOrder !: Order | null;
   isSubmitting = false;
-  editIndex: number | null = null; // Track editing order index
+  isRefreshingData = false;
+  deleteMsg = '';
+  toastType = 'info';
+  toastMsg = '';
+  showToast = false;
+
   filteredOrders: any[] = [];   // filtered & sorted list
   filterStatus: string = '';    // holds dropdown value
   sortBy: string = 'createdAt_desc';
   searchTerm: string = '';
   activeFiltersCount = 0;
   activeFiltersSummary = '';
-  selectedFiles: File[] = [];
-  deleteAllOrdersMsg = '';
-  showToast = false;
-  toastType = 'info';
-  toastMsg = '';
-  isRefreshTableData = false;
-  editingOrder !: Order | null;
-  toBeDeletedOrder !: Order | null;
-  deleteOrderMsg = '';
 
-  @ViewChild('launchOrderModalButton') launchOrderModalButton!: ElementRef;
-  @ViewChild('launchConfirmDeleteOrderButton') launchConfirmDeleteButton!: ElementRef;
-  @ViewChild('launchConfirmDeleteAllOrdersButton') launchConfirmDeleteAllButton!: ElementRef;
+  @ViewChild('launchOrderModalButton') launchOrderModalButton !: ElementRef;
+  @ViewChild('launchConfirmDeleteOrderButton') launchConfirmDeleteButton !: ElementRef;
+  @ViewChild('launchConfirmDeleteAllOrdersButton') launchConfirmDeleteAllButton !: ElementRef;
 
   constructor(private fb: FormBuilder, private router: Router, private orderService: OrderService) { }
 
   ngOnInit(): void {
-    this.loadOrders();
+    this.loadData();
   }
 
-  loadOrders() {
+  loadData() {
     this.orderService.getAllOrders().subscribe({
       next: (res) => {
         this.orders = res;
-        if (this.isRefreshTableData) {
-          this.toastType = "success";
-          this.toastMsg = "Orders data refreshed.";
-          this.showToast = true;
-          this.isRefreshTableData = false;
+        if (this.isRefreshingData) {
+          this.showToastComponent("success", "Customers data refreshed.");
+          this.isRefreshingData = false;
         }
+        this.applyFilters();
       },
       error: (err) => {
-        if (this.isRefreshTableData) {
-          this.toastType = "error";
-          this.toastMsg = err?.error?.message || 'Error loading orders';
-          this.showToast = true;
-          this.isRefreshTableData = false;
-        }
-      }
+        this.showToastComponent("error", err?.error?.message || 'Error loading customers');
+        this.isRefreshingData = false;
+      },
     });
-    this.applyFilters();
   }
 
   refreshTable(): void {
-    this.isRefreshTableData = true;
-    this.loadOrders();
+    this.isRefreshingData = true;
+    this.loadData();
   }
 
   applyFilters() {
     let data = [...this.orders];
-
-    // 🔍 Search filter
+    // Search filter
     if (this.searchTerm) {
       const term = this.searchTerm.toLowerCase();
       data = data.filter(o =>
         o.customerName.toLowerCase().includes(term) ||
-        o.phone.includes(term)
+        o.customerPhone.includes(term)
       );
     }
-
-    // 📌 Status filter
+    // Status filter
     if (this.filterStatus) {
       data = data.filter(o => o.paymentStatus === this.filterStatus);
     }
-
-    // ↕ Sorting
+    //  Sorting
     switch (this.sortBy) {
       case 'createdAt_desc':
         data.sort((a, b) => +new Date(b.createdAt) - +new Date(a.createdAt));
@@ -108,7 +96,6 @@ export class OrdersComponent implements OnInit {
         data.sort((a, b) => a.totalAmount - b.totalAmount);
         break;
     }
-
     this.activeFiltersCount = 0;
     let summaries: string[] = [];
 
@@ -144,108 +131,96 @@ export class OrdersComponent implements OnInit {
     this.applyFilters(); // reset filters count
   }
 
-  onFileSelected(event: any): void {
-    const files = Array.from(event.target.files) as File[];
-    this.selectedFiles.push(...files);
-    event.target.value = ''; // reset input
-  }
-
-  removeFile(index: number): void {
-    this.selectedFiles.splice(index, 1);
-  }
 
   addOrder(): void {
-    this.editingOrder = null;
-    this.launchOrderModalButton.nativeElement.click();
+    this.tempOrder = null;
+    this.launchOrderModal();
   }
 
   editOrder(order: Order) {
-    this.editingOrder = order;
-    this.launchOrderModalButton.nativeElement.click();
+    this.tempOrder = order;
+    this.launchOrderModal();
   }
 
-  // editOrder(order: any, index: number) {
-  //   this.editIndex = index;
-  //   this.orderForm.patchValue(order);
-  //   const modal = document.getElementById('newOrderModal');
-  //   if (modal) {
-  //     const bsModal = new (window as any).bootstrap.Modal(modal);
-  //     bsModal.show();
-  //   }
-  // }
-
   askDeleteOrder(order: Order) {
-    this.deleteOrderMsg = `Delete order ${order.uuid}?`;
-    this.toBeDeletedOrder = order;
-    this.launchConfirmDeleteButton.nativeElement.click();
+    this.deleteMsg = `Delete order ${order.uuid}?`;
+    this.tempOrder = order;
+    this.launchConfirmDeleteModal();
   }
 
   deleteOrder() {
-    if (this.toBeDeletedOrder) {
-      this.orderService.deleteOrderByUuid(this.toBeDeletedOrder.uuid).subscribe({
+    if (this.tempOrder) {
+      this.orderService.deleteOrderByUuid(this.tempOrder.uuid).subscribe({
         next: () => {
-          // this.orders.splice(index, 1);
-          this.orders = this.orders.filter(c => c.uuid !== this.toBeDeletedOrder?.uuid);
-          this.toastType = "warning";
-          this.toastMsg = "Order deleted";
-          this.showToast = true;
+          this.orders = this.orders.filter(c => c.uuid !== this.tempOrder?.uuid);
+          this.showToastComponent("warning", "Customer deleted");
         },
         error: (err) => {
-          this.toastType = "error";
-          this.toastMsg = err?.error?.message || 'Error deleting order';
-          this.showToast = true;
+          this.showToastComponent("error", err?.error?.message || 'Error occured while deleting customer');
         },
       });
     }
   }
 
   askDeleteAllOrders(): void {
-    this.deleteAllOrdersMsg = 'Delete all orders ?';
-    this.launchConfirmDeleteAllButton.nativeElement.click();
+    this.deleteMsg = 'Delete all orders?';
+    this.launchConfirmDeleteModal();
   }
 
   deleteAllOrders(): void {
     this.orderService.deleteAllOrders().subscribe({
       next: () => {
         this.orders = [];
-        this.toastType = "warning";
-        this.toastMsg = "All orders deleted";
-        this.showToast = true;
+        this.showToastComponent("warning", "All orders deleted");
       },
       error: (err) => {
-        this.toastType = "error";
-        this.toastMsg = err?.error?.message || 'Error deleting orders';
-        this.showToast = true;
+        this.showToastComponent("error", err?.error?.message || 'Error deleting orders');
       },
     });
   }
 
-  orderSuccess(order: Order): void {
-    if (this.editingOrder) {
-      this.editingOrder.count = order.count;
-      this.editingOrder.jobType = order.jobType;
-      this.editingOrder.depositAmount = order.depositAmount;
+  successAction(order: Order): void {
+    if (this.tempOrder) {
+      let index = this.orders.findIndex(c => c.id === this.tempOrder?.id);
+      if (index !== -1) {
+        this.orders[index] = { ...this.tempOrder };
+      }
       this.toastMsg = "Order updated.";
     }
     else {
       this.orders.push(order);
       this.toastMsg = "Order added.";
     }
-    this.toastType = "success";
+    this.showToastComponent("success", this.toastMsg);
+  }
+
+  errorAction(errorStr: string): void {
+    this.showToastComponent("error", errorStr);
+  }
+
+  launchOrderModal(): void {
+    this.launchOrderModalButton.nativeElement.click();
+  }
+
+  launchConfirmDeleteModal(): void {
+    this.launchConfirmDeleteButton.nativeElement.click();
+  }
+
+  launchConfirmDeleteAllModal(): void {
+    this.launchConfirmDeleteAllButton.nativeElement.click();
+  }
+
+  showToastComponent(type: string, msg: string): void {
+    this.toastType = type;
+    this.toastMsg = msg;
     this.showToast = true;
   }
 
-  orderError(errorStr: string): void {
-    this.toastMsg = errorStr;
-    this.toastType = "error";
-    this.showToast = true;
-  }
-
-  toastCloseAction(): void {
+  hideToastComponent(): void {
     this.showToast = false
   }
 
-  openOrderDetails(order: Order) {
-    this.router.navigate(['/dashboard/order', order.uuid]);
+  openDetails(order: Order) {
+    this.router.navigate(['/dashboard/customer', order.uuid]);
   }
 }

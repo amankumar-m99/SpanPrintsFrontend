@@ -18,8 +18,16 @@ import { ConfirmDialogComponent } from "../utility/confirm-dialog/confirm-dialog
 })
 
 export class ExpensesComponent implements OnInit {
+
   expenses: Expense[] = [];
+  tempExpense !: Expense | null;
   isSubmitting = false;
+  isRefreshingData = false;
+  deleteMsg = '';
+  toastType = 'info';
+  toastMsg = '';
+  showToast = false;
+
   filteredOrders: any[] = [];   // filtered & sorted list
   filterStatus: string = '';    // holds dropdown value
   sortBy: string = 'createdAt_desc';
@@ -28,56 +36,41 @@ export class ExpensesComponent implements OnInit {
   activeFiltersSummary = '';
   viewType = "card";
 
-  showToast = false;
-  toastType = 'info';
-  toastMsg = '';
-  deleteExpenseMsg = '';
-  deleteAllExpensesMsg = '';
-  editingExpense!: Expense | null;
-  toBeDeletedExpense !: Expense | null;
-  isRefreshTableData = false;
-
   @ViewChild('launchExpenseModalButton') launchExpenseModalButton!: ElementRef;
   @ViewChild('launchConfirmDeleteExpenseButton') launchConfirmDeleteButton!: ElementRef;
   @ViewChild('launchConfirmDeleteAllExpensesButton') launchConfirmDeleteAllButton!: ElementRef;
-  @Output() save = new EventEmitter<any>();
 
   constructor(private router: Router, private expenseService: ExpenseService) { }
 
   ngOnInit(): void {
-    this.loadExpenses();
+    this.loadData();
   }
 
-  loadExpenses() {
+  loadData() {
     this.expenseService.getAllExpenses().subscribe({
       next: (res) => {
         this.expenses = res;
         this.applyFilters();
-        if (this.isRefreshTableData) {
-          this.toastType = "success";
-          this.toastMsg = "Expenses refreshed.";
-          this.showToast = true;
-          this.isRefreshTableData = false;
+        if (this.isRefreshingData) {
+          this.showToastComponent("success", "Expenses data refreshed.");
+          this.isRefreshingData = false;
         }
       },
       error: (err) => {
-        this.toastType = "error";
-        this.toastMsg = err?.error?.message || 'Error loading expenses';
-        this.showToast = true;
-        this.isRefreshTableData = false;
-      }
+        this.showToastComponent("error", err?.error?.message || 'Error loading expenses');
+        this.isRefreshingData = false;
+      },
     });
   }
 
-  refreshTable(): void {
-    this.isRefreshTableData = true;
-    this.loadExpenses();
+  refreshData(): void {
+    this.isRefreshingData = true;
+    this.loadData();
   }
 
   applyFilters() {
     let data = [...this.expenses];
-
-    // 🔍 Search filter
+    // Search filter
     if (this.searchTerm) {
       const term = this.searchTerm.toLowerCase();
       data = data.filter(o =>
@@ -85,13 +78,11 @@ export class ExpensesComponent implements OnInit {
         o.amount.toString().includes(term)
       );
     }
-
-    // 📌 Status filter
+    // Status filter
     if (this.filterStatus) {
       data = data.filter(o => o.expenseType === this.filterStatus);
     }
-
-    // ↕ Sorting
+    // Sorting
     switch (this.sortBy) {
       case 'createdAt_desc':
         data.sort((a, b) => +new Date(b.dateOfExpense) - +new Date(a.dateOfExpense));
@@ -106,7 +97,6 @@ export class ExpensesComponent implements OnInit {
         data.sort((a, b) => a.amount - b.amount);
         break;
     }
-
     this.activeFiltersCount = 0;
     let summaries: string[] = [];
 
@@ -145,88 +135,97 @@ export class ExpensesComponent implements OnInit {
   changeViewType(type: string): void {
     this.viewType = type;
   }
-  //
 
   addExpense(): void {
-    this.editingExpense = null;
-    this.launchExpenseModalButton.nativeElement.click();
+    this.tempExpense = null;
+    this.launchExpenseModal();
   }
 
   editExpense(expense: Expense) {
-    this.editingExpense = expense;
-    this.launchExpenseModalButton.nativeElement.click();
+    this.tempExpense = expense;
+    this.launchExpenseModal();
   }
 
-  askDeleteExpense(expense: Expense) {
-    this.deleteExpenseMsg = `Delete vendor ${expense.uuid}?`;
-    this.toBeDeletedExpense = expense;
-    this.launchConfirmDeleteButton.nativeElement.click();
+  askDeleteExpense(expense: Expense): void {
+    this.deleteMsg = `Delete expense ${expense.uuid}?`;
+    this.tempExpense = expense;
+    this.launchConfirmDeleteModal();
   }
 
   deleteExpense() {
-    if (this.toBeDeletedExpense) {
-      this.expenseService.deleteExpenseByUuid(this.toBeDeletedExpense.uuid).subscribe({
+    if (this.tempExpense) {
+      this.expenseService.deleteExpenseByUuid(this.tempExpense.uuid).subscribe({
         next: () => {
-          this.expenses = this.expenses.filter(c => c.uuid !== this.toBeDeletedExpense?.uuid);
-          this.toastType = "warning";
-          this.toastMsg = "Expense deleted";
-          this.showToast = true;
+          this.expenses = this.expenses.filter(c => c.uuid !== this.tempExpense?.uuid);
+          this.showToastComponent("warning", "Expense deleted");
         },
         error: (err) => {
-          this.toastType = "error";
-          this.toastMsg = err?.error?.message || 'Error deleting expense';
-          this.showToast = true;
+          this.showToastComponent("error", err?.error?.message || 'Error occured while deleting expense');
         },
       });
     }
   }
 
   askDeleteAllExpenses() {
-    this.deleteAllExpensesMsg = 'Delete all expenses';
-    this.launchConfirmDeleteAllButton.nativeElement.click();
+    this.deleteMsg = 'Delete all expenses?';
+    this.launchConfirmDeleteAllModal();
   }
 
   deleteAllExpenses(): void {
     this.expenseService.deleteAllExpenses().subscribe({
       next: () => {
         this.expenses = [];
-        this.toastType = "warning";
-        this.toastMsg = "All Expenses deleted";
-        this.showToast = true;
+        this.showToastComponent("warning", "All expenses deleted");
       },
       error: (err) => {
-        this.toastType = "error";
-        this.toastMsg = err?.error?.message || 'Error deleting expenses';
-        this.showToast = true;
+        this.showToastComponent("error", err?.error?.message || 'Error deleting expenses');
       },
     });
   }
 
-  expenseSuccess(expense: Expense): void {
-    if (this.editingExpense) {
-      this.editingExpense.amount = expense.amount;
+  successAction(expense: Expense): void {
+    if (this.tempExpense) {
+      let index = this.expenses.findIndex(c => c.id === this.tempExpense?.id);
+      if (index !== -1) {
+        this.expenses[index] = { ...this.tempExpense };
+      }
       this.toastMsg = "Expense updated.";
     }
     else {
       this.expenses.push(expense);
       this.toastMsg = "Expense added.";
     }
-    this.toastType = "success";
+    this.showToastComponent("success", this.toastMsg);
+  }
+
+  errorAction(errorStr: string): void {
+    this.showToastComponent("error", errorStr);
+  }
+
+  launchExpenseModal(): void {
+    this.launchExpenseModalButton.nativeElement.click();
+  }
+
+  launchConfirmDeleteModal(): void {
+    this.launchConfirmDeleteButton.nativeElement.click();
+  }
+
+  launchConfirmDeleteAllModal(): void {
+    this.launchConfirmDeleteAllButton.nativeElement.click();
+  }
+
+  showToastComponent(type: string, msg: string): void {
+    this.toastType = type;
+    this.toastMsg = msg;
     this.showToast = true;
   }
 
-  expenseError(errorStr: string): void {
-    this.toastMsg = errorStr;
-    this.toastType = "error";
-    this.showToast = true;
-  }
-
-  toastCloseAction(): void {
+  hideToastComponent(): void {
     this.showToast = false
   }
 
-  openExpenseProfile(expense: Expense) {
-    this.router.navigate(['/dashboard/vendor', expense.uuid]);
+  openDetails(expense: Expense) {
+    this.router.navigate(['/dashboard/expense', expense.uuid]);
   }
 
 }

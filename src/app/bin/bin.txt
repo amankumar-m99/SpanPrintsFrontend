@@ -1,0 +1,22 @@
+// ngOnInit(): void {
+  //   this.customerUuid = this.route.snapshot.paramMap.get('uuid')!;
+  //   this.fetchCustomerDetails(this.customerUuid);
+  // }
+
+  // Recommended (reactive approach – better)
+  // If the same component can be reused with different UUIDs without reload
+
+
+
+  // this.customers.splice(this.deleteIndex, 1);
+
+
+  // editOrder(order: any, index: number) {
+  //   this.editIndex = index;
+  //   this.orderForm.patchValue(order);
+  //   const modal = document.getElementById('newOrderModal');
+  //   if (modal) {
+  //     const bsModal = new (window as any).bootstrap.Modal(modal);
+  //     bsModal.show();
+  //   }
+  // }

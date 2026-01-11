@@ -1,119 +1,171 @@
 <!-- Add/Edit Customer Modal -->
 <div class="modal fade" id="orderModal" tabindex="-1" aria-labelledby="newOrderLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
         <div class="modal-content">
-            <form [formGroup]="modalForm" (ngSubmit)="submitForm()">
-                <div class="modal-header">
+            <div class="modal-header">
+                <h5 class="modal-title">
                     @if (isEditMode) {
-                    <h5 class="modal-title"><i class="bi bi-bag-heart me-2"></i>Update Order</h5>
+                    <i class="bi bi-bag-heart me-2"></i>Update Order
                     }
                     @else{
-                    <h5 class="modal-title"><i class="bi bi-bag-plus me-2"></i>Add Order Modal</h5>
+                    <i class="bi bi-bag-plus me-2"></i>Add Order Modal
                     }
-                    <button id="orderModalCloseBtn" type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
+                </h5>
+                <button id="orderModalCloseBtn" type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="modalForm" (ngSubmit)="submitForm()">
                     <div class="row g-3">
                         <!-- Customer Name -->
                         <div class="col-md-6">
                             <label class="form-label">Customer Name</label>
-                            <input type="text" class="form-control" formControlName="customerName">
+                            <input type="text" class="form-control" formControlName="customerName"
+                                [ngClass]="{ 'is-invalid': customerName?.invalid && customerName?.touched }">
+                            <div class="invalid-feedback" *ngIf="customerName?.touched && customerName?.invalid">
+                                Customer name is required
+                            </div>
                         </div>
                         <!-- Phone -->
                         <div class="col-md-6">
                             <label class="form-label">Phone</label>
-                            <input type="tel" class="form-control" formControlName="phone">
+                            <input type="tel" class="form-control" formControlName="phone"
+                                [ngClass]="{ 'is-invalid': phone?.invalid && phone?.touched }">
+                            <div class="invalid-feedback" *ngIf="phone?.touched && phone?.invalid">
+                                Customer's phone name is required
+                            </div>
                         </div>
                         <!-- Address -->
                         <div class="col-12">
                             <label class="form-label">Address</label>
-                            <textarea class="form-control" rows="2" formControlName="address"></textarea>
+                            <textarea class="form-control" rows="2" formControlName="address"
+                                [ngClass]="{ 'is-invalid': address?.invalid && address?.touched }"></textarea>
+                            <div class="invalid-feedback" *ngIf="address?.touched && address?.invalid">
+                                Invalid address
+                            </div>
                         </div>
                         <!-- Job Type -->
                         <div class="col-md-6">
                             <label class="form-label">Job Type</label>
-                            <select class="form-select" formControlName="jobType">
+                            <select class="form-select" formControlName="jobType"
+                                [ngClass]="{ 'is-invalid': jobType?.invalid && jobType?.touched }">
                                 <option value="">-- Select Job Type --</option>
                                 <option *ngFor="let type of jobTypes" [value]="type">{{ type }}</option>
                             </select>
+                            <div class="invalid-feedback" *ngIf="jobType?.touched && jobType?.invalid">
+                                Invalid Job Type
+                            </div>
                         </div>
-                        <!--  -->
-                        <div class="d-none col-md-6">
-                            <label for="searchDropdown" class="form-label">Select Item</label>
-                            <input type="text" class="form-control" id="searchDropdown" placeholder="Start typing...">
-                            <ul class="list-group position-absolute w-100" id="dropdownList"
-                                style="z-index:1000; max-height:150px; overflow-y:auto; display:none;">
-                                <li class="list-group-item">Item 1</li>
-                                <li class="list-group-item">Item 2</li>
-                                <li class="list-group-item">Item 3</li>
-                                <li class="list-group-item">Item 4</li>
-                            </ul>
-                        </div>
+
                         <!-- Count -->
                         <div class="col-md-6">
                             <label class="form-label">Count</label>
                             <div class="input-group mb-3">
                                 <span class="input-group-text"><i class="bi bi-plus"></i></span>
-                                <input type="number" class="form-control" formControlName="count" aria-label="count">
+                                <input type="number" class="form-control" formControlName="count" aria-label="count"
+                                    [ngClass]="{ 'is-invalid': count?.invalid && count?.touched }">
                                 <span class="input-group-text"><i class="bi bi-dash"></i></span>
+                                <div class="invalid-feedback" *ngIf="count?.touched && count?.invalid">
+                                    Invalid count
+                                </div>
                             </div>
                         </div>
                         <!-- Book Number -->
                         <div class="col-md-6">
                             <label class="form-label">Book Number</label>
-                            <input type="number" class="form-control" formControlName="bookNumber">
+                            <input type="number" class="form-control" formControlName="bookNumber"
+                                [ngClass]="{ 'is-invalid': bookNumber?.invalid && bookNumber?.touched }">
+                            <div class="invalid-feedback" *ngIf="bookNumber?.touched && bookNumber?.invalid">
+                                Invalid book number
+                            </div>
                         </div>
                         <!-- W-Book Number -->
                         <div class="col-md-6">
                             <label class="form-label">W-Book Number</label>
-                            <input type="number" class="form-control" formControlName="wBookNumber">
+                            <input type="number" class="form-control" formControlName="wBookNumber"
+                                [ngClass]="{ 'is-invalid': wBookNumber?.invalid && wBookNumber?.touched }">
+                            <div class="invalid-feedback" *ngIf="wBookNumber?.touched && wBookNumber?.invalid">
+                                Invalid wedding book number
+                            </div>
                         </div>
                         <!-- Date of delivery -->
                         <div class="col-md-6">
                             <label class="form-label">Date of delivery</label>
-                            <input type="date" class="form-control" formControlName="dateOfDelivery">
+                            <input type="date" class="form-control" formControlName="dateOfDelivery"
+                                [ngClass]="{ 'is-invalid': dateOfDelivery?.invalid && dateOfDelivery?.touched }">
+                            <div class="invalid-feedback" *ngIf="dateOfDelivery?.touched && dateOfDelivery?.invalid">
+                                Invalid date of delivery
+                            </div>
                         </div>
                         <!-- Total Amount -->
                         <div class="col-md-6">
                             <label class="form-label">Total Amount</label>
-                            <input type="number" class="form-control" formControlName="totalAmount">
+                            <input type="number" class="form-control" formControlName="totalAmount"
+                                [ngClass]="{ 'is-invalid': totalAmount?.invalid && totalAmount?.touched }">
+                            <div class="invalid-feedback" *ngIf="totalAmount?.touched && totalAmount?.invalid">
+                                Invalid total amount
+                            </div>
                         </div>
                         <!-- Deposit Amount -->
                         <div class="col-md-6">
                             <label class="form-label">Deposit Amount</label>
-                            <input type="number" class="form-control" formControlName="depositAmount">
+                            <input type="number" class="form-control" formControlName="depositAmount"
+                                [ngClass]="{ 'is-invalid': depositAmount?.invalid && depositAmount?.touched }">
+                            <div class="invalid-feedback" *ngIf="depositAmount?.touched && depositAmount?.invalid">
+                                Invalid deposit amount
+                            </div>
                         </div>
                         <!-- Remaining Amount -->
                         <div class="col-md-6">
                             <label class="form-label">Remaining Amount</label>
-                            <input type="number" class="form-control" formControlName="remainingAmount">
+                            <input type="number" class="form-control" formControlName="remainingAmount"
+                                [ngClass]="{ 'is-invalid': remainingAmount?.invalid && remainingAmount?.touched }">
+                            <div class="invalid-feedback" *ngIf="remainingAmount?.touched && remainingAmount?.invalid">
+                                Invalid remaining amount
+                            </div>
                         </div>
                         <!-- Discounted Amount -->
                         <div class="col-md-6">
                             <label class="form-label">Discounted Amount</label>
-                            <input type="number" class="form-control" formControlName="discountedAmount">
+                            <input type="number" class="form-control" formControlName="discountedAmount"
+                                [ngClass]="{ 'is-invalid': discountedAmount?.invalid && discountedAmount?.touched }">
+                            <div class="invalid-feedback"
+                                *ngIf="discountedAmount?.touched && discountedAmount?.invalid">
+                                Invalid discounted amount
+                            </div>
                         </div>
                         <!-- Payment Status -->
                         <div class="col-md-6">
                             <label class="form-label">Payment Status</label>
-                            <select class="form-select" formControlName="paymentStatus">
+                            <select class="form-select" formControlName="paymentStatus"
+                                [ngClass]="{ 'is-invalid': paymentStatus?.invalid && paymentStatus?.touched }">
                                 <option value="">-- Select Status --</option>
                                 <option value="partially paid">Partially Paid</option>
                                 <option value="paid">Paid</option>
                                 <option value="unpaid">Unpaid</option>
                             </select>
+                            <div class="invalid-feedback" *ngIf="paymentStatus?.touched && paymentStatus?.invalid">
+                                Invalid Payment status
+                            </div>
                         </div>
                         <div class="col-12">
                             <label class="form-label">Add Note</label>
                             <textarea class="form-control" rows="2" formControlName="note"
+                                [ngClass]="{ 'is-invalid': note?.invalid && note?.touched }"
                                 placeholder="Optional note about the order"></textarea>
+                            <div class="invalid-feedback" *ngIf="note?.touched && note?.invalid">
+                                Invalid note
+                            </div>
                         </div>
 
                         <!-- Description -->
                         <div class="col-12">
                             <label class="form-label">Description</label>
                             <textarea class="form-control" rows="3" formControlName="description"
+                                [ngClass]="{ 'is-invalid': description?.invalid && description?.touched }"
                                 placeholder="Detailed order description"></textarea>
+                            <div class="invalid-feedback" *ngIf="description?.touched && description?.invalid">
+                                Invalid description
+                            </div>
                         </div>
 
                         <!-- Attachments -->
@@ -141,31 +193,35 @@
                             </ul>
                         </div>
                     </div>
-                </div>
+                    <div><button id="orderModalFormSubmitButton" type="submit" class="d-none"
+                            [disabled]="isSubmitting"></button></div>
+                </form>
+            </div>
 
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" [disabled]="isSubmitting">
-                        @if(!isSubmitting){
-                        @if(isEditMode){
-                        <span>Update</span>
-                        }
-                        @else {
-                        <span>Place Order</span>
-                        }
-                        }
-                        @else {
-                        <span class="spinner-border spinner-border-sm me-2"></span>
-                        @if(isEditMode){
-                        <span>Updating...</span>
-                        }
-                        @else {
-                        <span>Adding...</span>
-                        }
-                        }
-                    </button>
-                </div>
-            </form>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" [disabled]="isSubmitting"
+                    (click)="programmaticallyClickFormSubmitButton()">
+                    @if(!isSubmitting){
+                    @if(isEditMode){
+                    <span>Save</span>
+                    }
+                    @else {
+                    <span>Place Order</span>
+                    }
+                    }
+                    @else {
+                    <span class="spinner-border spinner-border-sm me-2"></span>
+                    @if(isEditMode){
+                    <span>Saving...</span>
+                    }
+                    @else {
+                    <span>Adding...</span>
+                    }
+                    }
+                </button>
+            </div>
+
         </div>
     </div>
 </div>

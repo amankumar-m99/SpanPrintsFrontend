@@ -25,8 +25,8 @@
                         class="bi bi-card-heading"></i></button>
             </div>
             <div class="ms-2">
-                <button class="btn btn-primary ms-2" (click)="refreshTable()">
-                    <i class="bi bi-arrow-clockwise me-2"></i>Refresh Table
+                <button class="btn btn-primary ms-2" (click)="refreshData()">
+                    <i class="bi bi-arrow-clockwise me-2"></i>Refresh Expenses
                 </button>
                 <button class="btn btn-primary ms-2" (click)="addExpense()">
                     <i class="bi bi-plus-lg me-2"></i>Add Expense
@@ -127,7 +127,7 @@
                         <button class="btn btn-sm btn-outline-danger" (click)="askDeleteExpense(expense)">
                             <i class="bi bi-trash"></i>
                         </button>
-                        <button class="btn btn-sm btn-outline-info" (click)="openExpenseProfile(expense)">
+                        <button class="btn btn-sm btn-outline-info" (click)="openDetails(expense)">
                             <i class="bi bi-box-arrow-up-right"></i>
                         </button>
                     </td>
@@ -141,20 +141,19 @@
 <button #launchExpenseModalButton class="btn btn-info d-none" data-bs-toggle="modal"
     data-bs-target="#expenseModal">Launch
     Expense Modal</button>
-<app-expense-modal [model]="editingExpense" (successAction)="expenseSuccess($event)"
-    (errorAction)="expenseError($event)"></app-expense-modal>
+<app-expense-modal [model]="tempExpense" (successAction)="successAction($event)"
+    (errorAction)="errorAction($event)"></app-expense-modal>
 
 <button #launchConfirmDeleteExpenseButton class="btn btn-info d-none" data-bs-toggle="modal"
     data-bs-target="#confirmDeleteExpenseDialog">Launch Confirm Delete Modal</button>
-<app-confirm-dialog [id]="'confirmDeleteExpenseDialog'" [title]="'Confirm Delete'" [message]="deleteExpenseMsg"
+<app-confirm-dialog [id]="'confirmDeleteExpenseDialog'" [title]="'Confirm Delete'" [message]="deleteMsg"
     [confirmText]="'Delete'" [cancelText]="'Cancel'" [confirmBtnClass]="'btn-danger'" (confirmed)="deleteExpense()">
 </app-confirm-dialog>
 
 <button #launchConfirmDeleteAllExpensesButton class="btn btn-info d-none" data-bs-toggle="modal"
     data-bs-target="#confirmDeleteAllExpensesDialog">Launch Confirm Delete All Modal</button>
-<app-confirm-dialog [id]="'confirmDeleteAllExpensesDialog'" [title]="'Confirm Delete All'"
-    [message]="deleteAllExpensesMsg" [confirmText]="'Delete'" [cancelText]="'Cancel'" [confirmBtnClass]="'btn-danger'"
-    (confirmed)="deleteAllExpenses()">
+<app-confirm-dialog [id]="'confirmDeleteAllExpensesDialog'" [title]="'Confirm Delete All'" [message]="deleteMsg"
+    [confirmText]="'Delete'" [cancelText]="'Cancel'" [confirmBtnClass]="'btn-danger'" (confirmed)="deleteAllExpenses()">
 </app-confirm-dialog>
 
-<app-toast *ngIf="showToast" [type]='toastType' [message]='toastMsg' (closeAction)="toastCloseAction()"></app-toast>
+<app-toast *ngIf="showToast" [type]='toastType' [message]='toastMsg' (closeAction)="hideToastComponent()"></app-toast>
