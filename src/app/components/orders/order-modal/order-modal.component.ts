@@ -10,7 +10,7 @@ import { Customer } from '../../../model/customer/customer.model';
 import { OrderService } from '../../../services/order/order.service';
 import { CustomerService } from '../../../services/customer/customer.service';
 import { PrintJobType } from '../../../model/order/printjobtype.model';
-import { PrintjobtypeService } from '../../../services/order/printjobtype.service';
+import { PrintJobTypeService } from '../../../services/order/printjobtype.service';
 
 @Component({
   selector: 'app-order-modal',
@@ -51,7 +51,7 @@ export class OrderModalComponent implements OnInit, OnChanges {
     private fb: FormBuilder,
     private orderService: OrderService,
     private customerService: CustomerService,
-    private printJobTypeService: PrintjobtypeService
+    private printJobTypeService: PrintJobTypeService
   ) { }
 
   /* =========================================================
@@ -122,7 +122,7 @@ export class OrderModalComponent implements OnInit, OnChanges {
 
   private loadPrintJobTypes() {
     this.isPrintJobTypesSearchLoading = true;
-    this.printJobTypeService.getAllJobTypes().subscribe({
+    this.printJobTypeService.getAllPrintJobTypes().subscribe({
       next: (res) => {
         this.printJobTypes = res;
         this.isPrintJobTypesSearchLoading = false;

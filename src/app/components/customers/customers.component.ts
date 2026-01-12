@@ -107,14 +107,9 @@ export class CustomersComponent implements OnInit {
 
   successAction(customer: Customer): void {
     if (this.tempCustomer) {
-      // let index = this.customers.findIndex(c => c.id === this.tempCustomer?.id);
-      // if (index !== -1) {
-      //   this.customers[index] = { ...this.tempCustomer };
-      // }
       this.toastMsg = "Customer updated.";
     }
     else {
-      // this.customers.push(customer);
       this.toastMsg = "Customer added.";
     }
     this.tempCustomer = null;

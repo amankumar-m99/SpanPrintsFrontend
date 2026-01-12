@@ -1,0 +1,73 @@
+<div class="me-1">
+    <div class="d-flex justify-content-between align-items-center pb-3 my-1 border-bottom">
+        <h3><i class="bi bi-printer me-2 text-primary"></i>Print Jobs</h3>
+        <div class="d-flex">
+            <div class="ms-2">
+                <button class="btn btn-primary ms-2" (click)="refreshData()">
+                    <i class="bi bi-arrow-clockwise me-2"></i>Refresh Print Jobs
+                </button>
+                <button class="btn btn-primary ms-2" (click)="addPrintJobType()">
+                    <i class="bi bi-plus-lg me-2"></i>Add Print Job
+                </button>
+                <button class="btn btn-danger ms-2" (click)="askDeleteAllPrintJobTypes()">
+                    <i class="bi bi-trash me-2"></i>Delete All
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="table-responsive mt-3">
+        <table class="table table-striped table-hover align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Updated At</th>
+                    <th>Created At</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr *ngFor="let printJob of printJobTypes; let i = index" class="cursor-pointer">
+                    <td>{{ i + 1 }}</td>
+                    <td>{{ printJob.name }}</td>
+                    <td>{{ printJob.description }}</td>
+                    <td>{{ printJob.updatedAt | date: 'short' }}</td>
+                    <td>{{ printJob.createdAt | date:'short' }}</td>
+
+                    <!-- Actions -->
+                    <td class="text-end" (click)="$event.stopPropagation()">
+                        <button class="btn btn-sm btn-outline-primary me-1" (click)="editPrintJobType(printJob)">
+                            <i class="bi bi-pencil"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline-danger me-1" (click)="askDeletePrintJobType(printJob)">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<button #launchPrintJobTypeModalButton class="btn btn-info d-none" data-bs-toggle="modal"
+    data-bs-target="#printJobTypeModal">Launch Print Job Modal</button>
+<app-printjobtype-modal [model]="tempPrintJobType" (successAction)="successAction($event)"
+    (errorAction)="errorAction($event)"></app-printjobtype-modal>
+
+<button #launchConfirmDeletePrintJobTypeButton class="btn btn-info d-none" data-bs-toggle="modal"
+    data-bs-target="#confirmDeletePrintJobDialog">Launch Confirm Delete Modal</button>
+<app-confirm-dialog [id]="'confirmDeletePrintJobDialog'" [title]="'Confirm Delete'" [message]="deleteMsg"
+    [confirmText]="'Delete'" [cancelText]="'Cancel'" [confirmBtnClass]="'btn-danger'"
+    (confirmed)="deletePrintJobType()">
+</app-confirm-dialog>
+
+<button #launchConfirmDeleteAllPrintJobTypesButton class="btn btn-info d-none" data-bs-toggle="modal"
+    data-bs-target="#confirmDeleteAllPrintJobsDialog">Launch Confirm Delete All Modal</button>
+<app-confirm-dialog [id]="'confirmDeleteAllPrintJobsDialog'" [title]="'Confirm Delete All'" [message]="deleteMsg"
+    [confirmText]="'Delete'" [cancelText]="'Cancel'" [confirmBtnClass]="'btn-danger'"
+    (confirmed)="askDeleteAllPrintJobTypes()">
+</app-confirm-dialog>
+
+<app-toast *ngIf="showToast" [type]='toastType' [message]='toastMsg' (closeAction)="hideToastComponent()"></app-toast>

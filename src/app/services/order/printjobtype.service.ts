@@ -9,30 +9,29 @@ import { PrintJobType } from '../../model/order/printjobtype.model';
 @Injectable({
   providedIn: 'root'
 })
-export class PrintjobtypeService {
+export class PrintJobTypeService {
 
-  private url = Constant.API_URL + '/printjob';
+  private url = Constant.API_URL + '/printjobtype';
 
   constructor(private http: HttpClient) { }
 
-
   createPrintJobType(data: CreatePrintJobTypeRequest) {
-    return this.http.post<Order>(this.url, data);
+    return this.http.post<PrintJobType>(this.url, data);
   }
 
   updatePrintJobType(data: UpdatePrintJobTypeRequest) {
-    return this.http.put<Order>(this.url, data);
+    return this.http.put<PrintJobType>(this.url, data);
   }
 
-  getAllJobTypes() {
-    return this.http.get<PrintJobType[]>(this.url);
+  getAllPrintJobTypes() {
+    return this.http.get<PrintJobType[]>(this.url + '/all');
   }
 
-  deleteJobTypeByUuid(uuid: string) {
-    return this.http.delete<any>(this.url + '/uuid/' + uuid);
+  deletePrintJobTypeById(id: number) {
+    return this.http.delete<any>(this.url + '/id/' + id);
   }
 
-  deleteAllJobTypes() {
+  deleteAllPrintJobTypes() {
     return this.http.delete<any>(this.url + 's');
   }
 }

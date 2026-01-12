@@ -22,7 +22,7 @@ export class OrderService {
   }
 
   getAllOrders() {
-    return this.http.get<Order[]>(this.url);
+    return this.http.get<Order[]>(this.url + '/all');
   }
 
   deleteOrderByUuid(uuid: string) {

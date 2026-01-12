@@ -19,6 +19,7 @@ import { VendorsComponent } from './components/vendors/vendors.component';
 import { QuickActionsComponent } from './components/quick-actions/quick-actions.component';
 import { CustomerInfoComponent } from './components/customers/customer-info/customer-info.component';
 import { VendorInfoComponent } from './components/vendors/vendor-info/vendor-info.component';
+import { PrintjobComponent } from './components/printjob/printjob.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent, canActivate: [GuestGuard] },
@@ -36,6 +37,7 @@ export const routes: Routes = [
             { path: 'expenses', component: ExpensesComponent },
             { path: 'earnings', component: EarningsComponent },
             { path: 'reports', component: ReportsComponent },
+            { path: 'printjob', component: PrintjobComponent },
             { path: 'quickactions', component: QuickActionsComponent },
             { path: 'profile', component: ProfileComponent },
             { path: 'update-password', component: UpdatePasswordComponent },

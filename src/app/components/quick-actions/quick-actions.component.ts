@@ -5,11 +5,12 @@ import { CommonModule } from '@angular/common';
 import { VendorModalComponent } from "../vendors/vendor-modal/vendor-modal.component";
 import { OrderModalComponent } from "../orders/order-modal/order-modal.component";
 import { ExpenseModalComponent } from "../expenses/expense-modal/expense-modal.component";
+import { PrintjobtypeModalComponent } from "../printjob/printjobtype-modal/printjobtype-modal.component";
 
 @Component({
   selector: 'app-quick-actions',
   standalone: true,
-  imports: [CustomerModalComponent, ToastComponent, CommonModule, VendorModalComponent, OrderModalComponent, ExpenseModalComponent],
+  imports: [CustomerModalComponent, ToastComponent, CommonModule, VendorModalComponent, OrderModalComponent, ExpenseModalComponent, PrintjobtypeModalComponent],
   templateUrl: './quick-actions.component.html',
   styleUrl: './quick-actions.component.css'
 })

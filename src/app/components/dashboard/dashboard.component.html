@@ -190,6 +190,13 @@
                     </a>
                 </li>
                 <li>
+                    <a routerLink="printjob" class="nav-link text-white d-flex align-items-center"
+                        (click)="closeSidebarOnMobile()">
+                        <i class="bi bi-printer me-2 text-info"></i>
+                        <span class="menu-text">Print-Jobs</span>
+                    </a>
+                </li>
+                <li>
                     <a href="#" class="nav-link d-flex align-items-center text-danger" (click)="closeSidebarOnMobile()"
                         data-bs-toggle="modal" data-bs-target="#appLogoutButton">
                         <i class="bi bi-box-arrow-right me-2"></i>

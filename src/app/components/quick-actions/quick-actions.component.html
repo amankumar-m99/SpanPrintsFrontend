@@ -95,7 +95,7 @@
 
         <!-- Create a print job -->
         <div class="col-md-3 col-sm-6">
-            <div class="card action-card shadow-sm h-100" data-bs-toggle="modal" data-bs-target="#printJobModal">
+            <div class="card action-card shadow-sm h-100" data-bs-toggle="modal" data-bs-target="#printJobTypeModal">
                 <div class="card-body text-center">
                     <i class="bi bi-printer fs-1 text-primary mb-2"></i>
                     <h6 class="fw-semibold">Create Print Job</h6>
@@ -131,4 +131,6 @@
     (errorAction)="showErrorToastModal($event)"></app-vendor-modal>
 <app-expense-modal (successAction)="showSuccessToastModal('Expense added.')"
     (errorAction)="showErrorToastModal($event)"></app-expense-modal>
+<app-printjobtype-modal (successAction)="showSuccessToastModal('Print-job added.')"
+    (errorAction)="showErrorToastModal($event)"></app-printjobtype-modal>
 <app-toast *ngIf="showToast" [type]='toastType' [message]='toastMsg' (closeAction)="hideToastModal()"></app-toast>
