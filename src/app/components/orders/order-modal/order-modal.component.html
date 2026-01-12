@@ -16,6 +16,7 @@
             </div>
             <div class="modal-body">
                 <form [formGroup]="modalForm" (ngSubmit)="submitForm()">
+                    {{modalForm.value | json}}
                     <div class="row g-3">
                         <!-- Customer Name -->
                         <div class="col-md-6">
@@ -52,7 +53,7 @@
                         <!-- Phone -->
                         <div class="col-md-6">
                             <label class="form-label">Phone</label>
-                            <input type="tel" class="form-control" formControlName="phone" readonly
+                            <input type="tel" class="form-control" formControlName="phone"
                                 [ngClass]="{ 'is-invalid': phone?.invalid && phone?.touched }">
                             <div class="invalid-feedback" *ngIf="phone?.touched && phone?.invalid">
                                 Customer's phone name is required
@@ -61,7 +62,7 @@
                         <!-- Address -->
                         <div class="col-12">
                             <label class="form-label">Address</label>
-                            <textarea class="form-control" rows="2" formControlName="address" readonly
+                            <textarea class="form-control" rows="2" formControlName="address"
                                 [ngClass]="{ 'is-invalid': address?.invalid && address?.touched }"></textarea>
                             <div class="invalid-feedback" *ngIf="address?.touched && address?.invalid">
                                 Invalid address
@@ -70,12 +71,12 @@
                         <!-- Job Type -->
                         <div class="col-md-6">
                             <label class="form-label">Job Type</label>
-                            <select class="form-select" formControlName="jobType"
-                                [ngClass]="{ 'is-invalid': jobType?.invalid && jobType?.touched }">
+                            <select class="form-select" formControlName="printJobId"
+                                [ngClass]="{ 'is-invalid': printJobId?.invalid && printJobId?.touched }">
                                 <option value="">-- Select Job Type --</option>
                                 <option *ngFor="let type of printJobTypes" [value]="type.id">{{ type.name }}</option>
                             </select>
-                            <div class="invalid-feedback" *ngIf="jobType?.touched && jobType?.invalid">
+                            <div class="invalid-feedback" *ngIf="printJobId?.touched && printJobId?.invalid">
                                 Invalid Job Type
                             </div>
                             <!-- Loading Indicator -->
@@ -176,7 +177,7 @@
                         <!-- Remaining Amount -->
                         <div class="col-md-6">
                             <label class="form-label">Remaining Amount</label>
-                            <input type="number" class="form-control" formControlName="remainingAmount" readonly
+                            <input type="number" class="form-control" formControlName="remainingAmount"
                                 [ngClass]="{ 'is-invalid': remainingAmount?.invalid && remainingAmount?.touched }">
                             <div class="invalid-feedback" *ngIf="remainingAmount?.touched && remainingAmount?.invalid">
                                 Remaining amount is invalid
@@ -188,9 +189,9 @@
                             <select class="form-select" formControlName="paymentStatus"
                                 [ngClass]="{ 'is-invalid': paymentStatus?.invalid && paymentStatus?.touched }">
                                 <option value="">-- Select Status --</option>
-                                <option value="partially paid">Partially Paid</option>
-                                <option value="paid">Paid</option>
-                                <option value="unpaid">Unpaid</option>
+                                <option value="PARTIALLY_PAID">Partially Paid</option>
+                                <option value="PAID">Paid</option>
+                                <option value="UNPAID">Unpaid</option>
                             </select>
                             <div class="invalid-feedback" *ngIf="paymentStatus?.touched && paymentStatus?.invalid">
                                 Invalid Payment status

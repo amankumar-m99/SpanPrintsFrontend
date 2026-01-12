@@ -50,13 +50,13 @@ export class OrdersComponent implements OnInit {
       next: (res) => {
         this.orders = res;
         if (this.isRefreshingData) {
-          this.showToastComponent("success", "Customers data refreshed.");
+          this.showToastComponent("success", "Orders refreshed.");
           this.isRefreshingData = false;
         }
         this.applyFilters();
       },
       error: (err) => {
-        this.showToastComponent("error", err?.error?.message || 'Error loading customers');
+        this.showToastComponent("error", err?.error?.message || 'Error loading orders');
         this.isRefreshingData = false;
       },
     });
@@ -153,10 +153,10 @@ export class OrdersComponent implements OnInit {
       this.orderService.deleteOrderByUuid(this.tempOrder.uuid).subscribe({
         next: () => {
           this.orders = this.orders.filter(c => c.uuid !== this.tempOrder?.uuid);
-          this.showToastComponent("warning", "Customer deleted");
+          this.showToastComponent("warning", "Order deleted");
         },
         error: (err) => {
-          this.showToastComponent("error", err?.error?.message || 'Error occured while deleting customer');
+          this.showToastComponent("error", err?.error?.message || 'Error occured while deleting order');
         },
       });
     }
@@ -223,6 +223,6 @@ export class OrdersComponent implements OnInit {
   }
 
   openDetails(order: Order) {
-    this.router.navigate(['/dashboard/customer', order.uuid]);
+    this.router.navigate(['/dashboard/order', order.uuid]);
   }
 }

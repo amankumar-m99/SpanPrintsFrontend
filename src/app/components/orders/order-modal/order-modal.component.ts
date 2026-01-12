@@ -83,11 +83,12 @@ export class OrderModalComponent implements OnInit, OnChanges {
 
   private buildForm(): void {
     this.modalForm = this.fb.group({
+      customerId: [{ value: '', disabled: true }, Validators.required],
       customerName: ['', Validators.required],
-      phone: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
-      address: ['', Validators.required],
+      phone: [{ value: '', disabled: true }, [Validators.required, Validators.pattern(/^\d{10}$/)]],
+      address: [{ value: '', disabled: true }, Validators.required],
 
-      jobType: ['', Validators.required],
+      printJobId: ['', Validators.required],
       count: [1, [Validators.required, Validators.min(1)]],
       dateOfDelivery: ['', Validators.required],
 
@@ -104,10 +105,11 @@ export class OrderModalComponent implements OnInit, OnChanges {
       description: ['']
     });
   }
+  get customerId() { return this.modalForm.get('customerId'); }
   get customerName() { return this.modalForm.get('customerName'); }
   get phone() { return this.modalForm.get('phone'); }
   get address() { return this.modalForm.get('address'); }
-  get jobType() { return this.modalForm.get('jobType'); }
+  get printJobId() { return this.modalForm.get('printJobId'); }
   get count() { return this.modalForm.get('count'); }
   get dateOfDelivery() { return this.modalForm.get('dateOfDelivery'); }
   get bookNumber() { return this.modalForm.get('bookNumber'); }
@@ -142,7 +144,6 @@ export class OrderModalComponent implements OnInit, OnChanges {
       debounceTime(800),
       distinctUntilChanged(),
       switchMap(value => {
-
         if (!value || typeof value !== 'string') {
           this.customers = [];
           this.isCustomerSearchLoading = false;
@@ -174,9 +175,9 @@ export class OrderModalComponent implements OnInit, OnChanges {
 
   onCustomerSelect(customer: Customer): void {
     this.selectedCustomer = customer;
-
     this.modalForm.patchValue(
       {
+        customerId: customer.id,
         customerName: customer.name,
         phone: customer.primaryPhoneNumber,
         address: customer.address
@@ -288,7 +289,6 @@ export class OrderModalComponent implements OnInit, OnChanges {
 
   private updateOrder(): void {
     this.isSubmitting = true;
-
     const payload: UpdateOrderRequest = {
       id: this.model!.id,
       ...this.modalForm.getRawValue()
@@ -312,9 +312,15 @@ export class OrderModalComponent implements OnInit, OnChanges {
     this.isSubmitting = true;
 
     const formData = new FormData();
-    Object.entries(this.modalForm.getRawValue()).forEach(
-      ([key, value]) => formData.append(key, value as any)
-    );
+    // Object.entries(this.modalForm.getRawValue()).forEach(
+    //   ([key, value]) => formData.append(key, value as any)
+    // );
+
+    Object.entries(this.modalForm.getRawValue()).forEach(([key, value]) => {
+      if (value !== null && value !== undefined && value !== '') {
+        formData.append(key, value.toString());
+      }
+    });
 
     this.selectedFiles.forEach(file =>
       formData.append('attachments', file)
