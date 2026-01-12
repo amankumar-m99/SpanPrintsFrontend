@@ -25,14 +25,28 @@
                             <div class="invalid-feedback" *ngIf="customerName?.touched && customerName?.invalid">
                                 Customer name is required
                             </div>
+                            <!-- Loading Indicator -->
+                            <div *ngIf="isCustomerSearchLoading" class="mt-1">
+                                <div class="spinner-border spinner-border-sm text-primary" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                                <span class="ms-2 text-muted">Searching customers...</span>
+                            </div>
 
                             <!-- Dropdown for customer suggestions -->
-                            <ul class="list-group mt-2" *ngIf="customers.length">
-                                <li class="list-group-item" *ngFor="let customer of customers"
+                            <ul *ngIf="customers.length > 0 && !isCustomerSearchLoading"
+                                class="list-group position-absolute w-100 z-3">
+                                <li *ngFor="let customer of customers" class="list-group-item list-group-item-action"
                                     (click)="onCustomerSelect(customer)">
-                                    {{ customer.name }}
+                                    <strong>{{ customer.name }}</strong>
+                                    <small class="text-muted ms-2">{{ customer.primaryPhoneNumber }}</small><br/>
+                                    <small class="text-muted">{{ customer.address }}</small>
                                 </li>
                             </ul>
+                            <div *ngIf="!isCustomerSearchLoading && customers.length === 0 && customerName?.value"
+                                class="text-muted mt-1">
+                                No customers found
+                            </div>
                         </div>
 
                         <!-- Phone -->

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { ReactiveFormsModule, FormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Vendor } from '../../../model/vendor/vendor.model';
 import { VendorService } from '../../../services/vendor/vendor.service';
@@ -28,7 +28,9 @@ export class VendorModalComponent implements OnInit, OnChanges {
   constructor(private fb: FormBuilder, private service: VendorService) { }
 
   ngOnInit(): void {
-    this.initModalForm();
+    if (!this.modalForm) {
+      this.initModalForm();
+    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -89,7 +91,7 @@ export class VendorModalComponent implements OnInit, OnChanges {
         this.modalForm.reset();
         this.closeModalProgramatically();
         if (this.successAction != null)
-          this.successAction.emit(response);
+          this.successAction.emit({ ...response });
       },
       error: (err) => {
         this.isSubmitting = false;
@@ -112,7 +114,7 @@ export class VendorModalComponent implements OnInit, OnChanges {
         this.modalForm.reset();
         this.closeModalProgramatically();
         if (this.successAction != null)
-          this.successAction.emit(response);
+          this.successAction.emit({ ...response });
       },
       error: (err) => {
         this.isSubmitting = false;

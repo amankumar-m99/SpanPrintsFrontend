@@ -181,17 +181,19 @@ export class OrdersComponent implements OnInit {
 
   successAction(order: Order): void {
     if (this.tempOrder) {
-      let index = this.orders.findIndex(c => c.id === this.tempOrder?.id);
-      if (index !== -1) {
-        this.orders[index] = { ...this.tempOrder };
-      }
+      // let index = this.orders.findIndex(c => c.id === this.tempOrder?.id);
+      // if (index !== -1) {
+      //   this.orders[index] = { ...this.tempOrder };
+      // }
       this.toastMsg = "Order updated.";
     }
     else {
-      this.orders.push(order);
+      // this.orders.push(order);
       this.toastMsg = "Order added.";
     }
+    this.tempOrder = null;
     this.showToastComponent("success", this.toastMsg);
+    this.loadData();
   }
 
   errorAction(errorStr: string): void {

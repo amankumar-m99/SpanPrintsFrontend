@@ -123,12 +123,12 @@
 </div>
 
 <!-- Reuse existing modals -->
-<app-customer-modal (successAction)="customerSuccess('Customer added.')"
-    (errorAction)="errorToast($event)"></app-customer-modal>
-<app-order-modal (successAction)="customerSuccess('Order placed.')"
-    (errorAction)="errorToast($event)"></app-order-modal>
-<app-vendor-modal (successAction)="customerSuccess('Vendor added.')"
-    (errorAction)="errorToast($event)"></app-vendor-modal>
-<app-expense-modal (successAction)="customerSuccess('Expense added.')"
-    (errorAction)="errorToast($event)"></app-expense-modal>
-<app-toast *ngIf="showToast" [type]='toastType' [message]='toastMsg' (closeAction)="toastCloseAction()"></app-toast>
+<app-customer-modal (successAction)="showSuccessToastModal('Customer added.')"
+    (errorAction)="showErrorToastModal($event)"></app-customer-modal>
+<app-order-modal (successAction)="showSuccessToastModal('Order placed.')"
+    (errorAction)="showErrorToastModal($event)"></app-order-modal>
+<app-vendor-modal (successAction)="showSuccessToastModal('Vendor added.')"
+    (errorAction)="showErrorToastModal($event)"></app-vendor-modal>
+<app-expense-modal (successAction)="showSuccessToastModal('Expense added.')"
+    (errorAction)="showErrorToastModal($event)"></app-expense-modal>
+<app-toast *ngIf="showToast" [type]='toastType' [message]='toastMsg' (closeAction)="hideToastModal()"></app-toast>

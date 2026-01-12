@@ -185,17 +185,19 @@ export class ExpensesComponent implements OnInit {
 
   successAction(expense: Expense): void {
     if (this.tempExpense) {
-      let index = this.expenses.findIndex(c => c.id === this.tempExpense?.id);
-      if (index !== -1) {
-        this.expenses[index] = { ...this.tempExpense };
-      }
+      // let index = this.expenses.findIndex(c => c.id === this.tempExpense?.id);
+      // if (index !== -1) {
+      //   this.expenses[index] = { ...this.tempExpense };
+      // }
       this.toastMsg = "Expense updated.";
     }
     else {
-      this.expenses.push(expense);
+      // this.expenses.push(expense);
       this.toastMsg = "Expense added.";
     }
+    this.tempExpense = null;
     this.showToastComponent("success", this.toastMsg);
+    this.loadData();
   }
 
   errorAction(errorStr: string): void {

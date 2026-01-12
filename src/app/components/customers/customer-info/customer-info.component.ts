@@ -38,12 +38,12 @@ export class CustomerInfoComponent implements OnInit {
       const uuid = params.get('uuid');
       if (uuid) {
         this.customerUuid = uuid;
-        this.fetchCustomerDetails(uuid);
+        this.fetchCustomerDetails();
       }
     });
   }
 
-  fetchCustomerDetails(uuid: string) {
+  fetchCustomerDetails() {
     this.customerService.getCustomerByUuid(this.customerUuid).subscribe({
       next: (res) => {
         this.customer = res;
@@ -83,7 +83,8 @@ export class CustomerInfoComponent implements OnInit {
   }
 
   customerSuccess(customer: Customer): void {
-    this.showToastComponent("success", "Customer updated.")
+    this.showToastComponent("success", "Customer updated.");
+    this.fetchCustomerDetails();
   }
 
   customerError(errorStr: string): void {

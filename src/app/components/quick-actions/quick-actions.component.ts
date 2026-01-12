@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { CustomerModalComponent } from "../customers/customer-modal/customer-modal.component";
 import { ToastComponent } from "../utility/toast/toast.component";
-import { Customer } from '../../model/customer/customer.model';
 import { CommonModule } from '@angular/common';
 import { VendorModalComponent } from "../vendors/vendor-modal/vendor-modal.component";
 import { OrderModalComponent } from "../orders/order-modal/order-modal.component";
@@ -20,19 +19,19 @@ export class QuickActionsComponent {
   toastType = 'info';
   toastMsg = '';
 
-  toastCloseAction(): void {
-    this.showToast = false
-  }
-
-  customerSuccess(msg: string): void {
-    this.toastMsg = msg;
+  showSuccessToastModal(msg: string): void {
     this.toastType = "success";
+    this.toastMsg = msg;
     this.showToast = true;
   }
 
-  errorToast(errorStr: string): void {
-    this.toastMsg = errorStr;
+  showErrorToastModal(errorStr: string): void {
     this.toastType = "error";
+    this.toastMsg = errorStr;
     this.showToast = true;
+  }
+
+  hideToastModal(): void {
+    this.showToast = false
   }
 }

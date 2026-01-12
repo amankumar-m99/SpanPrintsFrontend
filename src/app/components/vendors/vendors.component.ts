@@ -107,17 +107,19 @@ export class VendorsComponent {
 
   successAction(vendor: Vendor): void {
     if (this.tempVendor) {
-      let index = this.vendors.findIndex(c => c.id === this.tempVendor?.id);
-      if (index !== -1) {
-        this.vendors[index] = { ...this.tempVendor };
-      }
+      // let index = this.vendors.findIndex(c => c.id === this.tempVendor?.id);
+      // if (index !== -1) {
+      //   this.vendors[index] = { ...this.tempVendor };
+      // }
       this.toastMsg = "Vendor updated.";
     }
     else {
-      this.vendors.push(vendor);
+      // this.vendors.push(vendor);
       this.toastMsg = "Vendor added.";
     }
+    this.tempVendor = null;
     this.showToastComponent("success", this.toastMsg);
+    this.loadData();
   }
 
   errorAction(errorStr: string): void {

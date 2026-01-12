@@ -27,7 +27,9 @@ export class ExpenseModalComponent implements OnInit, OnChanges {
   constructor(private fb: FormBuilder, private service: ExpenseService) { }
 
   ngOnInit(): void {
-    this.initModalForm();
+    if (!this.modalForm) {
+      this.initModalForm();
+    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -86,7 +88,7 @@ export class ExpenseModalComponent implements OnInit, OnChanges {
         this.modalForm.reset();
         this.closeModalProgramatically();
         if (this.successAction != null)
-          this.successAction.emit(response);
+          this.successAction.emit({ ...response });
       },
       error: (err) => {
         this.isSubmitting = false;
@@ -109,7 +111,7 @@ export class ExpenseModalComponent implements OnInit, OnChanges {
         this.modalForm.reset();
         this.closeModalProgramatically();
         if (this.successAction != null)
-          this.successAction.emit(response);
+          this.successAction.emit({ ...response });
       },
       error: (err) => {
         this.isSubmitting = false;

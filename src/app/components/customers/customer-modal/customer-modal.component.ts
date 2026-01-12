@@ -29,7 +29,9 @@ export class CustomerModalComponent implements OnInit, OnChanges {
   constructor(private fb: FormBuilder, private service: CustomerService) { }
 
   ngOnInit(): void {
-    this.initModalForm();
+    if (!this.modalForm) {
+      this.initModalForm();
+    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -90,7 +92,7 @@ export class CustomerModalComponent implements OnInit, OnChanges {
         this.modalForm.reset();
         this.closeModalProgramatically();
         if (this.successAction != null)
-          this.successAction.emit(response);
+          this.successAction.emit({ ...response });
       },
       error: (err) => {
         this.isSubmitting = false;
@@ -113,7 +115,7 @@ export class CustomerModalComponent implements OnInit, OnChanges {
         this.modalForm.reset();
         this.closeModalProgramatically();
         if (this.successAction != null)
-          this.successAction.emit(response);
+          this.successAction.emit({ ...response });
       },
       error: (err) => {
         this.isSubmitting = false;

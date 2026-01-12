@@ -1,13 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { ReactiveFormsModule, FormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Order } from '../../../model/order/order.model';
-import { OrderService } from '../../../services/order/order.service';
-import { UpdateOrderRequest } from '../../../model/order/update-order-request.model';
-import { CustomerService } from '../../../services/customer/customer.service';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
-import { Customer } from '../../../model/customer/customer.model';
+import { of } from 'rxjs';
 
+import { Order } from '../../../model/order/order.model';
+import { UpdateOrderRequest } from '../../../model/order/update-order-request.model';
+import { Customer } from '../../../model/customer/customer.model';
+import { OrderService } from '../../../services/order/order.service';
+import { CustomerService } from '../../../services/customer/customer.service';
 
 @Component({
   selector: 'app-order-modal',
@@ -18,13 +19,22 @@ import { Customer } from '../../../model/customer/customer.model';
 })
 export class OrderModalComponent implements OnInit, OnChanges {
 
-  modalForm !: FormGroup;
-  isSubmitting = false;
-  showToast = false;
+  /* -------------------- FORM -------------------- */
+  modalForm!: FormGroup;
+
+  /* -------------------- STATE -------------------- */
   isEditMode = false;
+  isSubmitting = false;
+
   customers: Customer[] = [];
   selectedCustomer: Customer | null = null;
+  isCustomerSearchLoading = false;
+
   selectedFiles: File[] = [];
+
+  isInvalidBookNumbers = false;
+  isInvalidAmounts = false;
+
   jobTypes: string[] = [
     'BANNER',
     'RECEIT',
@@ -35,88 +45,68 @@ export class OrderModalComponent implements OnInit, OnChanges {
     'PAMPLET',
     'BILL_BOOK'
   ];
-  isInvalidBookNumbers = false;
-  isInvalidAmounts = false;
 
+  /* -------------------- INPUT / OUTPUT -------------------- */
   @Input() model: Order | null = null;
+
   @Output() successAction = new EventEmitter<Order>();
   @Output() errorAction = new EventEmitter<string>();
 
-  constructor(private fb: FormBuilder, private service: OrderService, private customerService: CustomerService) { }
+  constructor(
+    private fb: FormBuilder,
+    private orderService: OrderService,
+    private customerService: CustomerService
+  ) { }
+
+  /* =========================================================
+     LIFECYCLE
+     ========================================================= */
 
   ngOnInit(): void {
-    this.initModalForm();
+    this.buildForm();
+    this.setupCustomerSearch();
+    this.setupDerivedCalculations();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (!this.modalForm) {
-      this.initModalForm();
+    if (!changes['model'] || !this.modalForm) {
+      return;
     }
-    if (this.model != null) {
-      this.isEditMode = true;
-      this.modalForm?.patchValue(this.model);
+
+    if (this.model) {
+      this.enterEditMode(this.model);
     } else {
-      this.isEditMode = false;
-      this.modalForm?.reset();
+      this.enterAddMode();
     }
   }
 
-  initModalForm(): void {
+  /* =========================================================
+     FORM SETUP
+     ========================================================= */
+
+  private buildForm(): void {
     this.modalForm = this.fb.group({
       customerName: ['', Validators.required],
       phone: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
       address: ['', Validators.required],
+
       jobType: ['', Validators.required],
       count: [1, [Validators.required, Validators.min(1)]],
-      dateOfDelivery: ['', [Validators.required, Validators.min(1)]],
-      bookNumber: [1, [Validators.min(1)]],
-      wBookNumber: [1, [Validators.min(1)]],
-      remainingAmount: ['', Validators.required],
+      dateOfDelivery: ['', Validators.required],
+
+      bookNumber: [null],
+      wBookNumber: [null],
+
       totalAmount: ['', Validators.required],
       depositAmount: ['', Validators.required],
       discountedAmount: ['', Validators.required],
+      remainingAmount: [{ value: '', disabled: true }, Validators.required],
+
       paymentStatus: ['', Validators.required],
       note: [''],
       description: ['']
     });
-
-    // Listen to customerName changes
-    this.customerName?.valueChanges
-      .pipe(
-        debounceTime(1000), // Wait for 300ms after the user stops typing
-        distinctUntilChanged(), // Only emit if the value has changed
-        switchMap(name => this.customerService.searchCustomersByName(name)) // Call the service
-      ).subscribe({
-        next: (customers) => {
-          this.customers = customers;
-        },
-        error: (err) => {
-          console.log({ err });
-        }
-      });
-    // .subscribe(customers => {
-    //   this.customers = customers;
-    // });
-
-    // Calculate remainingAmount dynamically
-    this.modalForm.valueChanges.subscribe(values => {
-      const { bookNumber, wBookNumber, totalAmount, depositAmount, discountedAmount } = values;
-      const remaining = (totalAmount || 0) - (depositAmount || 0) - (discountedAmount || 0);
-      if (remaining < 0) {
-        this.isInvalidAmounts = true;
-      } else {
-        this.isInvalidAmounts = false;
-        this.modalForm.patchValue({ remainingAmount: remaining }, { emitEvent: false });
-      }
-      if ((!bookNumber && !wBookNumber) || (bookNumber && wBookNumber)) {
-        this.isInvalidBookNumbers = true;
-      }
-      else {
-        this.isInvalidBookNumbers = false;
-      }
-    });
   }
-
   get customerName() { return this.modalForm.get('customerName'); }
   get phone() { return this.modalForm.get('phone'); }
   get address() { return this.modalForm.get('address'); }
@@ -133,105 +123,221 @@ export class OrderModalComponent implements OnInit, OnChanges {
   get note() { return this.modalForm.get('note'); }
   get description() { return this.modalForm.get('description'); }
 
-  onCustomerSelect(customer: Customer): void {
-    this.selectedCustomer = customer;
-    this.updateCustomerFields(customer);
-  }
+  /* =========================================================
+     CUSTOMER SEARCH
+     ========================================================= */
 
-  updateCustomerFields(customer: Customer): void {
-    this.modalForm.patchValue({
-      phone: customer.primaryPhoneNumber,
-      address: customer.address
+  private setupCustomerSearch(): void {
+    this.customerName!.valueChanges.pipe(
+      debounceTime(800),
+      distinctUntilChanged(),
+      switchMap(value => {
+
+        if (!value || typeof value !== 'string') {
+          this.customers = [];
+          this.isCustomerSearchLoading = false;
+          return of([]);
+        }
+
+        if (this.selectedCustomer && value === this.selectedCustomer.name) {
+          this.customers = [];
+          this.isCustomerSearchLoading = false;
+          return of([]);
+        }
+
+        this.isCustomerSearchLoading = true;
+        this.customers = [];
+
+        return this.customerService.searchCustomersByName(value);
+      })
+    ).subscribe({
+      next: customers => {
+        this.customers = customers;
+        this.isCustomerSearchLoading = false;
+      },
+      error: () => {
+        this.isCustomerSearchLoading = false;
+        this.customers = [];
+      }
     });
   }
+
+
+  onCustomerSelect(customer: Customer): void {
+    this.selectedCustomer = customer;
+
+    this.modalForm.patchValue(
+      {
+        customerName: customer.name,
+        phone: customer.primaryPhoneNumber,
+        address: customer.address
+      },
+      { emitEvent: false }
+    );
+
+    this.customers = [];
+  }
+
+  /* =========================================================
+     DERIVED FIELDS
+     ========================================================= */
+
+  private setupDerivedCalculations(): void {
+    this.modalForm.valueChanges.subscribe(values => {
+      this.calculateRemainingAmount(values);
+      this.validateBookNumbers(values);
+    });
+  }
+
+  private calculateRemainingAmount(values: any): void {
+    const total = +values.totalAmount || 0;
+    const deposit = +values.depositAmount || 0;
+    const discount = +values.discountedAmount || 0;
+
+    const remaining = total - deposit - discount;
+
+    this.isInvalidAmounts = remaining < 0;
+
+    if (!this.isInvalidAmounts) {
+      this.modalForm.patchValue(
+        { remainingAmount: remaining },
+        { emitEvent: false }
+      );
+    }
+  }
+
+  private validateBookNumbers(values: any): void {
+    const hasBook = !!values.bookNumber;
+    const hasWBook = !!values.wBookNumber;
+
+    this.isInvalidBookNumbers = (hasBook && hasWBook) || (!hasBook && !hasWBook);
+  }
+
+  incrementCount() {
+    const currentCount = this.count?.value || 0;
+    this.modalForm.patchValue({ count: currentCount + 1 }, { emitEvent: false });
+  }
+
+  decrementCount() {
+    const currentCount = this.count?.value || 0;
+    if (currentCount > 1) {
+      this.modalForm.patchValue({ count: currentCount - 1 }, { emitEvent: false });
+    }
+  }
+
+  /* =========================================================
+     MODE HANDLING
+     ========================================================= */
+
+  private enterEditMode(order: Order): void {
+    this.isEditMode = true;
+    this.selectedCustomer = null;
+
+    this.modalForm.reset({}, { emitEvent: false });
+    this.modalForm.patchValue(order, { emitEvent: false });
+  }
+
+  private enterAddMode(): void {
+    this.isEditMode = false;
+    this.selectedCustomer = null;
+    this.selectedFiles = [];
+
+    this.modalForm.reset(
+      {
+        count: 1
+      },
+      { emitEvent: false }
+    );
+  }
+
+  /* =========================================================
+     FILE HANDLING
+     ========================================================= */
 
   onFileSelected(event: any): void {
     const files = Array.from(event.target.files) as File[];
     this.selectedFiles.push(...files);
-    event.target.value = ''; // reset input
+    event.target.value = '';
   }
 
   removeFile(index: number): void {
     this.selectedFiles.splice(index, 1);
   }
 
-  incrementCount() {
-    const currentCount = this.count?.value || 0;
-    this.modalForm.patchValue({ count: currentCount + 1 });
+  /* =========================================================
+     SUBMIT
+     ========================================================= */
+
+  submitForm(): void {
+    if (this.modalForm.invalid || this.isInvalidAmounts || this.isInvalidBookNumbers) {
+      this.modalForm.markAllAsTouched();
+      return;
+    }
+
+    this.isEditMode ? this.updateOrder() : this.createOrder();
   }
 
-  decrementCount() {
-    const currentCount = this.count?.value || 0;
-    if (currentCount > 1) {
-      this.modalForm.patchValue({ count: currentCount - 1 });
-    }
+  private updateOrder(): void {
+    this.isSubmitting = true;
+
+    const payload: UpdateOrderRequest = {
+      id: this.model!.id,
+      ...this.modalForm.getRawValue()
+    };
+
+    this.orderService.updateOrder(payload).subscribe({
+      next: res => {
+        this.isSubmitting = false;
+        this.closeModal();
+        this.successAction.emit(res);
+      },
+      error: err => {
+        this.isSubmitting = false;
+        this.closeModal();
+        this.errorAction.emit(err?.error?.message || 'Error updating order');
+      }
+    });
+  }
+
+  private createOrder(): void {
+    this.isSubmitting = true;
+
+    const formData = new FormData();
+    Object.entries(this.modalForm.getRawValue()).forEach(
+      ([key, value]) => formData.append(key, value as any)
+    );
+
+    this.selectedFiles.forEach(file =>
+      formData.append('attachments', file)
+    );
+
+    this.orderService.createOrder(formData).subscribe({
+      next: res => {
+        this.isSubmitting = false;
+        this.closeModal();
+        this.successAction.emit(res);
+      },
+      error: err => {
+        this.isSubmitting = false;
+        this.closeModal();
+        this.errorAction.emit(err?.error?.message || 'Error creating order');
+      }
+    });
+  }
+
+  /* =========================================================
+     UTIL
+     ========================================================= */
+
+  private closeModal(): void {
+    (document.querySelector('#orderModalCloseBtn') as HTMLElement)?.click();
   }
 
   programmaticallyClickFormSubmitButton(): void {
     (document.querySelector('#orderModalFormSubmitButton') as HTMLElement)?.click();
   }
 
-  submitForm(): void {
-    if (this.modalForm.invalid) {
-      this.modalForm.markAllAsTouched();
-      return;
-    }
-    if (this.isEditMode) {
-      this.editEntity();
-    }
-    else {
-      this.addEntity();
-    }
-  }
-
-  editEntity(): void {
-    this.isSubmitting = true;
-    let newEntity: UpdateOrderRequest = {
-      id: this.model?.id,
-      ...this.modalForm.value
-    };
-    this.service.updateOrder(newEntity).subscribe({
-      next: (response) => {
-        this.isSubmitting = false;
-        this.modalForm.reset();
-        this.closeModalProgramatically();
-        if (this.successAction != null)
-          this.successAction.emit(response);
-      },
-      error: (err) => {
-        this.isSubmitting = false;
-        let errorMessage = err?.error?.message || 'Error occured while updating order details.';
-        this.closeModalProgramatically();
-        if (this.errorAction != null)
-          this.errorAction.emit(errorMessage);
-      }
-    });
-  }
-
-  addEntity(): void {
-    this.isSubmitting = true;
-    const formData = new FormData();
-    Object.entries(this.modalForm.value).forEach(([key, value]) => formData.append(key, value as string));
-    this.selectedFiles.forEach(file => formData.append('attachments', file));
-    this.service.createOrder(formData).subscribe({
-      next: (response) => {
-        this.isSubmitting = false;
-        this.modalForm.reset();
-        this.closeModalProgramatically();
-        if (this.successAction != null)
-          this.successAction.emit(response);
-      },
-      error: (err) => {
-        this.isSubmitting = false;
-        let errorMessage = err?.error?.message || 'Error occured while adding order.';
-        this.closeModalProgramatically();
-        if (this.errorAction != null)
-          this.errorAction.emit(errorMessage);
-      }
-    });
-  }
-
-  closeModalProgramatically(): void {
-    (document.querySelector('#orderModalCloseBtn') as HTMLElement)?.click();
-  }
+  /* =========================================================
+     GETTERS
+     ========================================================= */
 }
