@@ -73,10 +73,21 @@
                             <select class="form-select" formControlName="jobType"
                                 [ngClass]="{ 'is-invalid': jobType?.invalid && jobType?.touched }">
                                 <option value="">-- Select Job Type --</option>
-                                <option *ngFor="let type of jobTypes" [value]="type">{{ type }}</option>
+                                <option *ngFor="let type of printJobTypes" [value]="type.id">{{ type.name }}</option>
                             </select>
                             <div class="invalid-feedback" *ngIf="jobType?.touched && jobType?.invalid">
                                 Invalid Job Type
+                            </div>
+                            <!-- Loading Indicator -->
+                            <div *ngIf="isPrintJobTypesSearchLoading" class="mt-1">
+                                <div class="spinner-border spinner-border-sm text-primary" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                                <span class="ms-2 text-muted">Loading job types...</span>
+                            </div>
+                            <div *ngIf="!isPrintJobTypesSearchLoading && printJobTypes.length === 0"
+                                class="text-muted mt-1">
+                                No Jobs type found
                             </div>
                         </div>
 

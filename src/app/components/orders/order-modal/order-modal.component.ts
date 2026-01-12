@@ -9,6 +9,8 @@ import { UpdateOrderRequest } from '../../../model/order/update-order-request.mo
 import { Customer } from '../../../model/customer/customer.model';
 import { OrderService } from '../../../services/order/order.service';
 import { CustomerService } from '../../../services/customer/customer.service';
+import { PrintJobType } from '../../../model/order/printjobtype.model';
+import { PrintjobtypeService } from '../../../services/order/printjobtype.service';
 
 @Component({
   selector: 'app-order-modal',
@@ -30,21 +32,14 @@ export class OrderModalComponent implements OnInit, OnChanges {
   selectedCustomer: Customer | null = null;
   isCustomerSearchLoading = false;
 
+  isPrintJobTypesSearchLoading = false;
+
   selectedFiles: File[] = [];
 
   isInvalidBookNumbers = false;
   isInvalidAmounts = false;
 
-  jobTypes: string[] = [
-    'BANNER',
-    'RECEIT',
-    'VISITING_CARD',
-    'WEDDING_CARD',
-    'COLOR_POSTER',
-    'BOOK_BINDING',
-    'PAMPLET',
-    'BILL_BOOK'
-  ];
+  printJobTypes: PrintJobType[] = [];
 
   /* -------------------- INPUT / OUTPUT -------------------- */
   @Input() model: Order | null = null;
@@ -55,7 +50,8 @@ export class OrderModalComponent implements OnInit, OnChanges {
   constructor(
     private fb: FormBuilder,
     private orderService: OrderService,
-    private customerService: CustomerService
+    private customerService: CustomerService,
+    private printJobTypeService: PrintjobtypeService
   ) { }
 
   /* =========================================================
@@ -66,6 +62,7 @@ export class OrderModalComponent implements OnInit, OnChanges {
     this.buildForm();
     this.setupCustomerSearch();
     this.setupDerivedCalculations();
+    this.loadPrintJobTypes();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -123,6 +120,19 @@ export class OrderModalComponent implements OnInit, OnChanges {
   get note() { return this.modalForm.get('note'); }
   get description() { return this.modalForm.get('description'); }
 
+  private loadPrintJobTypes() {
+    this.isPrintJobTypesSearchLoading = true;
+    this.printJobTypeService.getAllJobTypes().subscribe({
+      next: (res) => {
+        this.printJobTypes = res;
+        this.isPrintJobTypesSearchLoading = false;
+      },
+      error: (err) => {
+        this.isPrintJobTypesSearchLoading = false;
+      }
+    });
+  }
+
   /* =========================================================
      CUSTOMER SEARCH
      ========================================================= */
@@ -161,7 +171,6 @@ export class OrderModalComponent implements OnInit, OnChanges {
       }
     });
   }
-
 
   onCustomerSelect(customer: Customer): void {
     this.selectedCustomer = customer;
