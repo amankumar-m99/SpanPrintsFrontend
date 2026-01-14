@@ -6,11 +6,12 @@ import { VendorModalComponent } from "../vendors/vendor-modal/vendor-modal.compo
 import { OrderModalComponent } from "../orders/order-modal/order-modal.component";
 import { ExpenseModalComponent } from "../expenses/expense-modal/expense-modal.component";
 import { PrintjobtypeModalComponent } from "../printjob/printjobtype-modal/printjobtype-modal.component";
+import { InventoryItemModalComponent } from "../inventory/inventory-item-modal/inventory-item-modal.component";
 
 @Component({
   selector: 'app-quick-actions',
   standalone: true,
-  imports: [CustomerModalComponent, ToastComponent, CommonModule, VendorModalComponent, OrderModalComponent, ExpenseModalComponent, PrintjobtypeModalComponent],
+  imports: [CustomerModalComponent, ToastComponent, CommonModule, VendorModalComponent, OrderModalComponent, ExpenseModalComponent, PrintjobtypeModalComponent, InventoryItemModalComponent],
   templateUrl: './quick-actions.component.html',
   styleUrl: './quick-actions.component.css'
 })

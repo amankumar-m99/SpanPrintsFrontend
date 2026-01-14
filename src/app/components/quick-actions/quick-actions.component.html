@@ -43,7 +43,7 @@
 
         <!-- Add Inventory Item -->
         <div class="col-md-3 col-sm-6">
-            <div class="card action-card shadow-sm h-100" data-bs-toggle="modal" data-bs-target="#addInventoryModal">
+            <div class="card action-card shadow-sm h-100" data-bs-toggle="modal" data-bs-target="#inventoryItemModal">
                 <div class="card-body text-center">
                     <i class="bi bi-boxes fs-1 text-info mb-2"></i>
                     <h6 class="fw-semibold">Add Inventory Item</h6>
@@ -131,6 +131,9 @@
     (errorAction)="showErrorToastModal($event)"></app-vendor-modal>
 <app-expense-modal (successAction)="showSuccessToastModal('Expense added.')"
     (errorAction)="showErrorToastModal($event)"></app-expense-modal>
+<app-inventory-item-modal (successAction)="showSuccessToastModal('Inventory-item added.')"
+    (errorAction)="showErrorToastModal($event)"></app-inventory-item-modal>
 <app-printjobtype-modal (successAction)="showSuccessToastModal('Print-job added.')"
     (errorAction)="showErrorToastModal($event)"></app-printjobtype-modal>
+
 <app-toast *ngIf="showToast" [type]='toastType' [message]='toastMsg' (closeAction)="hideToastModal()"></app-toast>
