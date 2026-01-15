@@ -71,7 +71,8 @@
                         <div class="col-md-6">
                             <label class="form-label">Job Type</label>
                             <select class="form-select" formControlName="printJobId"
-                                [ngClass]="{ 'is-invalid': printJobId?.invalid && printJobId?.touched }">
+                                [ngClass]="{ 'is-invalid': printJobId?.invalid && printJobId?.touched }"
+                                (mousedown)="onJobTypeDropdownOpen()">
                                 <option value="">-- Select Job Type --</option>
                                 <option *ngFor="let type of printJobTypes" [value]="type.id">{{ type.name }}</option>
                             </select>

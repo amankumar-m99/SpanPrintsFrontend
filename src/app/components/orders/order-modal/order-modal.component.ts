@@ -122,6 +122,10 @@ export class OrderModalComponent implements OnInit, OnChanges {
   get note() { return this.modalForm.get('note'); }
   get description() { return this.modalForm.get('description'); }
 
+  onJobTypeDropdownOpen(): void {
+    this.loadPrintJobTypes();
+  }
+
   private loadPrintJobTypes() {
     this.isPrintJobTypesSearchLoading = true;
     this.printJobTypeService.getAllPrintJobTypes().subscribe({
