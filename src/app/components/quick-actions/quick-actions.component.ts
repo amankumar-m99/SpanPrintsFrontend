@@ -7,11 +7,12 @@ import { OrderModalComponent } from "../orders/order-modal/order-modal.component
 import { ExpenseModalComponent } from "../expenses/expense-modal/expense-modal.component";
 import { PrintjobtypeModalComponent } from "../printjob/printjobtype-modal/printjobtype-modal.component";
 import { InventoryItemModalComponent } from "../inventory/inventory-item-modal/inventory-item-modal.component";
+import { RouterLink } from "@angular/router";
 
 @Component({
   selector: 'app-quick-actions',
   standalone: true,
-  imports: [CustomerModalComponent, ToastComponent, CommonModule, VendorModalComponent, OrderModalComponent, ExpenseModalComponent, PrintjobtypeModalComponent, InventoryItemModalComponent],
+  imports: [CustomerModalComponent, ToastComponent, CommonModule, VendorModalComponent, OrderModalComponent, ExpenseModalComponent, PrintjobtypeModalComponent, InventoryItemModalComponent, RouterLink],
   templateUrl: './quick-actions.component.html',
   styleUrl: './quick-actions.component.css'
 })
