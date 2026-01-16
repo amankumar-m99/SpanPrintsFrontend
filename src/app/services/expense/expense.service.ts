@@ -10,7 +10,7 @@ import { UpdateExpenseRequest } from '../../model/expense/update-expense-request
 })
 export class ExpenseService {
 
-  private url = Constant.API_URL + '/expense';
+  private url = Constant.API_URL + '/expenses';
 
   constructor(private http: HttpClient) { }
 
@@ -18,8 +18,8 @@ export class ExpenseService {
     return this.http.post<Expense>(this.url, data);
   }
 
-  updateExpense(data: UpdateExpenseRequest) {
-    return this.http.put<Expense>(this.url, data);
+  updateExpense(id: number, data: UpdateExpenseRequest) {
+    return this.http.put<Expense>(`${this.url}/id/${id}`, data);
   }
 
   getAllExpenses() {
@@ -27,10 +27,10 @@ export class ExpenseService {
   }
 
   deleteAllExpenses() {
-    return this.http.delete(this.url + 's');
+    return this.http.delete(this.url);
   }
 
   deleteExpenseByUuid(uuid: string) {
-    return this.http.delete(this.url + '/uuid/' + uuid);
+    return this.http.delete(`${this.url}/uuid/${uuid}`);
   }
 }

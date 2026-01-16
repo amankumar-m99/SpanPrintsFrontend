@@ -79,25 +79,26 @@ export class ExpenseModalComponent implements OnInit, OnChanges {
   editEntity(): void {
     this.isSubmitting = true;
     let newModel: UpdateExpenseRequest = {
-      id: this.model?.id,
       ...this.modalForm.value
     };
-    this.service.updateExpense(newModel).subscribe({
-      next: (response) => {
-        this.isSubmitting = false;
-        this.modalForm.reset();
-        this.closeModalProgramatically();
-        if (this.successAction != null)
-          this.successAction.emit({ ...response });
-      },
-      error: (err) => {
-        this.isSubmitting = false;
-        let errorMessage = err?.error?.message || 'Error occured while updating expense details';
-        this.closeModalProgramatically();
-        if (this.errorAction != null)
-          this.errorAction.emit(errorMessage);
-      }
-    });
+    if (this.model?.id) {
+      this.service.updateExpense(this.model.id, newModel).subscribe({
+        next: (response) => {
+          this.isSubmitting = false;
+          this.modalForm.reset();
+          this.closeModalProgramatically();
+          if (this.successAction != null)
+            this.successAction.emit({ ...response });
+        },
+        error: (err) => {
+          this.isSubmitting = false;
+          let errorMessage = err?.error?.message || 'Error occured while updating expense details';
+          this.closeModalProgramatically();
+          if (this.errorAction != null)
+            this.errorAction.emit(errorMessage);
+        }
+      });
+    }
   }
 
   addEntity(): void {
