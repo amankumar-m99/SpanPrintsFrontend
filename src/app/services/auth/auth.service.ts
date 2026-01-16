@@ -13,29 +13,21 @@ import { Profile } from '../../model/profile/profile.model';
   providedIn: 'root'
 })
 export class AuthService {
-  private loginUrl = Constant.API_URL + '/login';
-
-  private registerUrl = Constant.API_URL + '/register';
-
-  private currentUserUrl = Constant.API_URL + '/me';
-
-  private verificationUrl = Constant.API_URL + '/verify';
-
-  // isAuthenticated = false;
+  private url = Constant.API_URL + '/auth';
   redirectUrl: string | null = null;
 
   constructor(private http: HttpClient, private router: Router) { }
 
   registerUser(data: RegisterModel) {
-    return this.http.post<any>(this.registerUrl, data);
+    return this.http.post<any>(`${this.url}/register`, data);
   }
 
   verifyAccount(token: string) {
-    return this.http.get(`${this.verificationUrl}?token=${token}`);
+    return this.http.get(`${this.url}/verify?token=${token}`);
   }
 
   loginUser(credentials: LoginModel): Observable<any> {
-    return this.http.post<any>(this.loginUrl, credentials).pipe(
+    return this.http.post<any>(`${this.url}/login`, credentials).pipe(
       tap(response => {
         // Assume backend returns a JWT token
         // if (response && response.token) {
@@ -43,6 +35,10 @@ export class AuthService {
         // }
       })
     );
+  }
+
+  getCurrentUser() {
+    return this.http.get<Profile>(`${this.url}/me`);
   }
 
   logout(): void {
@@ -53,9 +49,5 @@ export class AuthService {
 
   isLoggedIn(): boolean {
     return !!AppStorage.getItem('token');
-  }
-
-  getCurrentUser() {
-    return this.http.get<Profile>(this.currentUserUrl);
   }
 }
