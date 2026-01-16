@@ -8,11 +8,11 @@ import { Transaction } from '../../model/transaction/transaction.model';
 })
 export class EarningService {
 
-  private earningsUrl = Constant.API_URL + '/transaction';
+  private url = Constant.API_URL + '/ledger';
 
   constructor(private http: HttpClient) { }
 
   getAllTransactions() {
-    return this.http.get<Transaction[]>(this.earningsUrl);
+    return this.http.get<Transaction[]>(this.url);
   }
 }
