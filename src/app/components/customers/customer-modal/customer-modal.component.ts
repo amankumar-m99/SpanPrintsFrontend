@@ -83,7 +83,6 @@ export class CustomerModalComponent implements OnInit, OnChanges {
   editEntity(): void {
     this.isSubmitting = true;
     let newModel: UpdateCustomerRequest = {
-      id: this.model?.id,
       ...this.modalForm.value
     };
     if (this.model?.id) {
