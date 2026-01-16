@@ -86,22 +86,24 @@ export class CustomerModalComponent implements OnInit, OnChanges {
       id: this.model?.id,
       ...this.modalForm.value
     };
-    this.service.updateCustomer(newModel).subscribe({
-      next: (response) => {
-        this.isSubmitting = false;
-        this.modalForm.reset();
-        this.closeModalProgramatically();
-        if (this.successAction != null)
-          this.successAction.emit({ ...response });
-      },
-      error: (err) => {
-        this.isSubmitting = false;
-        let errorMessage = err?.error?.message || 'Error occured while updating customer details';
-        this.closeModalProgramatically();
-        if (this.errorAction != null)
-          this.errorAction.emit(errorMessage);
-      }
-    });
+    if (this.model?.id) {
+      this.service.updateCustomer(this.model.id, newModel).subscribe({
+        next: (response) => {
+          this.isSubmitting = false;
+          this.modalForm.reset();
+          this.closeModalProgramatically();
+          if (this.successAction != null)
+            this.successAction.emit({ ...response });
+        },
+        error: (err) => {
+          this.isSubmitting = false;
+          let errorMessage = err?.error?.message || 'Error occured while updating customer details';
+          this.closeModalProgramatically();
+          if (this.errorAction != null)
+            this.errorAction.emit(errorMessage);
+        }
+      });
+    }
   }
 
   addEntity(): void {

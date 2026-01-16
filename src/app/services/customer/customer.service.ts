@@ -10,7 +10,7 @@ import { UpdateCustomerRequest } from '../../model/customer/update-customer-requ
 })
 export class CustomerService {
 
-  private url = Constant.API_URL + '/customer';
+  private url = Constant.API_URL + '/customers';
 
   constructor(private http: HttpClient) { }
 
@@ -18,8 +18,8 @@ export class CustomerService {
     return this.http.post<Customer>(this.url, customer);
   }
 
-  updateCustomer(customer: UpdateCustomerRequest) {
-    return this.http.put<Customer>(this.url, customer);
+  updateCustomer(id: number, customer: UpdateCustomerRequest) {
+    return this.http.put<Customer>(`${this.url}/id/${id}`, customer);
   }
 
   searchCustomersByName(name: string) {
@@ -27,26 +27,26 @@ export class CustomerService {
   }
 
   getCustomerById(id: number) {
-    return this.http.get<Customer>(this.url + '/id/' + id);
+    return this.http.get<Customer>(`${this.url}/id/${id}`);
   }
 
   getCustomerByUuid(uuid: string) {
-    return this.http.get<Customer>(this.url + '/uuid/' + uuid);
+    return this.http.get<Customer>(`${this.url}/uuid/${uuid}`);
   }
 
   getAllCustomers() {
-    return this.http.get<Customer[]>(this.url + 's');
+    return this.http.get<Customer[]>(this.url);
   }
 
   deleteCustomerById(id: number) {
-    return this.http.delete<any>(this.url + '/id/' + id);
+    return this.http.delete<any>(`${this.url}/id/${id}`);
   }
 
   deleteCustomerByUuid(uuid: string) {
-    return this.http.delete<any>(this.url + '/uuid/' + uuid);
+    return this.http.delete<any>(`${this.url}/uuid/${uuid}`);
   }
 
   deleteAllCustomers() {
-    return this.http.delete<any>(this.url + 's');
+    return this.http.delete<any>(this.url);
   }
 }
