@@ -21,7 +21,7 @@ export class VendorModalComponent implements OnInit, OnChanges {
   showToast = false;
   isEditMode = false;
 
-  @Input() model: UpdateVendorRequest | null = null;
+  @Input() model: Vendor | null = null;
   @Output() successAction = new EventEmitter<Vendor>();
   @Output() errorAction = new EventEmitter<string>();
 
@@ -85,22 +85,24 @@ export class VendorModalComponent implements OnInit, OnChanges {
       id: this.model?.id,
       ...this.modalForm.value
     };
-    this.service.updateVendor(newModel).subscribe({
-      next: (response) => {
-        this.isSubmitting = false;
-        this.modalForm.reset();
-        this.closeModalProgramatically();
-        if (this.successAction != null)
-          this.successAction.emit({ ...response });
-      },
-      error: (err) => {
-        this.isSubmitting = false;
-        let errorMessage = err?.error?.message || 'Error occured while updating vendor details';
-        this.closeModalProgramatically();
-        if (this.errorAction != null)
-          this.errorAction.emit(errorMessage);
-      }
-    });
+    if (this.model?.id) {
+      this.service.updateVendor(this.model.id, newModel).subscribe({
+        next: (response) => {
+          this.isSubmitting = false;
+          this.modalForm.reset();
+          this.closeModalProgramatically();
+          if (this.successAction != null)
+            this.successAction.emit({ ...response });
+        },
+        error: (err) => {
+          this.isSubmitting = false;
+          let errorMessage = err?.error?.message || 'Error occured while updating vendor details';
+          this.closeModalProgramatically();
+          if (this.errorAction != null)
+            this.errorAction.emit(errorMessage);
+        }
+      });
+    }
   }
 
   addEntity(): void {

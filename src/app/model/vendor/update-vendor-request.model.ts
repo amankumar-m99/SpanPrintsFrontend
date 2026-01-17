@@ -1,5 +1,4 @@
 export interface UpdateVendorRequest {
-    id: number;
     name: string;
     email: string;
     address: string;

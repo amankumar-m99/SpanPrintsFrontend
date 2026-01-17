@@ -10,7 +10,7 @@ import { UpdateVendorRequest } from '../../model/vendor/update-vendor-request.mo
 })
 export class VendorService {
 
-  private url = Constant.API_URL + '/vendor';
+  private url = Constant.API_URL + '/vendors';
 
   constructor(private http: HttpClient) { }
 
@@ -18,27 +18,27 @@ export class VendorService {
     return this.http.post<Vendor>(this.url, vendor);
   }
 
-  updateVendor(vendor: UpdateVendorRequest) {
-    return this.http.put<Vendor>(this.url, vendor);
+  updateVendor(id: number, vendor: UpdateVendorRequest) {
+    return this.http.put<Vendor>(`${this.url}/id/${id}`, vendor);
   }
 
   getVendorById(id: number) {
-    return this.http.get<Vendor>(this.url + '/id/' + id);
+    return this.http.get<Vendor>(`${this.url}/id/${id}`);
   }
 
   getVendorByUuid(uuid: string) {
-    return this.http.get<Vendor>(this.url + '/uuid/' + uuid);
+    return this.http.get<Vendor>(`${this.url}/uuid/${uuid}`);
   }
 
   getAllVendors() {
-    return this.http.get<Vendor[]>(this.url + 's');
+    return this.http.get<Vendor[]>(this.url);
   }
 
   deleteVendorByUuid(uuid: string) {
-    return this.http.delete<any>(this.url + '/uuid/' + uuid);
+    return this.http.delete<any>(`${this.url}/uuid/${uuid}`);
   }
 
   deleteAllVendors() {
-    return this.http.delete<any>(this.url + 's');
+    return this.http.delete<any>(this.url);
   }
 }
