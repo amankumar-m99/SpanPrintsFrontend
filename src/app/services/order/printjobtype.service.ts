@@ -19,19 +19,19 @@ export class PrintJobTypeService {
     return this.http.post<PrintJobType>(this.url, data);
   }
 
-  updatePrintJobType(data: UpdatePrintJobTypeRequest) {
-    return this.http.put<PrintJobType>(this.url, data);
+  updatePrintJobType(id: number, data: UpdatePrintJobTypeRequest) {
+    return this.http.put<PrintJobType>(`${this.url}/id/${id}`, data);
   }
 
   getAllPrintJobTypes() {
-    return this.http.get<PrintJobType[]>(this.url + '/all');
+    return this.http.get<PrintJobType[]>(this.url);
   }
 
   deletePrintJobTypeById(id: number) {
-    return this.http.delete<any>(this.url + '/id/' + id);
+    return this.http.delete<any>(`${this.url}/id/${id}`);
   }
 
   deleteAllPrintJobTypes() {
-    return this.http.delete<any>(this.url + 's');
+    return this.http.delete<any>(this.url);
   }
 }
