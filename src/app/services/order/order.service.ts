@@ -9,7 +9,7 @@ import { UpdateOrderRequest } from '../../model/order/update-order-request.model
 })
 export class OrderService {
 
-  private url = Constant.API_URL + '/printjob';
+  private url = Constant.API_URL + '/printjobs';
 
   constructor(private http: HttpClient) { }
 
@@ -17,19 +17,19 @@ export class OrderService {
     return this.http.post<Order>(this.url, data);
   }
 
-  updateOrder(data: UpdateOrderRequest) {
-    return this.http.put<Order>(this.url, data);
+  updateOrder(id: number, data: UpdateOrderRequest) {
+    return this.http.put<Order>(`${this.url}/id/${id}`, data);
   }
 
   getAllOrders() {
-    return this.http.get<Order[]>(this.url + '/all');
+    return this.http.get<Order[]>(this.url);
   }
 
   deleteOrderByUuid(uuid: string) {
-    return this.http.delete<any>(this.url + '/uuid/' + uuid);
+    return this.http.delete<any>(`${this.url}/uuid/${uuid}`);
   }
 
   deleteAllOrders() {
-    return this.http.delete<any>(this.url + 's');
+    return this.http.delete<any>(this.url);
   }
 }

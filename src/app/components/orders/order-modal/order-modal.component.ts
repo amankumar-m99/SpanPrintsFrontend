@@ -294,22 +294,22 @@ export class OrderModalComponent implements OnInit, OnChanges {
   private updateOrder(): void {
     this.isSubmitting = true;
     const payload: UpdateOrderRequest = {
-      id: this.model!.id,
       ...this.modalForm.getRawValue()
     };
-
-    this.orderService.updateOrder(payload).subscribe({
-      next: res => {
-        this.isSubmitting = false;
-        this.closeModal();
-        this.successAction.emit(res);
-      },
-      error: err => {
-        this.isSubmitting = false;
-        this.closeModal();
-        this.errorAction.emit(err?.error?.message || 'Error updating order');
-      }
-    });
+    if (this.model?.id) {
+      this.orderService.updateOrder(this.model.id, payload).subscribe({
+        next: res => {
+          this.isSubmitting = false;
+          this.closeModal();
+          this.successAction.emit(res);
+        },
+        error: err => {
+          this.isSubmitting = false;
+          this.closeModal();
+          this.errorAction.emit(err?.error?.message || 'Error updating order');
+        }
+      });
+    }
   }
 
   private createOrder(): void {

@@ -1,5 +1,4 @@
 export interface UpdateOrderRequest {
-    id: number;
     customerId: number,
     jobType: string,
     count: number,
