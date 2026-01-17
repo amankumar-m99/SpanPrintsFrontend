@@ -70,13 +70,13 @@
                         <!-- Job Type -->
                         <div class="col-md-6">
                             <label class="form-label">Job Type</label>
-                            <select class="form-select" formControlName="printJobId"
-                                [ngClass]="{ 'is-invalid': printJobId?.invalid && printJobId?.touched }"
+                            <select class="form-select" formControlName="printJobTypeId"
+                                [ngClass]="{ 'is-invalid': printJobTypeId?.invalid && printJobTypeId?.touched }"
                                 (mousedown)="onJobTypeDropdownOpen()">
                                 <option value="">-- Select Job Type --</option>
                                 <option *ngFor="let type of printJobTypes" [value]="type.id">{{ type.name }}</option>
                             </select>
-                            <div class="invalid-feedback" *ngIf="printJobId?.touched && printJobId?.invalid">
+                            <div class="invalid-feedback" *ngIf="printJobTypeId?.touched && printJobTypeId?.invalid">
                                 Invalid Job Type
                             </div>
                             <!-- Loading Indicator -->
@@ -174,13 +174,13 @@
                                 <i class="bi bi-exclamation-circle me-1"></i>Invalid amounts
                             </div>
                         </div>
-                        <!-- Remaining Amount -->
+                        <!-- Pending Amount -->
                         <div class="col-md-6">
-                            <label class="form-label">Remaining Amount</label>
-                            <input type="number" class="form-control" formControlName="remainingAmount"
-                                [ngClass]="{ 'is-invalid': remainingAmount?.invalid && remainingAmount?.touched }">
-                            <div class="invalid-feedback" *ngIf="remainingAmount?.touched && remainingAmount?.invalid">
-                                Remaining amount is invalid
+                            <label class="form-label">Pending Amount</label>
+                            <input type="number" class="form-control" formControlName="pendingAmount"
+                                [ngClass]="{ 'is-invalid': pendingAmount?.invalid && pendingAmount?.touched }">
+                            <div class="invalid-feedback" *ngIf="pendingAmount?.touched && pendingAmount?.invalid">
+                                Pending amount is invalid
                             </div>
                         </div>
                         <!-- Payment Status -->

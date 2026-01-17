@@ -88,7 +88,7 @@ export class OrderModalComponent implements OnInit, OnChanges {
       phone: [{ value: '', disabled: true }, [Validators.required, Validators.pattern(/^\d{10}$/)]],
       address: [{ value: '', disabled: true }, Validators.required],
 
-      printJobId: ['', Validators.required],
+      printJobTypeId: ['', Validators.required],
       count: [1, [Validators.required, Validators.min(1)]],
       dateOfDelivery: ['', Validators.required],
 
@@ -98,7 +98,7 @@ export class OrderModalComponent implements OnInit, OnChanges {
       totalAmount: ['', Validators.required],
       depositAmount: ['', Validators.required],
       discountedAmount: ['', Validators.required],
-      remainingAmount: [{ value: '', disabled: true }, Validators.required],
+      pendingAmount: [{ value: '', disabled: true }, Validators.required],
 
       paymentStatus: ['', Validators.required],
       note: [''],
@@ -109,15 +109,15 @@ export class OrderModalComponent implements OnInit, OnChanges {
   get customerName() { return this.modalForm.get('customerName'); }
   get phone() { return this.modalForm.get('phone'); }
   get address() { return this.modalForm.get('address'); }
-  get printJobId() { return this.modalForm.get('printJobId'); }
+  get printJobTypeId() { return this.modalForm.get('printJobTypeId'); }
   get count() { return this.modalForm.get('count'); }
   get dateOfDelivery() { return this.modalForm.get('dateOfDelivery'); }
   get bookNumber() { return this.modalForm.get('bookNumber'); }
   get wBookNumber() { return this.modalForm.get('wBookNumber'); }
-  get remainingAmount() { return this.modalForm.get('remainingAmount'); }
   get totalAmount() { return this.modalForm.get('totalAmount'); }
   get depositAmount() { return this.modalForm.get('depositAmount'); }
   get discountedAmount() { return this.modalForm.get('discountedAmount'); }
+  get pendingAmount() { return this.modalForm.get('pendingAmount'); }
   get paymentStatus() { return this.modalForm.get('paymentStatus'); }
   get note() { return this.modalForm.get('note'); }
   get description() { return this.modalForm.get('description'); }
@@ -198,23 +198,23 @@ export class OrderModalComponent implements OnInit, OnChanges {
 
   private setupDerivedCalculations(): void {
     this.modalForm.valueChanges.subscribe(values => {
-      this.calculateRemainingAmount(values);
+      this.calculatePendingAmount(values);
       this.validateBookNumbers(values);
     });
   }
 
-  private calculateRemainingAmount(values: any): void {
+  private calculatePendingAmount(values: any): void {
     const total = +values.totalAmount || 0;
     const deposit = +values.depositAmount || 0;
     const discount = +values.discountedAmount || 0;
 
-    const remaining = total - deposit - discount;
+    const pending = total - deposit - discount;
 
-    this.isInvalidAmounts = remaining < 0;
+    this.isInvalidAmounts = pending < 0;
 
     if (!this.isInvalidAmounts) {
       this.modalForm.patchValue(
-        { remainingAmount: remaining },
+        { pendingAmount: pending },
         { emitEvent: false }
       );
     }
