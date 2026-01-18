@@ -15,6 +15,7 @@ import { RouterLink } from "@angular/router";
   styleUrl: './inventory.component.css'
 })
 export class InventoryComponent {
+  totalStockWorth = 0;
   inventoryItems: InventoryItem[] = [];
   tempInventoryItem !: InventoryItem | null;
   isSubmitting = false;
@@ -42,6 +43,9 @@ export class InventoryComponent {
           this.showToastComponent("success", "Inventory-item data refreshed.");
           this.isRefreshingData = false;
         }
+        let vv = 0;
+        res.forEach(i => vv = vv = (i.availableCount * i.rate));
+        this.totalStockWorth = vv;
       },
       error: (err) => {
         this.showToastComponent("error", err?.error?.message || 'Error loading inventory-items');

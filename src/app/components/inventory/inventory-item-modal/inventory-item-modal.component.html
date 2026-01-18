@@ -35,6 +35,34 @@
                     </div>
 
                     <div class="mb-3">
+                        <label class="form-label"><i class="bi bi-card-text me-1"></i>Item Count</label>
+                        <input type="text" class="form-control" formControlName="count"
+                            [ngClass]="{ 'is-invalid': count?.invalid && count?.touched }" />
+                        <div class="invalid-feedback" *ngIf="count?.touched && count?.invalid">
+                            Item-count is required
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label"><i class="bi bi-card-text me-1"></i>Amount</label>
+                        <input type="text" class="form-control" formControlName="amount"
+                            [ngClass]="{ 'is-invalid': amount?.invalid && amount?.touched }" />
+                        <div class="invalid-feedback" *ngIf="amount?.touched && amount?.invalid">
+                            Invalid amount
+                        </div>
+                    </div>
+
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="inventory-modal-check"
+                            formControlName="addToLedger"
+                            [ngClass]="{ 'is-invalid': addToLedger?.invalid && addToLedger?.touched }">
+                        <label class="form-check-label" for="inventory-modal-check">Add to Ledger</label>
+                        <div class="invalid-feedback" *ngIf="addToLedger?.touched && addToLedger?.invalid">
+                            Invalid
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
                         <label class="form-label"><i class="bi bi-card-text me-1"></i>Inventory-Item Description</label>
                         <textarea class="form-control" formControlName="description"
                             [ngClass]="{ 'is-invalid': description?.invalid && description?.touched }"></textarea>

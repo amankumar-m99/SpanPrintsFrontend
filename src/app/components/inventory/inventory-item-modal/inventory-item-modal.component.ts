@@ -28,34 +28,73 @@ export class InventoryItemModalComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     if (!this.modalForm) {
-      this.initModalForm();
     }
+    this.initModalForm();
+    this.setupDerivedCalculations();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (!this.modalForm) {
-      this.initModalForm();
+    if (!changes['model'] || !this.modalForm) {
+      return;
     }
-    if (this.model != null) {
-      this.isEditMode = true;
-      this.modalForm?.patchValue(this.model);
+    if (this.model) {
+      this.enterEditMode(this.model);
     } else {
-      this.isEditMode = false;
-      this.modalForm?.reset();
+      this.enterAddMode();
     }
   }
 
   initModalForm(): void {
     this.modalForm = this.fb.group({
-      name: ['', Validators.required],
+      name: ['saf', Validators.required],
       rate: ['', Validators.required],
+      count: ['', Validators.required],
+      amount: [{ value: '', disabled: true }, Validators.required],
+      addToLedger: [true, Validators.required],
       description: [''],
     });
   }
 
   get name() { return this.modalForm.get('name'); }
   get rate() { return this.modalForm.get('rate'); }
+  get count() { return this.modalForm.get('count'); }
+  get amount() { return this.modalForm.get('count'); }
+  get addToLedger() { return this.modalForm.get('addToLedger'); }
   get description() { return this.modalForm.get('description'); }
+
+  private setupDerivedCalculations(): void {
+    this.modalForm.valueChanges.subscribe(values => {
+      this.calculateAmount(values);
+    });
+  }
+
+  private calculateAmount(values: any): void {
+    const rate = +values.rate || 0;
+    const count = +values.count || 0;
+
+    const amount = rate * count;
+
+    const isInvalidAmounts = amount < 0;
+
+    if (!isInvalidAmounts) {
+      this.modalForm.patchValue(
+        { amount: amount },
+        { emitEvent: false }
+      );
+    }
+  }
+
+  private enterEditMode(inventoryItem: InventoryItem): void {
+    this.isEditMode = true;
+    this.modalForm.reset({}, { emitEvent: false });
+    this.modalForm.patchValue(inventoryItem, { emitEvent: false });
+  }
+
+  private enterAddMode(): void {
+    this.isEditMode = false;
+    this.modalForm.reset({}, { emitEvent: false }
+    );
+  }
 
   programmaticallyClickFormSubmitButton(): void {
     (document.querySelector('#inventoryItemModalFormSubmitButton') as HTMLElement)?.click();

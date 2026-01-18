@@ -11,7 +11,7 @@ import { UpdateInventoryItemRequest } from '../../model/inventory/inventory-item
 })
 export class InventoryService {
 
-  private url = Constant.API_URL + '/inventory';
+  private url = Constant.API_URL + '/inventory-items';
 
   constructor(private http: HttpClient) { }
 

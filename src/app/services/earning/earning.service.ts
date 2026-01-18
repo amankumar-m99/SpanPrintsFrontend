@@ -8,7 +8,7 @@ import { Transaction } from '../../model/transaction/transaction.model';
 })
 export class EarningService {
 
-  private url = Constant.API_URL + '/ledger';
+  private url = Constant.API_URL + '/ledgerentries';
 
   constructor(private http: HttpClient) { }
 

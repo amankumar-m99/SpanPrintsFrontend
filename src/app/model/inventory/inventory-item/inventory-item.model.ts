@@ -4,6 +4,7 @@ export interface InventoryItem {
     uuid: string;
     name: string;
     description: string;
+    availableCount: number;
     rate: number;
     updatedAt: string;
     createdAt: string;
