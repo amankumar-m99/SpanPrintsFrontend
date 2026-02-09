@@ -8,7 +8,6 @@ import { AuthGuard } from './guards/auth/auth.guard';
 import { GuestGuard } from './guards/guest/guest.guard';
 import { OrdersComponent } from './components/orders/orders.component';
 import { ExpensesComponent } from './components/expenses/expenses.component';
-import { EarningsComponent } from './components/earnings/earnings.component';
 import { UpdatePasswordComponent } from './components/update-password/update-password.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { InventoryComponent } from './components/inventory/inventory.component';
@@ -20,6 +19,7 @@ import { CustomerInfoComponent } from './components/customers/customer-info/cust
 import { VendorInfoComponent } from './components/vendors/vendor-info/vendor-info.component';
 import { PrintjobComponent } from './components/printjob/printjob.component';
 import { StatisticsComponent } from './components/statistics/statistics.component';
+import { LedgerComponent } from './components/ledger/ledger.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent, canActivate: [GuestGuard] },
@@ -35,7 +35,7 @@ export const routes: Routes = [
             { path: 'vendor/:uuid', component: VendorInfoComponent },
             { path: 'inventory', component: InventoryComponent },
             { path: 'expenses', component: ExpensesComponent },
-            { path: 'earnings', component: EarningsComponent },
+            { path: 'ledger', component: LedgerComponent },
             { path: 'statistics', component: StatisticsComponent },
             { path: 'printjob', component: PrintjobComponent },
             { path: 'quickactions', component: QuickActionsComponent },

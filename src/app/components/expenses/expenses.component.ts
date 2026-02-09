@@ -2,12 +2,12 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Component, OnInit, EventEmitter, Output, ElementRef, ViewChild } from '@angular/core';
 import { Expense } from '../../model/expense/expense.model';
-import { ExpenseService } from '../../services/expense/expense.service';
 import { ExpenseCardComponent } from './expense-card/expense-card.component';
 import { ExpenseModalComponent } from "./expense-modal/expense-modal.component";
 import { Router } from '@angular/router';
 import { ToastComponent } from "../utility/toast/toast.component";
 import { ConfirmDialogComponent } from "../utility/confirm-dialog/confirm-dialog.component";
+import { LedgerService } from '../../services/ledger/ledger.service';
 
 @Component({
   selector: 'app-expenses',
@@ -40,14 +40,14 @@ export class ExpensesComponent implements OnInit {
   @ViewChild('launchConfirmDeleteExpenseButton') launchConfirmDeleteButton!: ElementRef;
   @ViewChild('launchConfirmDeleteAllExpensesButton') launchConfirmDeleteAllButton!: ElementRef;
 
-  constructor(private router: Router, private expenseService: ExpenseService) { }
+  constructor(private router: Router, private ledgerService: LedgerService) { }
 
   ngOnInit(): void {
     this.loadData();
   }
 
   loadData() {
-    this.expenseService.getAllExpenses().subscribe({
+    this.ledgerService.getAllExpenses().subscribe({
       next: (res) => {
         this.expenses = res;
         this.applyFilters();
@@ -154,7 +154,7 @@ export class ExpensesComponent implements OnInit {
 
   deleteExpense() {
     if (this.tempExpense) {
-      this.expenseService.deleteExpenseByUuid(this.tempExpense.uuid).subscribe({
+      this.ledgerService.deleteExpenseByUuid(this.tempExpense.uuid).subscribe({
         next: () => {
           this.expenses = this.expenses.filter(c => c.uuid !== this.tempExpense?.uuid);
           this.showToastComponent("warning", "Expense deleted");
@@ -172,7 +172,7 @@ export class ExpensesComponent implements OnInit {
   }
 
   deleteAllExpenses(): void {
-    this.expenseService.deleteAllExpenses().subscribe({
+    this.ledgerService.deleteAllExpenses().subscribe({
       next: () => {
         this.expenses = [];
         this.showToastComponent("warning", "All expenses deleted");

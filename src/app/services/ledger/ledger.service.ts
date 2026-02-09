@@ -8,7 +8,7 @@ import { UpdateExpenseRequest } from '../../model/expense/update-expense-request
 @Injectable({
   providedIn: 'root'
 })
-export class ExpenseService {
+export class LedgerService {
 
   private url = Constant.API_URL + '/expenses';
 
