@@ -2,7 +2,7 @@ export interface Order {
     id: number;
     uuid: string;
     jobType: string;
-    count: number;
+    quantity: number;
     dateOfDelivery: Date;
     bookNumber: number;
     wBookNumber: number;

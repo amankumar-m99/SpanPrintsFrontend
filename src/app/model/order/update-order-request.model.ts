@@ -1,7 +1,7 @@
 export interface UpdateOrderRequest {
     customerId: number,
     jobType: string,
-    count: number,
+    quantity: number,
     dateOfDelivery: Date,
     bookNumber: number,
     wBookNumber: number,

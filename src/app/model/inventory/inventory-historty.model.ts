@@ -1,7 +1,7 @@
 export interface InventoryHistory {
     id: number;
     uuid: string;
-    count: number;
+    quantity: number;
     rate: number;
     amountPaid: number;
     itemId: number;

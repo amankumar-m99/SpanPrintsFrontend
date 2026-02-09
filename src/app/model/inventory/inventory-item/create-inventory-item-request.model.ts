@@ -1,7 +1,8 @@
 export interface CreateInventoryItemRequest {
     name: string;
+    code: string;
     rate: number;
     description: string;
-    count: number;
+    quantity: number;
     addToLedger: boolean;
 }

@@ -3,8 +3,9 @@ export interface InventoryItem {
     id: number;
     uuid: string;
     name: string;
+    code: string;
     description: string;
-    availableCount: number;
+    quantity: number;
     rate: number;
     updatedAt: string;
     createdAt: string;

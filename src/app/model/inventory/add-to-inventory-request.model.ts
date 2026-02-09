@@ -1,7 +1,7 @@
 export interface AddToInventoryRequest {
     vendorId: number;
     itemId: number;
-    count: number;
+    quantity: number;
     rate: number;
     amountPaid: number;
 }

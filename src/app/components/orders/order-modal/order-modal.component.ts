@@ -89,7 +89,7 @@ export class OrderModalComponent implements OnInit, OnChanges {
       address: [{ value: '', disabled: true }, Validators.required],
 
       printJobTypeId: ['', Validators.required],
-      count: [1, [Validators.required, Validators.min(1)]],
+      quantity: [1, [Validators.required, Validators.min(1)]],
       dateOfDelivery: ['', Validators.required],
 
       bookNumber: [null],
@@ -110,7 +110,7 @@ export class OrderModalComponent implements OnInit, OnChanges {
   get phone() { return this.modalForm.get('phone'); }
   get address() { return this.modalForm.get('address'); }
   get printJobTypeId() { return this.modalForm.get('printJobTypeId'); }
-  get count() { return this.modalForm.get('count'); }
+  get quantity() { return this.modalForm.get('quantity'); }
   get dateOfDelivery() { return this.modalForm.get('dateOfDelivery'); }
   get bookNumber() { return this.modalForm.get('bookNumber'); }
   get wBookNumber() { return this.modalForm.get('wBookNumber'); }
@@ -227,15 +227,15 @@ export class OrderModalComponent implements OnInit, OnChanges {
     this.isInvalidBookNumbers = (hasBook && hasWBook) || (!hasBook && !hasWBook);
   }
 
-  incrementCount() {
-    const currentCount = this.count?.value || 0;
-    this.modalForm.patchValue({ count: currentCount + 1 }, { emitEvent: false });
+  incrementQuantity() {
+    const currentCount = this.quantity?.value || 0;
+    this.modalForm.patchValue({ quantity: currentCount + 1 }, { emitEvent: false });
   }
 
-  decrementCount() {
-    const currentCount = this.count?.value || 0;
+  decrementQuantity() {
+    const currentCount = this.quantity?.value || 0;
     if (currentCount > 1) {
-      this.modalForm.patchValue({ count: currentCount - 1 }, { emitEvent: false });
+      this.modalForm.patchValue({ quantity: currentCount - 1 }, { emitEvent: false });
     }
   }
 
@@ -258,7 +258,7 @@ export class OrderModalComponent implements OnInit, OnChanges {
 
     this.modalForm.reset(
       {
-        count: 1
+        quantity: 1
       },
       { emitEvent: false }
     );

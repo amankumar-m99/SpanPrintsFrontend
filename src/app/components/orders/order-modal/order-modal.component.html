@@ -92,20 +92,20 @@
                             </div>
                         </div>
 
-                        <!-- Count -->
+                        <!-- Quantity -->
                         <div class="col-md-6">
-                            <label class="form-label">Count</label>
+                            <label class="form-label">Quantity</label>
                             <div class="input-group mb-3">
-                                <button class="btn btn-outline-secondary" type="button" (click)="decrementCount()">
+                                <button class="btn btn-outline-secondary" type="button" (click)="decrementQuantity()">
                                     <i class="bi bi-dash"></i>
                                 </button>
-                                <input type="number" class="form-control" formControlName="count" aria-label="count"
-                                    [ngClass]="{ 'is-invalid': count?.invalid && count?.touched }">
-                                <button class="btn btn-outline-secondary" type="button" (click)="incrementCount()">
+                                <input type="number" class="form-control" formControlName="quantity" aria-label="quantity"
+                                    [ngClass]="{ 'is-invalid': quantity?.invalid && quantity?.touched }">
+                                <button class="btn btn-outline-secondary" type="button" (click)="incrementQuantity()">
                                     <i class="bi bi-plus"></i>
                                 </button>
-                                <div class="invalid-feedback" *ngIf="count?.touched && count?.invalid">
-                                    Count must be at least 1
+                                <div class="invalid-feedback" *ngIf="quantity?.touched && quantity?.invalid">
+                                    Quantity must be at least 1
                                 </div>
                             </div>
                         </div>

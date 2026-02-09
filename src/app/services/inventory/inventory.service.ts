@@ -15,8 +15,6 @@ export class InventoryService {
 
   constructor(private http: HttpClient) { }
 
-  // inventory-=items
-
   createInventoryItem(data: CreateInventoryItemRequest) {
     return this.http.post<InventoryItem>(this.url, data);
   }
@@ -24,24 +22,22 @@ export class InventoryService {
   getAllInventoryItems() {
     return this.http.get<InventoryItem[]>(this.url);
   }
-  
+
   getInventoryItemById(id: number) {
-    return this.http.get<InventoryItem>(this.url + '/id/' + id);
+    return this.http.get<InventoryItem>(`${this.url}/id/${id}`);
   }
-  
+
   updateInventoryItem(data: UpdateInventoryItemRequest) {
     return this.http.put<InventoryItem>(this.url, data);
   }
 
   deleteAllInventoryItems() {
-    return this.http.delete<InventoryItem[]>(this.url);
+    return this.http.delete<any>(this.url);
   }
 
   deleteInventoryItemById(id: number) {
-    return this.http.delete<any>(this.url + '/id/' + id);
+    return this.http.delete<any>(`${this.url}/id/${id}`);
   }
-
-  //
 
   getAllInventoryRecords() {
     return this.http.get<Inventory[]>(this.url);

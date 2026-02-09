@@ -18,14 +18,39 @@
             </div>
         </div>
     </div>
-    <div>
-        Total Stock Worth: {{totalStockWorth}}
+    <!-- Summary Section -->
+    <div class="row text-center mb-3">
+        <div class="col-md-4 mb-2">
+            <div class="card shadow-sm border-success">
+                <div class="card-body">
+                    <h6>Stock Worth</h6>
+                    <h4 class="text-success">₹{{ totalStockWorth }}</h4>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-2">
+            <div class="card shadow-sm border-success">
+                <div class="card-body">
+                    <h6>Item Types</h6>
+                    <h4 class="text-success">{{ totalItemsTypes }}</h4>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-2">
+            <div class="card shadow-sm border-success">
+                <div class="card-body">
+                    <h6>Item Count</h6>
+                    <h4 class="text-success">{{ totalItemCount }}</h4>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="table-responsive mt-3">
         <table class="table table-striped table-hover align-middle">
             <thead class="table-light">
                 <tr>
                     <th>#</th>
+                    <th>Item Code</th>
                     <th>Item Name</th>
                     <th>Item Available Qty</th>
                     <th>Item Rate</th>
@@ -40,10 +65,11 @@
             <tbody>
                 <tr *ngFor="let inventoryItem of inventoryItems; let i = index" class="cursor-pointer">
                     <td>{{ i + 1 }}</td>
+                    <td>{{ inventoryItem.code }}</td>
                     <td>{{ inventoryItem.name }}</td>
-                    <td>{{ inventoryItem.availableCount }}</td>
+                    <td>{{ inventoryItem.quantity }}</td>
                     <td>{{ inventoryItem.rate }}</td>
-                    <td>{{ inventoryItem.rate * inventoryItem.availableCount }}</td>
+                    <td>{{ inventoryItem.rate * inventoryItem.quantity }}</td>
                     <td>{{ inventoryItem.description }}</td>
                     <td>{{ inventoryItem.updatedAt | date: 'short' }}</td>
                     <td>{{ inventoryItem.createdAt | date:'short' }}</td>

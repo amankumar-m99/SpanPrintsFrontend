@@ -2,7 +2,7 @@ export interface Inventory {
     id: number;
     uuid: string;
     itemId: number;
-    count: number;
+    quantity: number;
     updatedAt: string;
     createdAt: string;
 }

@@ -46,19 +46,21 @@ export class InventoryItemModalComponent implements OnInit, OnChanges {
 
   initModalForm(): void {
     this.modalForm = this.fb.group({
-      name: ['saf', Validators.required],
+      code: ['', Validators.required],
+      name: ['', Validators.required],
       rate: ['', Validators.required],
-      count: ['', Validators.required],
+      quantity: ['', Validators.required],
       amount: [{ value: '', disabled: true }, Validators.required],
       addToLedger: [true, Validators.required],
       description: [''],
     });
   }
 
+  get code() { return this.modalForm.get('code'); }
   get name() { return this.modalForm.get('name'); }
   get rate() { return this.modalForm.get('rate'); }
-  get count() { return this.modalForm.get('count'); }
-  get amount() { return this.modalForm.get('count'); }
+  get quantity() { return this.modalForm.get('quantity'); }
+  get amount() { return this.modalForm.get('amount'); }
   get addToLedger() { return this.modalForm.get('addToLedger'); }
   get description() { return this.modalForm.get('description'); }
 
@@ -70,9 +72,9 @@ export class InventoryItemModalComponent implements OnInit, OnChanges {
 
   private calculateAmount(values: any): void {
     const rate = +values.rate || 0;
-    const count = +values.count || 0;
+    const quantity = +values.quantity || 0;
 
-    const amount = rate * count;
+    const amount = rate * quantity;
 
     const isInvalidAmounts = amount < 0;
 

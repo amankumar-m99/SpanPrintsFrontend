@@ -17,8 +17,16 @@
                 <form [formGroup]="modalForm" (ngSubmit)="submitForm()">
 
                     <div class="mb-3">
+                        <label class="form-label"><i class="bi bi-card-text me-1"></i>Item Code</label>
+                        <input type="text" class="form-control" formControlName="code"
+                            [ngClass]="{ 'is-invalid': code?.invalid && code?.touched }" />
+                        <div class="invalid-feedback" *ngIf="code?.touched && code?.invalid">
+                            Item-code is required
+                        </div>
+                    </div>
+                    <div class="mb-3">
                         <label class="form-label"><i class="bi bi-card-text me-1"></i>Item Name</label>
-                        <input type="text" class="form-control" formControlName="name"
+                        <input type="text" class="form-control" formControlName="name"3
                             [ngClass]="{ 'is-invalid': name?.invalid && name?.touched }" />
                         <div class="invalid-feedback" *ngIf="name?.touched && name?.invalid">
                             Item-name is required
@@ -35,11 +43,11 @@
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label"><i class="bi bi-card-text me-1"></i>Item Count</label>
-                        <input type="text" class="form-control" formControlName="count"
-                            [ngClass]="{ 'is-invalid': count?.invalid && count?.touched }" />
-                        <div class="invalid-feedback" *ngIf="count?.touched && count?.invalid">
-                            Item-count is required
+                        <label class="form-label"><i class="bi bi-card-text me-1"></i>Item Quantity</label>
+                        <input type="text" class="form-control" formControlName="quantity"
+                            [ngClass]="{ 'is-invalid': quantity?.invalid && quantity?.touched }" />
+                        <div class="invalid-feedback" *ngIf="quantity?.touched && quantity?.invalid">
+                            Item-quantity is required
                         </div>
                     </div>
 
