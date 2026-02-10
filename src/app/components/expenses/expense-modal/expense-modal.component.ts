@@ -2,9 +2,9 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { ReactiveFormsModule, FormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Expense } from '../../../model/expense/expense.model';
-import { ExpenseService } from '../../../services/expense/expense.service';
 import { UpdateExpenseRequest } from '../../../model/expense/update-expense-request.model';
 import { CreateExpenseRequest } from '../../../model/expense/create-expense-request.model';
+import { LedgerService } from '../../../services/ledger/ledger.service';
 
 @Component({
   selector: 'app-expense-modal',
@@ -24,7 +24,7 @@ export class ExpenseModalComponent implements OnInit, OnChanges {
   @Output() successAction = new EventEmitter<Expense>();
   @Output() errorAction = new EventEmitter<string>();
 
-  constructor(private fb: FormBuilder, private service: ExpenseService) { }
+  constructor(private fb: FormBuilder, private service: LedgerService) { }
 
   ngOnInit(): void {
     if (!this.modalForm) {
