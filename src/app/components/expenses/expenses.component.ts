@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { ToastComponent } from "../utility/toast/toast.component";
 import { ConfirmDialogComponent } from "../utility/confirm-dialog/confirm-dialog.component";
 import { LedgerService } from '../../services/ledger/ledger.service';
+import { LedgerEntry } from '../../model/ledger/ledger-entry.model';
 
 @Component({
   selector: 'app-expenses',
@@ -19,8 +20,8 @@ import { LedgerService } from '../../services/ledger/ledger.service';
 
 export class ExpensesComponent implements OnInit {
 
-  expenses: Expense[] = [];
-  tempExpense !: Expense | null;
+  ledgerEntries: LedgerEntry[] = [];
+  tempLedgerEntry !: LedgerEntry | null;
   isSubmitting = false;
   isRefreshingData = false;
   deleteMsg = '';
@@ -49,7 +50,7 @@ export class ExpensesComponent implements OnInit {
   loadData() {
     this.ledgerService.getAllExpenses().subscribe({
       next: (res) => {
-        this.expenses = res;
+        this.ledgerEntries = res;
         this.applyFilters();
         if (this.isRefreshingData) {
           this.showToastComponent("success", "Expenses data refreshed.");
@@ -69,7 +70,7 @@ export class ExpensesComponent implements OnInit {
   }
 
   applyFilters() {
-    let data = [...this.expenses];
+    let data = [...this.ledgerEntries];
     // Search filter
     if (this.searchTerm) {
       const term = this.searchTerm.toLowerCase();
@@ -80,15 +81,15 @@ export class ExpensesComponent implements OnInit {
     }
     // Status filter
     if (this.filterStatus) {
-      data = data.filter(o => o.expenseType === this.filterStatus);
+      data = data.filter(o => o.ledgerType === this.filterStatus);
     }
     // Sorting
     switch (this.sortBy) {
       case 'createdAt_desc':
-        data.sort((a, b) => +new Date(b.dateOfExpense) - +new Date(a.dateOfExpense));
+        data.sort((a, b) => +new Date(b.transactionDateTime) - +new Date(a.transactionDateTime));
         break;
       case 'createdAt_asc':
-        data.sort((a, b) => +new Date(a.dateOfExpense) - +new Date(b.dateOfExpense));
+        data.sort((a, b) => +new Date(a.transactionDateTime) - +new Date(b.transactionDateTime));
         break;
       case 'amount_desc':
         data.sort((a, b) => b.amount - a.amount);
@@ -137,26 +138,26 @@ export class ExpensesComponent implements OnInit {
   }
 
   addExpense(): void {
-    this.tempExpense = null;
+    this.tempLedgerEntry = null;
     this.launchExpenseModal();
   }
 
-  editExpense(expense: Expense) {
-    this.tempExpense = expense;
+  editExpense(ledgerEntry: LedgerEntry) {
+    this.tempLedgerEntry = ledgerEntry;
     this.launchExpenseModal();
   }
 
-  askDeleteExpense(expense: Expense): void {
-    this.deleteMsg = `Delete expense ${expense.uuid}?`;
-    this.tempExpense = expense;
+  askDeleteExpense(ledgerEntry: LedgerEntry): void {
+    this.deleteMsg = `Delete expense ${ledgerEntry.uuid}?`;
+    this.tempLedgerEntry = ledgerEntry;
     this.launchConfirmDeleteModal();
   }
 
   deleteExpense() {
-    if (this.tempExpense) {
-      this.ledgerService.deleteExpenseByUuid(this.tempExpense.uuid).subscribe({
+    if (this.tempLedgerEntry) {
+      this.ledgerService.deleteExpenseByUuid(this.tempLedgerEntry.uuid).subscribe({
         next: () => {
-          this.expenses = this.expenses.filter(c => c.uuid !== this.tempExpense?.uuid);
+          this.ledgerEntries = this.ledgerEntries.filter(c => c.uuid !== this.tempLedgerEntry?.uuid);
           this.showToastComponent("warning", "Expense deleted");
         },
         error: (err) => {
@@ -174,7 +175,7 @@ export class ExpensesComponent implements OnInit {
   deleteAllExpenses(): void {
     this.ledgerService.deleteAllExpenses().subscribe({
       next: () => {
-        this.expenses = [];
+        this.ledgerEntries = [];
         this.showToastComponent("warning", "All expenses deleted");
       },
       error: (err) => {
@@ -183,8 +184,8 @@ export class ExpensesComponent implements OnInit {
     });
   }
 
-  successAction(expense: Expense): void {
-    if (this.tempExpense) {
+  successAction(ledgerEntry: LedgerEntry): void {
+    if (this.tempLedgerEntry) {
       // let index = this.expenses.findIndex(c => c.id === this.tempExpense?.id);
       // if (index !== -1) {
       //   this.expenses[index] = { ...this.tempExpense };
@@ -195,7 +196,7 @@ export class ExpensesComponent implements OnInit {
       // this.expenses.push(expense);
       this.toastMsg = "Expense added.";
     }
-    this.tempExpense = null;
+    this.tempLedgerEntry = null;
     this.showToastComponent("success", this.toastMsg);
     this.loadData();
   }
@@ -226,8 +227,8 @@ export class ExpensesComponent implements OnInit {
     this.showToast = false
   }
 
-  openDetails(expense: Expense) {
-    this.router.navigate(['/dashboard/expense', expense.uuid]);
+  openDetails(ledgerEntry: LedgerEntry) {
+    this.router.navigate(['/dashboard/expense', ledgerEntry.uuid]);
   }
 
 }

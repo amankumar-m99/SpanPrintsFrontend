@@ -1,22 +1,22 @@
-<div class="card shadow-sm" [ngClass]="transaction?.expenseType === 'CREDIT' ? 'border-success' : 'border-danger'">
+<div class="card shadow-sm" [ngClass]="ledgerEntry?.ledgerType === 'CREDIT' ? 'border-success' : 'border-danger'">
     <div class="card-body">
         <div class="d-flex justify-content-between align-items-center mb-2">
             <div class="d-flex">
-                <span class="badge bg-secondary text-capitalize">{{ transaction?.expenseType }}</span>
+                <span class="badge bg-secondary text-capitalize">{{ ledgerEntry?.ledgerType }}</span>
             </div>
-            <p class="text-muted small mb-2">{{ transaction?.dateOfExpense | date:'mediumDate' }}</p>
+            <p class="text-muted small mb-2">{{ ledgerEntry?.transactionDateTime | date:'mediumDate' }}</p>
         </div>
         <div class="d-flex justify-content-between">
-            <span class="h5" [ngClass]="transaction?.expenseType === 'CREDIT' ? 'text-success' : 'text-danger'">
-                ₹{{ transaction?.amount }}
+            <span class="h5" [ngClass]="ledgerEntry?.ledgerType === 'CREDIT' ? 'text-success' : 'text-danger'">
+                ₹{{ ledgerEntry?.amount }}
             </span>
-            <span [class]="transaction?.expenseType === 'CREDIT' ? 'text-success fw-bold' : 'text-danger fw-bold'">
-                {{ transaction?.expenseType | titlecase }}
+            <span [class]="ledgerEntry?.ledgerType === 'CREDIT' ? 'text-success fw-bold' : 'text-danger fw-bold'">
+                {{ ledgerEntry?.ledgerType | titlecase }}
             </span>
 
         </div>
          <div class="mb-0">
-            <textarea class="form-control" formControlName="description">{{transaction?.description}}</textarea>
+            <textarea class="form-control" formControlName="description">{{ledgerEntry?.description}}</textarea>
         </div>
 
     </div>

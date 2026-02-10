@@ -4,9 +4,10 @@ import { FormsModule } from '@angular/forms';
 import { TransactionCardComponent } from '../transaction-card/transaction-card.component';
 import { LedgerService } from '../../services/ledger/ledger.service';
 import { Expense } from '../../model/expense/expense.model';
+import { LedgerEntry } from '../../model/ledger/ledger-entry.model';
 
 @Component({
-  selector: 'app-earnings',
+  selector: 'app-ledger',
   standalone: true,
   imports: [CommonModule, FormsModule, TransactionCardComponent],
   templateUrl: './ledger.component.html',
@@ -14,7 +15,7 @@ import { Expense } from '../../model/expense/expense.model';
 })
 export class LedgerComponent implements OnInit {
 
-  transactions: Expense[] = [];
+  ledgerEntries: LedgerEntry[] = [];
 
   // Filters
   filters = {
@@ -28,15 +29,15 @@ export class LedgerComponent implements OnInit {
   ngOnInit(): void {
     this.ledgerService.getAllExpenses().subscribe({
       next: (res) => {
-        this.transactions = res;
+        this.ledgerEntries = res;
       },
       error: () => { },
     });
   }
 
   get filteredTransactions() {
-    return this.transactions.filter(t => {
-      const typeOk = this.filters.type === 'all' || t.expenseType === this.filters.type;
+    return this.ledgerEntries.filter(t => {
+      const typeOk = this.filters.type === 'all' || t.ledgerType === this.filters.type;
       return typeOk;
     });
   }
@@ -63,13 +64,13 @@ export class LedgerComponent implements OnInit {
 
   get totalCredit() {
     return this.filteredTransactions
-      .filter(t => t.expenseType === 'CREDIT')
+      .filter(t => t.ledgerType === 'CREDIT')
       .reduce((sum, t) => sum + t.amount, 0);
   }
 
   get totalDebit() {
     return this.filteredTransactions
-      .filter(t => t.expenseType === 'DEBIT')
+      .filter(t => t.ledgerType === 'DEBIT')
       .reduce((sum, t) => sum + t.amount, 0);
   }
 

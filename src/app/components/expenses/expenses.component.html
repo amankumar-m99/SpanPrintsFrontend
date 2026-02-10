@@ -89,8 +89,8 @@
     <!-- Expenses Cards -->
     <div class="container-fluid mt-3" *ngIf="viewType == 'card'">
         <div class="row g-3">
-            <div class="col-12 col-sm-6 col-md-4 col-lg-3" *ngFor="let expense of expenses">
-                <app-expense-card [expense]="expense"></app-expense-card>
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3" *ngFor="let ledgerEntry of ledgerEntries">
+                <app-expense-card [ledgerEntry]="ledgerEntry"></app-expense-card>
             </div>
         </div>
     </div>
@@ -110,24 +110,24 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let expense of expenses; let i = index">
+                <tr *ngFor="let ledgerEntry of ledgerEntries; let i = index">
                     <td>{{ i + 1 }}</td>
                     <td>
                         <span class="badge"
-                            [ngClass]="{'bg-success': expense.expenseType === 'BUSINESS','bg-primary': expense.expenseType === 'PERSONAL'}">{{
-                            expense.expenseType }}</span>
+                            [ngClass]="{'bg-success': ledgerEntry.ledgerType === 'BUSINESS','bg-primary': ledgerEntry.ledgerType === 'PERSONAL'}">{{
+                            ledgerEntry.ledgerType }}</span>
                     </td>
-                    <td>{{ expense.dateOfExpense | date:'shortDate' }}</td>
-                    <td>{{ expense.amount | currency:'INR' }}</td>
-                    <td><textarea class="form-control">{{ expense.description }}</textarea></td>
+                    <td>{{ ledgerEntry.transactionDateTime | date:'shortDate' }}</td>
+                    <td>{{ ledgerEntry.amount | currency:'INR' }}</td>
+                    <td><textarea class="form-control">{{ ledgerEntry.description }}</textarea></td>
                     <td>
-                        <button class="btn btn-sm btn-outline-primary me-1" (click)="editExpense(expense)">
+                        <button class="btn btn-sm btn-outline-primary me-1" (click)="editExpense(ledgerEntry)">
                             <i class="bi bi-pencil"></i>
                         </button>
-                        <button class="btn btn-sm btn-outline-danger" (click)="askDeleteExpense(expense)">
+                        <button class="btn btn-sm btn-outline-danger" (click)="askDeleteExpense(ledgerEntry)">
                             <i class="bi bi-trash"></i>
                         </button>
-                        <button class="btn btn-sm btn-outline-info" (click)="openDetails(expense)">
+                        <button class="btn btn-sm btn-outline-info" (click)="openDetails(ledgerEntry)">
                             <i class="bi bi-box-arrow-up-right"></i>
                         </button>
                     </td>
@@ -141,7 +141,7 @@
 <button #launchExpenseModalButton class="btn btn-info d-none" data-bs-toggle="modal"
     data-bs-target="#expenseModal">Launch
     Expense Modal</button>
-<app-expense-modal [model]="tempExpense" (successAction)="successAction($event)"
+<app-expense-modal [model]="tempLedgerEntry" (successAction)="successAction($event)"
     (errorAction)="errorAction($event)"></app-expense-modal>
 
 <button #launchConfirmDeleteExpenseButton class="btn btn-info d-none" data-bs-toggle="modal"

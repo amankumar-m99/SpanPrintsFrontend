@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Expense } from '../../../model/expense/expense.model';
+import { LedgerEntry } from '../../../model/ledger/ledger-entry.model';
 
 @Component({
   selector: 'app-expense-card',
@@ -10,7 +10,7 @@ import { Expense } from '../../../model/expense/expense.model';
   styleUrl: './expense-card.component.css'
 })
 export class ExpenseCardComponent {
-  @Input() expense?: Expense;
+  @Input() ledgerEntry?: LedgerEntry;
   @Output() edit = new EventEmitter<any>();
   @Output() delete = new EventEmitter<any>();
 }

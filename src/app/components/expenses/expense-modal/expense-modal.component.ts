@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { ReactiveFormsModule, FormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Expense } from '../../../model/expense/expense.model';
 import { UpdateExpenseRequest } from '../../../model/expense/update-expense-request.model';
 import { CreateExpenseRequest } from '../../../model/expense/create-expense-request.model';
 import { LedgerService } from '../../../services/ledger/ledger.service';
+import { LedgerEntry } from '../../../model/ledger/ledger-entry.model';
 
 @Component({
   selector: 'app-expense-modal',
@@ -20,8 +20,8 @@ export class ExpenseModalComponent implements OnInit, OnChanges {
   showToast = false;
   isEditMode = false;
 
-  @Input() model: Expense | null = null;
-  @Output() successAction = new EventEmitter<Expense>();
+  @Input() model: LedgerEntry | null = null;
+  @Output() successAction = new EventEmitter<LedgerEntry>();
   @Output() errorAction = new EventEmitter<string>();
 
   constructor(private fb: FormBuilder, private service: LedgerService) { }

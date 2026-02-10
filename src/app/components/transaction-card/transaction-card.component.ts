@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Expense } from '../../model/expense/expense.model';
+import { LedgerEntry } from '../../model/ledger/ledger-entry.model';
 
 @Component({
   selector: 'app-transaction-card',
@@ -11,5 +11,5 @@ import { Expense } from '../../model/expense/expense.model';
 })
 
 export class TransactionCardComponent {
-  @Input() transaction?: Expense;
+  @Input() ledgerEntry?: LedgerEntry;
 }
