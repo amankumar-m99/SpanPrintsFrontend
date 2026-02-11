@@ -74,7 +74,7 @@ export class OrdersComponent implements OnInit {
       const term = this.searchTerm.toLowerCase();
       data = data.filter(o =>
         o.customerName.toLowerCase().includes(term) ||
-        o.customerPhone.includes(term)
+        o.customerPrimaryPhone.includes(term)
       );
     }
     // Status filter

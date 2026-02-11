@@ -1,11 +1,12 @@
 export interface Order {
     id: number;
     uuid: string;
-    jobType: string;
+    jobTypeName: string;
     quantity: number;
     dateOfDelivery: Date;
     bookNumber: number;
     wBookNumber: number;
+    printJobStatus: string;
     totalAmount: number;
     discountedAmount: number;
     depositAmount: number;
@@ -18,7 +19,8 @@ export interface Order {
     customerId: number;
     customerName: string;
     customerAddress: string;
-    customerPhone: string;
+    customerPrimaryPhone: string;
+    customerAlternatePhone: string;
     updatedAt: string;
     createdAt: string;
     createdBy: string;

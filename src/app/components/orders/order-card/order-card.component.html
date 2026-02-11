@@ -2,25 +2,25 @@
     <div class="card-body">
         <div class="d-flex justify-content-between">
             <div class="fs-6">
-                <span class="" [ngClass]="{ 'text-success': order.paymentStatus === 'paid',
-                                                        'text-warning': order.paymentStatus === 'partially paid',
-                                                        'text-danger': order.paymentStatus === 'unpaid'}"><i
-                        class="bi bi-pause-circle-fill"></i>
-                </span>
-                <span class="ms-2"
-                    [ngClass]="{ 'text-success': order.paymentStatus === 'paid',
-                                                                                                'text-warning': order.paymentStatus === 'partially paid',
-                                                                                                'text-danger': order.paymentStatus === 'unpaid'}"><i
-                        class="bi bi-calendar2-fill"></i>
-                </span>
-                <span class="ms-2" [ngClass]="{ 'text-success': order.paymentStatus === 'paid',
-                                                        'text-warning': order.paymentStatus === 'partially paid',
-                                                        'text-danger': order.paymentStatus === 'unpaid'}"><i
-                        class="bi bi-coin"></i>
-                </span>
-                <span class="ms-2 h5 card-title">{{ order.customerName }} <small class="text-muted">({{
-                        order.id}})</small>
-                </span>
+                <div class="d-none">
+                    <span class="" [ngClass]="{ 'text-success': order.paymentStatus === 'paid',
+                                                            'text-warning': order.paymentStatus === 'partially paid',
+                                                            'text-danger': order.paymentStatus === 'unpaid'}"><i
+                            class="bi bi-pause-circle-fill"></i>
+                    </span>
+                    <span class="ms-2"
+                        [ngClass]="{ 'text-success': order.paymentStatus === 'paid',
+                                                                                                    'text-warning': order.paymentStatus === 'partially paid',
+                                                                                                    'text-danger': order.paymentStatus === 'unpaid'}"><i
+                            class="bi bi-calendar2-fill"></i>
+                    </span>
+                    <span class="ms-2" [ngClass]="{ 'text-success': order.paymentStatus === 'paid',
+                                                            'text-warning': order.paymentStatus === 'partially paid',
+                                                            'text-danger': order.paymentStatus === 'unpaid'}"><i
+                            class="bi bi-coin"></i>
+                    </span>
+                </div>
+                <span class="ms-2 h5 card-title"><span class="badge text-bg-primary"># {{ order.id }}</span></span>
             </div>
             <div class="dropdown" style="position: absolute; top: 10px; right: 10px;">
                 <button class="btn dropdown-toggle" type="button" id="cardOptions" data-bs-toggle="dropdown"
@@ -28,7 +28,7 @@
                     &#8942; <!-- vertical three dots -->
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="cardOptions">
-                    <li><a class="dropdown-item" href="#">Mark as paid</a></li>
+                    <li><a class="dropdown-item" href="#">Mark as Preparing</a></li>
                     <li><a class="dropdown-item" href="#">Mark as Ready</a></li>
                     <li><a class="dropdown-item" href="#">Mark as delivered</a></li>
                     <li><a class="dropdown-item" href="#">All details</a></li>
@@ -39,33 +39,33 @@
             <tbody>
                 <tr>
                     <td>Job</td>
-                    <td>{{ order.jobType }} <small class="text-muted">({{ order.quantity }})</small></td>
+                    <td>{{ order.jobTypeName }}</td>
+                </tr>
+                <tr>
+                    <td>quantity</td>
+                    <td>{{ order.quantity }}</td>
                 </tr>
                 <tr>
                     <td>Delivery Date</td>
                     <td>{{ order.dateOfDelivery | date:'shortDate' }}</td>
                 </tr>
                 <tr>
-                    <td>Amount Paid</td>
-                    <td>{{ order.depositAmount }} of {{ order.totalAmount }}</td>
-                </tr>
-                <tr>
-                    <td>Discount Amount</td>
-                    <td>{{ order.discountedAmount }}</td>
-                </tr>
-                <tr>
                     <td>Pending Amount</td>
                     <td>{{ order.pendingAmount }}</td>
                 </tr>
                 <tr>
-                    <td>Phone number</td>
-                    <td>{{ order.customerPhone }}</td>
+                    <td>Payment Status</td>
+                    <td>{{order.paymentStatus}}</td>
+                </tr>
+                <tr>
+                    <td>Order Status</td>
+                    <td>{{order.paymentStatus}}</td>
                 </tr>
             </tbody>
         </table>
     </div>
     <div class="card-footer d-flex justify-content-between align-items-center">
-        <small class="text-muted">Created: {{ order.createdAt | date:'short' }}</small>
+        <small class="text-muted">Created At: {{ order.createdAt | date:'medium' }}</small>
         <small><a>More details <i class="bi bi-caret-right-fill"></i></a></small>
         <div class="d-none">
             <button class="btn btn-sm btn-outline-primary me-1" (click)="edit.emit(order)">
