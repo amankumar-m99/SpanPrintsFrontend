@@ -5,16 +5,24 @@
                 <h5 class="modal-title">
                     @if (isEditMode) {
                     <i class="bi bi-printer me-2"></i>Update Print-Job
-                }
-                @else{
-                        <i class="bi bi-printer me-2"></i>Add Print-Job
+                    }
+                    @else{
+                    <i class="bi bi-printer me-2"></i>Add Print-Job
                     }
                 </h5>
                 <button id="printJobTypeModalCloseBtn" type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <form [formGroup]="modalForm" (ngSubmit)="submitForm()">    
+                <form [formGroup]="modalForm" (ngSubmit)="submitForm()">
 
+                    <div class="mb-3">
+                        <label class="form-label"><i class="bi bi-card-text me-1"></i>Job Id</label>
+                        <input type="text" class="form-control" formControlName="jobId"
+                            [ngClass]="{ 'is-invalid': jobId?.invalid && jobId?.touched }" />
+                        <div class="invalid-feedback" *ngIf="jobId?.touched && jobId?.invalid">
+                            Job-Id is required
+                        </div>
+                    </div>
                     <div class="mb-3">
                         <label class="form-label"><i class="bi bi-card-text me-1"></i>Job Name</label>
                         <input type="text" class="form-control" formControlName="name"

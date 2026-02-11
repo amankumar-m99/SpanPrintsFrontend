@@ -25,6 +25,14 @@ export class OrderService {
     return this.http.get<Order[]>(this.url);
   }
 
+  getOrderById(id: number) {
+    return this.http.get<Order>(`${this.url}/id/${id}`);
+  }
+
+  getOrderByUuid(uuid: string) {
+    return this.http.get<Order>(`${this.url}/uuid/${uuid}`);
+  }
+
   deleteOrderByUuid(uuid: string) {
     return this.http.delete<any>(`${this.url}/uuid/${uuid}`);
   }
