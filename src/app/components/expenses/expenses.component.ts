@@ -35,7 +35,7 @@ export class ExpensesComponent implements OnInit {
   searchTerm: string = '';
   activeFiltersCount = 0;
   activeFiltersSummary = '';
-  viewType = "card";
+  viewType = "list";
 
   @ViewChild('launchExpenseModalButton') launchExpenseModalButton!: ElementRef;
   @ViewChild('launchConfirmDeleteExpenseButton') launchConfirmDeleteButton!: ElementRef;

@@ -3,13 +3,13 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TransactionCardComponent } from '../transaction-card/transaction-card.component';
 import { LedgerService } from '../../services/ledger/ledger.service';
-import { Expense } from '../../model/expense/expense.model';
 import { LedgerEntry } from '../../model/ledger/ledger-entry.model';
+import { ToastComponent } from "../utility/toast/toast.component";
 
 @Component({
   selector: 'app-ledger',
   standalone: true,
-  imports: [CommonModule, FormsModule, TransactionCardComponent],
+  imports: [CommonModule, FormsModule, TransactionCardComponent, ToastComponent],
   templateUrl: './ledger.component.html',
   styleUrls: ['./ledger.component.css']
 })
@@ -17,6 +17,9 @@ export class LedgerComponent implements OnInit {
 
   ledgerEntries: LedgerEntry[] = [];
 
+  activeFiltersCount = 0;
+  activeFiltersSummary = '';
+  isRefreshingData = false;
   // Filters
   filters = {
     timePeriod: 'thisMonth',
@@ -24,15 +27,35 @@ export class LedgerComponent implements OnInit {
     domain: 'all'
   };
 
+  toastType = 'info';
+  toastMsg = '';
+  showToast = false;
+
   constructor(private ledgerService: LedgerService) { }
 
   ngOnInit(): void {
+    this.loadData();
+  }
+
+  loadData() {
     this.ledgerService.getAllExpenses().subscribe({
       next: (res) => {
         this.ledgerEntries = res;
+        if (this.isRefreshingData) {
+          this.showToastComponent("success", "Ledger data refreshed.");
+          this.isRefreshingData = false;
+        }
       },
-      error: () => { },
+      error: (err) => {
+        this.showToastComponent("error", err?.error?.message || 'Error loading ledger entries');
+        this.isRefreshingData = false;
+      },
     });
+  }
+
+  refreshData(): void {
+    this.isRefreshingData = true;
+    this.loadData();
   }
 
   get filteredTransactions() {
@@ -76,5 +99,15 @@ export class LedgerComponent implements OnInit {
 
   get netEarnings() {
     return this.totalCredit - this.totalDebit;
+  }
+
+  showToastComponent(type: string, msg: string): void {
+    this.toastType = type;
+    this.toastMsg = msg;
+    this.showToast = true;
+  }
+
+  hideToastComponent(): void {
+    this.showToast = false
   }
 }
