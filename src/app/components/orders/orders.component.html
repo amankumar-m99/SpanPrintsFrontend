@@ -117,13 +117,13 @@
                     <td>{{ order.printJobStatus }}</td>
                     <!-- Actions -->
                     <td class="text-end" (click)="$event.stopPropagation()">
-                        <button class="btn btn-sm btn-outline-primary me-1">
+                        <button class="btn btn-sm btn-outline-primary me-1" (click)="editOrder(order)">
                             <i class="bi bi-pencil"></i>
                         </button>
-                        <button class="btn btn-sm btn-outline-danger me-1">
+                        <button class="btn btn-sm btn-outline-danger me-1" (click)="askDeleteOrder(order)">
                             <i class="bi bi-trash"></i>
                         </button>
-                        <button class="btn btn-sm btn-outline-info">
+                        <button class="btn btn-sm btn-outline-info" (click)="openDetails(order)">
                             <i class="bi bi-box-arrow-up-right"></i>
                         </button>
                     </td>

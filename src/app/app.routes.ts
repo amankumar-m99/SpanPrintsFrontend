@@ -20,6 +20,7 @@ import { VendorInfoComponent } from './components/vendors/vendor-info/vendor-inf
 import { PrintjobComponent } from './components/printjob/printjob.component';
 import { StatisticsComponent } from './components/statistics/statistics.component';
 import { LedgerComponent } from './components/ledger/ledger.component';
+import { OrderInfoComponent } from './components/orders/order-info/order-info.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent, canActivate: [GuestGuard] },
@@ -29,6 +30,7 @@ export const routes: Routes = [
         path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard],
         children: [
             { path: 'orders', component: OrdersComponent },
+            { path: 'order/:uuid', component: OrderInfoComponent },
             { path: 'customers', component: CustomersComponent },
             { path: 'customer/:uuid', component: CustomerInfoComponent },
             { path: 'vendors', component: VendorsComponent },
