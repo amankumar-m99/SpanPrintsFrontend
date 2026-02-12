@@ -48,7 +48,7 @@ export class OrderInfoComponent implements OnInit {
       next: (res) => {
         this.order = res;
         this.errorMsg = '';
-        this.deleteMsg = `Delete customer ${this.order.uuid}?`;
+        this.deleteMsg = `Delete this customer?`;
       },
       error: (err) => {
         this.errorMsg = err?.error?.message || "Could not load order details!";
