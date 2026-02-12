@@ -117,13 +117,8 @@
                     </div>
 
                     <div class="col-md-4">
-                        <strong><i class="bi bi-telephone-plus me-1 text-info"></i>Book Number</strong>
-                        <div>{{ order?.bookNumber || 'N/A' }}</div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <strong><i class="bi bi-telephone-plus me-1 text-info"></i>W-Book Number</strong>
-                        <div>{{ order?.wBookNumber || 'N/A' }}</div>
+                        <strong><i class="bi bi-telephone-plus me-1 text-info"></i>Order Status</strong>
+                        <div>{{ order?.printJobStatus || 'N/A' }}</div>
                     </div>
 
                     <div class="col-md-4">
@@ -132,8 +127,8 @@
                     </div>
 
                     <div class="col-md-4">
-                        <strong><i class="bi bi-telephone-plus me-1 text-info"></i>Order Status</strong>
-                        <div>{{ order?.printJobStatus || 'N/A' }}</div>
+                        <strong><i class="bi bi-telephone-plus me-1 text-info"></i>Total Amount</strong>
+                        <div>{{ order?.totalAmount || 'N/A' }}</div>
                     </div>
 
                     <div class="col-md-4">
@@ -142,35 +137,21 @@
                     </div>
 
                     <div class="col-md-4">
-                        <strong><i class="bi bi-telephone-plus me-1 text-info"></i>Total Amount</strong>
-                        <div>{{ order?.totalAmount || 'N/A' }}</div>
-                    </div>
-
-                    <div class="col-md-4">
                         <strong><i class="bi bi-telephone-plus me-1 text-info"></i>Discounted Amount</strong>
                         <div>{{ order?.discountedAmount || 'N/A' }}</div>
                     </div>
-
-                    <div class="col-md-4">
-                        <strong><i class="bi bi-telephone-plus me-1 text-info"></i>Deposited Amount</strong>
-                        <div>{{ order?.depositAmount || 'N/A' }}</div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <strong><i class="bi bi-person me-1 text-info"></i>Created By</strong>
-                        <div>{{ order?.createdBy }}</div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <strong><i class="bi bi-calendar-plus me-1 text-info"></i>Created At</strong>
-                        <div>{{ order?.createdAt | date:'short' }}</div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <strong><i class="bi bi-calendar-check me-1 text-info"></i>Updated At</strong>
-                        <div>{{ order?.updatedAt | date:'short' }}</div>
-                    </div>
                 </div>
+            </div>
+        </div>
+
+        <div class="row g-3">
+            <div class="col-12">
+                <strong>Note</strong>
+                <p>{{order?.note}}</p>
+            </div>
+            <div class="col-12">
+                <strong>Order Description</strong>
+                <p>{{order?.description}}</p>
             </div>
         </div>
 
@@ -178,22 +159,17 @@
         <ul class="nav nav-tabs mb-3">
             <li class="nav-item">
                 <a class="nav-link active" data-bs-toggle="tab" href="#order-details">
-                    Orders
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="tab" href="#activity">
-                    Activity
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="tab" href="#notes">
-                    Notes
+                    Order Details
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" data-bs-toggle="tab" href="#attached-files">
                     Attached Files
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="tab" href="#order-activity">
+                    Order Activity
                 </a>
             </li>
             <li class="nav-item">
@@ -213,92 +189,104 @@
 
             <!-- Orders -->
             <div class="tab-pane fade show active" id="order-details">
-                <div class="alert alert-info">
-                    Total number of orders so far: {{order?.id}}
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <strong><i class="bi bi-telephone-plus me-1 text-info"></i>Book Number</strong>
+                        <div>{{ order?.bookNumber || 'N/A' }}</div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <strong><i class="bi bi-telephone-plus me-1 text-info"></i>W-Book Number</strong>
+                        <div>{{ order?.wBookNumber || 'N/A' }}</div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <strong><i class="bi bi-person me-1 text-info"></i>Created By</strong>
+                        <div>{{ order?.createdBy }}</div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <strong><i class="bi bi-calendar-plus me-1 text-info"></i>Created At</strong>
+                        <div>{{ order?.createdAt | date:'short' }}</div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <strong><i class="bi bi-calendar-check me-1 text-info"></i>Updated At</strong>
+                        <div>{{ order?.updatedAt | date:'short' }}</div>
+                    </div>
                 </div>
             </div>
 
+            <!-- Attached Files -->
+            <div class="tab-pane fade" id="attached-files">
+                @if(order?.attachmentIds?.length == 0){
+                <div class="alert alert-warning">
+                    No attached files
+                </div>
+                }
+                @else {
+                <div class="alert alert-info">
+                    {{order?.attachmentIds?.length}} attached-files
+                </div>
+                }
+            </div>
+
             <!-- Activity -->
-            <div class="tab-pane fade" id="activity">
+            <div class="tab-pane fade" id="order-activity">
                 <div class="alert alert-secondary">
                     Order activity timeline coming soon.
                 </div>
             </div>
 
-            <!-- Notes -->
-            <div class="tab-pane fade" id="notes">
-                @if(order?.note === ''){
-                <div class="alert alert-light">
-                    No note
-                </div>
-                }
-                @else{
-                <div class="alert alert-light">
-                    {{order?.note}}
-                </div>
-                }
-            </div>
-
-            <!-- Attached Files -->
-            <div class="tab-pane fade" id="attached-files">
-                <div class="alert alert-info">
-                    Total number of attached-files: {{order?.attachmentIds?.length}}
-                </div>
-            </div>
-
             <!-- Payment History -->
             <div class="tab-pane fade" id="payment-history">
-                <div class="table-responsive mt-1">
-                    <table class="table table-striped table-hover align-middle">
-                        <tr>
-                            <th scope="row">Total Amount</th>
-                            <td>{{order?.totalAmount}}</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">Discounted Amount</th>
-                            <td>{{order?.discountedAmount}}</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">pending Amount</th>
-                            <td>{{order?.pendingAmount}}</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">Payment </th>
-                            <td>{{order?.customerAlternatePhone}}</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">Customer Address</th>
-                            <td>{{order?.customerAddress}}</td>
-                        </tr>
-                    </table>
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <strong>Total Amount</strong>
+                        <div>{{ order?.totalAmount || 'N/A' }}</div>
+                    </div>
+                    <div class="col-md-4">
+                        <strong>Discounted Amount</strong>
+                        <div>{{ order?.discountedAmount || 'N/A' }}</div>
+                    </div>
+                    <div class="col-md-4">
+                        <strong>Deposited Amount</strong>
+                        <div>{{ order?.depositAmount || 'N/A' }}</div>
+                    </div>
+                    <div class="col-md-4">
+                        <strong>Pending Amount</strong>
+                        <div>{{ order?.pendingAmount || 'N/A' }}</div>
+                    </div>
+                    <div class="col-md-4">
+                        <strong>Payment Status</strong>
+                        <div>{{ order?.paymentStatus || 'N/A' }}</div>
+                    </div>
                 </div>
             </div>
 
             <!-- Customer Details -->
             <div class="tab-pane fade" id="customer-details">
-                <div class="table-responsive mt-1">
-                    <table class="table table-striped table-hover align-middle">
-                        <tr>
-                            <th scope="row">ID</th>
-                            <td>{{order?.customerId}}</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">Customer Name</th>
-                            <td>{{order?.customerName}}</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">Primary Phone Number</th>
-                            <td>{{order?.customerPrimaryPhone}}</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">Alternate Phone Name</th>
-                            <td>{{order?.customerAlternatePhone}}</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">Customer Address</th>
-                            <td>{{order?.customerAddress}}</td>
-                        </tr>
-                    </table>
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <strong>Customer Id</strong>
+                        <div>{{ order?.customerId || 'N/A' }}</div>
+                    </div>
+                    <div class="col-md-4">
+                        <strong>Customer Name</strong>
+                        <div>{{ order?.customerName || 'N/A' }}</div>
+                    </div>
+                    <div class="col-md-4">
+                        <strong>Primary Phone Number</strong>
+                        <div>{{ order?.customerPrimaryPhone || 'N/A' }}</div>
+                    </div>
+                    <div class="col-md-4">
+                        <strong>Alternate Phone Number </strong>
+                        <div>{{ order?.customerAlternatePhone || 'N/A' }}</div>
+                    </div>
+                    <div class="col-md-8">
+                        <strong>Customer Address</strong>
+                        <div>{{ order?.customerAddress || 'N/A' }}</div>
+                    </div>
                 </div>
             </div>
         </div>
