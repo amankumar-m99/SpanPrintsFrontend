@@ -1,6 +1,7 @@
 export interface Order {
     id: number;
     uuid: string;
+    jobId: string;
     jobTypeName: string;
     quantity: number;
     dateOfDelivery: Date;

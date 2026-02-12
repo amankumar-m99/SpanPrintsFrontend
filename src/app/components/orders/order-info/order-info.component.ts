@@ -1,21 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { CustomerService } from '../../../services/customer/customer.service';
-import { Customer } from '../../../model/customer/customer.model';
 import { CommonModule } from '@angular/common';
 import { ToastComponent } from "../../utility/toast/toast.component";
 import { ConfirmDialogComponent } from "../../utility/confirm-dialog/confirm-dialog.component";
 import { FormsModule } from '@angular/forms';
 import { Constant } from '../../../constant/Constant';
-import { CustomerModalComponent } from '../../customers/customer-modal/customer-modal.component';
 import { Order } from '../../../model/order/order.model';
 import { OrderService } from '../../../services/order/order.service';
-import { PrintjobtypeModalComponent } from "../../printjob/printjobtype-modal/printjobtype-modal.component";
+import { OrderModalComponent } from "../order-modal/order-modal.component";
 
 @Component({
   selector: 'app-order-info',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink, CustomerModalComponent, ToastComponent, ConfirmDialogComponent, PrintjobtypeModalComponent],
+  imports: [CommonModule, FormsModule, RouterLink, ToastComponent, ConfirmDialogComponent, OrderModalComponent],
   templateUrl: './order-info.component.html',
   styleUrl: './order-info.component.css'
 })
@@ -85,12 +82,12 @@ export class OrderInfoComponent implements OnInit {
     }
   }
 
-  customerSuccess(customer: Customer): void {
-    this.showToastComponent("success", "Customer updated.");
+  orderSuccess(order: Order): void {
+    this.showToastComponent("success", "Order updated.");
     this.fetchCustomerDetails();
   }
 
-  customerError(errorStr: string): void {
+  orderError(errorStr: string): void {
     this.showToastComponent("error", errorStr)
   }
 
