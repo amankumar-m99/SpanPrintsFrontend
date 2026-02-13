@@ -93,7 +93,7 @@ export class ProfilePicComponent implements AfterViewInit {
     });
   }
 
-  // ✅ Profile picture update with instant preview
+  // Profile picture update with instant preview
   uploadProfilePicToBackend(file: File) {
     if (this.profilePicUrl) {
       this.oldPic = this.profilePicUrl; // backup old pic
@@ -111,8 +111,8 @@ export class ProfilePicComponent implements AfterViewInit {
       next: (res) => {
         this.profilePicUrl = Constant.API_URL + res.url;
         this.picLoading = false;
-        this.showSuccessToast = true;
         this.showModal = false;
+        this.showSuccessToast = true;
         setTimeout(() => this.showSuccessToast = false, 3000);
       },
       error: (err) => {

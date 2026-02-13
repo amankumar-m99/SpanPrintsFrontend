@@ -7,7 +7,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class ProfileService {
 
-  private profilePicUpdateUrl = Constant.API_URL + '/profile-pic';
+  private profilePicUpdateUrl = Constant.API_URL + '/profile-pics';
   private personalDetailsUpdateUrl = Constant.API_URL + '/personal-detail';
   private accountDetailsUpdateUrl = Constant.API_URL + '/account';
 

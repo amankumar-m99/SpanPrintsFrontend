@@ -43,10 +43,11 @@ export class ProfileComponent implements OnInit {
   ngOnInit(): void {
     this.accountDetailsLoading = true;
     this.personalDetailsLoading = true;
+    this.profile
     this.authService.getCurrentUser().subscribe({
       next: (res) => {
         this.profile = res;
-        this.profile.personalDetails.profilePic = Constant.PROFILE_PIC_API_GET_BASR_URL + this.profile.account.uuid;
+        this.profile.personalDetails.profilePic = Constant.PROFILE_PIC_API_GET_BASR_URL + 'id/' + this.profile.account.uuid;
         this.initAccountDetailsForm();
         this.disableValidations(this.accountDetailsForm);
         this.initPersonalDetailsForm();
@@ -55,7 +56,6 @@ export class ProfileComponent implements OnInit {
         this.personalDetailsLoading = false;
       },
       error: (err) => {
-        console.log(err);
         this.errorMessage = 'Failed to load profile.';
         this.accountDetailsLoading = false;
         this.personalDetailsLoading = false;

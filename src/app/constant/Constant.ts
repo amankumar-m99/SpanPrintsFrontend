@@ -2,7 +2,7 @@ export const Constant = {
     // API_URL : 'http://192.168.1.5:8090',
     // PROFILE_PIC_API_GET_BASR_URL : 'http://192.168.1.5:8090/profile-pic/',
     API_URL : 'http://localhost:8090',
-    PROFILE_PIC_API_GET_BASR_URL : 'http://localhost:8090/profile-pic/',
+    PROFILE_PIC_API_GET_BASR_URL : 'http://localhost:8090/profile-pics/',
 
     EXCLUDED_URLS_FOR_ATTACHING_JWT : ['/login', '/register', '/refresh'],
 
