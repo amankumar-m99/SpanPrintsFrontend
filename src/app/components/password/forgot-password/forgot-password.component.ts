@@ -13,6 +13,7 @@ import { CommonModule } from '@angular/common';
 })
 export class ForgotPasswordComponent {
 
+  alertClass = 'alert-info';
   loading = false;
   message = '';
   errorMessage = '';
@@ -36,17 +37,17 @@ export class ForgotPasswordComponent {
     this.authService.forgotPassword(this.form.value.email!)
       .subscribe({
         next: () => {
-          this.message =
-            'If the email exists, a reset link has been sent.';
+          this.alertClass = 'alert-success';
+          this.message = 'If the email exists, a reset link has been sent.';
           this.loading = false;
         },
-        error: () => {
-          this.message =
-            'If the email exists, a reset link has been sent.';
+        error: (err) => {
+          this.alertClass = 'alert-danger';
+          this.message = err?.error?.message || 'Invalid credentials or server error.';
           this.loading = false;
         }
       });
   }
 
-   get email() { return this.form.get('email'); }
+  get email() { return this.form.get('email'); }
 }
