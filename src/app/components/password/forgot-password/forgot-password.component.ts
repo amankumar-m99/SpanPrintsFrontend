@@ -15,6 +15,7 @@ export class ForgotPasswordComponent {
 
   loading = false;
   message = '';
+  errorMessage = '';
 
   form!: FormGroup;
 
@@ -46,4 +47,6 @@ export class ForgotPasswordComponent {
         }
       });
   }
+
+   get email() { return this.form.get('email'); }
 }
