@@ -21,11 +21,16 @@ import { PrintjobComponent } from './components/printjob/printjob.component';
 import { StatisticsComponent } from './components/statistics/statistics.component';
 import { LedgerComponent } from './components/ledger/ledger.component';
 import { OrderInfoComponent } from './components/orders/order-info/order-info.component';
+import { ForgotPasswordComponent } from './components/password/forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './components/password/reset-password/reset-password.component';
+import { ChangePasswordComponent } from './components/password/change-password/change-password.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent, canActivate: [GuestGuard] },
     { path: 'register', component: RegisterComponent, canActivate: [GuestGuard] },
     { path: 'verify', component: AccountVerificationComponent, canActivate: [GuestGuard] },
+    { path: 'forgot-password', component: ForgotPasswordComponent },
+    { path: 'reset-password', component: ResetPasswordComponent },
     {
         path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard],
         children: [
@@ -42,6 +47,7 @@ export const routes: Routes = [
             { path: 'printjob', component: PrintjobComponent },
             { path: 'quickactions', component: QuickActionsComponent },
             { path: 'profile', component: ProfileComponent },
+            { path: 'change-password', component: ChangePasswordComponent },
             { path: 'update-password', component: UpdatePasswordComponent },
             { path: 'about', component: AboutComponent },
             { path: '', redirectTo: 'quickactions', pathMatch: 'full' }

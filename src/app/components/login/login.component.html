@@ -51,7 +51,7 @@
           <input class="form-check-input" type="checkbox" id="rememberMe" formControlName="rememberMe" />
           <label class="form-check-label" for="rememberMe">Remember Me</label>
         </div>
-        <a href="#" (click)="onForgotPassword($event)">Forgot Password?</a>
+        <a routerLink="/forgot-password">Forgot Password?</a>
       </div>
       <!-- Error -->
       <div *ngIf="errorMessage" class="alert alert-danger p-2">

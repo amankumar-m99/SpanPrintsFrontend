@@ -50,4 +50,20 @@ export class AuthService {
   isLoggedIn(): boolean {
     return !!AppStorage.getItem('token');
   }
+
+  forgotPassword(email: string) {
+    return this.http.post(this.url + '/forgot-password', { email });
+  }
+
+  resetPassword(token: string, password: string) {
+    return this.http.post(this.url + '/reset-password', {
+      token,
+      newPassword: password
+    });
+  }
+
+  changePassword(payload: any) {
+    return this.http.put(this.url + '/accounts/password', payload);
+  }
+
 }
