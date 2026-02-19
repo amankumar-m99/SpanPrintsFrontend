@@ -56,6 +56,10 @@ export class AuthService {
     return this.http.post<SuccessResponse>(this.url + '/forgot-password', { email });
   }
 
+  verifyTokenBefore(token: string){
+    return this.http.post<boolean>(this.url + '/verify-token/'+token, { token });
+  }
+
   resetPassword(token: string, password: string) {
     return this.http.post(this.url + '/reset-password', {
       token,

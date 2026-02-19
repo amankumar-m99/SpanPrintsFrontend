@@ -15,11 +15,13 @@ import { CommonModule } from '@angular/common';
 
 export class ResetPasswordComponent implements OnInit {
 
+  alertClass = 'alert-info';
   token = '';
   loading = false;
   message = '';
-
   form!: FormGroup;
+  isTokenVerified = false;
+  isTokenValid = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -38,27 +40,61 @@ export class ResetPasswordComponent implements OnInit {
 
   ngOnInit() {
     this.token = this.route.snapshot.queryParamMap.get('token') || '';
+    this.isTokenVerified = false;
+    this.isTokenValid = false;
+    this.verifyTokenBefore();
+    // this.route.paramMap.subscribe(params => {
+    //   const uuid = params.get('token');
+    //   if (uuid) {
+    //     this.token = uuid;
+    //     this.isTokenVerified = false;
+    //     this.isTokenValid = false;
+    //     this.verifyTokenBefore();
+    //   }
+    // });
+  }
+
+  verifyTokenBefore() {
+    this.authService.verifyTokenBefore(this.token).subscribe({
+      next: (res) => {
+        this.isTokenVerified = true;
+        this.isTokenValid = true;
+      },
+      error: (err) => {
+        this.isTokenVerified = true;
+        this.isTokenValid = false;
+        this.message = err?.error?.message || 'Invalid input or server error.';
+      }
+    })
   }
 
   submit() {
-    if (this.form.invalid) return;
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();   // force show validation messages
+      return;
+    }
     if (this.form.value.password !== this.form.value.confirmPassword) {
+      this.alertClass = 'alert-danger';
       this.message = 'Passwords do not match';
       return;
     }
-
     this.loading = true;
-
     this.authService.resetPassword(this.token, this.form.value.password!)
       .subscribe({
         next: () => {
+          this.alertClass = 'alert-success';
           this.message = 'Password successfully updated.';
           this.loading = false;
         },
-        error: () => {
-          this.message = 'Invalid or expired token.';
+        error: (err) => {
+          this.alertClass = 'alert-danger';
+          this.message = err?.error?.message || 'Invalid input or server error.';
           this.loading = false;
         }
       });
   }
+
+
+  get password() { return this.form.get('password'); }
+  get confirmPassword() { return this.form.get('confirmPassword'); }
 }
