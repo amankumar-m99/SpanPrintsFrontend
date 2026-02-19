@@ -26,7 +26,10 @@ export class ForgotPasswordComponent {
   }
 
   submit() {
-    if (this.form.invalid) return;
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();   // force show validation messages
+      return;
+    }
     this.loading = true;
     this.authService.forgotPassword(this.form.value.email!)
       .subscribe({
