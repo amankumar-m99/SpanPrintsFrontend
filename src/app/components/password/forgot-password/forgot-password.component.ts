@@ -17,13 +17,9 @@ export class ForgotPasswordComponent {
   loading = false;
   message = '';
   errorMessage = '';
-
   form!: FormGroup;
 
-  constructor(
-    private fb: FormBuilder,
-    private authService: AuthService
-  ) {
+  constructor(private fb: FormBuilder, private authService: AuthService) {
     this.form = this.fb.group({
       email: ['', [Validators.required, Validators.email]]
     });
@@ -31,19 +27,17 @@ export class ForgotPasswordComponent {
 
   submit() {
     if (this.form.invalid) return;
-
     this.loading = true;
-
     this.authService.forgotPassword(this.form.value.email!)
       .subscribe({
-        next: () => {
+        next: (response) => {
           this.alertClass = 'alert-success';
-          this.message = 'If the email exists, a reset link has been sent.';
+          this.message = response.message;
           this.loading = false;
         },
         error: (err) => {
           this.alertClass = 'alert-danger';
-          this.message = err?.error?.message || 'Invalid credentials or server error.';
+          this.message = err?.error?.message || 'Invalid input or server error.';
           this.loading = false;
         }
       });

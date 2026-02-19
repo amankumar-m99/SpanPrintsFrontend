@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { Constant } from '../../constant/Constant';
 import { AppStorage } from '../../storage/AppStorage';
 import { Profile } from '../../model/profile/profile.model';
+import { SuccessResponse } from '../../model/success-response.model';
 
 @Injectable({
   providedIn: 'root'
@@ -52,7 +53,7 @@ export class AuthService {
   }
 
   forgotPassword(email: string) {
-    return this.http.post(this.url + '/forgot-password', { email });
+    return this.http.post<SuccessResponse>(this.url + '/forgot-password', { email });
   }
 
   resetPassword(token: string, password: string) {
