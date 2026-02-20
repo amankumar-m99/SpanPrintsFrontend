@@ -9,15 +9,15 @@ export class ProfileService {
 
   private profilePicUpdateUrl = Constant.API_URL + '/profile-pics';
   private personalDetailsUpdateUrl = Constant.API_URL + '/personal-detail';
-  private accountDetailsUpdateUrl = Constant.API_URL + '/account';
+  private accountDetailsUpdateUrl = Constant.API_URL + '/accounts';
 
   constructor(private http: HttpClient) { }
 
   updateProfilePic(data: any) {
     return this.http.post<{ url: string }>(this.profilePicUpdateUrl, data);
   }
-  
-  removeProfilePic(){
+
+  removeProfilePic() {
     return this.http.delete<any>(this.profilePicUpdateUrl);
   }
 
@@ -27,6 +27,10 @@ export class ProfileService {
 
   updatePersonalDetails(data: any) {
     return this.http.post<any>(this.personalDetailsUpdateUrl, data);
+  }
+
+  updatePassword(data: any) {
+    return this.http.put<any>(`${this.accountDetailsUpdateUrl}/update-password`, data);
   }
 
 }
