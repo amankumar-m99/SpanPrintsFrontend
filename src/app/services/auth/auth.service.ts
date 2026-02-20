@@ -24,7 +24,7 @@ export class AuthService {
   }
 
   verifyAccount(token: string) {
-    return this.http.get(`${this.url}/verify?token=${token}`);
+    return this.http.post<any>(`${this.url}/verify-account`, { token });
   }
 
   loginUser(credentials: LoginModel): Observable<any> {
@@ -53,17 +53,16 @@ export class AuthService {
   }
 
   forgotPassword(email: string) {
-    return this.http.post<SuccessResponse>(this.url + '/forgot-password', { email });
+    return this.http.post<SuccessResponse>(`${this.url}/forgot-password`, { email });
   }
 
-  verifyTokenBefore(token: string){
-    return this.http.post<boolean>(this.url + '/verify-token/'+token, { token });
+  verifyTokenBefore(token: string) {
+    return this.http.post<boolean>(`${this.url}/verify-token-before-reset-password`, { token });
   }
 
-  resetPassword(token: string, password: string) {
-    return this.http.post(this.url + '/reset-password', {
-      token,
-      newPassword: password
+  resetPassword(token: string, data: any) {
+    return this.http.post<any>(this.url + '/reset-password', {
+      token, ...data
     });
   }
 
