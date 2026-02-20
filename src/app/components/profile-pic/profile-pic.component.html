@@ -96,8 +96,8 @@
 </div>
 
 <!-- Toast Notification -->
-<app-toast [type]="'error'" [message]="'Failed to upload profile picture.'" (closeAction)="showErrorToast = false"></app-toast>
-<app-toast [type]="'success'" [message]="'Profile picture updated successfully'" (closeAction)="showSuccessToast = false"></app-toast>
+<app-toast *ngIf="showErrorToast" [type]="'error'" [message]="'Failed to upload profile picture.'" (closeAction)="showErrorToast = false"></app-toast>
+<app-toast *ngIf="showSuccessToast" [type]="'success'" [message]="'Profile picture updated successfully'" (closeAction)="showSuccessToast = false"></app-toast>
 
 <!--
     <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true" [aspectRatio]="4 / 3" format="png"

@@ -7,11 +7,13 @@ import { Profile } from '../../model/profile/profile.model';
 import { ProfileService } from '../../services/profile/profile.service';
 import { ProfilePicComponent } from '../profile-pic/profile-pic.component';
 import { Constant } from '../../constant/Constant';
+import { AboutComponent } from "../about/about.component";
+import { ToastComponent } from "../utility/toast/toast.component";
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, ProfilePicComponent],
+  imports: [CommonModule, ReactiveFormsModule, ProfilePicComponent, AboutComponent, ToastComponent],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css'
 })
