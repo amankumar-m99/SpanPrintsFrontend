@@ -7,13 +7,12 @@ import { Profile } from '../../model/profile/profile.model';
 import { ProfileService } from '../../services/profile/profile.service';
 import { ProfilePicComponent } from '../profile-pic/profile-pic.component';
 import { Constant } from '../../constant/Constant';
-import { AboutComponent } from "../about/about.component";
 import { ToastComponent } from "../utility/toast/toast.component";
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, ProfilePicComponent, AboutComponent, ToastComponent],
+  imports: [CommonModule, ReactiveFormsModule, ProfilePicComponent, ToastComponent],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css'
 })
@@ -39,13 +38,16 @@ export class ProfileComponent implements OnInit {
   personalDetailsLoading = false;
   personalDetailsSaving = false;
   personalDetailsErrorMessage: string | null = null;
+  changePasswordForm!: FormGroup;
 
   constructor(private authService: AuthService, private profileService: ProfileService, private fb: FormBuilder, private http: HttpClient) { }
 
   ngOnInit(): void {
     this.accountDetailsLoading = true;
     this.personalDetailsLoading = true;
-    this.profile
+    this.accountDetailsForm = this.fb.group({});
+    this.personalDetailsForm = this.fb.group({});
+    this.initChangePasswordForm();
     this.authService.getCurrentUser().subscribe({
       next: (res) => {
         this.profile = res;
@@ -78,6 +80,14 @@ export class ProfileComponent implements OnInit {
       birthday: [this.profile?.personalDetails.birthday, Validators.required],
       gender: [this.profile?.personalDetails.gender, Validators.required],
       profilePic: [this.profile?.personalDetails.profilePic]
+    });
+  }
+
+  initChangePasswordForm() {
+    this.changePasswordForm = this.fb.group({
+      currentPassword: ['', [Validators.required, Validators.email]],
+      newPassword: ['', Validators.required],
+      confirmNewPassword: ['', Validators.required],
     });
   }
 

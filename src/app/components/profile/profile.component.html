@@ -11,7 +11,7 @@
     <app-profile-pic [profilePicUrl]="profile?.personalDetails?.profilePic"></app-profile-pic>
 
 
-    <div class="row g-4 mx-3">
+    <div class="row g-4 m-3">
         <!-- Account Details -->
         <div class="col-md-6">
             <div *ngIf="!accountDetailsLoading && profile; else accountLoadingElse">
@@ -37,9 +37,10 @@
                                     [class.is-invalid]="accountDetailsForm.get('username')?.invalid && accountDetailsForm.get('username')?.touched">
                                 <div class="invalid-feedback">Username is required.</div>
                             </div>
-                            <p><strong>Role:</strong> {{ profile.account.roles[0].roleName }}</p>
-                            <p><strong>Account Created:</strong> {{ profile.account.createdAt | date }}</p>
-                            <p><strong>UID:</strong> {{ profile.account.uuid }}</p>
+                            <div class="mb-3">
+                                <label class="form-label">Role</label>
+                                <input type="text" class="form-control" [readonly]="true" [value]="profile.account.roles[0].roleName">
+                            </div>
                             <div *ngIf="editAccount" class="d-flex justify-content-end mt-3">
                                 <button type="button" class="btn btn-secondary me-2" (click)="cancelEditAccount()"
                                     [disabled]="accountDetailSaving">Cancel</button>
@@ -131,6 +132,72 @@
                     </div>
                 </div>
             </ng-template>
+        </div>
+
+        <!-- change password -->
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+                    <span>Change Password</span>
+                </div>
+                <div class="card-body">
+                    <form [formGroup]="changePasswordForm">
+                        <div class="mb-3">
+                            <label class="form-label">Current Password</label>
+                            <input type="text" formControlName="currentPassword" class="form-control"
+                                [class.is-invalid]="personalDetailsForm.get('name')?.invalid && personalDetailsForm.get('name')?.touched">
+                            <div class="invalid-feedback">Name is required.</div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">New Password</label>
+                            <input type="password" formControlName="newPassword" class="form-control"
+                                [class.is-invalid]="personalDetailsForm.get('birthday')?.invalid && personalDetailsForm.get('birthday')?.touched">
+                            <div class="invalid-feedback">Birthday is required.</div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Confirm New Password</label>
+                            <input type="text" formControlName="confirmNewPassword" class="form-control"
+                                [class.is-invalid]="personalDetailsForm.get('name')?.invalid && personalDetailsForm.get('name')?.touched">
+                            <div class="invalid-feedback">Gender is required.</div>
+                        </div>
+                        <!-- Save / Cancel Buttons -->
+                        <div class="d-flex justify-content-end mt-3">
+                            <button type="reset" class="btn btn-danger me-2" (click)="cancelEditPersonalDetails()"
+                                [disabled]="personalDetailsSaving">Cancel</button>
+                            <button type="submit" class="btn btn-primary d-flex align-items-center"
+                                [disabled]="personalDetailsSaving">
+                                <span *ngIf="personalDetailsSaving"
+                                    class="spinner-border spinner-border-sm me-2"></span>
+                                {{ personalDetailsSaving ? 'Saving...' : 'Submit' }}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+                    <span>Account History</span>
+                </div>
+                <div class="card-body">
+                    <form>
+                        <div class="mb-3">
+                            <label class="form-label">Last updated On</label>
+                            <input type="text" class="form-control" readonly [value]="profile?.account?.createdAt">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Account Created On</label>
+                            <input type="text" class="form-control" readonly [value]="profile?.account?.createdAt">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Account UUID</label>
+                            <input type="text" class="form-control" readonly [value]="profile?.account?.uuid">
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
     <!-- Toast Notification -->
