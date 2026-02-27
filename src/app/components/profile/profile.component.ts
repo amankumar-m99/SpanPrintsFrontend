@@ -7,11 +7,12 @@ import { Profile } from '../../model/profile/profile.model';
 import { ProfileService } from '../../services/profile/profile.service';
 import { ProfilePicComponent } from '../profile-pic/profile-pic.component';
 import { Constant } from '../../constant/Constant';
+import { ToastComponent } from "../utility/toast/toast.component";
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, ProfilePicComponent],
+  imports: [CommonModule, ReactiveFormsModule, ProfilePicComponent, ToastComponent],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css'
 })
@@ -20,7 +21,7 @@ export class ProfileComponent implements OnInit {
   profile!: Profile | null;
   showErrorToast = false;
   showSuccessToast = false;
-  errorMessage: string | null = null;
+  toastMessage = '';
 
   // account details
   accountDetailsForm!: FormGroup;
@@ -36,14 +37,22 @@ export class ProfileComponent implements OnInit {
   editPersonal = false;
   personalDetailsLoading = false;
   personalDetailsSaving = false;
-  personalDetailsErrorMessage: string | null = null;
+
+  // change password
+  changePasswordForm!: FormGroup;
+  changePasswordSaving = false;
+  changePasswordErrorMessage: string | null = null;
+  showCurrentPassword = false;
+  showNewPassword = false;
 
   constructor(private authService: AuthService, private profileService: ProfileService, private fb: FormBuilder, private http: HttpClient) { }
 
   ngOnInit(): void {
     this.accountDetailsLoading = true;
     this.personalDetailsLoading = true;
-    this.profile
+    this.accountDetailsForm = this.fb.group({});
+    this.personalDetailsForm = this.fb.group({});
+    this.initChangePasswordForm();
     this.authService.getCurrentUser().subscribe({
       next: (res) => {
         this.profile = res;
@@ -56,7 +65,7 @@ export class ProfileComponent implements OnInit {
         this.personalDetailsLoading = false;
       },
       error: (err) => {
-        this.errorMessage = 'Failed to load profile.';
+        this.toastMessage = 'Failed to load profile. ' + err?.error?.message;
         this.accountDetailsLoading = false;
         this.personalDetailsLoading = false;
       }
@@ -76,6 +85,14 @@ export class ProfileComponent implements OnInit {
       birthday: [this.profile?.personalDetails.birthday, Validators.required],
       gender: [this.profile?.personalDetails.gender, Validators.required],
       profilePic: [this.profile?.personalDetails.profilePic]
+    });
+  }
+
+  initChangePasswordForm() {
+    this.changePasswordForm = this.fb.group({
+      currentPassword: ['', [Validators.required]],
+      newPassword: ['', Validators.required],
+      confirmPassword: ['', Validators.required],
     });
   }
 
@@ -121,6 +138,18 @@ export class ProfileComponent implements OnInit {
     this.disableValidations(this.personalDetailsForm);
   }
 
+  cancelChangePassword() {
+    this.changePasswordForm.reset();
+  }
+
+  toggleCurrentPassword() {
+    this.showCurrentPassword = !this.showCurrentPassword;
+  }
+
+  toggleNewPassword() {
+    this.showNewPassword = !this.showNewPassword;
+  }
+
   // Object.keys(this.accountDetailsForm.controls).forEach(key => {
   //   const control = this.accountDetailsForm.get(key);
   //   if (control) {
@@ -144,12 +173,13 @@ export class ProfileComponent implements OnInit {
           this.profile.account.username = this.accountDetailsForm.value.username;
         }
         this.editAccount = false;
+        this.toastMessage = 'Details updated successfully.';
         this.accountDetailSaving = false;
         this.showSuccessToast = true;
         setTimeout(() => this.showSuccessToast = false, 3000);
       },
       error: (err) => {
-        console.log(err);
+        this.toastMessage = 'Failed to save details. ' + err?.error?.message;
         this.accountDetailSaving = false;
         this.showErrorToast = true;
         setTimeout(() => this.showErrorToast = false, 3000);
@@ -172,15 +202,40 @@ export class ProfileComponent implements OnInit {
           this.profile.personalDetails.gender = this.personalDetailsForm.value.gender;
         }
         this.editPersonal = false;
+        this.toastMessage = 'Details updated successfully.';
         this.personalDetailsSaving = false;
         this.showSuccessToast = true;
         setTimeout(() => this.showSuccessToast = false, 3000);
       },
-      error: () => {
+      error: (err) => {
+        this.toastMessage = 'Failed to save details. ' + err?.error?.message;
         this.personalDetailsSaving = false;
         this.showErrorToast = true;
         setTimeout(() => this.showErrorToast = false, 3000);
       }
     });
+  }
+
+  savePasswordChanges() {
+    if (this.changePasswordForm.invalid) {
+      this.changePasswordForm.markAllAsTouched();
+      return;
+    }
+    this.profileService.changePassword(this.changePasswordForm.value).subscribe({
+      next: () => {
+        this.changePasswordForm.reset();
+        this.changePasswordSaving = false;
+        this.toastMessage = 'Password updated successfully.';
+        this.showSuccessToast = true;
+        setTimeout(() => this.showSuccessToast = false, 3000);
+      },
+      error: (err) => {
+        this.changePasswordSaving = false;
+        this.toastMessage = 'Failed to save details. ' + err?.error?.message;
+        this.showErrorToast = true;
+        setTimeout(() => this.showErrorToast = false, 3000);
+      }
+    });
+
   }
 }

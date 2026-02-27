@@ -3,15 +3,11 @@
         <h2>My Profile</h2>
     </div>
 
-    <div *ngIf="errorMessage" class="alert alert-danger">
-        {{ personalDetailsErrorMessage }}
-    </div>
-
     <!-- Profile Picture with Overlay Camera Icon -->
     <app-profile-pic [profilePicUrl]="profile?.personalDetails?.profilePic"></app-profile-pic>
 
 
-    <div class="row g-4 mx-3">
+    <div class="row g-4 mt-1 mx-3">
         <!-- Account Details -->
         <div class="col-md-6">
             <div *ngIf="!accountDetailsLoading && profile; else accountLoadingElse">
@@ -37,9 +33,11 @@
                                     [class.is-invalid]="accountDetailsForm.get('username')?.invalid && accountDetailsForm.get('username')?.touched">
                                 <div class="invalid-feedback">Username is required.</div>
                             </div>
-                            <p><strong>Role:</strong> {{ profile.account.roles[0].roleName }}</p>
-                            <p><strong>Account Created:</strong> {{ profile.account.createdAt | date }}</p>
-                            <p><strong>UID:</strong> {{ profile.account.uuid }}</p>
+                            <div class="mb-3">
+                                <label class="form-label">Role</label>
+                                <input type="text" class="form-control" [readonly]="true"
+                                    [value]="profile.account.roles[0].roleName">
+                            </div>
                             <div *ngIf="editAccount" class="d-flex justify-content-end mt-3">
                                 <button type="button" class="btn btn-secondary me-2" (click)="cancelEditAccount()"
                                     [disabled]="accountDetailSaving">Cancel</button>
@@ -126,35 +124,110 @@
                         Loading Personal Details ...
                         <div class="spinner-border mx-2"></div>
                     </div>
-                    <div *ngIf="personalDetailsErrorMessage" class="alert alert-danger">
-                        {{ personalDetailsErrorMessage }}
-                    </div>
                 </div>
             </ng-template>
         </div>
+
+        <!-- change password -->
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+                    <span>Change Password</span>
+                </div>
+                <div class="card-body">
+                    <form [formGroup]="changePasswordForm" (ngSubmit)="savePasswordChanges()">
+                        <div class="mb-3 position-relative">
+                            <label for="password" class="form-label">Current Password</label>
+                            <div class="input-group">
+                                <input [type]="showCurrentPassword ? 'text' : 'password'" id="password"
+                                    class="form-control"
+                                    [ngClass]="{ 'is-invalid': changePasswordForm.get('currentPassword')?.invalid && changePasswordForm.get('currentPassword')?.touched }"
+                                    formControlName="currentPassword" />
+                                <button type="button" class="btn btn-outline-secondary rounded-end" (click)="toggleCurrentPassword()">
+                                    @if(showCurrentPassword){
+                                    <i class="bi bi-eye-slash"></i>
+                                    }
+                                    @else{
+                                    <i class="bi bi-eye"></i>
+                                    }
+                                </button>
+                                <div class="invalid-feedback"
+                                    *ngIf="changePasswordForm.get('currentPassword')?.errors?.['required']">Current
+                                    password is required.</div>
+                            </div>
+                        </div>
+                        <div class="mb-3 position-relative">
+                            <label for="password" class="form-label">New Password</label>
+                            <div class="input-group">
+                                <input [type]="showNewPassword ? 'text' : 'password'" id="newPassword"
+                                    class="form-control"
+                                    [ngClass]="{ 'is-invalid': changePasswordForm.get('newPassword')?.invalid && changePasswordForm.get('newPassword')?.touched }"
+                                    formControlName="newPassword" />
+                                <button type="button" class="btn btn-outline-secondary rounded-end" (click)="toggleNewPassword()">
+                                    @if(showNewPassword){
+                                    <i class="bi bi-eye-slash"></i>
+                                    }
+                                    @else{
+                                    <i class="bi bi-eye"></i>
+                                    }
+                                </button>
+                                <div class="invalid-feedback"
+                                    *ngIf="changePasswordForm.get('newPassword')?.errors?.['required']">Current
+                                    New password is required.</div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Confirm New Password</label>
+                            <input type="password" formControlName="confirmPassword" class="form-control"
+                                [class.is-invalid]="changePasswordForm.get('confirmPassword')?.invalid && changePasswordForm.get('confirmPassword')?.touched">
+                            <div class="invalid-feedback">Confirm new password!</div>
+                        </div>
+                        <!-- Save / Cancel Buttons -->
+                        <div class="d-flex justify-content-end mt-3">
+                            <button type="reset" class="btn btn-danger me-2" (click)="cancelChangePassword()"
+                                [disabled]="changePasswordSaving">Cancel</button>
+                            <button type="submit" class="btn btn-primary d-flex align-items-center"
+                                [disabled]="changePasswordSaving">
+                                <span *ngIf="changePasswordSaving" class="spinner-border spinner-border-sm me-2"></span>
+                                {{ changePasswordSaving ? 'Saving...' : 'Submit' }}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+                    <span>Account History</span>
+                </div>
+                <div class="card-body">
+                    <form>
+                        <div class="mb-3">
+                            <label class="form-label">Last updated On</label>
+                            <input type="text" class="form-control" readonly
+                                [value]="profile?.account?.updatedAt | date: 'medium'">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Account Created On</label>
+                            <input type="text" class="form-control" readonly
+                                [value]="profile?.account?.createdAt | date: 'medium'">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Account UUID</label>
+                            <input type="text" class="form-control" readonly [value]="profile?.account?.uuid">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
     <!-- Toast Notification -->
-    <div class="toast-container position-fixed top-0 end-0 p-3">
-        <div *ngIf="showSuccessToast" class="toast align-items-center text-bg-success border-0 show">
-            <div class="d-flex">
-                <div class="toast-body">
-                    Data updated successfully!
-                </div>
-                <button type="button" class="btn-close btn-close-white me-2 m-auto"
-                    (click)="showSuccessToast = false"></button>
-            </div>
-        </div>
-    </div>
+    <app-toast *ngIf="showSuccessToast" [type]="'success'" [message]="toastMessage"
+        (closeAction)="showSuccessToast = false"></app-toast>
+
     <!-- Toast Error Notification -->
-    <div class="toast-container position-fixed top-0 end-0 p-3">
-        <div *ngIf="showErrorToast" class="toast align-items-center text-bg-danger border-0 show">
-            <div class="d-flex">
-                <div class="toast-body">
-                    Failed to update data.
-                </div>
-                <button type="button" class="btn-close btn-close-white me-2 m-auto"
-                    (click)="showErrorToast = false"></button>
-            </div>
-        </div>
-    </div>
+    <app-toast *ngIf="showErrorToast" [type]="'error'" [message]="toastMessage"
+        (closeAction)="showErrorToast = false"></app-toast>
 </div>
