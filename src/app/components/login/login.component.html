@@ -30,7 +30,7 @@
         <div class="input-group">
           <input [type]="showPassword ? 'text' : 'password'" id="password" class="form-control"
             [ngClass]="{ 'is-invalid': password?.invalid && password?.touched }" formControlName="password" />
-          <button type="button" class="btn btn-outline-secondary" (click)="togglePassword()">
+          <button type="button" class="btn btn-outline-secondary rounded-end" (click)="togglePassword()">
             @if(showPassword){
             <i class="bi bi-eye-slash"></i>
             }

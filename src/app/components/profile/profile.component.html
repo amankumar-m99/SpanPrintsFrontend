@@ -143,8 +143,7 @@
                                     class="form-control"
                                     [ngClass]="{ 'is-invalid': changePasswordForm.get('currentPassword')?.invalid && changePasswordForm.get('currentPassword')?.touched }"
                                     formControlName="currentPassword" />
-                                <button type="button" class="btn btn-outline-secondary"
-                                    (click)="toggleCurrentPassword()">
+                                <button type="button" class="btn btn-outline-secondary rounded-end" (click)="toggleCurrentPassword()">
                                     @if(showCurrentPassword){
                                     <i class="bi bi-eye-slash"></i>
                                     }
@@ -164,7 +163,7 @@
                                     class="form-control"
                                     [ngClass]="{ 'is-invalid': changePasswordForm.get('newPassword')?.invalid && changePasswordForm.get('newPassword')?.touched }"
                                     formControlName="newPassword" />
-                                <button type="button" class="btn btn-outline-secondary" (click)="toggleNewPassword()">
+                                <button type="button" class="btn btn-outline-secondary rounded-end" (click)="toggleNewPassword()">
                                     @if(showNewPassword){
                                     <i class="bi bi-eye-slash"></i>
                                     }
