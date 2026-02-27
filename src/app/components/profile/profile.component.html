@@ -3,15 +3,11 @@
         <h2>My Profile</h2>
     </div>
 
-    <div *ngIf="errorMessage" class="alert alert-danger">
-        {{ personalDetailsErrorMessage }}
-    </div>
-
     <!-- Profile Picture with Overlay Camera Icon -->
     <app-profile-pic [profilePicUrl]="profile?.personalDetails?.profilePic"></app-profile-pic>
 
 
-    <div class="row g-4 m-3">
+    <div class="row g-4 mt-1 mx-3">
         <!-- Account Details -->
         <div class="col-md-6">
             <div *ngIf="!accountDetailsLoading && profile; else accountLoadingElse">
@@ -39,7 +35,8 @@
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Role</label>
-                                <input type="text" class="form-control" [readonly]="true" [value]="profile.account.roles[0].roleName">
+                                <input type="text" class="form-control" [readonly]="true"
+                                    [value]="profile.account.roles[0].roleName">
                             </div>
                             <div *ngIf="editAccount" class="d-flex justify-content-end mt-3">
                                 <button type="button" class="btn btn-secondary me-2" (click)="cancelEditAccount()"
@@ -127,9 +124,6 @@
                         Loading Personal Details ...
                         <div class="spinner-border mx-2"></div>
                     </div>
-                    <div *ngIf="personalDetailsErrorMessage" class="alert alert-danger">
-                        {{ personalDetailsErrorMessage }}
-                    </div>
                 </div>
             </ng-template>
         </div>
@@ -141,34 +135,62 @@
                     <span>Change Password</span>
                 </div>
                 <div class="card-body">
-                    <form [formGroup]="changePasswordForm">
-                        <div class="mb-3">
-                            <label class="form-label">Current Password</label>
-                            <input type="text" formControlName="currentPassword" class="form-control"
-                                [class.is-invalid]="personalDetailsForm.get('name')?.invalid && personalDetailsForm.get('name')?.touched">
-                            <div class="invalid-feedback">Name is required.</div>
+                    <form [formGroup]="changePasswordForm" (ngSubmit)="savePasswordChanges()">
+                        <div class="mb-3 position-relative">
+                            <label for="password" class="form-label">Current Password</label>
+                            <div class="input-group">
+                                <input [type]="showCurrentPassword ? 'text' : 'password'" id="password"
+                                    class="form-control"
+                                    [ngClass]="{ 'is-invalid': changePasswordForm.get('currentPassword')?.invalid && changePasswordForm.get('currentPassword')?.touched }"
+                                    formControlName="currentPassword" />
+                                <button type="button" class="btn btn-outline-secondary"
+                                    (click)="toggleCurrentPassword()">
+                                    @if(showCurrentPassword){
+                                    <i class="bi bi-eye-slash"></i>
+                                    }
+                                    @else{
+                                    <i class="bi bi-eye"></i>
+                                    }
+                                </button>
+                                <div class="invalid-feedback"
+                                    *ngIf="changePasswordForm.get('currentPassword')?.errors?.['required']">Current
+                                    password is required.</div>
+                            </div>
                         </div>
-                        <div class="mb-3">
-                            <label class="form-label">New Password</label>
-                            <input type="password" formControlName="newPassword" class="form-control"
-                                [class.is-invalid]="personalDetailsForm.get('birthday')?.invalid && personalDetailsForm.get('birthday')?.touched">
-                            <div class="invalid-feedback">Birthday is required.</div>
+                        <div class="mb-3 position-relative">
+                            <label for="password" class="form-label">New Password</label>
+                            <div class="input-group">
+                                <input [type]="showNewPassword ? 'text' : 'password'" id="newPassword"
+                                    class="form-control"
+                                    [ngClass]="{ 'is-invalid': changePasswordForm.get('newPassword')?.invalid && changePasswordForm.get('newPassword')?.touched }"
+                                    formControlName="newPassword" />
+                                <button type="button" class="btn btn-outline-secondary" (click)="toggleNewPassword()">
+                                    @if(showNewPassword){
+                                    <i class="bi bi-eye-slash"></i>
+                                    }
+                                    @else{
+                                    <i class="bi bi-eye"></i>
+                                    }
+                                </button>
+                                <div class="invalid-feedback"
+                                    *ngIf="changePasswordForm.get('newPassword')?.errors?.['required']">Current
+                                    New password is required.</div>
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Confirm New Password</label>
-                            <input type="text" formControlName="confirmNewPassword" class="form-control"
-                                [class.is-invalid]="personalDetailsForm.get('name')?.invalid && personalDetailsForm.get('name')?.touched">
-                            <div class="invalid-feedback">Gender is required.</div>
+                            <input type="password" formControlName="confirmPassword" class="form-control"
+                                [class.is-invalid]="changePasswordForm.get('confirmPassword')?.invalid && changePasswordForm.get('confirmPassword')?.touched">
+                            <div class="invalid-feedback">Confirm new password!</div>
                         </div>
                         <!-- Save / Cancel Buttons -->
                         <div class="d-flex justify-content-end mt-3">
-                            <button type="reset" class="btn btn-danger me-2" (click)="cancelEditPersonalDetails()"
-                                [disabled]="personalDetailsSaving">Cancel</button>
+                            <button type="reset" class="btn btn-danger me-2" (click)="cancelChangePassword()"
+                                [disabled]="changePasswordSaving">Cancel</button>
                             <button type="submit" class="btn btn-primary d-flex align-items-center"
-                                [disabled]="personalDetailsSaving">
-                                <span *ngIf="personalDetailsSaving"
-                                    class="spinner-border spinner-border-sm me-2"></span>
-                                {{ personalDetailsSaving ? 'Saving...' : 'Submit' }}
+                                [disabled]="changePasswordSaving">
+                                <span *ngIf="changePasswordSaving" class="spinner-border spinner-border-sm me-2"></span>
+                                {{ changePasswordSaving ? 'Saving...' : 'Submit' }}
                             </button>
                         </div>
                     </form>
@@ -185,11 +207,13 @@
                     <form>
                         <div class="mb-3">
                             <label class="form-label">Last updated On</label>
-                            <input type="text" class="form-control" readonly [value]="profile?.account?.createdAt">
+                            <input type="text" class="form-control" readonly
+                                [value]="profile?.account?.updatedAt | date: 'medium'">
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Account Created On</label>
-                            <input type="text" class="form-control" readonly [value]="profile?.account?.createdAt">
+                            <input type="text" class="form-control" readonly
+                                [value]="profile?.account?.createdAt | date: 'medium'">
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Account UUID</label>
@@ -201,10 +225,10 @@
         </div>
     </div>
     <!-- Toast Notification -->
-    <app-toast *ngIf="showSuccessToast" [type]="'success'" [message]="'Data updated successfully.'"
+    <app-toast *ngIf="showSuccessToast" [type]="'success'" [message]="toastMessage"
         (closeAction)="showSuccessToast = false"></app-toast>
 
     <!-- Toast Error Notification -->
-    <app-toast *ngIf="showErrorToast" [type]="'error'" [message]="'Failed to update data.'"
+    <app-toast *ngIf="showErrorToast" [type]="'error'" [message]="toastMessage"
         (closeAction)="showErrorToast = false"></app-toast>
 </div>

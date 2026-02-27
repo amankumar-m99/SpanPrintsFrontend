@@ -5,5 +5,6 @@ export interface Account {
   email: string;
   username: string;
   roles: Role[];
-  createdAt: Date
+  createdAt: string;
+  updatedAt: string;
 }
