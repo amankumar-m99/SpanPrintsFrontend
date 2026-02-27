@@ -51,25 +51,25 @@
         </div>
     </div>
 </nav>
-<div class="d-flex">
+<div class="d-flex app-container">
     <!-- Sidebar -->
-    <nav id="sidebar" class="bg-dark text-white sidebar expanded collapse d-lg-block">
-        <div class="d-flex flex-column h-80">
-            <!-- Logo / Toggle -->
-            <div class="d-flex flex-column justify-content-center px-3 pt-3 pb-2 border-bottom"
-                [ngClass]="sidebarCollapsed ? 'align-items-start' : 'align-items-end'">
-                <!-- <span class="fw-bold">SP</span> -->
-                <!-- Logo -->
-                <a class="navbar-brand d-flex align-items-center" routerLink="/">
-                    <img src="logo/logo_bg_no.png" alt="Logo" width="40" height="40">
-                    <img src="logo/text_bg_no.png" alt="Logo" height="30" [ngClass]="sidebarCollapsed ? 'd-none' : ''">
-                    <!-- SpanPrints -->
-                </a>
-                <button class="btn btn-sm btn-outline-light d-none d-lg-inline mt-2" (click)="toggleSidebar()">
-                    <i class="bi" [ngClass]="sidebarCollapsed ? 'bi-list' : 'bi-arrow-left-square'"></i>
-                </button>
-            </div>
-            <!-- Menu Items -->
+    <nav id="sidebar" class="bg-dark text-white sidebar expanded collapse d-lg-block d-flex flex-column h-80">
+        <!-- Logo/ Toggle (Fixed) -->
+        <div class="d-flex flex-column justify-content-center px-3 pt-3 pb-2 border-bottom"
+            [ngClass]="sidebarCollapsed ? 'align-items-start' : 'align-items-end'">
+            <!-- <span class="fw-bold">SP</span> -->
+            <!-- Logo -->
+            <a class="navbar-brand d-flex align-items-center" routerLink="/">
+                <img src="logo/logo_bg_no.png" alt="Logo" width="40" height="40">
+                <img src="logo/text_bg_no.png" alt="Logo" height="30" [ngClass]="sidebarCollapsed ? 'd-none' : ''">
+                <!-- SpanPrints -->
+            </a>
+            <button class="btn btn-sm btn-outline-light d-none d-lg-inline mt-2" (click)="toggleSidebar()">
+                <i class="bi" [ngClass]="sidebarCollapsed ? 'bi-list' : 'bi-arrow-left-square'"></i>
+            </button>
+        </div>
+        <!-- Scrollable Menu Wrapper -->
+        <div class="menu-wrapper flex-grow-1">
             <ul class="nav nav-pills flex-column mb-auto mt-1">
                 <li class="nav-item">
                     <a routerLink="orders" class="nav-link text-white d-flex align-items-center"
@@ -208,8 +208,8 @@
     </nav>
 
     <!-- Main content -->
-    <div class="w-100">
-        <main class="flex-grow-1 py-1">
+    <div class="flex-grow-1 d-flex flex-column">
+        <main class="flex-grow-1 overflow-auto py-1">
             <!-- Mobile Hamburger -->
             <button class="btn btn-outline-dark d-lg-none mb-3" type="button" data-bs-toggle="collapse"
                 data-bs-target="#sidebar">

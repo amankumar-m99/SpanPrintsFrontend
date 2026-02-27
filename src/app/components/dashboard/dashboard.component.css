@@ -1,19 +1,57 @@
-.spanprints-logout-btn :hover{
-    cursor: pointer;
+.spanprints-logout-btn :hover {
+  cursor: pointer;
 }
+
+.app-container {
+  height: 100vh;
+  display: flex;
+  overflow: hidden;
+}
+
+.logo-section {
+  flex-shrink: 0;
+  /* never shrink */
+  background: #212529;
+  /* same as bg-dark */
+  z-index: 10;
+}
+
+.menu-wrapper {
+  flex: 1;
+  overflow-y: auto;
+  /* THIS makes only menus scroll */
+  min-height: 0;
+  /* important for flex scrolling */
+}
+
+.menu-wrapper::-webkit-scrollbar {
+  width: 14px;
+}
+
+.menu-wrapper::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+}
+
 
 /* Sidebar base */
 .sidebar {
   width: 250px;
-  min-height: 100vh;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  /* prevents whole sidebar scroll */
   transition: width 0.3s;
-  z-index: 1050; /* ensure above content on mobile */
+  z-index: 1050;
+  /* ensure above content on mobile */
 }
 
 /* Collapsed sidebar (desktop) */
 .sidebar.collapsed {
   width: 70px;
 }
+
 .sidebar.collapsed .menu-text {
   display: none;
 }
@@ -22,8 +60,17 @@
 .sidebar .nav-link {
   padding: 10px;
 }
+
 .sidebar .nav-link i {
   font-size: 1.2rem;
+}
+
+.flex-grow-1.d-flex.flex-column {
+  min-height: 0;
+}
+
+main {
+  min-height: 0;
 }
 
 /* Main content spacing (desktop only) */
@@ -32,7 +79,8 @@
     margin-left: 25px;
     transition: margin-left 0.3s;
   }
-  .sidebar.collapsed ~ main {
+
+  .sidebar.collapsed~main {
     margin-left: 70px;
   }
 }
@@ -45,7 +93,9 @@
     bottom: 0;
     left: 0;
   }
+
   main {
-    margin-left: 0 !important; /* full width content */
+    margin-left: 0 !important;
+    /* full width content */
   }
 }
