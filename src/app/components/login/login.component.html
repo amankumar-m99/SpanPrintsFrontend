@@ -53,6 +53,11 @@
         </div>
         <a routerLink="/forgot-password">Forgot Password?</a>
       </div>
+      <div class="d-flex justify-content-center mb-3">
+        <div class="form-group captcha-wrapper">
+          <div class="g-recaptcha" data-sitekey="6LcVSXUrAAAAAHIp_vCQBpVC0GcZs1W2pvoT0cYI"></div>
+        </div>
+      </div>
       <!-- Error -->
       <div *ngIf="errorMessage" class="alert alert-danger p-2">
         {{ errorMessage }}

@@ -5,11 +5,12 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { LoginModel } from '../../model/account/login.model';
 import { CommonModule } from '@angular/common';
 import { AppStorage } from '../../storage/AppStorage';
+import { RecaptchaModule } from 'ng-recaptcha';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterLink],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterLink, RecaptchaModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
@@ -73,5 +74,9 @@ export class LoginComponent {
 
   gotoRegister(): void {
     this.router.navigateByUrl('register');
+  }
+
+  onResolved($event: Event|null) {
+    throw new Error('Method not implemented.');
   }
 }
