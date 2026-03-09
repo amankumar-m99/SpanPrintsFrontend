@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { LoginModel } from '../../model/account/login.model';
@@ -27,8 +27,12 @@ export class AuthService {
     return this.http.post<any>(`${this.url}/verify-account`, { token });
   }
 
-  loginUser(credentials: LoginModel): Observable<any> {
-    return this.http.post<any>(`${this.url}/login`, credentials).pipe(
+  loginUser(credentials: LoginModel, googleRecaptchaToken: string): Observable<any> {
+    // 1. Define your key-value pairs
+    const customHeaders = new HttpHeaders({
+      'g-recaptcha-token': googleRecaptchaToken
+    });
+    return this.http.post<any>(`${this.url}/login`, credentials, { headers: customHeaders }).pipe(
       tap(response => {
         // Assume backend returns a JWT token
         // if (response && response.token) {

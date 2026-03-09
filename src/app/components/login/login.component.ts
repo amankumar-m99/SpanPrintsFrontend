@@ -1,26 +1,31 @@
-import { Component } from '@angular/core';
+declare var grecaptcha: any;
+
+import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth/auth.service';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { LoginModel } from '../../model/account/login.model';
 import { CommonModule } from '@angular/common';
 import { AppStorage } from '../../storage/AppStorage';
-import { RecaptchaModule } from 'ng-recaptcha';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterLink, RecaptchaModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterLink],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
 
-export class LoginComponent {
+export class LoginComponent implements AfterViewInit {
+
+  @ViewChild('captchaContainer') captchaContainer!: ElementRef;
 
   loginForm!: FormGroup;
   showPassword = false;
   loading = false; // track backend call state
   errorMessage: string | null = null;
+  widgetId!: number;
+  googleReCaptchaToken = '';
 
   constructor(
     private fb: FormBuilder,
@@ -36,6 +41,24 @@ export class LoginComponent {
     });
   }
 
+  ngAfterViewInit() {
+    this.initReCaptcha();
+  }
+
+  private initReCaptcha() {
+    // Check if grecaptcha AND the render function are actually available
+    if (typeof grecaptcha !== 'undefined' && typeof grecaptcha.render !== 'undefined') {
+      this.widgetId = grecaptcha.render(this.captchaContainer.nativeElement, {
+        'sitekey': '6LcVSXUrAAAAAHIp_vCQBpVC0GcZs1W2pvoT0cYI',
+        'callback': (response: string) => this.onResolved(response)
+      });
+    } else {
+      // Wait 200ms and try again
+      setTimeout(() => this.initReCaptcha(), 200);
+    }
+  }
+
+
   get username() { return this.loginForm.get('username'); }
   get password() { return this.loginForm.get('password'); }
 
@@ -47,7 +70,7 @@ export class LoginComponent {
     this.loading = true;
     this.errorMessage = null;
     const loginData: LoginModel = this.loginForm.value;
-    this.authService.loginUser(loginData).subscribe({
+    this.authService.loginUser(loginData, this.googleReCaptchaToken).subscribe({
       next: (response) => {
         this.loading = false;
         AppStorage.setItem('token', response.token, loginData.rememberMe);
@@ -59,6 +82,7 @@ export class LoginComponent {
       error: (err) => {
         this.errorMessage = err?.error?.message || 'Invalid credentials or server error.';
         this.loading = false;
+        grecaptcha.reset();
       }
     });
   }
@@ -76,7 +100,17 @@ export class LoginComponent {
     this.router.navigateByUrl('register');
   }
 
-  onResolved($event: Event|null) {
-    throw new Error('Method not implemented.');
+  resetCaptcha() {
+    // Use the global grecaptcha object to reset the widget
+    if (typeof grecaptcha !== 'undefined') {
+      // grecaptcha.reset();
+      grecaptcha.reset(this.widgetId);
+    }
+  }
+
+
+  onResolved(token: string) {
+    this.googleReCaptchaToken = token;
   }
 }
+
