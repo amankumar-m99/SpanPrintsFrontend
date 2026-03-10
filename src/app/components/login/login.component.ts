@@ -1,33 +1,29 @@
-declare var grecaptcha: any;
-
-import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, viewChild } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth/auth.service';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { LoginModel } from '../../model/account/login.model';
 import { CommonModule } from '@angular/common';
 import { AppStorage } from '../../storage/AppStorage';
-import { Constant } from '../../constant/Constant';
+import { GrecaptchaComponent } from "../grecaptcha/grecaptcha.component";
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterLink],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterLink, GrecaptchaComponent],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
 
-export class LoginComponent implements AfterViewInit {
-
-  @ViewChild('captchaContainer') captchaContainer!: ElementRef;
+export class LoginComponent {
 
   loginForm!: FormGroup;
   showPassword = false;
   loading = false; // track backend call state
   errorMessage: string | null = null;
-  widgetId!: number;
   googleReCaptchaToken = '';
-
+  grecaptcha = viewChild<GrecaptchaComponent>('grecaptcha');
+  
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
@@ -41,24 +37,7 @@ export class LoginComponent implements AfterViewInit {
       rememberMe: [true]
     });
   }
-
-  ngAfterViewInit() {
-    this.initReCaptcha();
-  }
-
-  private initReCaptcha() {
-    // Check if grecaptcha AND the render function are actually available
-    if (typeof grecaptcha !== 'undefined' && typeof grecaptcha.render !== 'undefined') {
-      this.widgetId = grecaptcha.render(this.captchaContainer.nativeElement, {
-        'sitekey': Constant.G_RE_CAPTCHA_SITE_KEY,
-        'callback': (response: string) => this.onResolved(response)
-      });
-    } else {
-      // Wait 100ms and try again
-      setTimeout(() => this.initReCaptcha(), 100);
-    }
-  }
-
+  
   get username() { return this.loginForm.get('username'); }
   get password() { return this.loginForm.get('password'); }
 
@@ -82,7 +61,7 @@ export class LoginComponent implements AfterViewInit {
       error: (err) => {
         this.errorMessage = err?.error?.message || 'Invalid credentials or server error.';
         this.loading = false;
-        grecaptcha.reset();
+        this.grecaptcha()?.resetCaptcha();
       }
     });
   }
@@ -100,15 +79,7 @@ export class LoginComponent implements AfterViewInit {
     this.router.navigateByUrl('register');
   }
 
-  resetCaptcha() {
-    // Use the global grecaptcha object to reset the widget
-    if (typeof grecaptcha !== 'undefined') {
-      // grecaptcha.reset();
-      grecaptcha.reset(this.widgetId);
-    }
-  }
-
-  onResolved(token: string) {
+  onCaptchaResolved(token: string) {
     this.googleReCaptchaToken = token;
   }
 }
