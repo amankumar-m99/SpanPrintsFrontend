@@ -7,6 +7,7 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { LoginModel } from '../../model/account/login.model';
 import { CommonModule } from '@angular/common';
 import { AppStorage } from '../../storage/AppStorage';
+import { Constant } from '../../constant/Constant';
 
 @Component({
   selector: 'app-login',
@@ -49,15 +50,14 @@ export class LoginComponent implements AfterViewInit {
     // Check if grecaptcha AND the render function are actually available
     if (typeof grecaptcha !== 'undefined' && typeof grecaptcha.render !== 'undefined') {
       this.widgetId = grecaptcha.render(this.captchaContainer.nativeElement, {
-        'sitekey': '6LcVSXUrAAAAAHIp_vCQBpVC0GcZs1W2pvoT0cYI',
+        'sitekey': Constant.G_RE_CAPTCHA_SITE_KEY,
         'callback': (response: string) => this.onResolved(response)
       });
     } else {
-      // Wait 200ms and try again
-      setTimeout(() => this.initReCaptcha(), 200);
+      // Wait 100ms and try again
+      setTimeout(() => this.initReCaptcha(), 100);
     }
   }
-
 
   get username() { return this.loginForm.get('username'); }
   get password() { return this.loginForm.get('password'); }
@@ -108,9 +108,7 @@ export class LoginComponent implements AfterViewInit {
     }
   }
 
-
   onResolved(token: string) {
     this.googleReCaptchaToken = token;
   }
 }
-
