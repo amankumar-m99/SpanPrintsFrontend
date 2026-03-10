@@ -1,3 +1,9 @@
-<div class="form-group captcha-wrapper" #captchaContainer>
-    <!-- <div class="g-recaptcha" data-sitekey="SITE_KEY_HERE"></div> -->
+<div [ngClass]="{'d-none': !isCaptchaLoaded}">
+    <div class="captcha-wrapper" #captchaContainer>
+        <!-- <div class="g-recaptcha" data-sitekey="SITE_KEY_HERE"></div> -->
+    </div>
 </div>
+@if(!isCaptchaLoaded){
+<span class="spinner-border spinner-border-sm"></span>
+<span>Loading Captcha...</span>
+}

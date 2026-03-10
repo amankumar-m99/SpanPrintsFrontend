@@ -23,7 +23,7 @@ export class LoginComponent {
   errorMessage: string | null = null;
   googleReCaptchaToken = '';
   grecaptcha = viewChild<GrecaptchaComponent>('grecaptcha');
-  
+
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
@@ -37,7 +37,7 @@ export class LoginComponent {
       rememberMe: [true]
     });
   }
-  
+
   get username() { return this.loginForm.get('username'); }
   get password() { return this.loginForm.get('password'); }
 
@@ -61,7 +61,7 @@ export class LoginComponent {
       error: (err) => {
         this.errorMessage = err?.error?.message || 'Invalid credentials or server error.';
         this.loading = false;
-        this.grecaptcha()?.resetCaptcha();
+        this.resetCaptcha();
       }
     });
   }
@@ -81,5 +81,9 @@ export class LoginComponent {
 
   onCaptchaResolved(token: string) {
     this.googleReCaptchaToken = token;
+  }
+
+  resetCaptcha() {
+    this.grecaptcha()?.resetCaptcha();
   }
 }

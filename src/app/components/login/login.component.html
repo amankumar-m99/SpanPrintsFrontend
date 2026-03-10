@@ -53,6 +53,7 @@
         </div>
         <a routerLink="/forgot-password">Forgot Password?</a>
       </div>
+      <!-- Google ReCaptcha -->
       <div class="d-flex justify-content-center mb-3">
         <app-grecaptcha #grecaptcha (onCaptchaResolved)="onCaptchaResolved($event)"></app-grecaptcha>
       </div>
