@@ -19,8 +19,12 @@ export class AuthService {
 
   constructor(private http: HttpClient, private router: Router) { }
 
-  registerUser(data: RegisterModel) {
-    return this.http.post<any>(`${this.url}/register`, data);
+  registerUser(data: RegisterModel, googleRecaptchaToken: string) {
+    // 1. Define your key-value pairs
+    const customHeaders = new HttpHeaders({
+      'g-recaptcha-token': googleRecaptchaToken
+    });
+    return this.http.post<any>(`${this.url}/register`, data, { headers: customHeaders });
   }
 
   verifyAccount(token: string) {

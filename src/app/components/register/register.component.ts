@@ -51,7 +51,7 @@ export class RegisterComponent implements OnInit {
     this.errorMessage = null;
     this.successMessage = null;
     const userData: RegisterModel = this.registerForm.value;
-    this.authService.registerUser(userData).subscribe({
+    this.authService.registerUser(userData, this.googleReCaptchaToken).subscribe({
       next: (res) => {
         this.successMessage = res.message;
         this.loading = false;
