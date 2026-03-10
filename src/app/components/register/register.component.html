@@ -39,7 +39,7 @@
                         formControlName="password" />
                     <button type="button" class="btn btn-outline-secondary rounded-end" (click)="togglePassword()">
                         @if(showPassword){
-                         <i class="bi bi-eye-slash"></i>
+                        <i class="bi bi-eye-slash"></i>
                         }
                         @else{
                         <i class="bi bi-eye"></i>
@@ -77,6 +77,11 @@
                 <div class="invalid-feedback" *ngIf="role?.errors?.['required']">
                     Role is required.
                 </div>
+            </div>
+
+            <!-- Google ReCaptcha -->
+            <div class="d-flex justify-content-center mb-3">
+                <app-grecaptcha #grecaptcha (onCaptchaResolved)="onCaptchaResolved($event)"></app-grecaptcha>
             </div>
 
             <!-- Error / Success -->

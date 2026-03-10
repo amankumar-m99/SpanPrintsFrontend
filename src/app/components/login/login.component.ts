@@ -1,15 +1,16 @@
-import { Component } from '@angular/core';
+import { Component, viewChild } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth/auth.service';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { LoginModel } from '../../model/account/login.model';
 import { CommonModule } from '@angular/common';
 import { AppStorage } from '../../storage/AppStorage';
+import { GrecaptchaComponent } from "../grecaptcha/grecaptcha.component";
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterLink],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterLink, GrecaptchaComponent],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
@@ -20,6 +21,8 @@ export class LoginComponent {
   showPassword = false;
   loading = false; // track backend call state
   errorMessage: string | null = null;
+  googleReCaptchaToken = '';
+  grecaptcha = viewChild<GrecaptchaComponent>('grecaptcha');
 
   constructor(
     private fb: FormBuilder,
@@ -46,7 +49,7 @@ export class LoginComponent {
     this.loading = true;
     this.errorMessage = null;
     const loginData: LoginModel = this.loginForm.value;
-    this.authService.loginUser(loginData).subscribe({
+    this.authService.loginUser(loginData, this.googleReCaptchaToken).subscribe({
       next: (response) => {
         this.loading = false;
         AppStorage.setItem('token', response.token, loginData.rememberMe);
@@ -58,6 +61,7 @@ export class LoginComponent {
       error: (err) => {
         this.errorMessage = err?.error?.message || 'Invalid credentials or server error.';
         this.loading = false;
+        this.resetCaptcha();
       }
     });
   }
@@ -73,5 +77,13 @@ export class LoginComponent {
 
   gotoRegister(): void {
     this.router.navigateByUrl('register');
+  }
+
+  onCaptchaResolved(token: string) {
+    this.googleReCaptchaToken = token;
+  }
+
+  resetCaptcha() {
+    this.grecaptcha()?.resetCaptcha();
   }
 }

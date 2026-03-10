@@ -1,16 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, viewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth/auth.service';
 import { RegisterModel } from '../../model/account/register.model';
 import { passwordMatchValidator } from '../../validators/PasswordMatchValidator';
-
+import { GrecaptchaComponent } from "../grecaptcha/grecaptcha.component";
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterLink, CommonModule],
+  imports: [ReactiveFormsModule, RouterLink, CommonModule, GrecaptchaComponent],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css'
 })
@@ -21,6 +21,8 @@ export class RegisterComponent implements OnInit {
   errorMessage: string | null = null;
   successMessage: string | null = null;
   loading = false;
+  googleReCaptchaToken = '';
+  grecaptcha = viewChild<GrecaptchaComponent>('grecaptcha');
 
   constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) { }
 
@@ -49,7 +51,7 @@ export class RegisterComponent implements OnInit {
     this.errorMessage = null;
     this.successMessage = null;
     const userData: RegisterModel = this.registerForm.value;
-    this.authService.registerUser(userData).subscribe({
+    this.authService.registerUser(userData, this.googleReCaptchaToken).subscribe({
       next: (res) => {
         this.successMessage = res.message;
         this.loading = false;
@@ -59,12 +61,17 @@ export class RegisterComponent implements OnInit {
       error: (err) => {
         this.errorMessage = err?.error?.message || 'Registration failed. Please try again.';
         this.loading = false;
+        this.grecaptcha()?.resetCaptcha();
       }
     });
   }
 
   togglePassword() {
     this.showPassword = !this.showPassword;
+  }
+
+  onCaptchaResolved(token: string) {
+    this.googleReCaptchaToken = token;
   }
 }
 

@@ -56,7 +56,7 @@ export class ProfileComponent implements OnInit {
     this.authService.getCurrentUser().subscribe({
       next: (res) => {
         this.profile = res;
-        this.profile.personalDetails.profilePic = Constant.PROFILE_PIC_API_GET_BASR_URL + 'id/' + this.profile.account.uuid;
+        this.profile.personalDetails.profilePic = Constant.PROFILE_PIC_API_GET_BASE_URL + 'id/' + this.profile.account.uuid;
         this.initAccountDetailsForm();
         this.disableValidations(this.accountDetailsForm);
         this.initPersonalDetailsForm();

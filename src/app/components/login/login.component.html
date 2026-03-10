@@ -53,6 +53,10 @@
         </div>
         <a routerLink="/forgot-password">Forgot Password?</a>
       </div>
+      <!-- Google ReCaptcha -->
+      <div class="d-flex justify-content-center mb-3">
+        <app-grecaptcha #grecaptcha (onCaptchaResolved)="onCaptchaResolved($event)"></app-grecaptcha>
+      </div>
       <!-- Error -->
       <div *ngIf="errorMessage" class="alert alert-danger p-2">
         {{ errorMessage }}
