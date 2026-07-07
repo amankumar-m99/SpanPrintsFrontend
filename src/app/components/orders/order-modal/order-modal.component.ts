@@ -83,21 +83,21 @@ export class OrderModalComponent implements OnInit, OnChanges {
 
   private buildForm(): void {
     this.modalForm = this.fb.group({
-      customerId: [{ value: '', disabled: true }, Validators.required],
-      customerName: ['', Validators.required],
-      phone: [{ value: '', disabled: true }, [Validators.required, Validators.pattern(/^\d{10}$/)]],
-      address: [{ value: '', disabled: true }, Validators.required],
+      customerId: [{ value: '', disabled: true }],
+      customerName: [''],
+      customerPhoneNumber: [{ value: '', disabled: false }, [Validators.required, Validators.pattern(/^\d{10}$/)]],
+      address: [{ value: '', disabled: true }],
 
       printJobTypeId: ['', Validators.required],
       quantity: [1, [Validators.required, Validators.min(1)]],
       dateOfDelivery: ['', Validators.required],
 
-      bookNumber: [null],
+      bookNumber: ['', Validators.required],
       wBookNumber: [null],
 
       totalAmount: ['', Validators.required],
       depositAmount: ['', Validators.required],
-      discountedAmount: ['', Validators.required],
+      discountedAmount: ['0', Validators.required],
       pendingAmount: [{ value: '', disabled: true }, Validators.required],
 
       paymentStatus: ['', Validators.required],
@@ -107,7 +107,7 @@ export class OrderModalComponent implements OnInit, OnChanges {
   }
   get customerId() { return this.modalForm.get('customerId'); }
   get customerName() { return this.modalForm.get('customerName'); }
-  get phone() { return this.modalForm.get('phone'); }
+  get customerPhoneNumber() { return this.modalForm.get('customerPhoneNumber'); }
   get address() { return this.modalForm.get('address'); }
   get printJobTypeId() { return this.modalForm.get('printJobTypeId'); }
   get quantity() { return this.modalForm.get('quantity'); }
@@ -211,10 +211,24 @@ export class OrderModalComponent implements OnInit, OnChanges {
     const pending = total - deposit - discount;
 
     this.isInvalidAmounts = pending < 0;
+    let pay = '';
+    if (pending == 0) {
+      pay = "PAID"
+    }
+    else if (deposit == 0) {
+      pay = "UNPAID";
+    }
+    else {
+      pay = "PARTIALLY_PAID"
+    }
 
     if (!this.isInvalidAmounts) {
       this.modalForm.patchValue(
         { pendingAmount: pending },
+        { emitEvent: false }
+      );
+      this.modalForm.patchValue(
+        { paymentStatus: pay },
         { emitEvent: false }
       );
     }
@@ -284,6 +298,7 @@ export class OrderModalComponent implements OnInit, OnChanges {
 
   submitForm(): void {
     if (this.modalForm.invalid || this.isInvalidAmounts || this.isInvalidBookNumbers) {
+      console.log(this.modalForm.value);
       this.modalForm.markAllAsTouched();
       return;
     }

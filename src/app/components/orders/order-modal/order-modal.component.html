@@ -18,7 +18,7 @@
                 <form [formGroup]="modalForm" (ngSubmit)="submitForm()">
                     <div class="row g-3">
                         <!-- Customer Name -->
-                        <div class="col-md-6">
+                        <div class="col-md-6 d-none">
                             <label class="form-label">Customer Name</label>
                             <input type="text" class="form-control" formControlName="customerName"
                                 [ngClass]="{ 'is-invalid': customerName?.invalid && customerName?.touched }">
@@ -51,15 +51,15 @@
 
                         <!-- Phone -->
                         <div class="col-md-6">
-                            <label class="form-label">Phone</label>
-                            <input type="tel" class="form-control" formControlName="phone"
-                                [ngClass]="{ 'is-invalid': phone?.invalid && phone?.touched }">
-                            <div class="invalid-feedback" *ngIf="phone?.touched && phone?.invalid">
+                            <label class="form-label">Customer Phone Number</label>
+                            <input type="tel" class="form-control" formControlName="customerPhoneNumber"
+                                [ngClass]="{ 'is-invalid': customerPhoneNumber?.invalid && customerPhoneNumber?.touched }">
+                            <div class="invalid-feedback" *ngIf="customerPhoneNumber?.touched && customerPhoneNumber?.invalid">
                                 Customer's phone name is required
                             </div>
                         </div>
                         <!-- Address -->
-                        <div class="col-12">
+                        <div class="col-12 d-none">
                             <label class="form-label">Address</label>
                             <textarea class="form-control" rows="2" formControlName="address"
                                 [ngClass]="{ 'is-invalid': address?.invalid && address?.touched }"></textarea>
@@ -119,7 +119,7 @@
                             </div>
                         </div>
                         <!-- W-Book Number -->
-                        <div class="col-md-6">
+                        <div class="col-md-6 d-none">
                             <label class="form-label">W-Book Number</label>
                             <input type="number" class="form-control" formControlName="wBookNumber"
                                 [ngClass]="{ 'is-invalid': wBookNumber?.invalid && wBookNumber?.touched }">
@@ -127,7 +127,7 @@
                                 Invalid wedding book number
                             </div>
                         </div>
-                        <div class="col-md-12">
+                        <div class="col-md-12 d-none">
                             <div class="text-danger" *ngIf="isInvalidBookNumbers">
                                 <i class="bi bi-exclamation-circle me-1"></i>Fill any one book number
                             </div>
