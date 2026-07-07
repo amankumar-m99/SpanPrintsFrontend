@@ -8,11 +8,14 @@ import { Constant } from '../../../constant/Constant';
 import { Order } from '../../../model/order/order.model';
 import { OrderService } from '../../../services/order/order.service';
 import { OrderModalComponent } from "../order-modal/order-modal.component";
+import { FileAttachmentService } from '../../../services/file-attachment/file-attachment.service';
+import { FileAttachment } from '../../../model/file-attachment/file-attachment.model';
+import { FileAttachmentCardComponent } from "../../file-attachment-card/file-attachment-card.component";
 
 @Component({
   selector: 'app-order-info',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink, ToastComponent, ConfirmDialogComponent, OrderModalComponent],
+  imports: [CommonModule, FormsModule, RouterLink, ToastComponent, ConfirmDialogComponent, OrderModalComponent, FileAttachmentCardComponent],
   templateUrl: './order-info.component.html',
   styleUrl: './order-info.component.css'
 })
@@ -20,6 +23,7 @@ export class OrderInfoComponent implements OnInit {
 
   orderUuid !: string;
   order !: Order | null;
+  fileAttachments ?: FileAttachment[];
   errorMsg = '';
   copied = false;
   toastType = 'info';
@@ -31,19 +35,20 @@ export class OrderInfoComponent implements OnInit {
   isUuidValid = false;
   private uuidRegex: RegExp = Constant.UUID_REGEX;
 
-  constructor(private router: Router, private route: ActivatedRoute, private orderService: OrderService) { }
+  constructor(private router: Router, private route: ActivatedRoute, private orderService: OrderService, private fileAttachmentService: FileAttachmentService) { }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
       const uuid = params.get('uuid');
       if (uuid) {
         this.orderUuid = uuid;
-        this.fetchCustomerDetails();
+        this.fetchOrderDetails();
+        this.fetchFileAttachments();
       }
     });
   }
 
-  fetchCustomerDetails() {
+  fetchOrderDetails() {
     this.orderService.getOrderByUuid(this.orderUuid).subscribe({
       next: (res) => {
         this.order = res;
@@ -56,7 +61,19 @@ export class OrderInfoComponent implements OnInit {
     });
   }
 
-  deleteCustomer() {
+  fetchFileAttachments() {
+    this.fileAttachmentService.getFileAttachmentByOrderUuid(this.orderUuid).subscribe({
+      next: (res) => {
+        this.fileAttachments = res;
+        this.errorMsg = '';
+      },
+      error: (err) => {
+        this.errorMsg = err?.error?.message || "Could not load file attachments";
+      }
+    });
+  }
+
+  deleteOrder() {
     if (this.order) {
       this.orderService.deleteOrderByUuid(this.order.uuid).subscribe({
         next: () => {
@@ -84,7 +101,7 @@ export class OrderInfoComponent implements OnInit {
 
   orderSuccess(order: Order): void {
     this.showToastComponent("success", "Order updated.");
-    this.fetchCustomerDetails();
+    this.fetchOrderDetails();
   }
 
   orderError(errorStr: string): void {
