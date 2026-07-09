@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { FileAttachment } from '../../model/file-attachment/file-attachment.model';
+import { CommonModule } from '@angular/common';
 import { FileAttachmentService } from '../../services/file-attachment/file-attachment.service';
 
 @Component({

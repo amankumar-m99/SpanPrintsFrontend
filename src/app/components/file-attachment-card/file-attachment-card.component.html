@@ -1,16 +1,29 @@
 <!-- <div class="p-3 border">{{fileAttachment?.originalFileName}}.{{fileAttachment?.fileType}} file</div> -->
 <div class="col">
     <div class="card h-100">
-        <!-- <img src="..." class="card-img-top" alt="..."> -->
+        <img src="/assets/file-placeholder.png" class="card-img-top px-4" alt="...">
 
         <div class="card-body">
-            <h5 class="card-title">{{fileAttachment?.fileType}}</h5>
+            <h5 class="card-title">{{fileAttachment?.fileType}} file</h5>
             <p class="card-text">{{fileAttachment?.originalFileName}}.{{fileAttachment?.fileType}}</p>
         </div>
         <div class="card-footer">
-            <button class="btn btn-outline-primary btn-sm me-3" (click)="downloadFile()"><i class="bi bi-download"></i></button>
-            <a href="#" class="btn btn-outline-danger btn-sm"><i class="bi bi-trash3"></i></a>
-            <!-- <small class="text-body-secondary">Last updated 3 mins ago</small> -->
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <div>
+                        <small class="text-body-secondary">Size: {{(fileAttachment?.size || '0') + ' Bytes'}}</small>
+                    </div>
+                    <div>
+                        <small class="text-body-secondary">Updated on {{fileAttachment?.updatedAt}}</small>
+                    </div>
+                </div>
+                <div>
+                    <button title="Download this file" class="btn btn-outline-primary btn-sm me-2"
+                        (click)="downloadFile()"><i class="bi bi-download"></i></button>
+                    <button title="Delete this file" class="btn btn-outline-danger btn-sm"><i
+                            class="bi bi-trash3"></i></button>
+                </div>
+            </div>
         </div>
     </div>
 </div>

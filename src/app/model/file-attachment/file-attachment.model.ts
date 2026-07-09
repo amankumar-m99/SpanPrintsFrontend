@@ -4,5 +4,8 @@ export interface FileAttachment {
     originalFileName: string;
     createdFileName: string;
     fileType: string;
+    size: number;
     printJob: string;
+    updatedAt: string;
+    createdAt: string;
 }
