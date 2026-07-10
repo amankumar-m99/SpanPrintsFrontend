@@ -1,20 +1,22 @@
 <!-- <div class="p-3 border">{{fileAttachment?.originalFileName}}.{{fileAttachment?.fileType}} file</div> -->
 <div class="col">
     <div class="card h-100">
-        <img src="/assets/file-placeholder.png" class="card-img-top px-4" alt="...">
+        <!-- <img src="/assets/file-placeholder.png" class="card-img-top px-4" alt="..."> -->
 
+        <app-file-preview [fileId]="file?.uuid||''" [fileName]="file?.originalFileName||''" [mimeType]="file?.contentType||''">
+        </app-file-preview>
         <div class="card-body">
-            <h5 class="card-title">{{fileAttachment?.fileType}} file</h5>
-            <p class="card-text">{{fileAttachment?.originalFileName}}.{{fileAttachment?.fileType}}</p>
+            <h5 class="card-title">{{previewType}} file</h5>
+            <p class="card-text">{{file?.originalFileName}}.{{file?.fileType}}</p>
         </div>
         <div class="card-footer">
             <div class="d-flex justify-content-between align-items-center">
                 <div>
                     <div>
-                        <small class="text-body-secondary">Size: {{(fileAttachment?.size || '0') + ' Bytes'}}</small>
+                        <small class="text-body-secondary">Size: {{(file?.size || '0') + ' Bytes'}}</small>
                     </div>
                     <div>
-                        <small class="text-body-secondary">Updated on {{fileAttachment?.updatedAt}}</small>
+                        <small class="text-body-secondary">Updated on {{file?.updatedAt}}</small>
                     </div>
                 </div>
                 <div>

@@ -1,23 +1,28 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FileAttachment } from '../../model/file-attachment/file-attachment.model';
-import { CommonModule } from '@angular/common';
-import { FileAttachmentService } from '../../services/file-attachment/file-attachment.service';
+import { FileAttachmentService, getPreviewType, PreviewType } from '../../services/file-attachment/file-attachment.service';
+import { FilePreviewComponent } from "../file-preview/file-preview.component";
 
 @Component({
   selector: 'app-file-attachment-card',
   standalone: true,
-  imports: [],
+  imports: [FilePreviewComponent],
   templateUrl: './file-attachment-card.component.html',
   styleUrl: './file-attachment-card.component.css'
 })
-export class FileAttachmentCardComponent {
-  @Input() fileAttachment?: FileAttachment;
+export class FileAttachmentCardComponent implements OnInit {
+  @Input("fileAttachment") file?: FileAttachment;
+  previewType?: PreviewType;
 
   constructor(private fileAttachmentService: FileAttachmentService) { }
 
+  ngOnInit(): void {
+    this.previewType = getPreviewType(this.file?.contentType || '', this.file?.originalFileName || '');
+  }
+
   downloadFile(): void {
-    let uuid = this.fileAttachment?.uuid;
-    let fileName = this.fileAttachment?.originalFileName;
+    let uuid = this.file?.uuid;
+    let fileName = this.file?.originalFileName;
     if (uuid && fileName) {
       this.fileAttachmentService.downloadFile(uuid).subscribe({
         next: (blob: Blob) => {
@@ -34,5 +39,9 @@ export class FileAttachmentCardComponent {
         }
       });
     }
+  }
+
+  updatePreviewType(type: PreviewType) {
+    this.previewType = type;
   }
 }
