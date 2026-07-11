@@ -30,7 +30,9 @@ export class OrderModalComponent implements OnInit, OnChanges {
 
   customers: Customer[] = [];
   selectedCustomer: Customer | null = null;
-  isCustomerSearchLoading = false;
+  searchFieldName = '';
+  isCustomerPhoneSearchLoading = false;
+  isCustomerNameSearchLoading = false;
 
   isPrintJobTypesSearchLoading = false;
 
@@ -60,7 +62,8 @@ export class OrderModalComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.buildForm();
-    this.setupCustomerSearch();
+    this.setupCustomerNameSearch();
+    this.setupCustomerPhoneSearch();
     this.setupDerivedCalculations();
     this.loadPrintJobTypes();
   }
@@ -86,7 +89,7 @@ export class OrderModalComponent implements OnInit, OnChanges {
       customerId: [{ value: '', disabled: true }],
       customerName: [''],
       customerPhoneNumber: [{ value: '', disabled: false }, [Validators.required, Validators.pattern(/^\d{10}$/)]],
-      address: [{ value: '', disabled: true }],
+      customerAddress: [{ value: '', disabled: false }],
 
       printJobTypeId: ['', Validators.required],
       quantity: [1, [Validators.required, Validators.min(1)]],
@@ -108,7 +111,7 @@ export class OrderModalComponent implements OnInit, OnChanges {
   get customerId() { return this.modalForm.get('customerId'); }
   get customerName() { return this.modalForm.get('customerName'); }
   get customerPhoneNumber() { return this.modalForm.get('customerPhoneNumber'); }
-  get address() { return this.modalForm.get('address'); }
+  get customerAddress() { return this.modalForm.get('customerAddress'); }
   get printJobTypeId() { return this.modalForm.get('printJobTypeId'); }
   get quantity() { return this.modalForm.get('quantity'); }
   get dateOfDelivery() { return this.modalForm.get('dateOfDelivery'); }
@@ -143,24 +146,27 @@ export class OrderModalComponent implements OnInit, OnChanges {
      CUSTOMER SEARCH
      ========================================================= */
 
-  private setupCustomerSearch(): void {
+  private setupCustomerNameSearch(): void {
     this.customerName!.valueChanges.pipe(
       debounceTime(800),
       distinctUntilChanged(),
       switchMap(value => {
         if (!value || typeof value !== 'string') {
           this.customers = [];
-          this.isCustomerSearchLoading = false;
+          this.searchFieldName = '';
+          this.isCustomerNameSearchLoading = false;
           return of([]);
         }
 
         if (this.selectedCustomer && value === this.selectedCustomer.name) {
           this.customers = [];
-          this.isCustomerSearchLoading = false;
+          this.searchFieldName = '';
+          this.isCustomerNameSearchLoading = false;
           return of([]);
         }
 
-        this.isCustomerSearchLoading = true;
+        this.searchFieldName = 'customerName';
+        this.isCustomerNameSearchLoading = true;
         this.customers = [];
 
         return this.customerService.searchCustomersByName(value);
@@ -168,10 +174,48 @@ export class OrderModalComponent implements OnInit, OnChanges {
     ).subscribe({
       next: customers => {
         this.customers = customers;
-        this.isCustomerSearchLoading = false;
+        this.isCustomerNameSearchLoading = false;
       },
       error: () => {
-        this.isCustomerSearchLoading = false;
+        this.searchFieldName = '';
+        this.isCustomerNameSearchLoading = false;
+        this.customers = [];
+      }
+    });
+  }
+
+  private setupCustomerPhoneSearch(): void {
+    this.customerPhoneNumber!.valueChanges.pipe(
+      debounceTime(800),
+      distinctUntilChanged(),
+      switchMap(value => {
+        if (!value || typeof value !== 'string') {
+          this.customers = [];
+          this.searchFieldName = '';
+          this.isCustomerPhoneSearchLoading = false;
+          return of([]);
+        }
+
+        if (this.selectedCustomer && value === this.selectedCustomer.name) {
+          this.customers = [];
+          this.searchFieldName = '';
+          this.isCustomerPhoneSearchLoading = false;
+          return of([]);
+        }
+
+        this.searchFieldName = 'customerPhone';
+        this.isCustomerPhoneSearchLoading = true;
+        this.customers = [];
+        return this.customerService.searchCustomersByPhoneNumber(value);
+      })
+    ).subscribe({
+      next: customers => {
+        this.customers = customers;
+        this.isCustomerPhoneSearchLoading = false;
+      },
+      error: () => {
+        this.searchFieldName = '';
+        this.isCustomerPhoneSearchLoading = false;
         this.customers = [];
       }
     });
@@ -183,12 +227,12 @@ export class OrderModalComponent implements OnInit, OnChanges {
       {
         customerId: customer.id,
         customerName: customer.name,
-        phone: customer.primaryPhoneNumber,
-        address: customer.address
+        customerPhoneNumber: customer.primaryPhoneNumber,
+        customerAddress: customer.address
       },
       { emitEvent: false }
     );
-
+    this.searchFieldName = '';
     this.customers = [];
   }
 

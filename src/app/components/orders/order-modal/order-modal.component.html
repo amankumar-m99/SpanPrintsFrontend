@@ -16,17 +16,19 @@
             </div>
             <div class="modal-body">
                 <form [formGroup]="modalForm" (ngSubmit)="submitForm()">
-                    <div class="row g-3">
-                        <!-- Customer Name -->
-                        <div class="col-md-6 d-none">
-                            <label class="form-label">Customer Name</label>
-                            <input type="text" class="form-control" formControlName="customerName"
-                                [ngClass]="{ 'is-invalid': customerName?.invalid && customerName?.touched }">
-                            <div class="invalid-feedback" *ngIf="customerName?.touched && customerName?.invalid">
-                                Customer name is required
+                    <!-- <small class="badge badge-info" >Customer Details</small> -->
+                    <div class="row g-3 mb-2">
+                        <!-- Phone -->
+                        <div class="col-md-6">
+                            <label class="form-label">Customer Phone Number</label>
+                            <input type="tel" class="form-control" formControlName="customerPhoneNumber"
+                                [ngClass]="{ 'is-invalid': customerPhoneNumber?.invalid && customerPhoneNumber?.touched }">
+                            <div class="invalid-feedback"
+                                *ngIf="customerPhoneNumber?.touched && customerPhoneNumber?.invalid">
+                                Customer's phone name is required
                             </div>
                             <!-- Loading Indicator -->
-                            <div *ngIf="isCustomerSearchLoading" class="mt-1">
+                            <div *ngIf="isCustomerPhoneSearchLoading" class="mt-1">
                                 <div class="spinner-border spinner-border-sm text-primary" role="status">
                                     <span class="visually-hidden">Loading...</span>
                                 </div>
@@ -34,7 +36,38 @@
                             </div>
 
                             <!-- Dropdown for customer suggestions -->
-                            <ul *ngIf="customers.length > 0 && !isCustomerSearchLoading"
+                            <ul *ngIf="customers.length > 0 && !isCustomerPhoneSearchLoading && searchFieldName==='customerPhone'"
+                                class="list-group position-absolute w-100 z-3">
+                                <li *ngFor="let customer of customers" class="list-group-item list-group-item-action"
+                                    (click)="onCustomerSelect(customer)">
+                                    <strong>{{ customer.primaryPhoneNumber }}</strong>
+                                    <small class="text-muted ms-2">{{ customer.name || 'no name' }}</small><br />
+                                    <small class="text-muted">{{ customer.address || 'no address' }}</small>
+                                </li>
+                            </ul>
+                            <div *ngIf="!isCustomerPhoneSearchLoading && searchFieldName==='customerPhone' && customers.length === 0 && customerPhoneNumber?.value"
+                                class="text-muted mt-1">
+                                No customers found
+                            </div>
+                        </div>
+                        <!-- Customer Name -->
+                        <div class="col-md-6">
+                            <label class="form-label">Customer Name</label>
+                            <input type="text" class="form-control" formControlName="customerName"
+                                [ngClass]="{ 'is-invalid': customerName?.invalid && customerName?.touched }">
+                            <div class="invalid-feedback" *ngIf="customerName?.touched && customerName?.invalid">
+                                Customer name is required
+                            </div>
+                            <!-- Loading Indicator -->
+                            <div *ngIf="isCustomerNameSearchLoading" class="mt-1">
+                                <div class="spinner-border spinner-border-sm text-primary" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                                <span class="ms-2 text-muted">Searching customers...</span>
+                            </div>
+
+                            <!-- Dropdown for customer suggestions -->
+                            <ul *ngIf="customers.length > 0 && !isCustomerNameSearchLoading && searchFieldName==='customerName'"
                                 class="list-group position-absolute w-100 z-3">
                                 <li *ngFor="let customer of customers" class="list-group-item list-group-item-action"
                                     (click)="onCustomerSelect(customer)">
@@ -43,30 +76,24 @@
                                     <small class="text-muted">{{ customer.address }}</small>
                                 </li>
                             </ul>
-                            <div *ngIf="!isCustomerSearchLoading && customers.length === 0 && customerName?.value"
+                            <div *ngIf="!isCustomerNameSearchLoading && searchFieldName==='customerName' && customers.length === 0 && customerName?.value"
                                 class="text-muted mt-1">
                                 No customers found
                             </div>
                         </div>
 
-                        <!-- Phone -->
-                        <div class="col-md-6">
-                            <label class="form-label">Customer Phone Number</label>
-                            <input type="tel" class="form-control" formControlName="customerPhoneNumber"
-                                [ngClass]="{ 'is-invalid': customerPhoneNumber?.invalid && customerPhoneNumber?.touched }">
-                            <div class="invalid-feedback" *ngIf="customerPhoneNumber?.touched && customerPhoneNumber?.invalid">
-                                Customer's phone name is required
-                            </div>
-                        </div>
                         <!-- Address -->
-                        <div class="col-12 d-none">
+                        <div class="col-12">
                             <label class="form-label">Address</label>
-                            <textarea class="form-control" rows="2" formControlName="address"
-                                [ngClass]="{ 'is-invalid': address?.invalid && address?.touched }"></textarea>
-                            <div class="invalid-feedback" *ngIf="address?.touched && address?.invalid">
+                            <textarea class="form-control" rows="2" formControlName="customerAddress"
+                                [ngClass]="{ 'is-invalid': customerAddress?.invalid && customerAddress?.touched }"></textarea>
+                            <div class="invalid-feedback" *ngIf="customerAddress?.touched && customerAddress?.invalid">
                                 Invalid address
                             </div>
                         </div>
+                    </div>
+
+                    <div class="row g-3 my-2">
                         <!-- Job Type -->
                         <div class="col-md-6">
                             <label class="form-label">Job Type</label>
@@ -91,7 +118,6 @@
                                 No Jobs type found
                             </div>
                         </div>
-
                         <!-- Quantity -->
                         <div class="col-md-6">
                             <label class="form-label">Quantity</label>
@@ -99,7 +125,8 @@
                                 <button class="btn btn-outline-secondary" type="button" (click)="decrementQuantity()">
                                     <i class="bi bi-dash"></i>
                                 </button>
-                                <input type="number" class="form-control" formControlName="quantity" aria-label="quantity"
+                                <input type="number" class="form-control" formControlName="quantity"
+                                    aria-label="quantity"
                                     [ngClass]="{ 'is-invalid': quantity?.invalid && quantity?.touched }">
                                 <button class="btn btn-outline-secondary" type="button" (click)="incrementQuantity()">
                                     <i class="bi bi-plus"></i>
@@ -107,6 +134,15 @@
                                 <div class="invalid-feedback" *ngIf="quantity?.touched && quantity?.invalid">
                                     Quantity must be at least 1
                                 </div>
+                            </div>
+                        </div>
+                        <!-- Date of delivery -->
+                        <div class="col-md-6">
+                            <label class="form-label">Date of delivery</label>
+                            <input type="date" class="form-control" formControlName="dateOfDelivery"
+                                [ngClass]="{ 'is-invalid': dateOfDelivery?.invalid && dateOfDelivery?.touched }">
+                            <div class="invalid-feedback" *ngIf="dateOfDelivery?.touched && dateOfDelivery?.invalid">
+                                Invalid date of delivery
                             </div>
                         </div>
                         <!-- Book Number -->
@@ -132,15 +168,9 @@
                                 <i class="bi bi-exclamation-circle me-1"></i>Fill any one book number
                             </div>
                         </div>
-                        <!-- Date of delivery -->
-                        <div class="col-md-6">
-                            <label class="form-label">Date of delivery</label>
-                            <input type="date" class="form-control" formControlName="dateOfDelivery"
-                                [ngClass]="{ 'is-invalid': dateOfDelivery?.invalid && dateOfDelivery?.touched }">
-                            <div class="invalid-feedback" *ngIf="dateOfDelivery?.touched && dateOfDelivery?.invalid">
-                                Invalid date of delivery
-                            </div>
-                        </div>
+                    </div>
+
+                    <div class="row g-3 my-2">
                         <!-- Total Amount -->
                         <div class="col-md-6">
                             <label class="form-label">Total Amount</label>
@@ -148,15 +178,6 @@
                                 [ngClass]="{ 'is-invalid': totalAmount?.invalid && totalAmount?.touched }">
                             <div class="invalid-feedback" *ngIf="totalAmount?.touched && totalAmount?.invalid">
                                 Invalid total amount
-                            </div>
-                        </div>
-                        <!-- Deposit Amount -->
-                        <div class="col-md-6">
-                            <label class="form-label">Deposit Amount</label>
-                            <input type="number" class="form-control" formControlName="depositAmount"
-                                [ngClass]="{ 'is-invalid': depositAmount?.invalid && depositAmount?.touched }">
-                            <div class="invalid-feedback" *ngIf="depositAmount?.touched && depositAmount?.invalid">
-                                Invalid deposit amount
                             </div>
                         </div>
                         <!-- Discounted Amount -->
@@ -169,9 +190,13 @@
                                 Invalid discounted amount
                             </div>
                         </div>
-                        <div class="col-md-12">
-                            <div class="text-danger" *ngIf="isInvalidAmounts">
-                                <i class="bi bi-exclamation-circle me-1"></i>Invalid amounts
+                        <!-- Deposit Amount -->
+                        <div class="col-md-6">
+                            <label class="form-label">Deposit Amount</label>
+                            <input type="number" class="form-control" formControlName="depositAmount"
+                                [ngClass]="{ 'is-invalid': depositAmount?.invalid && depositAmount?.touched }">
+                            <div class="invalid-feedback" *ngIf="depositAmount?.touched && depositAmount?.invalid">
+                                Invalid deposit amount
                             </div>
                         </div>
                         <!-- Pending Amount -->
@@ -181,6 +206,11 @@
                                 [ngClass]="{ 'is-invalid': pendingAmount?.invalid && pendingAmount?.touched }">
                             <div class="invalid-feedback" *ngIf="pendingAmount?.touched && pendingAmount?.invalid">
                                 Pending amount is invalid
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="text-danger" *ngIf="isInvalidAmounts">
+                                <i class="bi bi-exclamation-circle me-1"></i>Invalid amounts
                             </div>
                         </div>
                         <!-- Payment Status -->
@@ -197,6 +227,10 @@
                                 Invalid Payment status
                             </div>
                         </div>
+
+                    </div>
+
+                    <div class="row g-3 my-2">
                         <div class="col-12">
                             <label class="form-label">Add Note</label>
                             <textarea class="form-control" rows="2" formControlName="note"
@@ -243,6 +277,7 @@
                             </ul>
                         </div>
                     </div>
+
                     <div><button id="orderModalFormSubmitButton" type="submit" class="d-none"
                             [disabled]="isSubmitting"></button></div>
                 </form>

@@ -24,6 +24,7 @@ export class FilePreviewComponent implements OnInit, OnDestroy {
   constructor(private fileAttachmentService: FileAttachmentService, private sanitizer: DomSanitizer) { }
 
   ngOnInit(): void {
+    console.log(this.fileName);
     this.previewType = getPreviewType(this.mimeType, this.fileName);
     if (this.previewType === 'unsupported') {
       this.loading = false;

@@ -1,9 +1,8 @@
 <!-- <div class="p-3 border">{{fileAttachment?.originalFileName}}.{{fileAttachment?.fileType}} file</div> -->
-<div class="col">
+<div class="d-none col">
     <div class="card h-100">
         <!-- <img src="/assets/file-placeholder.png" class="card-img-top px-4" alt="..."> -->
-
-        <app-file-preview [fileId]="file?.uuid||''" [fileName]="file?.originalFileName||''" [mimeType]="file?.contentType||''">
+        <app-file-preview [fileId]="file?.uuid||''" [fileName]="fileNameWithExt" [mimeType]="file?.contentType||''">
         </app-file-preview>
         <div class="card-body">
             <h5 class="card-title">{{previewType}} file</h5>
@@ -27,5 +26,45 @@
                 </div>
             </div>
         </div>
+    </div>
+</div>
+
+<div class="card mb-3" style="max-width: 540px;">
+    <div class="row g-0">
+        <div class="col-md-4">
+            <!-- <img src="..." class="img-fluid rounded-start" alt="..."> -->
+            <app-file-preview [fileId]="file?.uuid||''" [fileName]="fileNameWithExt" [mimeType]="file?.contentType||''">
+            </app-file-preview>
+        </div>
+        <div class="col-md-8">
+            <div class="card-body">
+                <h5 class="card-title">{{previewType}} file</h5>
+                <p class="card-text" [title]="fileNameWithExt" >{{fileNameWithExt}}</p>
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <div>
+                            <small class="text-body-secondary">Size: {{(file?.size || '0') + ' Bytes'}}</small>
+                        </div>
+                    </div>
+                    <div>
+                        <button title="Download this file" class="btn btn-outline-primary btn-sm me-2"
+                            (click)="downloadFile()"><i class="bi bi-download"></i></button>
+                        <button title="Delete this file" class="btn btn-outline-danger btn-sm"><i
+                                class="bi bi-trash3"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-footer">
+        <div class="d-flex justify-content-center align-items-center">
+            <div>
+                <small class="text-body-secondary">Updated on {{file?.updatedAt|date:'medium'}}</small>
+            </div>
+        </div>
+    </div>
+    <div class="d-none">
+        <p class="card-text"><small class="text-body-secondary">Updated on {{file?.updatedAt | date:'medium'}}</small>
+        </p>
     </div>
 </div>
