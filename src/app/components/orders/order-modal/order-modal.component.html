@@ -21,10 +21,10 @@
                         <!-- Phone -->
                         <div class="col-md-6">
                             <label class="form-label">Customer Phone Number</label>
-                            <input type="tel" class="form-control" formControlName="customerPhoneNumber"
-                                [ngClass]="{ 'is-invalid': customerPhoneNumber?.invalid && customerPhoneNumber?.touched }">
+                            <input type="tel" class="form-control" formControlName="customerPrimaryPhone"
+                                [ngClass]="{ 'is-invalid': customerPrimaryPhone?.invalid && customerPrimaryPhone?.touched }">
                             <div class="invalid-feedback"
-                                *ngIf="customerPhoneNumber?.touched && customerPhoneNumber?.invalid">
+                                *ngIf="customerPrimaryPhone?.touched && customerPrimaryPhone?.invalid">
                                 Customer's phone name is required
                             </div>
                             <!-- Loading Indicator -->
@@ -45,7 +45,7 @@
                                     <small class="text-muted">{{ customer.address || 'no address' }}</small>
                                 </li>
                             </ul>
-                            <div *ngIf="!isCustomerPhoneSearchLoading && searchFieldName==='customerPhone' && customers.length === 0 && customerPhoneNumber?.value"
+                            <div *ngIf="!isCustomerPhoneSearchLoading && searchFieldName==='customerPhone' && customers.length === 0 && customerPrimaryPhone?.value"
                                 class="text-muted mt-1">
                                 No customers found
                             </div>

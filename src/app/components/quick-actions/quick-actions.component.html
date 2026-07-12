@@ -1,6 +1,58 @@
 <div class="container-fluid">
-    <h3 class="mb-4"><i class="bi bi-lightning me-2 text-warning"></i>Quick Actions</h3>
+    <div class="mb-4 d-flex justify-content-between">
+        <h3 class=""><i class="bi bi-bar-chart-line me-2 text-warning"></i>Quick Stats</h3>
+        <button class="btn btn-warning"><i class="bi bi-arrow-clockwise me-2"></i>Refresh Stats
+        </button>
+    </div>
 
+    <div class="row g-4">
+        <div class="col-md-3 col-sm-6">
+            <div class="card action-card shadow-sm h-100 bg-success">
+                <div class="card-body text-center">
+                    <span class="fs-1 mb-2">7</span>
+                    <h6 class="fw-semibold">Orders Placed today</h6>
+                    <p class="text-muted small mb-0">
+                        New orders received today
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6">
+            <div class="card action-card shadow-sm h-100 bg-info">
+                <div class="card-body text-center">
+                    <span class="fs-1 mb-2">4 of 6</span>
+                    <h6 class="fw-semibold">Orders Prepared</h6>
+                    <p class="text-muted small mb-0">
+                        Deliveries to be make today
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6">
+            <div class="card action-card shadow-sm h-100 bg-primary">
+                <div class="card-body text-center">
+                    <span class="fs-1 mb-2">9 of 12</span>
+                    <h6 class="fw-semibold">Orders Delivered</h6>
+                    <p class="text-muted small mb-0">
+                        Delivered Items today
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6">
+            <div class="card action-card shadow-sm h-100 bg-warning">
+                <div class="card-body text-center">
+                    <span class="fs-1 mb-2">3</span>
+                    <h6 class="fw-semibold">Yet to Deliver</h6>
+                    <p class="text-muted small mb-0">
+                        Yet to deliver today
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <h3 class="mb-4"><i class="bi bi-lightning me-2 text-warning"></i>Quick Actions</h3>
     <div class="row g-4">
         <!-- Add Customer -->
         <div class="col-md-3 col-sm-6">
@@ -111,7 +163,7 @@
         </div>
 
         <!-- View Profile -->
-        <div class="col-md-3 col-sm-6">
+        <div class="d-none col-md-3 col-sm-6">
             <a routerLink="../profile" class="nav-link">
                 <div class="card action-card shadow-sm h-100">
                     <div class="card-body text-center">
@@ -124,7 +176,6 @@
                 </div>
             </a>
         </div>
-
     </div>
 </div>
 

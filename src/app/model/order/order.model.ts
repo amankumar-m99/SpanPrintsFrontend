@@ -1,8 +1,9 @@
 export interface Order {
     id: number;
     uuid: string;
-    jobId: string;
-    jobTypeName: string;
+    printJobTypeId: number;
+    printJobTypeCode: string;
+    printJobTypeName: string;
     quantity: number;
     dateOfDelivery: Date;
     bookNumber: number;

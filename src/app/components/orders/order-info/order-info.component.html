@@ -92,56 +92,17 @@
             </div>
         </div>
 
-        <!-- order details hidden -->
-        <div class="d-none card shadow-sm mb-2">
-            <div class="card-body">
-                <div class="row g-3">
-                    <div class="col-md-4">
-                        <small><span class="me-1 text-info">#</span>Job Name</small>
-                        <div><strong>{{order?.jobTypeName}}</strong></div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <small><span class="me-1 text-info">#</span>Quantity</small>
-                        <div><strong>{{order?.quantity}}</strong></div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <small><i class="bi bi-journal-bookmark me-1 text-info"></i>Book/W-Book Number</small>
-                        <div><strong>{{order?.bookNumber}}</strong></div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <small><i class="bi bi-calendar-plus me-1 text-info"></i>Date of delivery</small>
-                        <div><strong>{{ order?.dateOfDelivery | date:'short' }}</strong></div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <small><i class="bi bi-box me-1 text-info"></i>Order Status</small>
-                        <div><strong>{{ order?.printJobStatus || 'N/A' }}</strong>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <small><i class="bi bi-cash-stack me-1 text-info"></i>Payment Status</small>
-                        <div><strong>{{ order?.paymentStatus || 'N/A' }}</strong>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <!-- order details -->
         <div class="card shadow-sm mb-2">
             <div class="card-body">
                 <div class="row g-3">
                     <div class="col-md-4">
-                        <small><span class="me-1 text-info">#</span>Job Id</small>
-                        <div>{{ order?.jobId || 'N/A'}}</div>
+                        <small><span class="me-1 text-info">#</span>Job Code</small>
+                        <div>{{ order?.printJobTypeCode || 'N/A'}}</div>
                     </div>
                     <div class="col-md-4">
                         <small><span class="me-1 text-info">#</span>Job Name</small>
-                        <div>{{order?.jobTypeName}}</div>
+                        <div>{{order?.printJobTypeName}}</div>
                     </div>
                     <div class="col-md-4">
                         <small><span class="me-1 text-info">#</span>Quantity</small>
@@ -188,6 +149,7 @@
             </div>
         </div>
 
+        <!-- Note Description Attachments -->
         <div class="row g-3 mb-1">
             <div class="col-12">
                 <div class="border rounded p-2">

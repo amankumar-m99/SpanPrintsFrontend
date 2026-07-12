@@ -47,13 +47,13 @@ export class PrintjobtypeModalComponent implements OnInit, OnChanges {
 
   initModalForm(): void {
     this.modalForm = this.fb.group({
-      jobId: ['', Validators.required],
+      code: ['', Validators.required],
       name: ['', Validators.required],
       description: [''],
     });
   }
 
-  get jobId() { return this.modalForm.get('jobId'); }
+  get code() { return this.modalForm.get('code'); }
   get name() { return this.modalForm.get('name'); }
   get description() { return this.modalForm.get('description'); }
 

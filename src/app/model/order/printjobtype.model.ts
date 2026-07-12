@@ -1,7 +1,7 @@
 export interface PrintJobType {
     id: number;
     uuid: number;
-    jobId: number;
+    code: number;
     name: number;
     description: string;
     updatedAt: string;

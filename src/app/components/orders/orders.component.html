@@ -96,11 +96,12 @@
                     <th>ID</th>
                     <th>Job Name</th>
                     <th>quantity</th>
-                    <th>Date of Delivery</th>
+                    <th>Delivery Date</th>
                     <th>Total Amount</th>
                     <th>Pending Amount</th>
                     <th>Payment Status</th>
                     <th>Order Status</th>
+                    <th>Placed On</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -108,13 +109,14 @@
                 <tr *ngFor="let order of orders; let i = index" class="cursor-pointer">
                     <td>{{ i + 1 }}</td>
                     <td>{{ order.id }}</td>
-                    <td>{{ order.jobTypeName }}</td>
+                    <td>{{ order.printJobTypeName }}</td>
                     <td>{{ order.quantity }}</td>
                     <td>{{ order.dateOfDelivery | date:'short'}}</td>
                     <td>{{ order.totalAmount }}</td>
                     <td>{{ order.pendingAmount }}</td>
                     <td>{{ order.paymentStatus }}</td>
                     <td>{{ order.printJobStatus }}</td>
+                    <td>{{ order.createdAt | date:'medium' }}</td>
                     <!-- Actions -->
                     <td class="text-end" (click)="$event.stopPropagation()">
                         <button class="btn btn-sm btn-outline-primary me-1" (click)="editOrder(order)">
