@@ -88,7 +88,7 @@ export class OrderModalComponent implements OnInit, OnChanges {
     this.modalForm = this.fb.group({
       customerId: [{ value: '', disabled: true }],
       customerName: [''],
-      customerPrimaryPhone: [{ value: '', disabled: false }, [Validators.required, Validators.pattern(/^\d{10}$/)]],
+      customerPrimaryPhoneNumber: [{ value: '', disabled: false }, [Validators.required, Validators.pattern(/^\d{10}$/)]],
       customerAddress: [{ value: '', disabled: false }],
 
       printJobTypeId: ['', Validators.required],
@@ -110,7 +110,7 @@ export class OrderModalComponent implements OnInit, OnChanges {
   }
   get customerId() { return this.modalForm.get('customerId'); }
   get customerName() { return this.modalForm.get('customerName'); }
-  get customerPrimaryPhone() { return this.modalForm.get('customerPrimaryPhone'); }
+  get customerPrimaryPhoneNumber() { return this.modalForm.get('customerPrimaryPhoneNumber'); }
   get customerAddress() { return this.modalForm.get('customerAddress'); }
   get printJobTypeId() { return this.modalForm.get('printJobTypeId'); }
   get quantity() { return this.modalForm.get('quantity'); }
@@ -185,7 +185,7 @@ export class OrderModalComponent implements OnInit, OnChanges {
   }
 
   private setupCustomerPhoneSearch(): void {
-    this.customerPrimaryPhone!.valueChanges.pipe(
+    this.customerPrimaryPhoneNumber!.valueChanges.pipe(
       debounceTime(800),
       distinctUntilChanged(),
       switchMap(value => {
@@ -227,7 +227,7 @@ export class OrderModalComponent implements OnInit, OnChanges {
       {
         customerId: customer.id,
         customerName: customer.name,
-        customerPhoneNumber: customer.primaryPhoneNumber,
+        customerPrimaryPhoneNumber: customer.primaryPhoneNumber,
         customerAddress: customer.address
       },
       { emitEvent: false }
