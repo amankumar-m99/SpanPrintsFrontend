@@ -34,7 +34,7 @@
                 <tr *ngFor="let printJob of printJobTypes; let i = index" class="cursor-pointer">
                     <td>{{ i + 1 }}</td>
                     <td>{{ printJob.name }}</td>
-                    <td>{{ printJob.jobId }}</td>
+                    <td>{{ printJob.code }}</td>
                     <td>{{ printJob.uuid }}</td>
                     <td>{{ printJob.description }}</td>
                     <td>{{ printJob.updatedAt | date: 'short' }}</td>

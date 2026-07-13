@@ -14,15 +14,6 @@
             </div>
             <div class="modal-body">
                 <form [formGroup]="modalForm" (ngSubmit)="submitForm()">
-
-                    <div class="mb-3">
-                        <label class="form-label"><i class="bi bi-card-text me-1"></i>Job Id</label>
-                        <input type="text" class="form-control" formControlName="code"
-                            [ngClass]="{ 'is-invalid': code?.invalid && code?.touched }" />
-                        <div class="invalid-feedback" *ngIf="code?.touched && code?.invalid">
-                            Job-Id is required
-                        </div>
-                    </div>
                     <div class="mb-3">
                         <label class="form-label"><i class="bi bi-card-text me-1"></i>Job Name</label>
                         <input type="text" class="form-control" formControlName="name"
@@ -31,7 +22,14 @@
                             Name is required
                         </div>
                     </div>
-
+                    <div class="mb-3">
+                        <label class="form-label"><i class="bi bi-card-text me-1"></i>Job Code</label>
+                        <input type="text" class="form-control" formControlName="code"
+                            [ngClass]="{ 'is-invalid': code?.invalid && code?.touched }" />
+                        <div class="invalid-feedback" *ngIf="code?.touched && code?.invalid">
+                            Job-Id is required
+                        </div>
+                    </div>
                     <div class="mb-3">
                         <label class="form-label"><i class="bi bi-card-text me-1"></i>Job Description</label>
                         <textarea class="form-control" formControlName="description"
