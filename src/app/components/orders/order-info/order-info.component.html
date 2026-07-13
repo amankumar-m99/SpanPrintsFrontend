@@ -96,13 +96,13 @@
         <div class="card shadow-sm mb-2">
             <div class="card-body">
                 <div class="row g-3">
-                    <div class="col-md-4">
+                    <div class="col-md-4 d-none">
                         <small><span class="me-1 text-info">#</span>Job Code</small>
                         <div>{{ order?.printJobTypeCode || 'N/A'}}</div>
                     </div>
                     <div class="col-md-4">
                         <small><span class="me-1 text-info">#</span>Job Name</small>
-                        <div>{{order?.printJobTypeName}}</div>
+                        <div>{{order?.printJobTypeName }} <span><small class="text-muted"> &#40;{{order?.printJobTypeCode}}&#41;</small></span></div>
                     </div>
                     <div class="col-md-4">
                         <small><span class="me-1 text-info">#</span>Quantity</small>
@@ -111,6 +111,10 @@
                     <div class="col-md-4">
                         <small><i class="bi bi-journal-bookmark me-1 text-info"></i>Book/W-Book Number</small>
                         <div>{{ order?.bookNumber || 'N/A' }}</div>
+                    </div>
+                    <div class="col-md-4">
+                        <small><i class="bi bi-calendar-plus me-1 text-info"></i>Date of Placed</small>
+                        <div>{{ order?.dateOfPlaced | date:'short' }}</div>
                     </div>
                     <div class="col-md-4">
                         <small><i class="bi bi-calendar-plus me-1 text-info"></i>Date of delivery</small>

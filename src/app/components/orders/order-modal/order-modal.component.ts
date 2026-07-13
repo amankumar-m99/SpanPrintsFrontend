@@ -94,6 +94,7 @@ export class OrderModalComponent implements OnInit, OnChanges {
       printJobTypeId: ['', Validators.required],
       quantity: [1, [Validators.required, Validators.min(1)]],
       dateOfDelivery: ['', Validators.required],
+      dateOfPlaced: ['', Validators.required],
 
       bookNumber: ['', Validators.required],
       wBookNumber: [null],
@@ -115,6 +116,7 @@ export class OrderModalComponent implements OnInit, OnChanges {
   get printJobTypeId() { return this.modalForm.get('printJobTypeId'); }
   get quantity() { return this.modalForm.get('quantity'); }
   get dateOfDelivery() { return this.modalForm.get('dateOfDelivery'); }
+  get dateOfPlaced() { return this.modalForm.get('dateOfPlaced'); }
   get bookNumber() { return this.modalForm.get('bookNumber'); }
   get wBookNumber() { return this.modalForm.get('wBookNumber'); }
   get totalAmount() { return this.modalForm.get('totalAmount'); }

@@ -25,6 +25,10 @@ export class OrderService {
     return this.http.get<Order[]>(this.url);
   }
 
+  getAllOrdersPlacedToday() {
+    return this.http.get<Order[]>(`${this.url}/today`);
+  }
+
   getOrderById(id: number) {
     return this.http.get<Order>(`${this.url}/id/${id}`);
   }

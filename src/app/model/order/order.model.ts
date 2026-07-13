@@ -6,6 +6,7 @@ export interface Order {
     printJobTypeName: string;
     quantity: number;
     dateOfDelivery: Date;
+    dateOfPlaced: Date;
     bookNumber: number;
     wBookNumber: number;
     printJobStatus: string;
