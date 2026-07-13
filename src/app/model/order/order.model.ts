@@ -21,8 +21,8 @@ export interface Order {
     customerId: number;
     customerName: string;
     customerAddress: string;
-    customerPrimaryPhone: string;
-    customerAlternatePhone: string;
+    customerPrimaryPhoneNumber: string;
+    customerAlternatePhoneNumber: string;
     updatedAt: string;
     createdAt: string;
     createdBy: string;
