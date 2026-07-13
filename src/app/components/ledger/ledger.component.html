@@ -79,31 +79,29 @@
     </div>
 
     <!-- Summary Section -->
-    <div class="row text-center mb-3">
-        <div class="col-md-4 mb-2">
-            <div class="card shadow-sm border-success">
-                <div class="card-body">
-                    <h6>Total Credit</h6>
-                    <h4 class="text-success">₹{{ totalCredit }}</h4>
+    <div class="row g-4 mb-3">
+        <div class="col-md-4 col-sm-6">
+            <div class="card action-card shadow-sm h-100 bg-success">
+                <div class="card-body text-center">
+                    <span class="fs-1 mb-2"><small class="me-1">&#8377;</small>{{ totalCredit }}</span>
+                    <h6 class="fw-semibold">Total Credit</h6>
                 </div>
             </div>
         </div>
-        <div class="col-md-4 mb-2">
-            <div class="card shadow-sm border-danger">
-                <div class="card-body">
-                    <h6>Total Debit</h6>
-                    <h4 class="text-danger">₹{{ totalDebit }}</h4>
+        <div class="col-md-4 col-sm-6">
+            <div class="card action-card shadow-sm h-100 bg-danger">
+                <div class="card-body text-center">
+                    <span class="fs-1 mb-2"><small class="me-1">&#8377;</small>{{ totalDebit }}</span>
+                    <h6 class="fw-semibold">Total Debit</h6>
                 </div>
             </div>
         </div>
-        <div class="col-md-4 mb-2">
-            <div class="card shadow-sm"
-                [ngClass]="{'border-success': netEarnings >= 0, 'border-danger': netEarnings < 0}">
-                <div class="card-body">
-                    <h6>Net Earnings</h6>
-                    <h4 [ngClass]="{'text-success': netEarnings >= 0, 'text-danger': netEarnings < 0}">
-                        ₹{{ netEarnings }}
-                    </h4>
+        <div class="col-md-4 col-sm-6">
+            <div class="card action-card shadow-sm h-100"
+                [ngClass]="{'bg-success': netEarnings >= 0, 'bg-danger': netEarnings < 0}">
+                <div class="card-body text-center">
+                    <span class="fs-1 mb-2"><small class="me-1">&#8377;</small>{{ netEarnings }}</span>
+                    <h6 class="fw-semibold">Net Earning</h6>
                 </div>
             </div>
         </div>
