@@ -19,8 +19,12 @@ import { OrderService } from '../../services/order/order.service';
 })
 export class QuickActionsComponent implements OnInit {
 
-  totalOrderPlacedToday: number = 0;
-
+  numberOfOrdersPlacedToday = 0;
+  numberOfOrdersPrepared = 0;
+  numberOfOrdersToBePrepared = 0;
+  numberOfOrdersDelivered = 0;
+  numberOfOrdersToBeDelivered = 0;
+  numberOfOrdersYetToDeliver = 0;
   showToast = false;
   toastType = 'info';
   toastMsg = '';
@@ -33,10 +37,42 @@ export class QuickActionsComponent implements OnInit {
   loadStats() {
     this.orderService.getAllOrdersPlacedToday().subscribe({
       next: (res) => {
-        this.totalOrderPlacedToday = res.length;
+        this.numberOfOrdersPlacedToday = res.length;
       },
       error: (err) => {
-        this.totalOrderPlacedToday = 0;
+        this.numberOfOrdersPlacedToday = 0;
+      },
+    });
+    this.orderService.getAllOrdersToBePreparedToday().subscribe({
+      next: (res) => {
+        this.numberOfOrdersToBePrepared = res.length;
+        this.numberOfOrdersPrepared = 0;
+        for (let order of res) {
+          this.numberOfOrdersPrepared += (order.printJobStatus === 'PREPARED') ? 1 : 0;
+        }
+      },
+      error: (err) => {
+        this.numberOfOrdersToBePrepared = 0;
+      },
+    });
+    this.orderService.getAllOrdersToBeDeliveredToday().subscribe({
+      next: (res) => {
+        this.numberOfOrdersToBeDelivered = res.length;
+        this.numberOfOrdersDelivered = 0;
+        for (let order of res) {
+          this.numberOfOrdersDelivered += (order.printJobStatus === 'DELIVERED') ? 1 : 0;
+        }
+      },
+      error: (err) => {
+        this.numberOfOrdersDelivered = 0;
+      },
+    });
+    this.orderService.getAllOrdersYetToDeliver().subscribe({
+      next: (res) => {
+        this.numberOfOrdersYetToDeliver = res.length;
+      },
+      error: (err) => {
+        this.numberOfOrdersYetToDeliver = 0;
       },
     });
   }

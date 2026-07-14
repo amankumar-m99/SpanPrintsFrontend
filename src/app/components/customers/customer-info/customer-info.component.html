@@ -158,7 +158,7 @@
             <div class="col-md-3 col-sm-6">
                 <div class="card action-card shadow-sm h-100 bg-success">
                     <div class="card-body text-center">
-                        <span class="fs-1 mb-2">{{customer?.printJobIds?.length}}</span>
+                        <span class="fs-1 mb-2">{{orders.length}}</span>
                         <h6 class="fw-semibold">Orders</h6>
                         <p class="text-muted small mb-0">
                             Total orders received by this customer
@@ -169,7 +169,7 @@
             <div class="col-md-3 col-sm-6">
                 <div class="card action-card shadow-sm h-100 bg-info">
                     <div class="card-body text-center">
-                        <span class="fs-1 mb-2"><small class="me-1">&#8377;</small>13000*</span>
+                        <span class="fs-1 mb-2"><small class="me-1">&#8377;</small>{{receivedAmount}}</span>
                         <h6 class="fw-semibold">Recieved Amount</h6>
                         <p class="text-muted small mb-0">
                             Deliveries to be make today
@@ -180,7 +180,7 @@
             <div class="col-md-3 col-sm-6">
                 <div class="card action-card shadow-sm h-100 bg-primary">
                     <div class="card-body text-center">
-                        <span class="fs-1 mb-2"><small class="me-1">&#8377;</small>2000*</span>
+                        <span class="fs-1 mb-2"><small class="me-1">&#8377;</small>{{discountedAmount}}</span>
                         <h6 class="fw-semibold">Discounted Amount</h6>
                         <p class="text-muted small mb-0">
                             Discounted amount so far
@@ -191,7 +191,7 @@
             <div class="col-md-3 col-sm-6">
                 <div class="card action-card shadow-sm h-100 bg-warning">
                     <div class="card-body text-center">
-                        <span class="fs-1 mb-2"><small class="me-1">&#8377;</small>3000*</span>
+                        <span class="fs-1 mb-2"><small class="me-1">&#8377;</small>{{pendingAmount}}</span>
                         <h6 class="fw-semibold">Outstanding Amount</h6>
                         <p class="text-muted small mb-0">
                             Amount inclusive of all orders

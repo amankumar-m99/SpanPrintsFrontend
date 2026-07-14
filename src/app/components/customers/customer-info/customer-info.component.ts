@@ -8,6 +8,8 @@ import { ToastComponent } from "../../utility/toast/toast.component";
 import { ConfirmDialogComponent } from "../../utility/confirm-dialog/confirm-dialog.component";
 import { FormsModule } from '@angular/forms';
 import { Constant } from '../../../constant/Constant';
+import { OrderService } from '../../../services/order/order.service';
+import { Order } from '../../../model/order/order.model';
 
 @Component({
   selector: 'app-customer-info',
@@ -20,6 +22,11 @@ export class CustomerInfoComponent implements OnInit {
 
   customerUuid !: string;
   customer !: Customer | null;
+  orders !: Order[];
+  receivedAmount = 0;
+  discountedAmount = 0;
+  pendingAmount = 0;
+
   errorMsg = '';
   copied = false;
   toastType = 'info';
@@ -31,7 +38,7 @@ export class CustomerInfoComponent implements OnInit {
   isUuidValid = false;
   private uuidRegex: RegExp = Constant.UUID_REGEX;
 
-  constructor(private router: Router, private route: ActivatedRoute, private customerService: CustomerService) { }
+  constructor(private router: Router, private route: ActivatedRoute, private customerService: CustomerService, private orderService: OrderService) { }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
@@ -39,6 +46,7 @@ export class CustomerInfoComponent implements OnInit {
       if (uuid) {
         this.customerUuid = uuid;
         this.fetchCustomerDetails();
+        this.fetchOrderDetails();
       }
     });
   }
@@ -54,6 +62,33 @@ export class CustomerInfoComponent implements OnInit {
         this.errorMsg = err?.error?.message || "Could not load customer's data!";
       }
     });
+  }
+
+  fetchOrderDetails() {
+    this.orderService.getAllOrdersByCustomerUuid(this.customerUuid).subscribe({
+      next: (res) => {
+        this.orders = res;
+        this.errorMsg = '';
+        this.updateOrderValues();
+      },
+      error: (err) => {
+        this.errorMsg = err?.error?.message || "Could not load order's data!";
+      }
+    });
+  }
+
+  updateOrderValues() {
+    let rAmount = 0;
+    let dAmount = 0;
+    let pAmount = 0;
+    for(let order of this.orders){
+      rAmount += order.depositAmount;
+      dAmount += order.discountedAmount;
+      pAmount += order.pendingAmount;
+    }
+    this.receivedAmount = rAmount;
+    this.discountedAmount = dAmount;
+    this.pendingAmount = pAmount;
   }
 
   deleteCustomer() {

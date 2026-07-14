@@ -29,6 +29,22 @@ export class OrderService {
     return this.http.get<Order[]>(`${this.url}/today`);
   }
 
+  getAllOrdersToBePreparedToday() {
+    return this.http.get<Order[]>(`${this.url}/to-be-prepared-today`);
+  }
+
+  getAllOrdersToBeDeliveredToday() {
+    return this.http.get<Order[]>(`${this.url}/to-be-deliver-today`);
+  }
+
+  getAllOrdersYetToDeliver() {
+    return this.http.get<Order[]>(`${this.url}/yet-to-deliver`);
+  }
+
+  getAllOrdersByCustomerUuid(uuid: string) {
+    return this.http.get<Order[]>(`${this.url}/customer-uuid/${uuid}`);
+  }
+
   getOrderById(id: number) {
     return this.http.get<Order>(`${this.url}/id/${id}`);
   }
