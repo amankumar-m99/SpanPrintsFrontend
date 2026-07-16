@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Constant } from '../../constant/Constant';
 import { Order } from '../../model/order/order.model';
 import { UpdateOrderRequest } from '../../model/order/update-order-request.model';
+import { OrderPagination } from '../../model/order/order-pagination.model';
 
 @Injectable({
   providedIn: 'root'
@@ -23,6 +24,10 @@ export class OrderService {
 
   getAllOrders() {
     return this.http.get<Order[]>(this.url);
+  }
+
+  getAllOrdersPaginated(pageNumber: number, pageSize: number) {
+    return this.http.get<OrderPagination>(`${this.url}/paginated?pageNumber=${pageNumber}&pageSize=${pageSize}`);
   }
 
   getAllOrdersPlacedToday() {
