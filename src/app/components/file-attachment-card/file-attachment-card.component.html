@@ -12,7 +12,7 @@
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
                         <div>
-                            <small class="text-body-secondary">Size: {{(file?.size || '0') + ' Bytes'}}</small>
+                            <small class="text-body-secondary">Size: {{file?.size | fileSize}}</small>
                         </div>
                     </div>
                     <div>

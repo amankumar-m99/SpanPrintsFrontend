@@ -3,11 +3,12 @@ import { FileAttachment } from '../../model/file-attachment/file-attachment.mode
 import { FileAttachmentService, getPreviewType, PreviewType } from '../../services/file-attachment/file-attachment.service';
 import { FilePreviewComponent } from "../file-preview/file-preview.component";
 import { CommonModule } from '@angular/common';
+import { FileSizePipe } from "../../pipes/file-size/file-size.pipe";
 
 @Component({
   selector: 'app-file-attachment-card',
   standalone: true,
-  imports: [FilePreviewComponent, CommonModule],
+  imports: [FilePreviewComponent, CommonModule, FileSizePipe],
   templateUrl: './file-attachment-card.component.html',
   styleUrl: './file-attachment-card.component.css'
 })
