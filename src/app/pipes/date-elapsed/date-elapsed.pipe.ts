@@ -6,17 +6,18 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class DateElapsedPipe implements PipeTransform {
 
-  transform(value: Date | string | number): string {
-    if (!value) return '';
+  transform(value: Date | string | number | null | undefined): string {
+    // Explicitly return an empty string for undefined, null, or falsy inputs
+    if (value === undefined || value === null || value === '') return '';
 
     const inputDate = new Date(value);
     const now = new Date();
-    
+
     // Invalid date check
     if (isNaN(inputDate.getTime())) return '';
 
     const seconds = Math.floor((now.getTime() - inputDate.getTime()) / 1000);
-    
+
     // Handle future dates or just now
     if (seconds < 60) {
       return `just now (${this.formatDate(inputDate)})`;
