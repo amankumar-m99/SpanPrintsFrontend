@@ -9,11 +9,12 @@ import { ToastComponent } from "../utility/toast/toast.component";
 import { ConfirmDialogComponent } from "../utility/confirm-dialog/confirm-dialog.component";
 import { LedgerService } from '../../services/ledger/ledger.service';
 import { LedgerEntry } from '../../model/ledger/ledger-entry.model';
+import { DateElapsedPipe } from "../../pipes/date-elapsed/date-elapsed.pipe";
 
 @Component({
   selector: 'app-expenses',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule, ExpenseCardComponent, ExpenseModalComponent, ToastComponent, ConfirmDialogComponent],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, ExpenseCardComponent, ExpenseModalComponent, ToastComponent, ConfirmDialogComponent, DateElapsedPipe],
   templateUrl: './expenses.component.html',
   styleUrl: './expenses.component.css'
 })

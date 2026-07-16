@@ -65,7 +65,7 @@
         </table>
     </div>
     <div class="card-footer d-flex justify-content-between align-items-center">
-        <small class="text-muted">Created At: {{ order.createdAt | date:'medium' }}</small>
+        <small class="text-muted">Created At: {{ order.createdAt | dateElapsed }}</small>
         <small><a>More details <i class="bi bi-caret-right-fill"></i></a></small>
         <div class="d-none">
             <button class="btn btn-sm btn-outline-primary me-1" (click)="edit.emit(order)">

@@ -112,7 +112,7 @@
             <tbody>
                 <tr *ngFor="let ledgerEntry of ledgerEntries; let i = index">
                     <td>{{ i + 1 }}</td>
-                    <td>{{ ledgerEntry.transactionDateTime | date:'medium' }}</td>
+                    <td>{{ ledgerEntry.transactionDateTime | dateElapsed }}</td>
                     <td>{{ ledgerEntry.ledgerSource }}</td>
                     <td>{{ ledgerEntry.amount | currency:'INR' }}</td>
                     <td><textarea class="form-control">{{ ledgerEntry.description }}</textarea></td>

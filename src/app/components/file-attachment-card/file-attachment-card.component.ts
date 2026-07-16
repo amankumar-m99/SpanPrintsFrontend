@@ -4,11 +4,12 @@ import { FileAttachmentService, getPreviewType, PreviewType } from '../../servic
 import { FilePreviewComponent } from "../file-preview/file-preview.component";
 import { CommonModule } from '@angular/common';
 import { FileSizePipe } from "../../pipes/file-size/file-size.pipe";
+import { DateElapsedPipe } from "../../pipes/date-elapsed/date-elapsed.pipe";
 
 @Component({
   selector: 'app-file-attachment-card',
   standalone: true,
-  imports: [FilePreviewComponent, CommonModule, FileSizePipe],
+  imports: [FilePreviewComponent, CommonModule, FileSizePipe, DateElapsedPipe],
   templateUrl: './file-attachment-card.component.html',
   styleUrl: './file-attachment-card.component.css'
 })
