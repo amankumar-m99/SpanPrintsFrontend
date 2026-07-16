@@ -24,7 +24,6 @@ import { OrderInfoComponent } from './components/orders/order-info/order-info.co
 import { ForgotPasswordComponent } from './components/password/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './components/password/reset-password/reset-password.component';
 import { ChangePasswordComponent } from './components/password/change-password/change-password.component';
-import { PaginatedOrdersComponent } from './components/orders/paginated-orders/paginated-orders.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent, canActivate: [GuestGuard] },
@@ -36,7 +35,6 @@ export const routes: Routes = [
         path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard],
         children: [
             { path: 'orders', component: OrdersComponent },
-            { path: 'paginated-orders', component: PaginatedOrdersComponent },
             { path: 'order/:uuid', component: OrderInfoComponent },
             { path: 'customers', component: CustomersComponent },
             { path: 'customer/:uuid', component: CustomerInfoComponent },
