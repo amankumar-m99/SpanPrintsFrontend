@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormsModule } from '@angular/forms';
-import { OrderCardComponent } from './order-card/order-card.component';
 import { Order } from '../../model/order/order.model';
 import { OrderService } from '../../services/order/order.service';
 import { OrderModalComponent } from "./order-modal/order-modal.component";
@@ -12,7 +11,7 @@ import { ToastComponent } from "../utility/toast/toast.component";
 @Component({
   selector: 'app-orders',
   standalone: true,
-  imports: [CommonModule, OrderCardComponent, FormsModule, OrderModalComponent, ConfirmDialogComponent, ToastComponent],
+  imports: [CommonModule, FormsModule, OrderModalComponent, ConfirmDialogComponent, ToastComponent],
   templateUrl: './orders.component.html',
   styleUrl: './orders.component.css'
 })
