@@ -6,11 +6,12 @@ import { ConfirmDialogComponent } from "../utility/confirm-dialog/confirm-dialog
 import { InventoryItemModalComponent } from "./inventory-item-modal/inventory-item-modal.component";
 import { ToastComponent } from "../utility/toast/toast.component";
 import { RouterLink } from "@angular/router";
+import { DateElapsedPipe } from "../../pipes/date-elapsed/date-elapsed.pipe";
 
 @Component({
   selector: 'app-inventory',
   standalone: true,
-  imports: [CommonModule, ConfirmDialogComponent, InventoryItemModalComponent, ToastComponent, RouterLink],
+  imports: [CommonModule, ConfirmDialogComponent, InventoryItemModalComponent, ToastComponent, RouterLink, DateElapsedPipe],
   templateUrl: './inventory.component.html',
   styleUrl: './inventory.component.css'
 })

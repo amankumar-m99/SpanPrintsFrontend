@@ -142,20 +142,20 @@
                     <td>{{ order.printJobTypeName }}</td>
                     <td>{{ order.printJobTypeCode }}</td>
                     <td>{{ order.quantity }}</td>
-                    <td>{{ order.dateOfDelivery | date:'short'}}</td>
+                    <td>{{ order.dateOfDelivery | dateElapsed}}</td>
                     <td>{{ order.bookNumber }}</td>
                     <td>{{ order.customerName }}</td>
                     <td>{{ order.customerPrimaryPhoneNumber }}</td>
                     <td>{{ order.customerAddress }}</td>
-                    <td>{{ order.dateOfPlaced | date:'medium' }}</td>
+                    <td>{{ order.dateOfPlaced | dateElapsed }}</td>
                     <td>{{ order.printJobStatus }}</td>
                     <td>{{ order.paymentStatus }}</td>
                     <td>{{ order.totalAmount }}</td>
                     <td>{{ order.discountedAmount }}</td>
                     <td>{{ order.depositAmount }}</td>
                     <td>{{ order.pendingAmount }}</td>
-                    <td>{{ order.updatedAt }}</td>
-                    <td>{{ order.createdAt }}</td>
+                    <td>{{ order.updatedAt | dateElapsed }}</td>
+                    <td>{{ order.createdAt | dateElapsed }}</td>
                     <td>{{ order.createdBy }}</td>
                     <!-- Actions -->
                     <td class="text-end" (click)="$event.stopPropagation()">

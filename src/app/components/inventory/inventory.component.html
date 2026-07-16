@@ -71,8 +71,8 @@
                     <td>{{ inventoryItem.rate }}</td>
                     <td>{{ inventoryItem.rate * inventoryItem.quantity }}</td>
                     <td>{{ inventoryItem.description }}</td>
-                    <td>{{ inventoryItem.updatedAt | date: 'short' }}</td>
-                    <td>{{ inventoryItem.createdAt | date:'short' }}</td>
+                    <td>{{ inventoryItem.updatedAt | dateElapsed }}</td>
+                    <td>{{ inventoryItem.createdAt | dateElapsed }}</td>
 
                     <!-- Actions -->
                     <td class="text-end" (click)="$event.stopPropagation()">

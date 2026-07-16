@@ -6,11 +6,12 @@ import { VendorModalComponent } from "./vendor-modal/vendor-modal.component";
 import { ToastComponent } from '../utility/toast/toast.component';
 import { VendorService } from '../../services/vendor/vendor.service';
 import { ConfirmDialogComponent } from "../utility/confirm-dialog/confirm-dialog.component";
+import { DateElapsedPipe } from "../../pipes/date-elapsed/date-elapsed.pipe";
 
 @Component({
   selector: 'app-vendors',
   standalone: true,
-  imports: [CommonModule, VendorModalComponent, ToastComponent, ConfirmDialogComponent],
+  imports: [CommonModule, VendorModalComponent, ToastComponent, ConfirmDialogComponent, DateElapsedPipe],
   templateUrl: './vendors.component.html',
   styleUrl: './vendors.component.css'
 })

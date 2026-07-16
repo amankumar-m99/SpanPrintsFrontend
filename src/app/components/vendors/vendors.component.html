@@ -39,8 +39,8 @@
                     <td>{{ vendor.address }}</td>
                     <td>{{ vendor.primaryPhoneNumber }}</td>
                     <td>{{ vendor.alternatePhoneNumber }}</td>
-                    <td>{{ vendor.updatedAt | date: 'short' }}</td>
-                    <td>{{ vendor.createdAt | date:'short' }}</td>
+                    <td>{{ vendor.updatedAt | dateElapsed }}</td>
+                    <td>{{ vendor.createdAt | dateElapsed }}</td>
                     <td>{{ vendor.createdBy }}</td>
                     <!-- Actions -->
                     <td class="text-end" (click)="$event.stopPropagation()">

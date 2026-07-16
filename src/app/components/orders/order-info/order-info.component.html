@@ -114,11 +114,11 @@
                     </div>
                     <div class="col-md-4">
                         <small><i class="bi bi-calendar-plus me-1 text-info"></i>Date of Placed</small>
-                        <div>{{ order?.dateOfPlaced | date:'short' }}</div>
+                        <div>{{ order?.dateOfPlaced | dateElapsed }}</div>
                     </div>
                     <div class="col-md-4">
                         <small><i class="bi bi-calendar-plus me-1 text-info"></i>Date of delivery</small>
-                        <div>{{ order?.dateOfDelivery | date:'short' }}</div>
+                        <div>{{ order?.dateOfDelivery | dateElapsed }}</div>
                     </div>
                     <div class="col-md-4">
                         <small><i class="bi bi-box me-1 text-info"></i>Order Status</small>
@@ -237,11 +237,11 @@
                     </div>
                     <div class="col-md-4">
                         <small><i class="bi bi-calendar-plus me-1 text-info"></i>Created At</small>
-                        <div>{{ order?.createdAt | date:'short' }}</div>
+                        <div>{{ order?.createdAt | dateElapsed }}</div>
                     </div>
                     <div class="col-md-4">
                         <small><i class="bi bi-calendar-check me-1 text-info"></i>Updated At</small>
-                        <div>{{ order?.updatedAt | date:'short' }}</div>
+                        <div>{{ order?.updatedAt | dateElapsed }}</div>
                     </div>
                     <div class="col-md-4">
                         <small><span class="me-1 text-info">#</span>Order UUID</small>
