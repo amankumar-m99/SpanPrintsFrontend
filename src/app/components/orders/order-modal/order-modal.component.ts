@@ -94,7 +94,7 @@ export class OrderModalComponent implements OnInit, OnChanges {
       printJobTypeId: ['', Validators.required],
       quantity: [1, [Validators.required, Validators.min(1)]],
       dateOfDelivery: ['', Validators.required],
-      dateOfPlaced: ['', Validators.required],
+      dateOfPlaced: [this.getTodayDateString(), Validators.required],
 
       bookNumber: ['', Validators.required],
       wBookNumber: [null],
@@ -109,6 +109,11 @@ export class OrderModalComponent implements OnInit, OnChanges {
       description: ['']
     });
   }
+
+  private getTodayDateString(): string {
+    return new Date().toISOString().split('T')[0];
+  }
+
   get customerId() { return this.modalForm.get('customerId'); }
   get customerName() { return this.modalForm.get('customerName'); }
   get customerPrimaryPhoneNumber() { return this.modalForm.get('customerPrimaryPhoneNumber'); }
