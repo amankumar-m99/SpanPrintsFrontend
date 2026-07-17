@@ -10,7 +10,7 @@ export class TimeElapsedPipe implements PipeTransform {
 
   transform(
     value: Date | string | number | null | undefined, 
-    format: TimeElapsedFormat = 'TD'
+    format: TimeElapsedFormat = 'DT'
   ): string {
     // Explicitly return an empty string for undefined, null, or falsy inputs
     if (value === undefined || value === null || value === '') return '';
