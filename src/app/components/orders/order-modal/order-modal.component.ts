@@ -11,11 +11,12 @@ import { OrderService } from '../../../services/order/order.service';
 import { CustomerService } from '../../../services/customer/customer.service';
 import { PrintJobType } from '../../../model/order/printjobtype.model';
 import { PrintJobTypeService } from '../../../services/order/printjobtype.service';
+import { DayRelativePipe } from "../../../pipes/dayRelative/day-relative.pipe";
 
 @Component({
   selector: 'app-order-modal',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, DayRelativePipe],
   templateUrl: './order-modal.component.html',
   styleUrl: './order-modal.component.css'
 })
