@@ -12,11 +12,12 @@ import { FileAttachmentService } from '../../../services/file-attachment/file-at
 import { FileAttachment } from '../../../model/file-attachment/file-attachment.model';
 import { FileAttachmentCardComponent } from "../../file-attachment-card/file-attachment-card.component";
 import { DateElapsedPipe } from "../../../pipes/date-elapsed/date-elapsed.pipe";
+import { TimeElapsedPipe } from "../../../pipes/timeElapsed/time-elapsed.pipe";
 
 @Component({
   selector: 'app-order-info',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink, ToastComponent, ConfirmDialogComponent, OrderModalComponent, FileAttachmentCardComponent, DateElapsedPipe],
+  imports: [CommonModule, FormsModule, RouterLink, ToastComponent, ConfirmDialogComponent, OrderModalComponent, FileAttachmentCardComponent, DateElapsedPipe, TimeElapsedPipe],
   templateUrl: './order-info.component.html',
   styleUrl: './order-info.component.css'
 })

@@ -237,11 +237,11 @@
                     </div>
                     <div class="col-md-4">
                         <small><i class="bi bi-calendar-plus me-1 text-info"></i>Created At</small>
-                        <div>{{ order?.createdAt | dateElapsed }}</div>
+                        <div>{{ order?.createdAt | timeElapsed }}</div>
                     </div>
                     <div class="col-md-4">
                         <small><i class="bi bi-calendar-check me-1 text-info"></i>Updated At</small>
-                        <div>{{ order?.updatedAt | dateElapsed }}</div>
+                        <div>{{ order?.updatedAt | timeElapsed }}</div>
                     </div>
                     <div class="col-md-4">
                         <small><span class="me-1 text-info">#</span>Order UUID</small>
