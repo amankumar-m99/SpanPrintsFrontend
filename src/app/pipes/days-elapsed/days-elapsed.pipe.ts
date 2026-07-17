@@ -1,16 +1,16 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-export type DateElapsedFormat = 'DT' | 'TD' | 'T' | 'D';
+export type DaysElapsedFormat = 'DT' | 'TD' | 'T' | 'D';
 
 @Pipe({
-  name: 'dateElapsed',
+  name: 'daysElapsed',
   standalone: true
 })
-export class DateElapsedPipe implements PipeTransform {
+export class DaysElapsedPipe implements PipeTransform {
 
   transform(
     value: Date | string | number | null | undefined,
-    format: DateElapsedFormat = 'DT'
+    format: DaysElapsedFormat = 'DT'
   ): string {
     if (value === undefined || value === null || value === '') return '';
 
