@@ -1,26 +1,50 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
+export type DateElapsedFormat = 'DT' | 'TD' | 'T' | 'D';
+
 @Pipe({
   name: 'dateElapsed',
   standalone: true
 })
 export class DateElapsedPipe implements PipeTransform {
 
-  transform(value: Date | string | number | null | undefined): string {
+  transform(
+    value: Date | string | number | null | undefined, 
+    format: DateElapsedFormat = 'TD'
+  ): string {
     // Explicitly return an empty string for undefined, null, or falsy inputs
     if (value === undefined || value === null || value === '') return '';
 
     const inputDate = new Date(value);
     const now = new Date();
-
+    
     // Invalid date check
     if (isNaN(inputDate.getTime())) return '';
 
-    const seconds = Math.floor((now.getTime() - inputDate.getTime()) / 1000);
+    const D = this.formatDate2(inputDate);
+    const T = this.calculateElapsedText(inputDate, now);
 
-    // Handle future dates or just now
+    // Format output mapping based on user argument
+    switch (format) {
+      case 'DT':
+        return `${D} (${T})`;
+      case 'T':
+        return T;
+      case 'D':
+        return D;
+      case 'TD':
+      default:
+        return `${T} (${D})`;
+    }
+  }
+
+  private calculateElapsedText(inputDate: Date, now: Date): string {
+    const diffInMs = now.getTime() - inputDate.getTime();
+    const isFuture = diffInMs < 0;
+    const seconds = Math.floor(Math.abs(diffInMs) / 1000);
+    
     if (seconds < 60) {
-      return `just now (${this.formatDate(inputDate)})`;
+      return 'just now';
     }
 
     const intervals: { [key: string]: number } = {
@@ -33,16 +57,17 @@ export class DateElapsedPipe implements PipeTransform {
       'minute': 60
     };
 
+    const suffix = isFuture ? 'from now' : 'ago';
+
     for (const key in intervals) {
       const counter = Math.floor(seconds / intervals[key]);
       if (counter >= 1) {
         const plural = counter === 1 ? '' : 's';
-        const elapsedText = `${counter} ${key}${plural} ago`;
-        return `${elapsedText} (${this.formatDate2(inputDate)})`;
+        return `${counter} ${key}${plural} ${suffix}`;
       }
     }
 
-    return this.formatDate(inputDate);
+    return 'just now';
   }
 
   private formatDate2(date: Date): string {
