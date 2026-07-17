@@ -38,11 +38,19 @@ export class DateElapsedPipe implements PipeTransform {
       if (counter >= 1) {
         const plural = counter === 1 ? '' : 's';
         const elapsedText = `${counter} ${key}${plural} ago`;
-        return `${elapsedText} (${this.formatDate(inputDate)})`;
+        return `${elapsedText} (${this.formatDate2(inputDate)})`;
       }
     }
 
     return this.formatDate(inputDate);
+  }
+
+  private formatDate2(date: Date): string {
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = months[date.getMonth()];
+    const year = date.getFullYear();
+    return `${day} ${month} ${year}`;
   }
 
   private formatDate(date: Date): string {
