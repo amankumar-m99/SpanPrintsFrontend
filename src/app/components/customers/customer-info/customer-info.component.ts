@@ -10,12 +10,12 @@ import { FormsModule } from '@angular/forms';
 import { Constant } from '../../../constant/Constant';
 import { OrderService } from '../../../services/order/order.service';
 import { Order } from '../../../model/order/order.model';
-import { DateElapsedPipe } from "../../../pipes/date-elapsed/date-elapsed.pipe";
+import { TimeElapsedPipe } from "../../../pipes/timeElapsed/time-elapsed.pipe";
 
 @Component({
   selector: 'app-customer-info',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink, CustomerModalComponent, ToastComponent, ConfirmDialogComponent, DateElapsedPipe],
+  imports: [CommonModule, FormsModule, RouterLink, CustomerModalComponent, ToastComponent, ConfirmDialogComponent, TimeElapsedPipe],
   templateUrl: './customer-info.component.html',
   styleUrl: './customer-info.component.css'
 })

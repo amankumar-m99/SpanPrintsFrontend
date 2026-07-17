@@ -1,12 +1,12 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LedgerEntry } from '../../../model/ledger/ledger-entry.model';
-import { DateElapsedPipe } from "../../../pipes/date-elapsed/date-elapsed.pipe";
+import { TimeElapsedPipe } from "../../../pipes/timeElapsed/time-elapsed.pipe";
 
 @Component({
   selector: 'app-expense-card',
   standalone: true,
-  imports: [CommonModule, DateElapsedPipe],
+  imports: [CommonModule, TimeElapsedPipe],
   templateUrl: './expense-card.component.html',
   styleUrl: './expense-card.component.css'
 })

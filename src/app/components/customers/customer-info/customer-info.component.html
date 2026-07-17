@@ -143,12 +143,12 @@
 
                     <div class="col-md-4">
                         <strong><i class="bi bi-calendar-plus me-1 text-info"></i>Created At</strong>
-                        <div>{{ customer?.createdAt | dateElapsed }}</div>
+                        <div>{{ customer?.createdAt | timeElapsed }}</div>
                     </div>
 
                     <div class="col-md-4">
                         <strong><i class="bi bi-calendar-check me-1 text-info"></i>Updated At</strong>
-                        <div>{{ customer?.updatedAt | dateElapsed }}</div>
+                        <div>{{ customer?.updatedAt | timeElapsed }}</div>
                     </div>
                 </div>
             </div>

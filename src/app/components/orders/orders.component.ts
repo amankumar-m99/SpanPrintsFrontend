@@ -7,12 +7,13 @@ import { OrderModalComponent } from "./order-modal/order-modal.component";
 import { ConfirmDialogComponent } from "../utility/confirm-dialog/confirm-dialog.component";
 import { Router } from '@angular/router';
 import { ToastComponent } from "../utility/toast/toast.component";
-import { DateElapsedPipe } from '../../pipes/date-elapsed/date-elapsed.pipe';
+import { DaysElapsedPipe } from "../../pipes/days-elapsed/days-elapsed.pipe";
+import { TimeElapsedPipe } from "../../pipes/timeElapsed/time-elapsed.pipe";
 
 @Component({
   selector: 'app-orders',
   standalone: true,
-  imports: [CommonModule, FormsModule, OrderModalComponent, ConfirmDialogComponent, ToastComponent, DateElapsedPipe],
+  imports: [CommonModule, FormsModule, OrderModalComponent, ConfirmDialogComponent, ToastComponent, DaysElapsedPipe, TimeElapsedPipe],
   templateUrl: './orders.component.html',
   styleUrl: './orders.component.css'
 })

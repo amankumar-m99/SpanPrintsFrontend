@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
-import { Expense } from '../../model/expense/expense.model';
 import { ExpenseCardComponent } from './expense-card/expense-card.component';
 import { ExpenseModalComponent } from "./expense-modal/expense-modal.component";
 import { Router } from '@angular/router';
@@ -9,12 +8,12 @@ import { ToastComponent } from "../utility/toast/toast.component";
 import { ConfirmDialogComponent } from "../utility/confirm-dialog/confirm-dialog.component";
 import { LedgerService } from '../../services/ledger/ledger.service';
 import { LedgerEntry } from '../../model/ledger/ledger-entry.model';
-import { DateElapsedPipe } from "../../pipes/date-elapsed/date-elapsed.pipe";
+import { TimeElapsedPipe } from "../../pipes/timeElapsed/time-elapsed.pipe";
 
 @Component({
   selector: 'app-expenses',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule, ExpenseCardComponent, ExpenseModalComponent, ToastComponent, ConfirmDialogComponent, DateElapsedPipe],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, ExpenseCardComponent, ExpenseModalComponent, ToastComponent, ConfirmDialogComponent, TimeElapsedPipe],
   templateUrl: './expenses.component.html',
   styleUrl: './expenses.component.css'
 })

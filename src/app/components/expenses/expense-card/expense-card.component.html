@@ -3,7 +3,7 @@
     <div class="card-body">
         <div class="d-flex justify-content-between mb-1">
             <span class="h5"><i class="bi bi-currency-rupee"></i> {{ ledgerEntry?.amount }}</span>
-            <small class="text-muted">{{ ledgerEntry?.transactionDateTime | dateElapsed }}</small>
+            <small class="text-muted">{{ ledgerEntry?.transactionDateTime | timeElapsed }}</small>
         </div>
         <div class="mb-0">
             <textarea class="form-control" formControlName="description">{{ ledgerEntry?.description }}</textarea>

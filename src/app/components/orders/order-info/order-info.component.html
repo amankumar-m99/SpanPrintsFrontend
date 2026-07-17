@@ -114,11 +114,11 @@
                     </div>
                     <div class="col-md-4">
                         <small><i class="bi bi-calendar-plus me-1 text-info"></i>Date of Placed</small>
-                        <div>{{ order?.dateOfPlaced | dateElapsed }}</div>
+                        <div>{{ order?.dateOfPlaced | daysElapsed }}</div>
                     </div>
                     <div class="col-md-4">
                         <small><i class="bi bi-calendar-plus me-1 text-info"></i>Date of delivery</small>
-                        <div>{{ order?.dateOfDelivery | dateElapsed }}</div>
+                        <div>{{ order?.dateOfDelivery | daysElapsed }}</div>
                     </div>
                     <div class="col-md-4">
                         <small><i class="bi bi-box me-1 text-info"></i>Order Status</small>

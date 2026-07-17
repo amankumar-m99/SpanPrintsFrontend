@@ -37,8 +37,8 @@
                     <td>{{ printJob.code }}</td>
                     <td>{{ printJob.uuid }}</td>
                     <td>{{ printJob.description }}</td>
-                    <td>{{ printJob.updatedAt | dateElapsed }}</td>
-                    <td>{{ printJob.createdAt | dateElapsed }}</td>
+                    <td>{{ printJob.updatedAt | timeElapsed }}</td>
+                    <td>{{ printJob.createdAt | timeElapsed }}</td>
 
                     <!-- Actions -->
                     <td class="text-end" (click)="$event.stopPropagation()">

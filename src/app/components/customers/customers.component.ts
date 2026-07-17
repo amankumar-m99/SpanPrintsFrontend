@@ -6,12 +6,12 @@ import { CustomerModalComponent } from "./customer-modal/customer-modal.componen
 import { CustomerService } from '../../services/customer/customer.service';
 import { ToastComponent } from "../utility/toast/toast.component";
 import { ConfirmDialogComponent } from "../utility/confirm-dialog/confirm-dialog.component";
-import { DateElapsedPipe } from "../../pipes/date-elapsed/date-elapsed.pipe";
+import { TimeElapsedPipe } from "../../pipes/timeElapsed/time-elapsed.pipe";
 
 @Component({
   selector: 'app-customers',
   standalone: true,
-  imports: [CommonModule, CustomerModalComponent, ToastComponent, ConfirmDialogComponent, DateElapsedPipe],
+  imports: [CommonModule, CustomerModalComponent, ToastComponent, ConfirmDialogComponent, TimeElapsedPipe],
   templateUrl: './customers.component.html',
   styleUrl: './customers.component.css'
 })

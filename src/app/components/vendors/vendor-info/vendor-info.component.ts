@@ -8,11 +8,11 @@ import { Vendor } from '../../../model/vendor/vendor.model';
 import { Constant } from '../../../constant/Constant';
 import { FormsModule } from '@angular/forms';
 import { ConfirmDialogComponent } from '../../utility/confirm-dialog/confirm-dialog.component';
-import { DateElapsedPipe } from "../../../pipes/date-elapsed/date-elapsed.pipe";
+import { TimeElapsedPipe } from "../../../pipes/timeElapsed/time-elapsed.pipe";
 
 @Component({
   selector: 'app-vendor-info',
-  imports: [CommonModule, FormsModule, RouterLink, ToastComponent, ConfirmDialogComponent, VendorModalComponent, DateElapsedPipe],
+  imports: [CommonModule, FormsModule, RouterLink, ToastComponent, ConfirmDialogComponent, VendorModalComponent, TimeElapsedPipe],
   standalone: true,
   templateUrl: './vendor-info.component.html',
   styleUrl: './vendor-info.component.css'

@@ -5,12 +5,12 @@ import { ConfirmDialogComponent } from '../utility/confirm-dialog/confirm-dialog
 import { CommonModule } from '@angular/common';
 import { ToastComponent } from '../utility/toast/toast.component';
 import { PrintjobtypeModalComponent } from "./printjobtype-modal/printjobtype-modal.component";
-import { DateElapsedPipe } from "../../pipes/date-elapsed/date-elapsed.pipe";
+import { TimeElapsedPipe } from "../../pipes/timeElapsed/time-elapsed.pipe";
 
 @Component({
   selector: 'app-printjob',
   standalone: true,
-  imports: [CommonModule, ToastComponent, ConfirmDialogComponent, PrintjobtypeModalComponent, DateElapsedPipe],
+  imports: [CommonModule, ToastComponent, ConfirmDialogComponent, PrintjobtypeModalComponent, TimeElapsedPipe],
   templateUrl: './printjob.component.html',
   styleUrl: './printjob.component.css'
 })
