@@ -34,7 +34,7 @@ export class DateElapsedPipe implements PipeTransform {
         return D;
       case 'TD':
       default:
-        return `${T} (${D})`;
+        return `${D} (${T})`;
     }
   }
 
