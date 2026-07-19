@@ -96,6 +96,9 @@
         <div class="card shadow-sm mb-2">
             <div class="card-body">
                 <div class="row g-3">
+                    <div class="col-12 pb-1 border-bottom">
+                        <span><i class="bi bi-bag-heart-fill me-2 text-info"></i>Order Details</span>
+                    </div>
                     <div class="col-md-4 d-none">
                         <small><span class="me-1 text-info">#</span>Job Code</small>
                         <div>{{ order?.printJobTypeCode || 'N/A'}}</div>
@@ -134,17 +137,24 @@
         <div class="card shadow-sm mb-2">
             <div class="card-body">
                 <div class="row g-3">
+                    <div class="col-12 pb-1 border-bottom">
+                        <span><i class="bi bi-cash-stack me-2 text-info"></i>Payment Details</span>
+                    </div>
                     <div class="col-md-4">
                         <small><i class="bi bi-cash me-1 text-info"></i>Total Amount</small>
                         <div>{{ order?.totalAmount }}</div>
+                    </div>
+                    <div class="col-md-4">
+                        <small><i class="bi bi-cash me-1 text-info"></i>Discounted Amount</small>
+                        <div>{{ order?.discountedAmount}}</div>
                     </div>
                     <div class="col-md-4">
                         <small><i class="bi bi-cash me-1 text-info"></i>Pending Amount</small>
                         <div>{{ order?.pendingAmount}}</div>
                     </div>
                     <div class="col-md-4">
-                        <small><i class="bi bi-cash me-1 text-info"></i>Discounted Amount</small>
-                        <div>{{ order?.discountedAmount}}</div>
+                        <small><i class="bi bi-cash me-1 text-info"></i>Deposited Amount</small>
+                        <div>{{ order?.depositAmount}}</div>
                     </div>
                     <div class="col-md-4">
                         <small><i class="bi bi-cash-stack me-1 text-info"></i>Payment Status</small>
@@ -154,15 +164,14 @@
             </div>
         </div>
 
-        <!-- Note Description Attachments -->
-        <div class="row g-3 mb-1">
-            <div class="col-12">
-                <div class="border rounded p-2">
-                    <div>
-                        <small><i class="bi bi-chat-left-text me-1 text-info"></i>Note <i
-                                class="bi bi-pencil"></i></small>
+        <!-- Note details -->
+        <div class="card shadow-sm mb-2">
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-12 pb-1 border-bottom">
+                        <span><i class="bi bi-chat-left-text me-1 text-info"></i>Note</span>
                     </div>
-                    <div class="mt-2">
+                    <div class="col-12">
                         @if( order?.note){
                         <p class="w-100 px-2">{{ order?.note }}</p>
                         }
@@ -173,28 +182,40 @@
                     </div>
                 </div>
             </div>
-            <div class="col-12">
-                <div class="border rounded p-2">
-                    <small><i class="bi bi-card-text me-1 text-info"></i>Description</small>
+        </div>
+
+        <!-- Description details -->
+        <div class="card shadow-sm mb-2">
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-12 pb-1 border-bottom">
+                        <span><i class="bi bi-card-text me-1 text-info"></i>Description</span>
+                    </div>
                     <div class="mt-2">
                         @if( order?.description){
                         <p class="w-100 px-2">{{ order?.description }}</p>
                         }
                         @else {
                         <span>No description.</span>
-                        <span class="ms-2 span-btn text-info" title="Add description" role="button">Add a description</span>
+                        <span class="ms-2 span-btn text-info" title="Add description" role="button">Add a
+                            description</span>
                         }
                     </div>
                 </div>
             </div>
-            <div class="col-12">
-                <div class="border rounded p-2">
-                    <strong><i class="bi bi-paperclip me-1 text-info"></i>Attached Files</strong>
+        </div>
+
+        <!-- Attachments details -->
+        <div class="card shadow-sm mb-2">
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-12 pb-1 border-bottom">
+                        <span><i class="bi bi-paperclip me-1 text-info"></i>Attached Files</span>
+                    </div>
                     @if(order?.attachmentIds?.length == 0){
                     <div class="mt-2 ms-3">
-                        <small class="text-warning">
-                            No attached files
-                        </small>
+                        <span>No attached file.</span>
+                        <span class="ms-2 span-btn text-info" title="Add description" role="button">Upload files</span>
                     </div>
                     }
                     @else {
@@ -216,7 +237,9 @@
         <!-- customer details -->
         <div class="card shadow-sm mb-2">
             <div class="card-body">
-                <strong><i class="bi bi-person me-1 text-info"></i>Customer Details</strong>
+                <div class="col-12 pb-1 border-bottom">
+                    <span><i class="bi bi-person me-2 text-info"></i>Customer Details</span>
+                </div>
                 <div class="row g-3 mt-1">
                     <div class="col-md-4">
                         <small><span class="mx-1 text-info">#</span>Customer Id</small>
@@ -242,10 +265,28 @@
             </div>
         </div>
 
+        <!-- Order details -->
+        <div class="card shadow-sm mb-2">
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-12 pb-1 border-bottom">
+                        <span><i class="bi bi-clock-history me-2 text-info"></i>Order History</span>
+                    </div>
+                    <div class="col-md-4">
+                        <small><i class="bi bi-person me-1 text-info"></i>Created By</small>
+                        <div>{{ order?.createdBy }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- metadata details -->
         <div class="card shadow-sm mb-2">
             <div class="card-body">
                 <div class="row g-3">
+                    <div class="col-12 pb-1 border-bottom">
+                        <span><i class="bi bi-info-circle me-2 text-info"></i>More Info</span>
+                    </div>
                     <div class="col-md-4">
                         <small><i class="bi bi-person me-1 text-info"></i>Created By</small>
                         <div>{{ order?.createdBy }}</div>
