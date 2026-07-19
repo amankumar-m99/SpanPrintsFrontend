@@ -102,7 +102,8 @@
                     </div>
                     <div class="col-md-4">
                         <small><span class="me-1 text-info">#</span>Job Name</small>
-                        <div>{{order?.printJobTypeName }} <span><small class="text-muted"> &#40;{{order?.printJobTypeCode}}&#41;</small></span></div>
+                        <div>{{order?.printJobTypeName }} <span><small class="text-muted">
+                                    &#40;{{order?.printJobTypeCode}}&#41;</small></span></div>
                     </div>
                     <div class="col-md-4">
                         <small><span class="me-1 text-info">#</span>Quantity</small>
@@ -157,9 +158,18 @@
         <div class="row g-3 mb-1">
             <div class="col-12">
                 <div class="border rounded p-2">
-                    <small><i class="bi bi-chat-left-text me-1 text-info"></i>Note</small>
+                    <div>
+                        <small><i class="bi bi-chat-left-text me-1 text-info"></i>Note <i
+                                class="bi bi-pencil"></i></small>
+                    </div>
                     <div class="mt-2">
-                        <p class="w-100 px-2" placeholder="No note">{{ order?.note || 'No note' }}</p>
+                        @if( order?.note){
+                        <p class="w-100 px-2">{{ order?.note }}</p>
+                        }
+                        @else {
+                        <span>No note.</span>
+                        <span class="ms-2 span-btn text-info" title="Add note" role="button">Add a note</span>
+                        }
                     </div>
                 </div>
             </div>
@@ -167,8 +177,13 @@
                 <div class="border rounded p-2">
                     <small><i class="bi bi-card-text me-1 text-info"></i>Description</small>
                     <div class="mt-2">
-                        <p class="w-100 px-2" placeholder="No note">{{ order?.description || 'No description'
-                            }}</p>
+                        @if( order?.description){
+                        <p class="w-100 px-2">{{ order?.description }}</p>
+                        }
+                        @else {
+                        <span>No description.</span>
+                        <span class="ms-2 span-btn text-info" title="Add description" role="button">Add a description</span>
+                        }
                     </div>
                 </div>
             </div>

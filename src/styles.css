@@ -3,3 +3,11 @@
 .hover-pointer:hover {
   cursor: pointer;
 }
+
+.span-btn{
+  text-decoration: underline;
+}
+
+.span-btn :hover{
+  cursor: pointer;
+}
