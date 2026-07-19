@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Order } from '../../model/order/order.model';
 import { OrderService } from '../../services/order/order.service';
 import { OrderModalComponent } from "./order-modal/order-modal.component";
@@ -9,16 +9,20 @@ import { Router } from '@angular/router';
 import { ToastComponent } from "../utility/toast/toast.component";
 import { DaysElapsedPipe } from "../../pipes/days-elapsed/days-elapsed.pipe";
 import { TimeElapsedPipe } from "../../pipes/timeElapsed/time-elapsed.pipe";
+import { JsonpClientBackend } from '@angular/common/http';
 
 @Component({
   selector: 'app-orders',
   standalone: true,
-  imports: [CommonModule, FormsModule, OrderModalComponent, ConfirmDialogComponent, ToastComponent, DaysElapsedPipe, TimeElapsedPipe],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, OrderModalComponent, ConfirmDialogComponent, ToastComponent, DaysElapsedPipe, TimeElapsedPipe],
   templateUrl: './orders.component.html',
   styleUrl: './orders.component.css'
 })
 
 export class OrdersComponent implements OnInit {
+
+  //visible cols
+  fieldsVisibilityForm!: FormGroup;
 
   orders: Order[] = [];
   tempOrder !: Order | null;
@@ -52,8 +56,51 @@ export class OrdersComponent implements OnInit {
   constructor(private fb: FormBuilder, private router: Router, private orderService: OrderService) { }
 
   ngOnInit(): void {
+    this.initFieldsVisibilityForm();
     this.loadOrders();
   }
+
+  private initFieldsVisibilityForm() {
+    this.fieldsVisibilityForm = this.fb.group({
+      jobName: [true],
+      jobCode: [true],
+      quantity: [true],
+      deliveryDate: [true],
+      bookNumber: [false],
+      customerName: [true],
+      customerPhone: [true],
+      customerAddress: [false],
+      placedOn: [true],
+      orderStatus: [true],
+      paymentStatus: [true],
+      totalAmount: [true],
+      discountAmount: [false],
+      depositAmount: [false],
+      pendingAmount: [true],
+      updatedAt: [false],
+      createdAt: [false],
+      createdBy: [false]
+    });
+  }
+
+  get jobName() { return this.fieldsVisibilityForm.get('jobName'); }
+  get jobCode() { return this.fieldsVisibilityForm.get('jobCode'); }
+  get quantity() { return this.fieldsVisibilityForm.get('quantity'); }
+  get deliveryDate() { return this.fieldsVisibilityForm.get('deliveryDate'); }
+  get bookNumber() { return this.fieldsVisibilityForm.get('bookNumber'); }
+  get customerName() { return this.fieldsVisibilityForm.get('customerName'); }
+  get customerPhone() { return this.fieldsVisibilityForm.get('customerPhone'); }
+  get customerAddress() { return this.fieldsVisibilityForm.get('customerAddress'); }
+  get placedOn() { return this.fieldsVisibilityForm.get('placedOn'); }
+  get orderStatus() { return this.fieldsVisibilityForm.get('orderStatus'); }
+  get paymentStatus() { return this.fieldsVisibilityForm.get('paymentStatus'); }
+  get totalAmount() { return this.fieldsVisibilityForm.get('totalAmount'); }
+  get discountAmount() { return this.fieldsVisibilityForm.get('discountAmount'); }
+  get depositAmount() { return this.fieldsVisibilityForm.get('depositAmount'); }
+  get pendingAmount() { return this.fieldsVisibilityForm.get('pendingAmount'); }
+  get updatedAt() { return this.fieldsVisibilityForm.get('updatedAt'); }
+  get createdAt() { return this.fieldsVisibilityForm.get('createdAt'); }
+  get createdBy() { return this.fieldsVisibilityForm.get('createdBy'); }
 
   get startIndex(): number {
     return this.totalOrders === 0 ? 0 : (this.currentPage - 1) * this.pageSize + 1;

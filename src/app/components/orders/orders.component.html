@@ -79,7 +79,6 @@
             </div>
         </div>
     </div>
-
     <hr>
     <!-- Pagination controls -->
     <div class="d-flex justify-content-between align-items-center mt-2">
@@ -90,6 +89,100 @@
                 <option *ngFor="let s of pageSizes" [value]="s">{{ s }}</option>
             </select>
             <span class="ms-3">Showing {{ startIndex }} to {{ endIndex }} of {{ totalOrders }}</span>
+        </div>
+
+        <div class="dropdown">
+            <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                Show Fields
+            </button>
+            <div class="dropdown-menu p-2" style="min-width: 260px;">
+                <form [formGroup]="fieldsVisibilityForm">
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" id="fieldJobName" formControlName="jobName">
+                        <label class="form-check-label" for="fieldJobName">Job Name</label>
+                    </div>
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" id="fieldJobCode" formControlName="jobCode">
+                        <label class="form-check-label" for="fieldJobCode">Job Code</label>
+                    </div>
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" id="fieldQuantity" formControlName="quantity">
+                        <label class="form-check-label" for="fieldQuantity">Quantity</label>
+                    </div>
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" id="fieldDeliveryDate"
+                            formControlName="deliveryDate">
+                        <label class="form-check-label" for="fieldDeliveryDate">Delivery Date</label>
+                    </div>
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" id="fieldBookNumber"
+                            formControlName="bookNumber">
+                        <label class="form-check-label" for="fieldBookNumber">Book Number</label>
+                    </div>
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" id="fieldCustomerName"
+                            formControlName="customerName">
+                        <label class="form-check-label" for="fieldCustomerName">Customer Name</label>
+                    </div>
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" id="fieldCustomerPhone"
+                            formControlName="customerPhone">
+                        <label class="form-check-label" for="fieldCustomerPhone">Customer Phone</label>
+                    </div>
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" id="fieldCustomerAddress"
+                            formControlName="customerAddress">
+                        <label class="form-check-label" for="fieldCustomerAddress">Customer Address</label>
+                    </div>
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" id="fieldPlacedOn" formControlName="placedOn">
+                        <label class="form-check-label" for="fieldPlacedOn">Placed On</label>
+                    </div>
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" id="fieldOrderStatus"
+                            formControlName="orderStatus">
+                        <label class="form-check-label" for="fieldOrderStatus">Order Status</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="fieldPaymentStatus"
+                            formControlName="paymentStatus">
+                        <label class="form-check-label" for="fieldPaymentStatus">Payment Status</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="fieldTotalAmount"
+                            formControlName="totalAmount">
+                        <label class="form-check-label" for="fieldTotalAmount">Total Amount</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="fieldDiscoutAmount"
+                            formControlName="discountAmount">
+                        <label class="form-check-label" for="fieldDiscoutAmount">Discount Amount</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="fieldDepositAmount"
+                            formControlName="depositAmount">
+                        <label class="form-check-label" for="fieldDepositAmount">Deposit Amount</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="fieldPendingAmount"
+                            formControlName="pendingAmount">
+                        <label class="form-check-label" for="fieldDepositAmount">Pending Amount</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="fieldUpdatedAt" formControlName="updatedAt">
+                        <label class="form-check-label" for="fieldUpdatedAt">Updated At</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="fieldCreatedAt" formControlName="createdAt">
+                        <label class="form-check-label" for="fieldCreatedAt">Created At</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="fieldCreatedBy" formControlName="createdBy">
+                        <label class="form-check-label" for="fieldCreatedBy">Created By</label>
+                    </div>
+                </form>
+            </div>
         </div>
 
         <nav aria-label="Orders pagination">
@@ -114,24 +207,24 @@
                 <tr>
                     <th>#</th>
                     <th>ID</th>
-                    <th>Job Name</th>
-                    <th>Job Code</th>
-                    <th>quantity</th>
-                    <th>Delivery Date</th>
-                    <th>Book Number</th>
-                    <th>Customer Name</th>
-                    <th>Customer Phone</th>
-                    <th>Customer Address</th>
-                    <th>Placed On</th>
-                    <th>Order Status</th>
-                    <th>Payment Status</th>
-                    <th>Total Amount</th>
-                    <th>Discount Amount</th>
-                    <th>Deposit Amount</th>
-                    <th>Pending Amount</th>
-                    <th>Updated At</th>
-                    <th>Created At</th>
-                    <th>Created By</th>
+                    <th [class.d-none]="!jobName?.value">Job Name</th>
+                    <th [class.d-none]="!jobCode?.value">Job Code</th>
+                    <th [class.d-none]="!quantity?.value">Quantity</th>
+                    <th [class.d-none]="!deliveryDate?.value">Delivery Date</th>
+                    <th [class.d-none]="!bookNumber?.value">Book Number</th>
+                    <th [class.d-none]="!customerName?.value">Customer Name</th>
+                    <th [class.d-none]="!customerPhone?.value">Customer Phone</th>
+                    <th [class.d-none]="!customerAddress?.value">Customer Address</th>
+                    <th [class.d-none]="!placedOn?.value">Placed On</th>
+                    <th [class.d-none]="!orderStatus?.value">Order Status</th>
+                    <th [class.d-none]="!paymentStatus?.value">Payment Status</th>
+                    <th [class.d-none]="!totalAmount?.value">Total Amount</th>
+                    <th [class.d-none]="!discountAmount?.value">Discount Amount</th>
+                    <th [class.d-none]="!depositAmount?.value">Deposit Amount</th>
+                    <th [class.d-none]="!pendingAmount?.value">Pending Amount</th>
+                    <th [class.d-none]="!updatedAt?.value">Updated At</th>
+                    <th [class.d-none]="!createdAt?.value">Created At</th>
+                    <th [class.d-none]="!createdBy?.value">Created By</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -139,24 +232,24 @@
                 <tr *ngFor="let order of orders; let i = index" class="cursor-pointer" (click)="openDetails(order)">
                     <td>{{ i + 1 }}</td>
                     <td>{{ order.id }}</td>
-                    <td>{{ order.printJobTypeName }}</td>
-                    <td>{{ order.printJobTypeCode }}</td>
-                    <td>{{ order.quantity }}</td>
-                    <td>{{ order.dateOfDelivery | daysElapsed}}</td>
-                    <td>{{ order.bookNumber }}</td>
-                    <td>{{ order.customerName }}</td>
-                    <td>{{ order.customerPrimaryPhoneNumber }}</td>
-                    <td>{{ order.customerAddress }}</td>
-                    <td>{{ order.dateOfPlaced | daysElapsed }}</td>
-                    <td>{{ order.printJobStatus }}</td>
-                    <td>{{ order.paymentStatus }}</td>
-                    <td>{{ order.totalAmount }}</td>
-                    <td>{{ order.discountedAmount }}</td>
-                    <td>{{ order.depositAmount }}</td>
-                    <td>{{ order.pendingAmount }}</td>
-                    <td>{{ order.updatedAt | timeElapsed }}</td>
-                    <td>{{ order.createdAt | timeElapsed }}</td>
-                    <td>{{ order.createdBy }}</td>
+                    <td [class.d-none]="!jobName?.value">{{ order.printJobTypeName }}</td>
+                    <td [class.d-none]="!jobCode?.value">{{ order.printJobTypeCode }}</td>
+                    <td [class.d-none]="!quantity?.value">{{ order.quantity }}</td>
+                    <td [class.d-none]="!deliveryDate?.value">{{ order.dateOfDelivery | daysElapsed}}</td>
+                    <td [class.d-none]="!bookNumber?.value">{{ order.bookNumber }}</td>
+                    <td [class.d-none]="!customerName?.value">{{ order.customerName }}</td>
+                    <td [class.d-none]="!customerPhone?.value">{{ order.customerPrimaryPhoneNumber }}</td>
+                    <td [class.d-none]="!customerAddress?.value">{{ order.customerAddress }}</td>
+                    <td [class.d-none]="!placedOn?.value">{{ order.dateOfPlaced | daysElapsed }}</td>
+                    <td [class.d-none]="!orderStatus?.value">{{ order.printJobStatus }}</td>
+                    <td [class.d-none]="!paymentStatus?.value">{{ order.paymentStatus }}</td>
+                    <td [class.d-none]="!totalAmount?.value">{{ order.totalAmount }}</td>
+                    <td [class.d-none]="!discountAmount?.value">{{ order.discountedAmount }}</td>
+                    <td [class.d-none]="!depositAmount?.value">{{ order.depositAmount }}</td>
+                    <td [class.d-none]="!pendingAmount?.value">{{ order.pendingAmount }}</td>
+                    <td [class.d-none]="!updatedAt?.value">{{ order.updatedAt | timeElapsed }}</td>
+                    <td [class.d-none]="!createdAt?.value">{{ order.createdAt | timeElapsed }}</td>
+                    <td [class.d-none]="!createdBy?.value">{{ order.createdBy }}</td>
                     <!-- Actions -->
                     <td class="text-end" (click)="$event.stopPropagation()">
                         <button class="btn btn-sm btn-outline-primary me-1" (click)="editOrder(order)">
