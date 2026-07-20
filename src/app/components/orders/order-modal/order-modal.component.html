@@ -21,7 +21,7 @@
                         <!-- Phone -->
                         <div class="col-md-6">
                             <label class="form-label">Customer Phone Number</label>
-                            <input type="tel" class="form-control" formControlName="customerPrimaryPhoneNumber"
+                            <input type="tel" class="form-control" [readOnly]="isEditMode" formControlName="customerPrimaryPhoneNumber"
                                 [ngClass]="{ 'is-invalid': customerPrimaryPhoneNumber?.invalid && customerPrimaryPhoneNumber?.touched }">
                             <div class="invalid-feedback"
                                 *ngIf="customerPrimaryPhoneNumber?.touched && customerPrimaryPhoneNumber?.invalid">
@@ -53,7 +53,7 @@
                         <!-- Customer Name -->
                         <div class="col-md-6">
                             <label class="form-label">Customer Name</label>
-                            <input type="text" class="form-control" formControlName="customerName"
+                            <input type="text" class="form-control" [readOnly]="isEditMode" formControlName="customerName"
                                 [ngClass]="{ 'is-invalid': customerName?.invalid && customerName?.touched }">
                             <div class="invalid-feedback" *ngIf="customerName?.touched && customerName?.invalid">
                                 Customer name is required
@@ -85,7 +85,7 @@
                         <!-- Address -->
                         <div class="col-12">
                             <label class="form-label">Address</label>
-                            <textarea class="form-control" rows="2" formControlName="customerAddress"
+                            <textarea class="form-control" rows="2" [readOnly]="isEditMode" formControlName="customerAddress"
                                 [ngClass]="{ 'is-invalid': customerAddress?.invalid && customerAddress?.touched }"></textarea>
                             <div class="invalid-feedback" *ngIf="customerAddress?.touched && customerAddress?.invalid">
                                 Invalid address

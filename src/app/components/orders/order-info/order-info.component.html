@@ -1,15 +1,11 @@
 <div class="me-1">
-    <div class="d-flex justify-content-between align-items-center pb-2 mt-1 mb-2 border-bottom">
+    <div class="d-flex justify-content-between align-items-center pb- mt-1 mb-2 border-bottom">
         <h3><i class="bi bi-bag-heart-fill me-2 text-success"></i>Order Info</h3>
         <div class="d-flex">
-            <div class="ms-2">
-                <!-- Back / Breadcrumb -->
-                <div class="mb-3">
-                    <a routerLink="/dashboard/orders" class="text-decoration-none">
-                        <i class="bi bi-arrow-left"></i> Back to Orders
-                    </a>
-                </div>
-            </div>
+            <!-- Back / Breadcrumb -->
+            <a routerLink="/dashboard/orders" class="text-decoration-none">
+                <i class="bi bi-arrow-left"></i> Back to Orders
+            </a>
         </div>
     </div>
 
@@ -76,12 +72,15 @@
     <div class="container-fluid">
 
         <!-- order Header -->
-        <div class="d-flex justify-content-between align-items-start border rounded p-2 mb-3">
+        <div class="d-flex justify-content-between align-items-start border-bottom rounded p-2 mb-3">
             <div>
                 <strong><span class="me-1 text-info">#</span></strong>
                 <span class="small">{{order?.uuid}}</span>
             </div>
             <div>
+                <button class="btn btn-sm btn-outline-primary me-2">Deposit Payment</button>
+                <button class="btn btn-sm btn-outline-success me-2">Mark as Paid</button>
+                <button class="btn btn-sm btn-outline-primary me-2">Update Order Status</button>
                 <button class="btn btn-sm btn-outline-primary me-2" data-bs-toggle="modal" data-bs-target="#orderModal">
                     <i class="bi bi-pencil"></i> Edit
                 </button>
@@ -121,12 +120,13 @@
                         <div>{{ order?.dateOfPlaced | daysElapsed }}</div>
                     </div>
                     <div class="col-md-4">
-                        <small><i class="bi bi-calendar-plus me-1 text-info"></i>Date of delivery</small>
+                        <small><i class="bi bi-calendar-check me-1 text-info"></i>Date of delivery</small>
                         <div>{{ order?.dateOfDelivery | daysElapsed }}</div>
                     </div>
                     <div class="col-md-4">
                         <small><i class="bi bi-box me-1 text-info"></i>Order Status</small>
-                        <div>{{ order?.printJobStatus || 'N/A' }}</div>
+                        <div><span>{{ order?.printJobStatus || 'N/A' }}</span>
+                        </div>
                     </div>
 
                 </div>
@@ -149,16 +149,17 @@
                         <div>{{ order?.discountedAmount}}</div>
                     </div>
                     <div class="col-md-4">
-                        <small><i class="bi bi-cash me-1 text-info"></i>Pending Amount</small>
-                        <div>{{ order?.pendingAmount}}</div>
-                    </div>
-                    <div class="col-md-4">
                         <small><i class="bi bi-cash me-1 text-info"></i>Deposited Amount</small>
                         <div>{{ order?.depositAmount}}</div>
                     </div>
                     <div class="col-md-4">
+                        <small><i class="bi bi-cash me-1 text-info"></i>Pending Amount</small>
+                        <div>{{ order?.pendingAmount}}</div>
+                    </div>
+                    <div class="col-md-4">
                         <small><i class="bi bi-cash-stack me-1 text-info"></i>Payment Status</small>
-                        <div>{{ order?.paymentStatus}}</div>
+                        <div><span>{{ order?.paymentStatus}}</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -168,16 +169,26 @@
         <div class="card shadow-sm mb-2">
             <div class="card-body">
                 <div class="row g-3">
-                    <div class="col-12 pb-1 border-bottom">
+                    <div class="col-12 pb-1 border-bottom d-flex justify-content-between">
                         <span><i class="bi bi-chat-left-text me-1 text-info"></i>Note</span>
+                        <span>
+                            <button class="btn" data-bs-toggle="modal" data-bs-target="#updateOrderNoteModal"
+                                title="Edit note"><i class="bi bi-pencil text-info"></i></button>
+                            <button class="btn" title="Delete note"><i class="bi bi-trash text-danger"></i></button>
+                        </span>
                     </div>
                     <div class="col-12">
                         @if( order?.note){
                         <p class="w-100 px-2">{{ order?.note }}</p>
                         }
                         @else {
-                        <span>No note.</span>
-                        <span class="ms-2 span-btn text-info" title="Add note" role="button">Add a note</span>
+                        <div class="text-center">
+                            <small class="text-muted">
+                                <span>No note.</span>
+                                <span class="ms-2 span-btn text-info" title="Add note" data-bs-toggle="modal"
+                                    data-bs-target="#updateOrderNoteModal">Add a note</span>
+                            </small>
+                        </div>
                         }
                     </div>
                 </div>
@@ -188,17 +199,26 @@
         <div class="card shadow-sm mb-2">
             <div class="card-body">
                 <div class="row g-3">
-                    <div class="col-12 pb-1 border-bottom">
-                        <span><i class="bi bi-card-text me-1 text-info"></i>Description</span>
+                    <div class="col-12 pb-1 border-bottom d-flex justify-content-between">
+                        <span><i class="bi bi-chat-left-text me-1 text-info"></i>Description</span>
+                        <span>
+                            <button class="btn" title="Edit description"><i class="bi bi-pencil text-info"></i></button>
+                            <button class="btn" title="Delete description"><i
+                                    class="bi bi-trash text-danger"></i></button>
+                        </span>
                     </div>
                     <div class="mt-2">
                         @if( order?.description){
                         <p class="w-100 px-2">{{ order?.description }}</p>
                         }
                         @else {
-                        <span>No description.</span>
-                        <span class="ms-2 span-btn text-info" title="Add description" role="button">Add a
-                            description</span>
+                        <div class="text-center">
+                            <small class="text-muted">
+                                <span>No description.</span>
+                                <span class="ms-2 span-btn text-info" title="Add note" role="button">Add a
+                                    description</span>
+                            </small>
+                        </div>
                         }
                     </div>
                 </div>
@@ -209,14 +229,21 @@
         <div class="card shadow-sm mb-2">
             <div class="card-body">
                 <div class="row g-3">
-                    <div class="col-12 pb-1 border-bottom">
+                    <div class="col-12 pb-1 border-bottom d-flex justify-content-between">
                         <span><i class="bi bi-paperclip me-1 text-info"></i>Attached Files</span>
+                        <span>
+                            <button class="btn" title="Upload files"><i
+                                    class="bi bi-folder-plus text-info"></i></button>
+                        </span>
                     </div>
                     @if(order?.attachmentIds?.length == 0){
-                    <div class="mt-2 ms-3">
-                        <span>No attached file.</span>
-                        <span class="ms-2 span-btn text-info" title="Add description" role="button">Upload files</span>
+                    <div class="text-center">
+                        <small class="text-muted">
+                            <span>No attached files.</span>
+                            <span class="ms-2 span-btn text-info" title="Add note" role="button">Upload files</span>
+                        </small>
                     </div>
+
                     }
                     @else {
                     <small class="text-info ms-2">
@@ -237,8 +264,11 @@
         <!-- customer details -->
         <div class="card shadow-sm mb-2">
             <div class="card-body">
-                <div class="col-12 pb-1 border-bottom">
-                    <span><i class="bi bi-person me-2 text-info"></i>Customer Details</span>
+                <div class="col-12 pb-1 border-bottom d-flex justify-content-between">
+                    <span><i class="bi bi-person-lines-fill text-info me-2"></i>Customer Details</span>
+                    <small><a [routerLink]="'/dashboard/customer/'+order?.customerUuid"
+                            class="text-decoration-none">Show customer profile <i
+                                class="bi bi-arrow-right"></i></a></small>
                 </div>
                 <div class="row g-3 mt-1">
                     <div class="col-md-4">
@@ -246,19 +276,21 @@
                         <div>{{ order?.customerId || 'N/A' }}</div>
                     </div>
                     <div class="col-md-4">
-                        <small><span class="mx-1 text-info">#</span>Customer Name</small>
+                        <small><span class="mx-1 text-info"><i class="bi bi-person"></i></span>Customer Name</small>
                         <div>{{ order?.customerName || 'N/A' }}</div>
                     </div>
                     <div class="col-md-4">
-                        <small><span class="mx-1 text-info">#</span>Primary Phone Number</small>
+                        <small><span class="mx-1 text-info"><i class="bi bi-telephone"></i></span>Primary Phone
+                            Number</small>
                         <div>{{ order?.customerPrimaryPhoneNumber || 'N/A' }}</div>
                     </div>
                     <div class="col-md-4">
-                        <small><span class="mx-1 text-info">#</span>Alternate Phone Number </small>
+                        <small><span class="mx-1 text-info"><i class="bi bi-telephone-plus"></i></span>Alternate Phone
+                            Number </small>
                         <div>{{ order?.customerAlternatePhoneNumber || 'N/A' }}</div>
                     </div>
                     <div class="col-md-8">
-                        <small><span class="mx-1 text-info">#</span>Customer Address</small>
+                        <small><span class="mx-1 text-info"><i class="bi bi-geo-alt"></i></span>Customer Address</small>
                         <div>{{ order?.customerAddress || 'N/A' }}</div>
                     </div>
                 </div>
@@ -272,9 +304,8 @@
                     <div class="col-12 pb-1 border-bottom">
                         <span><i class="bi bi-clock-history me-2 text-info"></i>Order History</span>
                     </div>
-                    <div class="col-md-4">
-                        <small><i class="bi bi-person me-1 text-info"></i>Created By</small>
-                        <div>{{ order?.createdBy }}</div>
+                    <div class="col-12 text-center">
+                        <small class="text-muted">Order history coming soon.</small>
                     </div>
                 </div>
             </div>
@@ -318,3 +349,5 @@
         (closeAction)="hideToastComponent()"></app-toast>
     }
 </div>
+
+<app-update-order-note-modal [model]="order"></app-update-order-note-modal>

@@ -19,6 +19,7 @@ export interface Order {
     description: string;
     attachmentIds: number[];
     ledgerIds: number[];
+    customerUuid: string;
     customerId: number;
     customerName: string;
     customerAddress: string;
