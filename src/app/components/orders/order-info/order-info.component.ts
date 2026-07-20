@@ -26,7 +26,7 @@ export class OrderInfoComponent implements OnInit {
 
   orderUuid !: string;
   order !: Order | null;
-  fileAttachments ?: FileAttachment[];
+  fileAttachments?: FileAttachment[];
   errorMsg = '';
   copied = false;
   toastType = 'info';
@@ -74,6 +74,22 @@ export class OrderInfoComponent implements OnInit {
         this.errorMsg = err?.error?.message || "Could not load file attachments";
       }
     });
+  }
+
+  markAsPaid() {
+    if (this.order) {
+      this.orderService.markOrderAsPaid(this.order.uuid).subscribe({
+        next: (res) => {
+          this.order = res;
+          this.errorMsg = '';
+          this.deleteMsg = `Delete this customer?`;
+        },
+        error: (err) => {
+          this.errorMsg = err?.error?.message || "Could not load order details!";
+          console.log(this.errorMsg);
+        }
+      });
+    }
   }
 
   deleteOrder() {

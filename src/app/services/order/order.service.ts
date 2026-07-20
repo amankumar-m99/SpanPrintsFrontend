@@ -57,6 +57,10 @@ export class OrderService {
   getOrderByUuid(uuid: string) {
     return this.http.get<Order>(`${this.url}/uuid/${uuid}`);
   }
+  
+  markOrderAsPaid(uuid: string){
+    return this.http.patch<Order>(`${this.url}/mark-as-paid/${uuid}`, null);
+  }
 
   deleteOrderByUuid(uuid: string) {
     return this.http.delete<any>(`${this.url}/uuid/${uuid}`);
