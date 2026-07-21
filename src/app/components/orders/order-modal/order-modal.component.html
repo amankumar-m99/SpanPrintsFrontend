@@ -21,7 +21,8 @@
                         <!-- Phone -->
                         <div class="col-md-6">
                             <label class="form-label">Customer Phone Number</label>
-                            <input type="tel" class="form-control" [readOnly]="isEditMode" formControlName="customerPrimaryPhoneNumber"
+                            <input type="tel" class="form-control" [readOnly]="isEditMode"
+                                formControlName="customerPrimaryPhoneNumber"
                                 [ngClass]="{ 'is-invalid': customerPrimaryPhoneNumber?.invalid && customerPrimaryPhoneNumber?.touched }">
                             <div class="invalid-feedback"
                                 *ngIf="customerPrimaryPhoneNumber?.touched && customerPrimaryPhoneNumber?.invalid">
@@ -53,7 +54,8 @@
                         <!-- Customer Name -->
                         <div class="col-md-6">
                             <label class="form-label">Customer Name</label>
-                            <input type="text" class="form-control" [readOnly]="isEditMode" formControlName="customerName"
+                            <input type="text" class="form-control" [readOnly]="isEditMode"
+                                formControlName="customerName"
                                 [ngClass]="{ 'is-invalid': customerName?.invalid && customerName?.touched }">
                             <div class="invalid-feedback" *ngIf="customerName?.touched && customerName?.invalid">
                                 Customer name is required
@@ -85,7 +87,8 @@
                         <!-- Address -->
                         <div class="col-12">
                             <label class="form-label">Address</label>
-                            <textarea class="form-control" rows="2" [readOnly]="isEditMode" formControlName="customerAddress"
+                            <textarea class="form-control" rows="2" [readOnly]="isEditMode"
+                                formControlName="customerAddress"
                                 [ngClass]="{ 'is-invalid': customerAddress?.invalid && customerAddress?.touched }"></textarea>
                             <div class="invalid-feedback" *ngIf="customerAddress?.touched && customerAddress?.invalid">
                                 Invalid address
@@ -100,7 +103,7 @@
                             <select class="form-select" formControlName="printJobTypeId"
                                 [ngClass]="{ 'is-invalid': printJobTypeId?.invalid && printJobTypeId?.touched }"
                                 (mousedown)="onJobTypeDropdownOpen()">
-                                <option value="">-- Select Job Type --</option>
+                                <option value="" selected>-- Select Job Type --</option>
                                 <option *ngFor="let type of printJobTypes" [value]="type.id">{{ type.name }}</option>
                             </select>
                             <div class="invalid-feedback" *ngIf="printJobTypeId?.touched && printJobTypeId?.invalid">
@@ -156,15 +159,6 @@
                                 Invalid book number
                             </div>
                         </div>
-                        <!-- W-Book Number -->
-                        <div class="col-md-6 d-none">
-                            <label class="form-label">W-Book Number</label>
-                            <input type="number" class="form-control" formControlName="wBookNumber"
-                                [ngClass]="{ 'is-invalid': wBookNumber?.invalid && wBookNumber?.touched }">
-                            <div class="invalid-feedback" *ngIf="wBookNumber?.touched && wBookNumber?.invalid">
-                                Invalid wedding book number
-                            </div>
-                        </div>
                         <div class="col-md-12 d-none">
                             <div class="text-danger" *ngIf="isInvalidBookNumbers">
                                 <i class="bi bi-exclamation-circle me-1"></i>Fill any one book number
@@ -180,6 +174,20 @@
                             <div class="invalid-feedback" *ngIf="dateOfPlaced?.touched && dateOfPlaced?.invalid">
                                 Invalid date of order-placed
                             </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Order Status</label>
+                            <select class="form-select" formControlName="printJobStatus"
+                                [ngClass]="{ 'is-invalid': printJobStatus?.invalid && printJobStatus?.touched }">
+                                <option value="" selected>-- Select Status --</option>
+                                <option *ngFor="let opt of orderStatusOptions" [value]="opt.value">
+                                    {{ opt.label }}
+                                </option>
+                            </select>
+                            <div class="invalid-feedback" *ngIf="printJobStatus?.touched && printJobStatus?.invalid">
+                                Invalid Order status
+                            </div>
+                            <div>{{printJobStatus?.value}}</div>
                         </div>
                     </div>
 
@@ -231,16 +239,15 @@
                             <label class="form-label">Payment Status</label>
                             <select class="form-select" formControlName="paymentStatus"
                                 [ngClass]="{ 'is-invalid': paymentStatus?.invalid && paymentStatus?.touched }">
-                                <option value="">-- Select Status --</option>
-                                <option value="PARTIALLY_PAID">Partially Paid</option>
-                                <option value="PAID">Paid</option>
-                                <option value="UNPAID">Unpaid</option>
+                                <option value="" selected>-- Select Status --</option>
+                                <option *ngFor="let opt of paymentStatusOptions" [value]="opt.value">
+                                    {{ opt.label }}
+                                </option>
                             </select>
                             <div class="invalid-feedback" *ngIf="paymentStatus?.touched && paymentStatus?.invalid">
                                 Invalid Payment status
                             </div>
                         </div>
-
                     </div>
 
                     <div class="row g-3 my-2">

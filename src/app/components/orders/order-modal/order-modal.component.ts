@@ -12,6 +12,9 @@ import { CustomerService } from '../../../services/customer/customer.service';
 import { PrintJobType } from '../../../model/order/printjobtype.model';
 import { PrintJobTypeService } from '../../../services/order/printjobtype.service';
 import { DayRelativePipe } from "../../../pipes/dayRelative/day-relative.pipe";
+import { EnumOption, enumToOptions } from '../../../enums/enum-helper.';
+import { OrderStatus } from '../../../enums/order-status.enum';
+import { PaymentStatus } from '../../../enums/payment-status.enum';
 
 @Component({
   selector: 'app-order-modal',
@@ -29,12 +32,14 @@ export class OrderModalComponent implements OnInit, OnChanges {
   isEditMode = false;
   isSubmitting = false;
 
+  orderStatusOptions: EnumOption[] = enumToOptions(OrderStatus);
+  paymentStatusOptions: EnumOption[] = enumToOptions(PaymentStatus);
+
   customers: Customer[] = [];
   selectedCustomer: Customer | null = null;
   searchFieldName = '';
   isCustomerPhoneSearchLoading = false;
   isCustomerNameSearchLoading = false;
-
   isPrintJobTypesSearchLoading = false;
 
   selectedFiles: File[] = [];
@@ -96,9 +101,9 @@ export class OrderModalComponent implements OnInit, OnChanges {
       quantity: [1, [Validators.required, Validators.min(1)]],
       dateOfDelivery: ['', Validators.required],
       dateOfPlaced: [this.getTodayDateString(), Validators.required],
+      printJobStatus: ['', Validators.required],
 
       bookNumber: ['', Validators.required],
-      wBookNumber: [null],
 
       totalAmount: ['', Validators.required],
       depositAmount: ['', Validators.required],
@@ -123,6 +128,7 @@ export class OrderModalComponent implements OnInit, OnChanges {
   get quantity() { return this.modalForm.get('quantity'); }
   get dateOfDelivery() { return this.modalForm.get('dateOfDelivery'); }
   get dateOfPlaced() { return this.modalForm.get('dateOfPlaced'); }
+  get printJobStatus() { return this.modalForm.get('printJobStatus'); }
   get bookNumber() { return this.modalForm.get('bookNumber'); }
   get wBookNumber() { return this.modalForm.get('wBookNumber'); }
   get totalAmount() { return this.modalForm.get('totalAmount'); }
@@ -259,19 +265,18 @@ export class OrderModalComponent implements OnInit, OnChanges {
     const total = +values.totalAmount || 0;
     const deposit = +values.depositAmount || 0;
     const discount = +values.discountedAmount || 0;
-
     const pending = total - deposit - discount;
 
     this.isInvalidAmounts = pending < 0;
     let pay = '';
     if (pending == 0) {
-      pay = "PAID"
+      pay = PaymentStatus.Paid;
     }
     else if (deposit == 0) {
-      pay = "UNPAID";
+      pay = PaymentStatus.Unpaid;
     }
     else {
-      pay = "PARTIALLY_PAID"
+      pay = PaymentStatus.PartiallyPaid;
     }
 
     if (!this.isInvalidAmounts) {

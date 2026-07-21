@@ -14,6 +14,10 @@ import { FileAttachmentCardComponent } from "../../file-attachment-card/file-att
 import { TimeElapsedPipe } from "../../../pipes/timeElapsed/time-elapsed.pipe";
 import { DaysElapsedPipe } from "../../../pipes/days-elapsed/days-elapsed.pipe";
 import { UpdateOrderNoteModalComponent } from "../update-order-note-modal/update-order-note-modal.component";
+import { UpdateOrderStatusRequest } from '../../../model/order/update-order-status.model';
+import { PaymentStatus } from '../../../enums/payment-status.enum';
+import { OrderStatus } from '../../../enums/order-status.enum';
+import { EnumOption, enumToOptions } from '../../../enums/enum-helper.';
 
 @Component({
   selector: 'app-order-info',
@@ -24,6 +28,7 @@ import { UpdateOrderNoteModalComponent } from "../update-order-note-modal/update
 })
 export class OrderInfoComponent implements OnInit {
 
+  orderStatusOptions: EnumOption[] = enumToOptions(OrderStatus);
   orderUuid !: string;
   order !: Order | null;
   fileAttachments?: FileAttachment[];
@@ -78,7 +83,30 @@ export class OrderInfoComponent implements OnInit {
 
   markAsPaid() {
     if (this.order) {
+      const userApproved = confirm("Convert the pending amont as discount and mark as paid ?");
+      if (!userApproved)
+        return;
       this.orderService.markOrderAsPaid(this.order.uuid).subscribe({
+        next: (res) => {
+          this.order = res;
+          this.errorMsg = '';
+          this.deleteMsg = `Delete this customer?`;
+        },
+        error: (err) => {
+          this.errorMsg = err?.error?.message || "Could not load order details!";
+          console.log(this.errorMsg);
+        }
+      });
+    }
+  }
+
+  updateOrderStatus(orderStatus: string) {
+    if (this.order) {
+      let data: UpdateOrderStatusRequest = {
+        'orderUuid': this.order.uuid,
+        'printJobStatus': orderStatus
+      }
+      this.orderService.updateOrderStatus(data).subscribe({
         next: (res) => {
           this.order = res;
           this.errorMsg = '';

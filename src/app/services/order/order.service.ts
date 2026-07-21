@@ -4,6 +4,7 @@ import { Constant } from '../../constant/Constant';
 import { Order } from '../../model/order/order.model';
 import { UpdateOrderRequest } from '../../model/order/update-order-request.model';
 import { OrderPagination } from '../../model/order/order-pagination.model';
+import { UpdateOrderStatusRequest } from '../../model/order/update-order-status.model';
 
 @Injectable({
   providedIn: 'root'
@@ -57,9 +58,13 @@ export class OrderService {
   getOrderByUuid(uuid: string) {
     return this.http.get<Order>(`${this.url}/uuid/${uuid}`);
   }
-  
-  markOrderAsPaid(uuid: string){
+
+  markOrderAsPaid(uuid: string) {
     return this.http.patch<Order>(`${this.url}/mark-as-paid/${uuid}`, null);
+  }
+
+  updateOrderStatus(request: UpdateOrderStatusRequest) {
+    return this.http.patch<Order>(`${this.url}/order-status`, request);
   }
 
   deleteOrderByUuid(uuid: string) {
