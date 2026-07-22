@@ -18,11 +18,12 @@ import { UpdateOrderStatusRequest } from '../../../model/order/update-order-stat
 import { OrderStatus } from '../../../enums/order-status.enum';
 import { EnumOption, enumToOptions } from '../../../enums/enum-helper.';
 import { UpdateOrderDescriptionModalComponent } from "../update-order-description-modal/update-order-description-modal.component";
+import { UploadOrderAttachmentModalComponent } from "../upload-order-attachment-modal/upload-order-attachment-modal.component";
 
 @Component({
   selector: 'app-order-info',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink, ToastComponent, ConfirmDialogComponent, OrderModalComponent, FileAttachmentCardComponent, DaysElapsedPipe, TimeElapsedPipe, UpdateOrderNoteModalComponent, UpdateOrderDescriptionModalComponent],
+  imports: [CommonModule, FormsModule, RouterLink, ToastComponent, ConfirmDialogComponent, OrderModalComponent, FileAttachmentCardComponent, DaysElapsedPipe, TimeElapsedPipe, UpdateOrderNoteModalComponent, UpdateOrderDescriptionModalComponent, UploadOrderAttachmentModalComponent],
   templateUrl: './order-info.component.html',
   styleUrl: './order-info.component.css'
 })
@@ -142,6 +143,10 @@ export class OrderInfoComponent implements OnInit {
     }
   }
 
+  fileUploadSuccess(order: Order): void {
+    this.orderSuccess(order);
+    this.fetchFileAttachments();
+  }
   orderSuccess(order: Order): void {
     this.order = order;
     this.showToastComponent("success", "Order updated.");

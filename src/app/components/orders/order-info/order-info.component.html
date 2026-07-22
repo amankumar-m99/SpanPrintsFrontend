@@ -243,7 +243,8 @@
                             }
                         </span>
                         <span>
-                            <button class="btn" title="Upload files"><i
+                            <button class="btn" title="Upload files" data-bs-toggle="modal"
+                                data-bs-target="#uploadOrderAttachmentModal"><i
                                     class="bi bi-folder-plus text-info"></i></button>
                         </span>
                     </div>
@@ -251,7 +252,8 @@
                     <div class="text-center">
                         <small class="text-muted">
                             <span>No attached files.</span>
-                            <span class="ms-2 span-btn text-info" title="Add note" role="button">Upload files</span>
+                            <span class="ms-2 span-btn text-info" title="Add note" role="button" data-bs-toggle="modal"
+                                data-bs-target="#uploadOrderAttachmentModal">Upload files</span>
                         </small>
                     </div>
 
@@ -374,6 +376,8 @@
     (errorAction)="orderError($event)"></app-update-order-note-modal>
 <app-update-order-description-modal [model]="order" (successAction)="orderSuccess($event)"
     (errorAction)="orderError($event)"></app-update-order-description-modal>
+<app-upload-order-attachment-modal [model]="order" (successAction)="fileUploadSuccess($event)"
+    (errorAction)="orderError($event)"></app-upload-order-attachment-modal>
 <app-confirm-dialog [id]="'confirmDeleteOrderDialog'" [title]="'Confirm Delete'" [message]="deleteMsg"
     [confirmText]="'Delete'" [cancelText]="'Cancel'" [confirmBtnClass]="'btn-danger'" (confirmed)="deleteOrder()">
 </app-confirm-dialog>

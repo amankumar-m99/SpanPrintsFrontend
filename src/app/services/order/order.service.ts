@@ -72,6 +72,10 @@ export class OrderService {
     return this.http.put<Order>(`${this.url}/non-dependent`, data);
   }
 
+  addOrderAttachment(uuid: string, data: FormData) {
+    return this.http.post<Order>(`${this.url}/attatchments/${uuid}`, data);
+  }
+
   deleteOrderByUuid(uuid: string) {
     return this.http.delete<any>(`${this.url}/uuid/${uuid}`);
   }
