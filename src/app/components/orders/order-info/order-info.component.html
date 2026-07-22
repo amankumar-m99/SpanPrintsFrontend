@@ -205,7 +205,8 @@
                     <div class="col-12 pb-1 border-bottom d-flex justify-content-between">
                         <span><i class="bi bi-chat-left-text me-1 text-info"></i>Description</span>
                         <span>
-                            <button class="btn" title="Edit description"><i class="bi bi-pencil text-info"></i></button>
+                            <button class="btn" data-bs-toggle="modal" data-bs-target="#updateOrderDescriptionModal"
+                                title="Edit description"><i class="bi bi-pencil text-info"></i></button>
                             <button class="btn" title="Delete description"><i
                                     class="bi bi-trash text-danger"></i></button>
                         </span>
@@ -218,7 +219,8 @@
                         <div class="text-center">
                             <small class="text-muted">
                                 <span>No description.</span>
-                                <span class="ms-2 span-btn text-info" title="Add note" role="button">Add a
+                                <span class="ms-2 span-btn text-info" data-bs-toggle="modal"
+                                    data-bs-target="#updateOrderDescriptionModal" title="Add note" role="button">Add a
                                     description</span>
                             </small>
                         </div>
@@ -363,14 +365,16 @@
 
     </div>
 
-    <app-order-modal [model]="order" (successAction)="orderSuccess($event)"
-        (errorAction)="orderError($event)"></app-order-modal>
-    <app-confirm-dialog [id]="'confirmDeleteOrderDialog'" [title]="'Confirm Delete'" [message]="deleteMsg"
-        [confirmText]="'Delete'" [cancelText]="'Cancel'" [confirmBtnClass]="'btn-danger'" (confirmed)="deleteOrder()">
-    </app-confirm-dialog>
-    <app-toast *ngIf="showToast" [type]='toastType' [message]='toastMsg'
-        (closeAction)="hideToastComponent()"></app-toast>
     }
 </div>
+
+<app-order-modal [model]="order" (successAction)="orderSuccess($event)"
+    (errorAction)="orderError($event)"></app-order-modal>
+<app-update-order-note-modal [model]="order" (successAction)="orderSuccess($event)"
+    (errorAction)="orderError($event)"></app-update-order-note-modal>
+<app-update-order-description-modal [model]="order" (successAction)="orderSuccess($event)"
+    (errorAction)="orderError($event)"></app-update-order-description-modal>
+<app-confirm-dialog [id]="'confirmDeleteOrderDialog'" [title]="'Confirm Delete'" [message]="deleteMsg"
+    [confirmText]="'Delete'" [cancelText]="'Cancel'" [confirmBtnClass]="'btn-danger'" (confirmed)="deleteOrder()">
+</app-confirm-dialog>
 <app-toast *ngIf="showToast" [type]='toastType' [message]='toastMsg' (closeAction)="hideToastComponent()"></app-toast>
-<app-update-order-note-modal [model]="order"></app-update-order-note-modal>

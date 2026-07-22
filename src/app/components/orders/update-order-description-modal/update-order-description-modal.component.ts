@@ -1,3 +1,4 @@
+
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -6,14 +7,14 @@ import { OrderService } from '../../../services/order/order.service';
 import { UpdateOrderNonDependentFieldsRequest } from '../../../model/order/update-order-non-dependent-fields.model';
 
 @Component({
-  selector: 'app-update-order-note-modal',
+  selector: 'app-update-order-description-modal',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, FormsModule],
-  templateUrl: './update-order-note-modal.component.html',
-  styleUrl: './update-order-note-modal.component.css'
+  templateUrl: './update-order-description-modal.component.html',
+  styleUrl: './update-order-description-modal.component.css'
 })
 
-export class UpdateOrderNoteModalComponent implements OnInit, OnChanges {
+export class UpdateOrderDescriptionModalComponent implements OnInit, OnChanges {
 
   modalForm !: FormGroup;
   isSubmitting = false;
@@ -37,11 +38,11 @@ export class UpdateOrderNoteModalComponent implements OnInit, OnChanges {
       this.initModalForm();
     }
     if (this.model != null) {
-      if (this.model.note)
+      if (this.model.description)
         this.isEditMode = true;
       else
         this.isEditMode = false;
-      this.modalForm?.patchValue({ 'note': this.model.note });
+      this.modalForm?.patchValue({ 'description': this.model.description });
     } else {
       this.isEditMode = false;
       this.modalForm?.reset();
@@ -50,14 +51,14 @@ export class UpdateOrderNoteModalComponent implements OnInit, OnChanges {
 
   initModalForm(): void {
     this.modalForm = this.fb.group({
-      note: ['', Validators.required]
+      description: ['', Validators.required]
     });
   }
 
-  get note() { return this.modalForm.get('note'); }
+  get description() { return this.modalForm.get('description'); }
 
   programmaticallyClickFormSubmitButton(): void {
-    (document.querySelector('#updateOrderNoteModalFormSubmitButton') as HTMLElement)?.click();
+    (document.querySelector('#updateOrderDescriptionModalFormSubmitButton') as HTMLElement)?.click();
   }
 
   submitForm(): void {
@@ -77,8 +78,8 @@ export class UpdateOrderNoteModalComponent implements OnInit, OnChanges {
         dateOfDelivery: this.model.dateOfDelivery,
         totalAmount: this.model.totalAmount,
         discountedAmount: this.model.discountedAmount,
-        note: this.note?.value,
-        description: this.model.description,
+        note: this.model.note,
+        description: this.description?.value,
         printJobStatus: this.model.printJobStatus
       }
 
@@ -103,6 +104,6 @@ export class UpdateOrderNoteModalComponent implements OnInit, OnChanges {
   }
 
   closeModalProgramatically(): void {
-    (document.querySelector('#updateOrderNoteModalCloseBtn') as HTMLElement)?.click();
+    (document.querySelector('#updateOrderDescriptionModalCloseBtn') as HTMLElement)?.click();
   }
 }

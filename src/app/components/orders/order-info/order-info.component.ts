@@ -15,14 +15,14 @@ import { TimeElapsedPipe } from "../../../pipes/timeElapsed/time-elapsed.pipe";
 import { DaysElapsedPipe } from "../../../pipes/days-elapsed/days-elapsed.pipe";
 import { UpdateOrderNoteModalComponent } from "../update-order-note-modal/update-order-note-modal.component";
 import { UpdateOrderStatusRequest } from '../../../model/order/update-order-status.model';
-import { PaymentStatus } from '../../../enums/payment-status.enum';
 import { OrderStatus } from '../../../enums/order-status.enum';
 import { EnumOption, enumToOptions } from '../../../enums/enum-helper.';
+import { UpdateOrderDescriptionModalComponent } from "../update-order-description-modal/update-order-description-modal.component";
 
 @Component({
   selector: 'app-order-info',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink, ToastComponent, ConfirmDialogComponent, OrderModalComponent, FileAttachmentCardComponent, DaysElapsedPipe, TimeElapsedPipe, UpdateOrderNoteModalComponent],
+  imports: [CommonModule, FormsModule, RouterLink, ToastComponent, ConfirmDialogComponent, OrderModalComponent, FileAttachmentCardComponent, DaysElapsedPipe, TimeElapsedPipe, UpdateOrderNoteModalComponent, UpdateOrderDescriptionModalComponent],
   templateUrl: './order-info.component.html',
   styleUrl: './order-info.component.css'
 })
@@ -88,12 +88,11 @@ export class OrderInfoComponent implements OnInit {
         return;
       this.orderService.markOrderAsPaid(this.order.uuid).subscribe({
         next: (res) => {
-          this.order = res;
-          this.errorMsg = '';
-          this.deleteMsg = `Delete this customer?`;
+          this.orderSuccess(res);
         },
         error: (err) => {
           this.errorMsg = err?.error?.message || "Could not load order details!";
+          this.orderError(this.errorMsg);
         }
       });
     }
@@ -107,13 +106,11 @@ export class OrderInfoComponent implements OnInit {
       }
       this.orderService.updateOrderStatus(data).subscribe({
         next: (res) => {
-          this.order = res;
-          this.errorMsg = '';
-          this.deleteMsg = `Delete this customer?`;
+          this.orderSuccess(res);
         },
         error: (err) => {
           this.errorMsg = err?.error?.message || "Could not load order details!";
-          console.log(this.errorMsg);
+          this.orderError(this.errorMsg);
         }
       });
     }
@@ -146,8 +143,9 @@ export class OrderInfoComponent implements OnInit {
   }
 
   orderSuccess(order: Order): void {
+    this.order = order;
     this.showToastComponent("success", "Order updated.");
-    this.fetchOrderDetails();
+    // this.fetchOrderDetails();
   }
 
   orderError(errorStr: string): void {
