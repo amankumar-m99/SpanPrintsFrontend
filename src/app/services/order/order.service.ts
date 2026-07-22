@@ -5,6 +5,7 @@ import { Order } from '../../model/order/order.model';
 import { UpdateOrderRequest } from '../../model/order/update-order-request.model';
 import { OrderPagination } from '../../model/order/order-pagination.model';
 import { UpdateOrderStatusRequest } from '../../model/order/update-order-status.model';
+import { UpdateOrderNonDependentFieldsRequest } from '../../model/order/update-order-non-dependent-fields.model';
 
 @Injectable({
   providedIn: 'root'
@@ -65,6 +66,10 @@ export class OrderService {
 
   updateOrderStatus(request: UpdateOrderStatusRequest) {
     return this.http.patch<Order>(`${this.url}/order-status`, request);
+  }
+
+  updateOrderNonDependentFields(data: UpdateOrderNonDependentFieldsRequest) {
+    return this.http.put<Order>(`${this.url}/non-dependent`, data);
   }
 
   deleteOrderByUuid(uuid: string) {

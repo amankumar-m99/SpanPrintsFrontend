@@ -94,7 +94,6 @@ export class OrderInfoComponent implements OnInit {
         },
         error: (err) => {
           this.errorMsg = err?.error?.message || "Could not load order details!";
-          console.log(this.errorMsg);
         }
       });
     }

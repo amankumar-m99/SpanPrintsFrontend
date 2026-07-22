@@ -5,6 +5,7 @@ import { UpdateCustomerRequest } from '../../../model/customer/update-customer-r
 import { CreateCustomerRequest } from '../../../model/customer/create-customer-request.model';
 import { Order } from '../../../model/order/order.model';
 import { OrderService } from '../../../services/order/order.service';
+import { UpdateOrderNonDependentFieldsRequest } from '../../../model/order/update-order-non-dependent-fields.model';
 
 @Component({
   selector: 'app-update-order-note-modal',
@@ -38,7 +39,10 @@ export class UpdateOrderNoteModalComponent implements OnInit, OnChanges {
       this.initModalForm();
     }
     if (this.model != null) {
-      this.isEditMode = true;
+      if (this.model.note)
+        this.isEditMode = true;
+      else
+        this.isEditMode = false;
       this.modalForm?.patchValue({ 'note': this.model.note });
     } else {
       this.isEditMode = false;
@@ -55,7 +59,7 @@ export class UpdateOrderNoteModalComponent implements OnInit, OnChanges {
   get note() { return this.modalForm.get('note'); }
 
   programmaticallyClickFormSubmitButton(): void {
-    (document.querySelector('#updateNoteModalFormSubmitButton') as HTMLElement)?.click();
+    (document.querySelector('#updateOrderNoteModalFormSubmitButton') as HTMLElement)?.click();
   }
 
   submitForm(): void {
@@ -99,31 +103,42 @@ export class UpdateOrderNoteModalComponent implements OnInit, OnChanges {
   }
 
   addEntity(): void {
-    this.isSubmitting = true;
-    let newModel: CreateCustomerRequest = {
-      ...this.modalForm.value
-    };
-    /*
-    this.service.createCustomer(newModel).subscribe({
-      next: (response) => {
-        this.isSubmitting = false;
-        this.modalForm.reset();
-        this.closeModalProgramatically();
-        if (this.successAction != null)
-          this.successAction.emit({ ...response });
-      },
-      error: (err) => {
-        this.isSubmitting = false;
-        let errorMessage = err?.error?.message || 'Error occured while adding customer';
-        this.closeModalProgramatically();
-        if (this.errorAction != null)
-          this.errorAction.emit(errorMessage);
+    if (this.model) {
+      this.isSubmitting = true;
+      let newModel: UpdateOrderNonDependentFieldsRequest = {
+        uuid: this.model.uuid,
+        printJobTypeId: this.model.printJobTypeId,
+        quantity: this.model.quantity,
+        bookNumber: this.model.bookNumber,
+        dateOfPlaced: this.model.dateOfPlaced,
+        dateOfDelivery: this.model.dateOfDelivery,
+        totalAmount: this.model.totalAmount,
+        discountedAmount: this.model.discountedAmount,
+        note: this.note?.value,
+        description: this.model.description,
+        printJobStatus: this.model.printJobStatus
       }
-    });
-    */
+
+      this.service.updateOrderNonDependentFields(newModel).subscribe({
+        next: (response) => {
+          this.isSubmitting = false;
+          this.modalForm.reset();
+          this.closeModalProgramatically();
+          if (this.successAction != null)
+            this.successAction.emit({ ...response });
+        },
+        error: (err) => {
+          this.isSubmitting = false;
+          let errorMessage = err?.error?.message || 'Error occured while adding customer';
+          this.closeModalProgramatically();
+          if (this.errorAction != null)
+            this.errorAction.emit(errorMessage);
+        }
+      });
+    }
   }
 
   closeModalProgramatically(): void {
-    (document.querySelector('#customerModalCloseBtn') as HTMLElement)?.click();
+    (document.querySelector('#updateOrderNoteModalCloseBtn') as HTMLElement)?.click();
   }
 }

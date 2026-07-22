@@ -355,7 +355,6 @@ export class OrderModalComponent implements OnInit, OnChanges {
 
   submitForm(): void {
     if (this.modalForm.invalid || this.isInvalidAmounts || this.isInvalidBookNumbers) {
-      console.log(this.modalForm.value);
       this.modalForm.markAllAsTouched();
       return;
     }
