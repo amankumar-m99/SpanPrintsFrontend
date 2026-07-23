@@ -52,21 +52,27 @@ export class OrderInfoComponent implements OnInit {
       const uuid = params.get('uuid');
       if (uuid) {
         this.orderUuid = uuid;
-        this.fetchOrderDetails();
+        this.fetchOrderDetails(false);
         this.fetchFileAttachments();
       }
     });
   }
 
-  fetchOrderDetails() {
+  fetchOrderDetails(isRefresh: boolean) {
     this.orderService.getOrderByUuid(this.orderUuid).subscribe({
       next: (res) => {
-        this.order = res;
         this.errorMsg = '';
         this.deleteMsg = `Delete this customer?`;
+        if (isRefresh) {
+          this.orderSuccess(res);
+        }
+        else {
+          this.order = res;
+        }
       },
       error: (err) => {
         this.errorMsg = err?.error?.message || "Could not load order details!";
+        this.orderError(this.errorMsg);
       }
     });
   }
@@ -81,6 +87,10 @@ export class OrderInfoComponent implements OnInit {
         this.errorMsg = err?.error?.message || "Could not load file attachments";
       }
     });
+  }
+
+  reloadOrderDetails() {
+    this.fetchOrderDetails(true);
   }
 
   markAsPaid() {
