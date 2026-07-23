@@ -140,7 +140,8 @@
                             @if(order?.paymentStatus != "PAID"){
                             <button class="btn btn-sm btn-outline-success me-2" (click)="markAsPaid()">Mark as
                                 Paid</button>
-                            <button class="btn btn-sm btn-outline-primary me-2">Deposit Payment</button>
+                            <button class="btn btn-sm btn-outline-primary me-2" data-bs-toggle="modal"
+                                data-bs-target="#depositOrderAmountModal" title="Deposite amount">Deposit Payment</button>
                             }
                         </span>
                     </div>
@@ -373,6 +374,8 @@
 
 <app-order-modal [model]="order" (successAction)="orderSuccess($event)"
     (errorAction)="orderError($event)"></app-order-modal>
+<app-oder-deposit-amount-modal [model]="order" (successAction)="orderSuccess($event)"
+    (errorAction)="orderError($event)"></app-oder-deposit-amount-modal>
 <app-update-order-note-modal [model]="order" (successAction)="orderSuccess($event)"
     (errorAction)="orderError($event)"></app-update-order-note-modal>
 <app-update-order-description-modal [model]="order" (successAction)="orderSuccess($event)"

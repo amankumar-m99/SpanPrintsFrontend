@@ -19,11 +19,12 @@ import { OrderStatus } from '../../../enums/order-status.enum';
 import { EnumOption, enumToOptions } from '../../../enums/enum-helper.';
 import { UpdateOrderDescriptionModalComponent } from "../update-order-description-modal/update-order-description-modal.component";
 import { UploadOrderAttachmentModalComponent } from "../upload-order-attachment-modal/upload-order-attachment-modal.component";
+import { OderDepositAmountModalComponent } from "../oder-deposit-amount-modal/oder-deposit-amount-modal.component";
 
 @Component({
   selector: 'app-order-info',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink, ToastComponent, ConfirmDialogComponent, OrderModalComponent, FileAttachmentCardComponent, DaysElapsedPipe, TimeElapsedPipe, UpdateOrderNoteModalComponent, UpdateOrderDescriptionModalComponent, UploadOrderAttachmentModalComponent],
+  imports: [CommonModule, FormsModule, RouterLink, ToastComponent, ConfirmDialogComponent, OrderModalComponent, FileAttachmentCardComponent, DaysElapsedPipe, TimeElapsedPipe, UpdateOrderNoteModalComponent, UpdateOrderDescriptionModalComponent, UploadOrderAttachmentModalComponent, OderDepositAmountModalComponent],
   templateUrl: './order-info.component.html',
   styleUrl: './order-info.component.css'
 })

@@ -6,6 +6,7 @@ import { UpdateOrderRequest } from '../../model/order/update-order-request.model
 import { OrderPagination } from '../../model/order/order-pagination.model';
 import { UpdateOrderStatusRequest } from '../../model/order/update-order-status.model';
 import { UpdateOrderNonDependentFieldsRequest } from '../../model/order/update-order-non-dependent-fields.model';
+import { OrderDepositAmountRequest } from '../../model/order/order-deposit-amount-request.model';
 
 @Injectable({
   providedIn: 'root'
@@ -70,6 +71,10 @@ export class OrderService {
 
   updateOrderNonDependentFields(data: UpdateOrderNonDependentFieldsRequest) {
     return this.http.put<Order>(`${this.url}/non-dependent`, data);
+  }
+  
+  depositAmount(data: OrderDepositAmountRequest){
+    return this.http.put<Order>(`${this.url}/deposit-amount`, data);
   }
 
   addOrderAttachment(uuid: string, data: FormData) {

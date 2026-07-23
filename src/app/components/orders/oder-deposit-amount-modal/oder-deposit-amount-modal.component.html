@@ -1,0 +1,49 @@
+<div class="modal fade" id="depositOrderAmountModal" data-bs-backdrop="static" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="bi bi-chat-left-text me-2"></i>Deposit Amount</h5>
+                <button id="depositOrderAmountModalCloseBtn" type="button" class="btn-close"
+                    data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="modalForm" (ngSubmit)="submitForm()">
+                    <label class="form-label">Amount</label>
+                    <div class="input-group mb-3">
+                        <button class="btn btn-outline-secondary" type="button" (click)="decrementAmount()">
+                            <i class="bi bi-dash"></i>
+                        </button>
+                        <input type="number" class="form-control" formControlName="depositAmount" aria-label="quantity"
+                            [ngClass]="{ 'is-invalid': depositAmount?.invalid && depositAmount?.touched }"
+                            aria-describedby="amountDepositHelpBlock">
+                        <button class="btn btn-outline-secondary" type="button" (click)="incrementAmount()">
+                            <i class="bi bi-plus"></i>
+                        </button>
+                        <div class="invalid-feedback" *ngIf="depositAmount?.touched && depositAmount?.invalid">
+                            Amount must be at least 1
+                        </div>
+                    </div>
+                    <div id="amountDepositHelpBlock" class="form-text">
+                        Enter the amount to be deposited more to this order.
+                    </div>
+                    <div><button id="depositOrderAmountModalFormSubmitButton" type="submit" class="d-none"
+                            [disabled]="isSubmitting"></button></div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" [disabled]="isSubmitting"
+                    (click)="programmaticallyClickFormSubmitButton()">
+                    @if(!isSubmitting){
+                    <span>Deposit</span>
+                    }
+                    @else {
+                    <span class="spinner-border spinner-border-sm me-2"></span>
+                    <span>Depositing...</span>
+                    }
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
