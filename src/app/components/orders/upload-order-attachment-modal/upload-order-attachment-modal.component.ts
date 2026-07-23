@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Order } from '../../../model/order/order.model';
 import { OrderService } from '../../../services/order/order.service';
@@ -12,7 +12,7 @@ import { FileSizePipe } from "../../../pipes/file-size/file-size.pipe";
   styleUrl: './upload-order-attachment-modal.component.css'
 })
 
-export class UploadOrderAttachmentModalComponent implements OnInit, OnChanges {
+export class UploadOrderAttachmentModalComponent {
 
   isSubmitting = false;
   showToast = false;
@@ -24,12 +24,6 @@ export class UploadOrderAttachmentModalComponent implements OnInit, OnChanges {
   @Output() errorAction = new EventEmitter<string>();
 
   constructor(private service: OrderService) { }
-
-  ngOnInit(): void {
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-  }
 
   submitForm(): void {
     if (this.model) {
