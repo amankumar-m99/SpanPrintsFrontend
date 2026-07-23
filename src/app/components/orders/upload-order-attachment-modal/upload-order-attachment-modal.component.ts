@@ -4,18 +4,18 @@ import { CommonModule } from '@angular/common';
 import { Order } from '../../../model/order/order.model';
 import { OrderService } from '../../../services/order/order.service';
 import { UpdateOrderNonDependentFieldsRequest } from '../../../model/order/update-order-non-dependent-fields.model';
+import { FileSizePipe } from "../../../pipes/file-size/file-size.pipe";
 
 @Component({
   selector: 'app-upload-order-attachment-modal',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, FileSizePipe],
   templateUrl: './upload-order-attachment-modal.component.html',
   styleUrl: './upload-order-attachment-modal.component.css'
 })
 
 export class UploadOrderAttachmentModalComponent implements OnInit, OnChanges {
 
-  modalForm !: FormGroup;
   isSubmitting = false;
   showToast = false;
 
@@ -28,40 +28,12 @@ export class UploadOrderAttachmentModalComponent implements OnInit, OnChanges {
   constructor(private fb: FormBuilder, private service: OrderService) { }
 
   ngOnInit(): void {
-    if (!this.modalForm) {
-      this.initModalForm();
-    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (!this.modalForm) {
-      this.initModalForm();
-    }
-    if (this.model != null) {
-      this.modalForm?.patchValue({ 'description': this.model.description });
-    } else {
-      this.modalForm?.reset();
-    }
-  }
-
-  initModalForm(): void {
-    this.modalForm = this.fb.group({
-      description: ['', Validators.required]
-    });
-  }
-
-  get description() { return this.modalForm.get('description'); }
-
-  programmaticallyClickFormSubmitButton(): void {
-    (document.querySelector('#uploadOrderAttachmentModalFormSubmitButton') as HTMLElement)?.click();
   }
 
   submitForm(): void {
-    if (this.modalForm.invalid) {
-      this.modalForm.markAllAsTouched();
-      return;
-    }
-
     if (this.model) {
       this.isSubmitting = true;
       const formData = new FormData();
@@ -71,7 +43,6 @@ export class UploadOrderAttachmentModalComponent implements OnInit, OnChanges {
       this.service.addOrderAttachment(this.model.uuid, formData).subscribe({
         next: (response) => {
           this.isSubmitting = false;
-          this.modalForm.reset();
           this.closeModalProgramatically();
           if (this.successAction != null)
             this.successAction.emit({ ...response });

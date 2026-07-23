@@ -1,5 +1,5 @@
 <div class="modal fade" id="uploadOrderAttachmentModal" data-bs-backdrop="static" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">
@@ -9,46 +9,58 @@
                     data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <form [formGroup]="modalForm" (ngSubmit)="submitForm()">
-                    <div class="mb-3">
-                        <label class="form-label">Attachments</label>
-                        <input type="file" class="form-control" (change)="onFileSelected($event)" multiple
-                            accept="image/*,.pdf,.doc,.docx,.zip" />
+                <div class="mb-3">
+                    <label class="form-label">Attachments</label>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" readonly="true"
+                            [value]="selectedFiles.length + ' file(s) selected'" aria-label="files to be uploaded"
+                            aria-describedby="file-uplaod-for-orders">
+                        <span class="input-group-text" id="file-uplaod-for-orders">
+                            <label for="hiddenFileInput" role="button">Choose Files</label>
+                        </span>
+                    </div>
+                    <input type="file" class="form-control visually-hidden" id="hiddenFileInput"
+                        (change)="onFileSelected($event)" multiple accept="image/*,.pdf,.doc,.docx,.zip" />
 
-                        <!-- Show selected files -->
-                        <div *ngIf="selectedFiles.length" class="mt-2 small text-muted">
-                            {{ selectedFiles.length }} file(s) selected.
-                        </div>
-                        <ul *ngIf="selectedFiles.length" class="list-group mt-2">
-                            <li *ngFor="let file of selectedFiles; let i = index"
-                                class="list-group-item d-flex justify-content-between align-items-center">
-                                <div class="text-truncate" style="max-width: 80%;">
-                                    <i class="bi bi-paperclip me-2 text-secondary"></i>
-                                    {{ file.name }}
-                                </div>
+                    <!-- Show selected files -->
+                    @if(selectedFiles.length != 0){
+                    <div><small class="text-muted">Selected Files:</small></div>
+                    }
+                    <ul *ngIf="selectedFiles.length" class="list-group mt-2">
+                        <li *ngFor="let file of selectedFiles; let i = index"
+                            class="list-group-item d-flex justify-content-between align-items-center">
+                            <div class="text-truncate" style="max-width: 80%;">
+                                <i class="bi bi-paperclip me-2 text-secondary"></i>
+                                {{ file.name }}
+                            </div>
+                            <span>
+                                <small class="text-muted me-2" title="Last modified On">{{file.lastModified |
+                                    date}}</small>
+                                <small class="text-muted me-3" title="File size">{{file.size | fileSize}}</small>
                                 <button type="button" class="btn btn-sm btn-outline-danger" (click)="removeFile(i)"
                                     title="Remove file">
                                     <i class="bi bi-x"></i>
                                 </button>
-                            </li>
-                        </ul>
-                    </div>
+                            </span>
+                        </li>
+                    </ul>
+                </div>
 
-                    <div><button id="uploadOrderAttachmentModalFormSubmitButton" type="submit" class="d-none"
-                            [disabled]="isSubmitting"></button></div>
-                </form>
+                <div>
+                    <button id="uploadOrderAttachmentModalFormSubmitButton" type="submit" class="d-none"
+                        [disabled]="isSubmitting"></button>
+                </div>
             </div>
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary" [disabled]="isSubmitting"
-                    (click)="programmaticallyClickFormSubmitButton()">
+                <button type="button" class="btn btn-primary" [disabled]="isSubmitting" (click)="submitForm()">
                     @if(!isSubmitting){
-                    <span>Add</span>
+                    <span>Upload</span>
                     }
                     @else {
                     <span class="spinner-border spinner-border-sm me-2"></span>
-                    <span>Adding...</span>
+                    <span>Uploading...</span>
                     }
                 </button>
             </div>
