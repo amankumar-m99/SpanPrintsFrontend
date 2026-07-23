@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Constant } from '../../constant/Constant';
 import { Order } from '../../model/order/order.model';
@@ -7,6 +7,7 @@ import { OrderPagination } from '../../model/order/order-pagination.model';
 import { UpdateOrderStatusRequest } from '../../model/order/update-order-status.model';
 import { UpdateOrderNonDependentFieldsRequest } from '../../model/order/update-order-non-dependent-fields.model';
 import { OrderDepositAmountRequest } from '../../model/order/order-deposit-amount-request.model';
+import { OrderFilterRequest } from '../../model/order/order-filter-request.model';
 
 @Injectable({
   providedIn: 'root'
@@ -29,8 +30,24 @@ export class OrderService {
     return this.http.get<Order[]>(this.url);
   }
 
-  getAllOrdersPaginated(pageNumber: number, pageSize: number) {
-    return this.http.get<OrderPagination>(`${this.url}/paginated?pageNumber=${pageNumber}&pageSize=${pageSize}`);
+  getAllOrdersPaginated(pageNumber: number, pageSize: number, filter?: OrderFilterRequest) {
+    let params = new HttpParams()
+      .set('pageNumber', pageNumber.toString())
+      .set('pageSize', pageSize.toString());
+
+    if (filter?.jobNames?.length) {
+      params = params.set('jobNames', filter.jobNames.join(','));
+    }
+
+    if (filter?.paymentStatuses?.length) {
+      params = params.set('paymentStatuses', filter.paymentStatuses.join(','));
+    }
+
+    if (filter?.orderStatuses?.length) {
+      params = params.set('orderStatuses', filter.orderStatuses.join(','));
+    }
+
+    return this.http.get<OrderPagination>(`${this.url}/paginated`, { params });
   }
 
   getAllOrdersPlacedToday() {

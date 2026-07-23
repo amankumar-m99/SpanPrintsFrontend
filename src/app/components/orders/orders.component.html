@@ -1,159 +1,72 @@
 <div class="me-1 mt-1">
-    <div class="d-flex justify-content-between align-items-center mb-2 visually-hidden">
+    <div class="d-flex justify-content-between align-items-center mb-2">
         <h3><i class="bi bi-bag-heart-fill me-2 text-success"></i>Orders</h3>
-        <div class="d-flex">
-            <div class="">
-                <div class="d-flex flex-column align-items-end">
-                    <button class="btn btn-outline-primary position-relative" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#filterToolbar" aria-expanded="false" aria-controls="filterToolbar">
-                        <i class="bi bi-funnel me-1"></i>Filters
-                        <span *ngIf="activeFiltersCount > 0"
-                            class="badge bg-danger position-absolute top-0 start-100 translate-middle">
-                            {{ activeFiltersCount }}
-                        </span>
+        <div class="ms-2">
+            <button class="btn btn-primary ms-2" (click)="refreshTable()">
+                <i class="bi bi-arrow-clockwise me-2"></i>Refresh Orders
+            </button>
+            <button class="btn btn-primary ms-2" (click)="addOrder()">
+                <i class="bi bi-bag-plus me-2"></i>Place Order
+            </button>
+            <button class="btn btn-danger ms-2" (click)="askDeleteAllOrders()">
+                <i class="bi bi-trash me-2"></i>Delete All Orders
+            </button>
+        </div>
+    </div>
+    <hr>
+    <div class="card border-light shadow-sm mb-3">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <h5 class="mb-0">Field-wise Filters</h5>
+                <div class="d-flex gap-2">
+                    <button class="btn btn-sm btn-primary" type="button" (click)="applyFilters()">
+                        <i class="bi bi-funnel-fill me-1"></i>Apply
                     </button>
-                    <!-- Filter summary below button -->
-                    <div *ngIf="activeFiltersSummary" class="small text-muted mt-1">
-                        {{ activeFiltersSummary }}
+                    <button class="btn btn-sm btn-outline-secondary" type="button" (click)="clearFilters()">
+                        <i class="bi bi-x-circle me-1"></i>Clear
+                    </button>
+                </div>
+            </div>
+
+            <div class="row g-3">
+                <div class="col-lg-4 col-md-6">
+                    <label class="form-label fw-semibold">Job Name</label>
+                    <div class="border rounded p-2" style="max-height: 180px; overflow:auto;">
+                        <div class="form-check" *ngFor="let value of printJobTypeOptions">
+                            <input class="form-check-input" type="checkbox"
+                                [checked]="isSelected('jobNames', value.name)"
+                                (change)="toggleSelection('jobNames', value.name, $any($event.target).checked)">
+                            <label class="form-check-label">{{ value.name }}</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+                    <label class="form-label fw-semibold">Payment Status</label>
+                    <div class="border rounded p-2" style="max-height: 180px; overflow:auto;">
+                        <div class="form-check" *ngFor="let value of paymentStatusOptions">
+                            <input class="form-check-input" type="checkbox"
+                                [checked]="isSelected('paymentStatuses', value.value)"
+                                (change)="toggleSelection('paymentStatuses', value.value, $any($event.target).checked)">
+                            <label class="form-check-label">{{ value.label }}</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+                    <label class="form-label fw-semibold">Order Status</label>
+                    <div class="border rounded p-2" style="max-height: 180px; overflow:auto;">
+                        <div class="form-check" *ngFor="let value of orderStatusOptions">
+                            <input class="form-check-input" type="checkbox"
+                                [checked]="isSelected('orderStatuses', value.value)"
+                                (change)="toggleSelection('orderStatuses', value.value, $any($event.target).checked)">
+                            <label class="form-check-label">{{ value.label }}</label>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="ms-2">
-                <button class="btn btn-primary ms-2" (click)="refreshTable()">
-                    <i class="bi bi-arrow-clockwise me-2"></i>Refresh Orders
-                </button>
-                <button class="btn btn-primary ms-2" (click)="addOrder()">
-                    <i class="bi bi-bag-plus me-2"></i>Place Order
-                </button>
-                <button class="btn btn-danger ms-2" (click)="askDeleteAllOrders()">
-                    <i class="bi bi-trash me-2"></i>Delete All Orders
-                </button>
-            </div>
         </div>
     </div>
-
-    <!-- Collapsible Sticky Toolbar -->
-    <div id="filterToolbar" class="collapse d-md-block position-sticky top-0 bg-body shadow-sm z-3 mb-2"
-        style="z-index: 1020;"> <!-- z-index keeps it above other elements -->
-
-        <div class="filter-toolbar p-2 rounded">
-            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
-
-                <!-- Search -->
-                <div class="d-flex align-items-center gap-2">
-                    <input type="text" class="form-control" placeholder="Search by name or phone..."
-                        style="min-width: 250px;" [(ngModel)]="searchTerm" (input)="applyFilters()" />
-                </div>
-
-                <!-- Filter -->
-                <div class="d-flex align-items-center gap-2">
-                    <label for="statusFilter" class="form-label mb-0">Status:</label>
-                    <select id="statusFilter" class="form-select" style="width: auto;" [(ngModel)]="filterStatus"
-                        (change)="applyFilters()">
-                        <option value="">All</option>
-                        <option value="paid">Paid</option>
-                        <option value="partially paid">Partially Paid</option>
-                        <option value="unpaid">Unpaid</option>
-                    </select>
-                </div>
-
-                <!-- Sort -->
-                <div class="d-flex align-items-center gap-2">
-                    <label for="sortBy" class="form-label mb-0">Sort by:</label>
-                    <select id="sortBy" class="form-select" style="width: auto;" [(ngModel)]="sortBy"
-                        (change)="applyFilters()">
-                        <option value="createdAt_desc">Newest First</option>
-                        <option value="createdAt_asc">Oldest First</option>
-                        <option value="amount_desc">Amount High → Low</option>
-                        <option value="amount_asc">Amount Low → High</option>
-                    </select>
-                </div>
-
-                <!-- Clear -->
-                <div>
-                    <button class="btn btn-outline-secondary btn-sm" (click)="clearFilters()">
-                        Clear All
-                    </button>
-                </div>
-
-            </div>
-        </div>
-    </div>
-    <hr>
-    <!-- filter -->
-    <h6>Filter</h6>
-    <span class="dropdown mx-1">
-        <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown"
-            aria-expanded="false">
-            Job Name
-        </button>
-        <div class="dropdown-menu p-2" style="min-width: 260px;">
-            <form [formGroup]="fieldsVisibilityForm">
-                <div class="form-check mb-2">
-                    <input class="form-check-input" type="checkbox" id="fieldJobName" formControlName="jobName">
-                    <label class="form-check-label" for="fieldJobName">Job Name</label>
-                </div>
-            </form>
-        </div>
-    </span>
-    <span class="dropdown mx-1">
-        <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown"
-            aria-expanded="false">
-            Order Status
-        </button>
-        <div class="dropdown-menu p-2" style="min-width: 260px;">
-            <form [formGroup]="fieldsVisibilityForm">
-                <div class="form-check mb-2">
-                    <input class="form-check-input" type="checkbox" id="fieldJobName" formControlName="jobName">
-                    <label class="form-check-label" for="fieldJobName">Job Name</label>
-                </div>
-            </form>
-        </div>
-    </span>
-    <span class="dropdown mx-1">
-        <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown"
-            aria-expanded="false">
-            Payment Status
-        </button>
-        <div class="dropdown-menu p-2" style="min-width: 260px;">
-            <form [formGroup]="fieldsVisibilityForm">
-                <div class="form-check mb-2">
-                    <input class="form-check-input" type="checkbox" id="fieldJobName" formControlName="jobName">
-                    <label class="form-check-label" for="fieldJobName">Job Name</label>
-                </div>
-            </form>
-        </div>
-    </span>
-    <span class="dropdown mx-1">
-        <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown"
-            aria-expanded="false">
-            Date of Placed
-        </button>
-        <div class="dropdown-menu p-2" style="min-width: 260px;">
-            <form [formGroup]="fieldsVisibilityForm">
-                <div class="form-check mb-2">
-                    <input class="form-check-input" type="checkbox" id="fieldJobName" formControlName="jobName">
-                    <label class="form-check-label" for="fieldJobName">Job Name</label>
-                </div>
-            </form>
-        </div>
-    </span>
-
-    <span class="dropdown mx-1">
-        <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown"
-            aria-expanded="false">
-            Date of Delivery
-        </button>
-        <div class="dropdown-menu p-2" style="min-width: 260px;">
-            <form [formGroup]="fieldsVisibilityForm">
-                <div class="form-check mb-2">
-                    <input class="form-check-input" type="checkbox" id="fieldJobName" formControlName="jobName">
-                    <label class="form-check-label" for="fieldJobName">Job Name</label>
-                </div>
-            </form>
-        </div>
-    </span>
-    <hr>
     <!-- Pagination controls -->
     <div class="d-flex justify-content-between align-items-center mt-2">
         <div class="d-flex align-items-center">

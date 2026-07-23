@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Order } from '../../model/order/order.model';
 import { OrderService } from '../../services/order/order.service';
 import { OrderModalComponent } from "./order-modal/order-modal.component";
@@ -9,7 +9,12 @@ import { Router } from '@angular/router';
 import { ToastComponent } from "../utility/toast/toast.component";
 import { DaysElapsedPipe } from "../../pipes/days-elapsed/days-elapsed.pipe";
 import { TimeElapsedPipe } from "../../pipes/timeElapsed/time-elapsed.pipe";
-import { JsonpClientBackend } from '@angular/common/http';
+import { OrderFilterRequest } from '../../model/order/order-filter-request.model';
+import { PrintJobTypeService } from '../../services/order/printjobtype.service';
+import { PrintJobType } from '../../model/order/printjobtype.model';
+import { EnumOption, enumToOptions } from '../../enums/enum-helper.';
+import { OrderStatus } from '../../enums/order-status.enum';
+import { PaymentStatus } from '../../enums/payment-status.enum';
 
 @Component({
   selector: 'app-orders',
@@ -33,6 +38,16 @@ export class OrdersComponent implements OnInit {
   toastMsg = '';
   showToast = false;
 
+  printJobTypeOptions: PrintJobType[] = [];
+  orderStatusOptions: EnumOption[] = enumToOptions(OrderStatus);
+  paymentStatusOptions: EnumOption[] = enumToOptions(PaymentStatus);
+  // paymentStatusOptions: string[] = [];
+  // orderStatusOptions: string[] = [];
+
+  selectedJobNames: string[] = [];
+  selectedPaymentStatuses: string[] = [];
+  selectedOrderStatuses: string[] = [];
+
   // Pagination state
   pageSizes: number[] = [5, 10, 25, 50];
   pageSize = 5;
@@ -41,22 +56,19 @@ export class OrdersComponent implements OnInit {
   totalOrders = 0;
   pages: number[] = [];
 
-  //filters
-  filteredOrders: any[] = [];   // filtered & sorted list
-  filterStatus: string = '';    // holds dropdown value
-  sortBy: string = 'createdAt_desc';
-  searchTerm: string = '';
-  activeFiltersCount = 0;
-  activeFiltersSummary = '';
-
   @ViewChild('launchOrderModalButton') launchOrderModalButton !: ElementRef;
   @ViewChild('launchConfirmDeleteOrderButton') launchConfirmDeleteButton !: ElementRef;
   @ViewChild('launchConfirmDeleteAllOrdersButton') launchConfirmDeleteAllButton !: ElementRef;
 
-  constructor(private fb: FormBuilder, private router: Router, private orderService: OrderService) { }
+  constructor(private fb: FormBuilder,
+    private router: Router,
+    private orderService: OrderService,
+    private printJobTypeService: PrintJobTypeService
+  ) { }
 
   ngOnInit(): void {
     this.initFieldsVisibilityForm();
+    this.loadFilterOptions();
     this.loadOrders();
   }
 
@@ -110,10 +122,86 @@ export class OrdersComponent implements OnInit {
     return Math.min(this.currentPage * this.pageSize, this.totalOrders);
   }
 
-  loadOrders(page: number = 1, size: number = this.pageSize): void {
+  private loadFilterOptions(): void {
+    this.printJobTypeService.getAllPrintJobTypes().subscribe({
+      next: (resp) => {
+        this.printJobTypeOptions = resp;
+      },
+      error: () => this.printJobTypeOptions = []
+    });
+
+    /*
+    this.orderService.getAllPaymentStatuses().subscribe({
+      next: (statuses: string[]) => this.paymentStatusOptions = statuses ?? [],
+      error: () => this.paymentStatusOptions = []
+    });
+
+    this.orderService.getAllOrderStatuses().subscribe({
+      next: (statuses: string[]) => this.orderStatusOptions = statuses ?? [],
+      error: () => this.orderStatusOptions = []
+    });
+    */
+  }
+
+  private buildFilterRequest(): OrderFilterRequest {
+    return {
+      jobNames: [...this.selectedJobNames],
+      paymentStatuses: [...this.selectedPaymentStatuses],
+      orderStatuses: [...this.selectedOrderStatuses]
+    };
+  }
+
+  toggleSelection(field: 'jobNames' | 'paymentStatuses' | 'orderStatuses', value: string, checked: boolean): void {
+    const selectedValues = this.getSelectedValues(field);
+
+    if (checked) {
+      if (!selectedValues.includes(value)) {
+        selectedValues.push(value);
+      }
+    } else {
+      const index = selectedValues.indexOf(value);
+      if (index >= 0) {
+        selectedValues.splice(index, 1);
+      }
+    }
+
+    this.syncSelection(field, selectedValues);
+  }
+
+  private getSelectedValues(field: 'jobNames' | 'paymentStatuses' | 'orderStatuses'): string[] {
+    if (field === 'jobNames') {
+      return this.selectedJobNames;
+    }
+
+    if (field === 'paymentStatuses') {
+      return this.selectedPaymentStatuses;
+    }
+
+    return this.selectedOrderStatuses;
+  }
+
+  private syncSelection(field: 'jobNames' | 'paymentStatuses' | 'orderStatuses', values: string[]): void {
+    if (field === 'jobNames') {
+      this.selectedJobNames = values;
+      return;
+    }
+
+    if (field === 'paymentStatuses') {
+      this.selectedPaymentStatuses = values;
+      return;
+    }
+
+    this.selectedOrderStatuses = values;
+  }
+
+  isSelected(field: 'jobNames' | 'paymentStatuses' | 'orderStatuses', value: string): boolean {
+    return this.getSelectedValues(field).includes(value);
+  }
+
+  loadOrders(page: number = 1, size: number = this.pageSize, filter: OrderFilterRequest = this.buildFilterRequest()): void {
     this.currentPage = page;
     this.pageSize = size;
-    this.orderService.getAllOrdersPaginated(this.currentPage - 1, this.pageSize).subscribe({
+    this.orderService.getAllOrdersPaginated(this.currentPage - 1, this.pageSize, filter).subscribe({
       next: (resp) => {
         this.orders = resp.orders;
         this.totalOrders = resp.totalElements;
@@ -140,30 +228,43 @@ export class OrdersComponent implements OnInit {
 
   changePage(page: number): void {
     if (page === this.currentPage) return;
-    this.loadOrders(page, this.pageSize);
+    this.loadOrders(page, this.pageSize, this.buildFilterRequest());
   }
 
   changePageSize(size: number): void {
     this.pageSize = +size;
     this.currentPage = 1;
-    this.loadOrders(this.currentPage, this.pageSize);
+    this.loadOrders(this.currentPage, this.pageSize, this.buildFilterRequest());
   }
 
   prevPage(): void {
     if (this.currentPage > 1) {
-      this.loadOrders(this.currentPage - 1, this.pageSize);
+      this.loadOrders(this.currentPage - 1, this.pageSize, this.buildFilterRequest());
     }
   }
 
   nextPage(): void {
     if (this.currentPage < this.totalPages) {
-      this.loadOrders(this.currentPage + 1, this.pageSize);
+      this.loadOrders(this.currentPage + 1, this.pageSize, this.buildFilterRequest());
     }
   }
 
   refreshTable(): void {
     this.isRefreshingData = true;
-    this.loadOrders();
+    this.loadOrders(1, this.pageSize, this.buildFilterRequest());
+  }
+
+  applyFilters(): void {
+    this.currentPage = 1;
+    this.loadOrders(1, this.pageSize, this.buildFilterRequest());
+  }
+
+  clearFilters(): void {
+    this.selectedJobNames = [];
+    this.selectedPaymentStatuses = [];
+    this.selectedOrderStatuses = [];
+    this.currentPage = 1;
+    this.loadOrders(1, this.pageSize, this.buildFilterRequest());
   }
 
   addOrder(): void {
@@ -258,70 +359,6 @@ export class OrdersComponent implements OnInit {
 
   openDetails(order: Order) {
     this.router.navigate(['/dashboard/order', order.uuid]);
-  }
-
-  applyFilters() {
-    let data = [...this.orders];
-    // Search filter
-    if (this.searchTerm) {
-      const term = this.searchTerm.toLowerCase();
-      data = data.filter(o =>
-        o.customerName.toLowerCase().includes(term) ||
-        o.customerPrimaryPhoneNumber.includes(term)
-      );
-    }
-    // Status filter
-    if (this.filterStatus) {
-      data = data.filter(o => o.paymentStatus === this.filterStatus);
-    }
-    //  Sorting
-    switch (this.sortBy) {
-      case 'createdAt_desc':
-        data.sort((a, b) => +new Date(b.createdAt) - +new Date(a.createdAt));
-        break;
-      case 'createdAt_asc':
-        data.sort((a, b) => +new Date(a.createdAt) - +new Date(b.createdAt));
-        break;
-      case 'amount_desc':
-        data.sort((a, b) => b.totalAmount - a.totalAmount);
-        break;
-      case 'amount_asc':
-        data.sort((a, b) => a.totalAmount - b.totalAmount);
-        break;
-    }
-    this.activeFiltersCount = 0;
-    let summaries: string[] = [];
-
-    if (this.searchTerm && this.searchTerm.trim() !== '') {
-      this.activeFiltersCount++;
-      summaries.push(`Search: "${this.searchTerm}"`);
-    }
-
-    if (this.filterStatus && this.filterStatus !== '') {
-      this.activeFiltersCount++;
-      summaries.push(`Status: ${this.filterStatus}`);
-    }
-
-    if (this.sortBy && this.sortBy !== 'createdAt_desc') {
-      this.activeFiltersCount++;
-      let label = '';
-      switch (this.sortBy) {
-        case 'createdAt_asc': label = 'Oldest First'; break;
-        case 'amount_desc': label = 'Amount High→Low'; break;
-        case 'amount_asc': label = 'Amount Low→High'; break;
-      }
-      summaries.push(`Sort: ${label}`);
-    }
-
-    this.activeFiltersSummary = summaries.join(', ');
-    this.filteredOrders = data;
-  }
-
-  clearFilters() {
-    this.searchTerm = '';
-    this.filterStatus = '';
-    this.sortBy = 'createdAt_desc';
-    this.applyFilters(); // reset filters count
   }
 
 }
