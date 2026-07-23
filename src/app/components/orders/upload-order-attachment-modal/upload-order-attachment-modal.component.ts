@@ -1,15 +1,13 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Order } from '../../../model/order/order.model';
 import { OrderService } from '../../../services/order/order.service';
-import { UpdateOrderNonDependentFieldsRequest } from '../../../model/order/update-order-non-dependent-fields.model';
 import { FileSizePipe } from "../../../pipes/file-size/file-size.pipe";
 
 @Component({
   selector: 'app-upload-order-attachment-modal',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule, FileSizePipe],
+  imports: [CommonModule, FileSizePipe],
   templateUrl: './upload-order-attachment-modal.component.html',
   styleUrl: './upload-order-attachment-modal.component.css'
 })
@@ -25,7 +23,7 @@ export class UploadOrderAttachmentModalComponent implements OnInit, OnChanges {
   @Output() successAction = new EventEmitter<Order>();
   @Output() errorAction = new EventEmitter<string>();
 
-  constructor(private fb: FormBuilder, private service: OrderService) { }
+  constructor(private service: OrderService) { }
 
   ngOnInit(): void {
   }
