@@ -1,5 +1,5 @@
 <div class="me-1 mt-1">
-    <div class="d-flex justify-content-between align-items-center mb-2">
+    <div class="d-flex justify-content-between align-items-center mb-2 pb-2 border-bottom">
         <h3><i class="bi bi-bag-heart-fill me-2 text-success"></i>Orders</h3>
         <div class="ms-2">
             <button class="btn btn-primary ms-2" (click)="refreshTable()">
@@ -13,11 +13,10 @@
             </button>
         </div>
     </div>
-    <hr>
-    <div class="card border-light shadow-sm mb-3">
+    <div class="card border-light shadow-sm mb-2">
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-center mb-2">
-                <h5 class="mb-0">Field-wise Filters</h5>
+                <span class="mb-0">Field-wise Filters</span>
                 <div class="d-flex gap-2">
                     <button class="btn btn-sm btn-primary" type="button" (click)="applyFilters()">
                         <i class="bi bi-funnel-fill me-1"></i>Apply
@@ -27,8 +26,81 @@
                     </button>
                 </div>
             </div>
-
-            <div class="row g-3">
+            <div class="d-flex">
+                <div class="mx-2">
+                    <div class="dropdown">
+                        <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Job Name
+                            @if (selectedJobNames.length != 0) {
+                            <span
+                                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                {{selectedJobNames.length}}
+                                <span class="visually-hidden">{{selectedJobNames.length }} filters selected for job
+                                    name</span>
+                            </span>
+                            }
+                        </button>
+                        <div class="dropdown-menu p-2" style="min-width: 260px;">
+                            <div class="form-check" *ngFor="let value of printJobTypeOptions">
+                                <input class="form-check-input" type="checkbox"
+                                    [checked]="isSelected('jobNames', value.name)"
+                                    (change)="toggleSelection('jobNames', value.name, $any($event.target).checked)">
+                                <label class="form-check-label">{{ value.name }}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mx-2">
+                    <div class="dropdown">
+                        <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Payment Status
+                            @if (selectedPaymentStatuses.length != 0) {
+                            <span
+                                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                {{selectedPaymentStatuses.length}}
+                                <span class="visually-hidden">{{selectedPaymentStatuses.length }} filters selected for
+                                    payment status</span>
+                            </span>
+                            }
+                        </button>
+                        <div class="dropdown-menu p-2" style="min-width: 260px;">
+                            <div class="form-check" *ngFor="let value of paymentStatusOptions">
+                                <input class="form-check-input" type="checkbox"
+                                    [checked]="isSelected('paymentStatuses', value.value)"
+                                    (change)="toggleSelection('paymentStatuses', value.value, $any($event.target).checked)">
+                                <label class="form-check-label">{{ value.label }}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mx-2">
+                    <div class="dropdown">
+                        <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Order Status
+                            @if (selectedOrderStatuses.length != 0) {
+                            <span
+                                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                {{selectedOrderStatuses.length}}
+                                <span class="visually-hidden">{{selectedOrderStatuses.length }} filters selected for
+                                    order status</span>
+                            </span>
+                            }
+                        </button>
+                        <div class="dropdown-menu p-2" style="min-width: 260px;">
+                            <div class="form-check" *ngFor="let value of orderStatusOptions">
+                                <input class="form-check-input" type="checkbox"
+                                    [checked]="isSelected('orderStatuses', value.value)"
+                                    (change)="toggleSelection('orderStatuses', value.value, $any($event.target).checked)">
+                                <label class="form-check-label">{{ value.label }}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row g-3 d-none">
                 <div class="col-lg-4 col-md-6">
                     <label class="form-label fw-semibold">Job Name</label>
                     <div class="border rounded p-2" style="max-height: 180px; overflow:auto;">
@@ -65,19 +137,11 @@
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
     <!-- Pagination controls -->
     <div class="d-flex justify-content-between align-items-center mt-2">
-        <div class="d-flex align-items-center">
-            <label class="me-2 mb-0">Show</label>
-            <select class="form-select form-select-sm w-auto" [(ngModel)]="pageSize"
-                (change)="changePageSize(pageSize)">
-                <option *ngFor="let s of pageSizes" [value]="s">{{ s }}</option>
-            </select>
-            <span class="ms-3">Showing {{ startIndex }} to {{ endIndex }} of {{ totalOrders }}</span>
-        </div>
-
         <div class="dropdown">
             <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown"
                 aria-expanded="false">
@@ -171,6 +235,14 @@
                 </form>
             </div>
         </div>
+        <div class="d-flex align-items-center">
+            <label class="me-2 mb-0">Show</label>
+            <select class="form-select form-select-sm w-auto" [(ngModel)]="pageSize"
+                (change)="changePageSize(pageSize)">
+                <option *ngFor="let s of pageSizes" [value]="s">{{ s }}</option>
+            </select>
+            <span class="ms-3">Showing {{ startIndex }} to {{ endIndex }} of {{ totalOrders }}</span>
+        </div>
 
         <nav aria-label="Orders pagination">
             <ul class="pagination pagination-sm mb-0">
@@ -198,7 +270,7 @@
                     <th [class.d-none]="!jobCode?.value">Job Code</th>
                     <th [class.d-none]="!quantity?.value">Quantity</th>
                     <th [class.d-none]="!deliveryDate?.value">Delivery Date</th>
-                    <th [class.d-none]="!bookNumber?.value">Book Number</th>
+                    <th [class.d-none]="!bookNumber?.value">Boo Number</th>
                     <th [class.d-none]="!customerName?.value">Customer Name</th>
                     <th [class.d-none]="!customerPhone?.value">Customer Phone</th>
                     <th [class.d-none]="!customerAddress?.value">Customer Address</th>
@@ -212,7 +284,7 @@
                     <th [class.d-none]="!updatedAt?.value">Updated At</th>
                     <th [class.d-none]="!createdAt?.value">Created At</th>
                     <th [class.d-none]="!createdBy?.value">Created By</th>
-                    <th>Actions</th>
+                    <th style="min-width:90px;">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -228,8 +300,8 @@
                     <td [class.d-none]="!customerPhone?.value">{{ order.customerPrimaryPhoneNumber }}</td>
                     <td [class.d-none]="!customerAddress?.value">{{ order.customerAddress }}</td>
                     <td [class.d-none]="!placedOn?.value">{{ order.dateOfPlaced | daysElapsed }}</td>
-                    <td [class.d-none]="!orderStatus?.value">{{ order.printJobStatus }}</td>
-                    <td [class.d-none]="!paymentStatus?.value">{{ order.paymentStatus }}</td>
+                    <td [class.d-none]="!orderStatus?.value">{{ order.printJobStatus | titlecase}}</td>
+                    <td [class.d-none]="!paymentStatus?.value">{{ order.paymentStatus | titlecase }}</td>
                     <td [class.d-none]="!totalAmount?.value">{{ order.totalAmount }}</td>
                     <td [class.d-none]="!discountAmount?.value">{{ order.discountedAmount }}</td>
                     <td [class.d-none]="!depositAmount?.value">{{ order.depositAmount }}</td>
@@ -238,7 +310,7 @@
                     <td [class.d-none]="!createdAt?.value">{{ order.createdAt | timeElapsed }}</td>
                     <td [class.d-none]="!createdBy?.value">{{ order.createdBy }}</td>
                     <!-- Actions -->
-                    <td class="text-end" (click)="$event.stopPropagation()">
+                    <td (click)="$event.stopPropagation()">
                         <button class="btn btn-sm btn-outline-primary me-1" (click)="editOrder(order)">
                             <i class="bi bi-pencil"></i>
                         </button>
