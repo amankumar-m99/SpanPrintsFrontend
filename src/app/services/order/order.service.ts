@@ -47,7 +47,13 @@ export class OrderService {
       params = params.set('orderStatuses', filter.orderStatuses.join(','));
     }
 
-    return this.http.get<OrderPagination>(`${this.url}/paginated`, { params });
+    // return this.http.post<OrderPagination>(`${this.url}/paginated`, { params });
+    let body = {
+      ...filter,
+      'pageNumber': pageNumber,
+      'pageSize': pageSize
+    }
+    return this.http.post<OrderPagination>(`${this.url}/paginated`, body);
   }
 
   getAllOrdersPlacedToday() {
@@ -89,8 +95,8 @@ export class OrderService {
   updateOrderNonDependentFields(data: UpdateOrderNonDependentFieldsRequest) {
     return this.http.put<Order>(`${this.url}/non-dependent`, data);
   }
-  
-  depositAmount(data: OrderDepositAmountRequest){
+
+  depositAmount(data: OrderDepositAmountRequest) {
     return this.http.put<Order>(`${this.url}/deposit-amount`, data);
   }
 
