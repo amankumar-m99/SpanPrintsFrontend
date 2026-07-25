@@ -1,6 +1,6 @@
 export interface PrintJobType {
     id: number;
-    uuid: number;
+    uuid: string;
     code: number;
     name: string;
     description: string;

@@ -1,5 +1,5 @@
 export interface OrderFilterRequest {
-    jobNames?: string[];
+    jobTypeIds?: string[];
     paymentStatuses?: string[];
     orderStatuses?: string[];
 }

@@ -35,8 +35,8 @@ export class OrderService {
       .set('pageNumber', pageNumber.toString())
       .set('pageSize', pageSize.toString());
 
-    if (filter?.jobNames?.length) {
-      params = params.set('jobNames', filter.jobNames.join(','));
+    if (filter?.jobTypeIds?.length) {
+      params = params.set('jobTypeIds', filter.jobTypeIds.join(','));
     }
 
     if (filter?.paymentStatuses?.length) {

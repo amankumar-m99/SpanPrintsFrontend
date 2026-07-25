@@ -145,13 +145,13 @@ export class OrdersComponent implements OnInit {
 
   private buildFilterRequest(): OrderFilterRequest {
     return {
-      jobNames: [...this.selectedJobNames],
+      jobTypeIds: [...this.selectedJobNames],
       paymentStatuses: [...this.selectedPaymentStatuses],
       orderStatuses: [...this.selectedOrderStatuses]
     };
   }
 
-  toggleSelection(field: 'jobNames' | 'paymentStatuses' | 'orderStatuses', value: string, checked: boolean): void {
+  toggleSelection(field: 'jobTypeIds' | 'paymentStatuses' | 'orderStatuses', value: string, checked: boolean): void {
     const selectedValues = this.getSelectedValues(field);
 
     if (checked) {
@@ -168,8 +168,8 @@ export class OrdersComponent implements OnInit {
     this.syncSelection(field, selectedValues);
   }
 
-  private getSelectedValues(field: 'jobNames' | 'paymentStatuses' | 'orderStatuses'): string[] {
-    if (field === 'jobNames') {
+  private getSelectedValues(field: 'jobTypeIds' | 'paymentStatuses' | 'orderStatuses'): string[] {
+    if (field === 'jobTypeIds') {
       return this.selectedJobNames;
     }
 
@@ -180,8 +180,8 @@ export class OrdersComponent implements OnInit {
     return this.selectedOrderStatuses;
   }
 
-  private syncSelection(field: 'jobNames' | 'paymentStatuses' | 'orderStatuses', values: string[]): void {
-    if (field === 'jobNames') {
+  private syncSelection(field: 'jobTypeIds' | 'paymentStatuses' | 'orderStatuses', values: string[]): void {
+    if (field === 'jobTypeIds') {
       this.selectedJobNames = values;
       return;
     }
@@ -194,7 +194,7 @@ export class OrdersComponent implements OnInit {
     this.selectedOrderStatuses = values;
   }
 
-  isSelected(field: 'jobNames' | 'paymentStatuses' | 'orderStatuses', value: string): boolean {
+  isSelected(field: 'jobTypeIds' | 'paymentStatuses' | 'orderStatuses', value: string): boolean {
     return this.getSelectedValues(field).includes(value);
   }
 
