@@ -143,11 +143,11 @@
                         <span><i class="bi bi-cash-stack me-2 text-info"></i>Payment Details</span>
                         <span>
                             @if(order?.paymentStatus != "PAID"){
-                            <button class="btn btn-sm btn-outline-success me-2" (click)="markAsPaid()">Mark as
-                                Paid</button>
                             <button class="btn btn-sm btn-outline-primary me-2" data-bs-toggle="modal"
                                 data-bs-target="#depositOrderAmountModal" title="Deposite amount">Deposit
                                 Payment</button>
+                            <button class="btn btn-sm btn-outline-success me-2" (click)="markAsPaid()">Mark as
+                                Paid</button>
                             }
                         </span>
                     </div>
