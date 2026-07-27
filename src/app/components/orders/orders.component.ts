@@ -38,15 +38,31 @@ export class OrdersComponent implements OnInit {
   toastMsg = '';
   showToast = false;
 
+  isFilterViewExpanded = true;
+
   printJobTypeOptions: PrintJobType[] = [];
   orderStatusOptions: EnumOption[] = enumToOptions(OrderStatus);
   paymentStatusOptions: EnumOption[] = enumToOptions(PaymentStatus);
-  // paymentStatusOptions: string[] = [];
-  // orderStatusOptions: string[] = [];
 
   selectedJobNames: string[] = [];
   selectedPaymentStatuses: string[] = [];
   selectedOrderStatuses: string[] = [];
+
+  quantityMin: number | null = null;
+  quantityMax: number | null = null;
+  totalAmountMin: number | null = null;
+  totalAmountMax: number | null = null;
+  discountedAmountMin: number | null = null;
+  discountedAmountMax: number | null = null;
+  pendingAmountMin: number | null = null;
+  pendingAmountMax: number | null = null;
+  deliveryDateMin: string | null = null;
+  deliveryDateMax: string | null = null;
+  placedOnMin: string | null = null;
+  placedOnMax: string | null = null;
+  bookNumberFilter: string | null = null;
+  customerNameFilter: string | null = null;
+  customerPhoneFilter: string | null = null;
 
   // Pagination state
   pageSizes: number[] = [5, 10, 25, 50];
@@ -122,6 +138,10 @@ export class OrdersComponent implements OnInit {
     return Math.min(this.currentPage * this.pageSize, this.totalOrders);
   }
 
+  toggleFilterView() {
+    this.isFilterViewExpanded = !this.isFilterViewExpanded;
+  }
+
   private loadFilterOptions(): void {
     this.printJobTypeService.getAllPrintJobTypes().subscribe({
       next: (resp) => {
@@ -147,7 +167,22 @@ export class OrdersComponent implements OnInit {
     return {
       jobTypeIds: [...this.selectedJobNames],
       paymentStatuses: [...this.selectedPaymentStatuses],
-      orderStatuses: [...this.selectedOrderStatuses]
+      orderStatuses: [...this.selectedOrderStatuses],
+      quantityMin: this.quantityMin,
+      quantityMax: this.quantityMax,
+      totalAmountMin: this.totalAmountMin,
+      totalAmountMax: this.totalAmountMax,
+      discountedAmountMin: this.discountedAmountMin,
+      discountedAmountMax: this.discountedAmountMax,
+      pendingAmountMin: this.pendingAmountMin,
+      pendingAmountMax: this.pendingAmountMax,
+      deliveryDateMin: this.deliveryDateMin,
+      deliveryDateMax: this.deliveryDateMax,
+      placedOnMin: this.placedOnMin,
+      placedOnMax: this.placedOnMax,
+      bookNumber: this.bookNumberFilter,
+      customerName: this.customerNameFilter,
+      customerPhone: this.customerPhoneFilter
     };
   }
 
@@ -198,7 +233,7 @@ export class OrdersComponent implements OnInit {
     return this.getSelectedValues(field).includes(value);
   }
 
-  loadOrders(page: number = 1, size: number = this.pageSize, filter: OrderFilterRequest = this.buildFilterRequest()): void {
+  loadOrders(page: number = 1, size: number = this.pageSize, filter: OrderFilterRequest = this.buildFilterRequest(), msg: string = ''): void {
     this.currentPage = page;
     this.pageSize = size;
     this.orderService.getAllOrdersPaginated(this.currentPage - 1, this.pageSize, filter).subscribe({
@@ -207,8 +242,8 @@ export class OrdersComponent implements OnInit {
         this.totalOrders = resp.totalElements;
         this.totalPages = resp.numberOfTotalPages;
         this.buildPages();
-        if (this.isRefreshingData) {
-          this.showToastComponent("success", "Orders refreshed.");
+        if (this.isRefreshingData || msg != '') {
+          this.showToastComponent("success", msg);
           this.isRefreshingData = false;
         }
       },
@@ -251,20 +286,35 @@ export class OrdersComponent implements OnInit {
 
   refreshTable(): void {
     this.isRefreshingData = true;
-    this.loadOrders(1, this.pageSize, this.buildFilterRequest());
+    this.loadOrders(1, this.pageSize, this.buildFilterRequest(), "Orders refreshed.");
   }
 
   applyFilters(): void {
     this.currentPage = 1;
-    this.loadOrders(1, this.pageSize, this.buildFilterRequest());
+    this.loadOrders(1, this.pageSize, this.buildFilterRequest(), 'Filter applied');
   }
 
   clearFilters(): void {
     this.selectedJobNames = [];
     this.selectedPaymentStatuses = [];
     this.selectedOrderStatuses = [];
+    this.quantityMin = null;
+    this.quantityMax = null;
+    this.totalAmountMin = null;
+    this.totalAmountMax = null;
+    this.discountedAmountMin = null;
+    this.discountedAmountMax = null;
+    this.pendingAmountMin = null;
+    this.pendingAmountMax = null;
+    this.deliveryDateMin = null;
+    this.deliveryDateMax = null;
+    this.placedOnMin = null;
+    this.placedOnMax = null;
+    this.bookNumberFilter = null;
+    this.customerNameFilter = null;
+    this.customerPhoneFilter = null;
     this.currentPage = 1;
-    this.loadOrders(1, this.pageSize, this.buildFilterRequest());
+    this.loadOrders(1, this.pageSize, this.buildFilterRequest(), 'Filter cleared');
   }
 
   addOrder(): void {

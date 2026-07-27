@@ -13,10 +13,11 @@
             </button>
         </div>
     </div>
+
     <div class="card border-light shadow-sm mb-2">
         <div class="card-body">
-            <div class="d-flex justify-content-between align-items-center mb-2">
-                <span class="mb-0">Field-wise Filters</span>
+            <div class="d-flex justify-content-between align-items-center">
+                <span>Field-wise Filters</span>
                 <div class="d-flex gap-2">
                     <button class="btn btn-sm btn-primary" type="button" (click)="applyFilters()">
                         <i class="bi bi-funnel-fill me-1"></i>Apply
@@ -24,120 +25,156 @@
                     <button class="btn btn-sm btn-outline-secondary" type="button" (click)="clearFilters()">
                         <i class="bi bi-x-circle me-1"></i>Clear
                     </button>
+                    <button class="btn btn-sm btn-outline-secondary" type="button" title="show/collapse filter controls"
+                    [title]="(isFilterViewExpanded)?'Hide':'Show' + ' filter controls'"
+                        data-bs-toggle="collapse" data-bs-target="#collapseFilter" aria-expanded="true"
+                        aria-controls="collapseFilterView" (click)="toggleFilterView()">
+                        @if(isFilterViewExpanded){
+                        <i class="bi bi-caret-up-fill"></i>
+                        }
+                        @else {
+                        <i class="bi bi-caret-down-fill"></i>
+                        }
+                    </button>
                 </div>
             </div>
-            <div class="d-flex">
-                <div class="mx-2">
-                    <div class="dropdown">
-                        <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            Job Name
-                            @if (selectedJobNames.length != 0) {
-                            <span
-                                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                                {{selectedJobNames.length}}
-                                <span class="visually-hidden">{{selectedJobNames.length }} filters selected for job
-                                    name</span>
-                            </span>
-                            }
-                        </button>
-                        <div class="dropdown-menu p-2" style="min-width: 260px;">
-                            <div class="form-check" *ngFor="let value of printJobTypeOptions">
-                                <input class="form-check-input" type="checkbox"
-                                    [checked]="isSelected('jobTypeIds', value.name)"
-                                    (change)="toggleSelection('jobTypeIds', value.id.toString(), $any($event.target).checked)">
-                                <label class="form-check-label">{{ value.name }}</label>
+            <div class="collapse show mt-1" id="collapseFilter">
+                <div class="row g-2 align-items-end">
+                    <div class="col-md-2">
+                        <label class="form-label small mb-1">Payment Status</label>
+                        <div class="dropdown form-control form-control-sm">
+                            <button class="btn btn-sm dropdown-toggle w-100 text-end" type="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                <span class="d-none">Payment Status</span>
+                                @if (selectedPaymentStatuses.length != 0) {
+                                <span
+                                    class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                    {{selectedPaymentStatuses.length}}
+                                    <span class="visually-hidden">{{selectedPaymentStatuses.length }} filters selected
+                                        for
+                                        payment status</span>
+                                </span>
+                                }
+                            </button>
+                            <div class="dropdown-menu p-2" style="min-width: 260px;">
+                                <div class="form-check" *ngFor="let value of paymentStatusOptions">
+                                    <input class="form-check-input" type="checkbox"
+                                        [checked]="isSelected('paymentStatuses', value.value)"
+                                        (change)="toggleSelection('paymentStatuses', value.value, $any($event.target).checked)">
+                                    <label class="form-check-label">{{ value.label }}</label>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="mx-2">
-                    <div class="dropdown">
-                        <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            Payment Status
-                            @if (selectedPaymentStatuses.length != 0) {
-                            <span
-                                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                                {{selectedPaymentStatuses.length}}
-                                <span class="visually-hidden">{{selectedPaymentStatuses.length }} filters selected for
-                                    payment status</span>
-                            </span>
-                            }
-                        </button>
-                        <div class="dropdown-menu p-2" style="min-width: 260px;">
-                            <div class="form-check" *ngFor="let value of paymentStatusOptions">
-                                <input class="form-check-input" type="checkbox"
-                                    [checked]="isSelected('paymentStatuses', value.value)"
-                                    (change)="toggleSelection('paymentStatuses', value.value, $any($event.target).checked)">
-                                <label class="form-check-label">{{ value.label }}</label>
+                    <div class="col-md-2">
+                        <label class="form-label small mb-1">Order Status</label>
+                        <div class="dropdown form-control form-control-sm">
+                            <button class="btn btn-sm dropdown-toggle w-100 text-end" type="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                <span class="d-none">Order Status</span>
+                                @if (selectedOrderStatuses.length != 0) {
+                                <span
+                                    class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                    {{selectedOrderStatuses.length}}
+                                    <span class="visually-hidden">{{selectedOrderStatuses.length }} filters selected for
+                                        order status</span>
+                                </span>
+                                }
+                            </button>
+                            <div class="dropdown-menu p-2" style="min-width: 260px;">
+                                <div class="form-check" *ngFor="let value of orderStatusOptions">
+                                    <input class="form-check-input" type="checkbox"
+                                        [checked]="isSelected('orderStatuses', value.value)"
+                                        (change)="toggleSelection('orderStatuses', value.value, $any($event.target).checked)">
+                                    <label class="form-check-label">{{ value.label }}</label>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="mx-2">
-                    <div class="dropdown">
-                        <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            Order Status
-                            @if (selectedOrderStatuses.length != 0) {
-                            <span
-                                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                                {{selectedOrderStatuses.length}}
-                                <span class="visually-hidden">{{selectedOrderStatuses.length }} filters selected for
-                                    order status</span>
-                            </span>
-                            }
-                        </button>
-                        <div class="dropdown-menu p-2" style="min-width: 260px;">
-                            <div class="form-check" *ngFor="let value of orderStatusOptions">
-                                <input class="form-check-input" type="checkbox"
-                                    [checked]="isSelected('orderStatuses', value.value)"
-                                    (change)="toggleSelection('orderStatuses', value.value, $any($event.target).checked)">
-                                <label class="form-check-label">{{ value.label }}</label>
+                    <div class="col-md-2">
+                        <label class="form-label small mb-1">Deliver Date (From)</label>
+                        <input type="date" class="form-control form-control-sm" [(ngModel)]="deliveryDateMin" />
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label small mb-1">Deliver Date (To)</label>
+                        <input type="date" class="form-control form-control-sm" [(ngModel)]="deliveryDateMax" />
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label small mb-1">Order Placed (From)</label>
+                        <input type="date" class="form-control form-control-sm" [(ngModel)]="placedOnMin" />
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label small mb-1">Order Placed (To)</label>
+                        <input type="date" class="form-control form-control-sm" [(ngModel)]="placedOnMax" />
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label small mb-1">Min Total Amount</label>
+                        <input type="number" class="form-control form-control-sm" [(ngModel)]="totalAmountMin" />
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label small mb-1">Max Total Amount</label>
+                        <input type="number" class="form-control form-control-sm" [(ngModel)]="totalAmountMax" />
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label small mb-1">Min Pending Amount</label>
+                        <input type="number" class="form-control form-control-sm" [(ngModel)]="pendingAmountMin" />
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label small mb-1">Max Pending Amount</label>
+                        <input type="number" class="form-control form-control-sm" [(ngModel)]="pendingAmountMax" />
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label small mb-1">Min Discount Amount</label>
+                        <input type="number" class="form-control form-control-sm" [(ngModel)]="discountedAmountMin" />
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label small mb-1">Max Discount Amount</label>
+                        <input type="number" class="form-control form-control-sm" [(ngModel)]="discountedAmountMax" />
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label small mb-1">Job Name</label>
+                        <div class="dropdown form-control form-control-sm">
+                            <button class="btn btn-sm dropdown-toggle w-100 text-end" type="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                <span class="d-none">Job Name</span>
+                                @if (selectedJobNames.length != 0) {
+                                <span
+                                    class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                    {{selectedJobNames.length}}
+                                    <span class="visually-hidden">{{selectedJobNames.length }} filters selected for job
+                                        name</span>
+                                </span>
+                                }
+                            </button>
+                            <div class="dropdown-menu p-2" style="min-width: 260px;">
+                                <div class="form-check" *ngFor="let value of printJobTypeOptions">
+                                    <input class="form-check-input" type="checkbox"
+                                        [checked]="isSelected('jobTypeIds', value.id.toString())"
+                                        (change)="toggleSelection('jobTypeIds', value.id.toString(), $any($event.target).checked)">
+                                    <label class="form-check-label">{{ value.name }}</label>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-
-            </div>
-
-            <div class="row g-3 d-none">
-                <div class="col-lg-4 col-md-6">
-                    <label class="form-label fw-semibold">Job Name</label>
-                    <div class="border rounded p-2" style="max-height: 180px; overflow:auto;">
-                        <div class="form-check" *ngFor="let value of printJobTypeOptions">
-                            <input class="form-check-input" type="checkbox"
-                                [checked]="isSelected('jobTypeIds', value.name)"
-                                (change)="toggleSelection('jobTypeIds', value.name, $any($event.target).checked)">
-                            <label class="form-check-label">{{ value.name }}</label>
-                        </div>
+                    <div class="col-md-2">
+                        <label class="form-label small mb-1">Quantity min</label>
+                        <input type="number" class="form-control form-control-sm" [(ngModel)]="quantityMin" />
                     </div>
-                </div>
-
-                <div class="col-lg-4 col-md-6">
-                    <label class="form-label fw-semibold">Payment Status</label>
-                    <div class="border rounded p-2" style="max-height: 180px; overflow:auto;">
-                        <div class="form-check" *ngFor="let value of paymentStatusOptions">
-                            <input class="form-check-input" type="checkbox"
-                                [checked]="isSelected('paymentStatuses', value.value)"
-                                (change)="toggleSelection('paymentStatuses', value.value, $any($event.target).checked)">
-                            <label class="form-check-label">{{ value.label }}</label>
-                        </div>
+                    <div class="col-md-2">
+                        <label class="form-label small mb-1">Quantity max</label>
+                        <input type="number" class="form-control form-control-sm" [(ngModel)]="quantityMax" />
                     </div>
-                </div>
-
-                <div class="col-lg-4 col-md-6">
-                    <label class="form-label fw-semibold">Order Status</label>
-                    <div class="border rounded p-2" style="max-height: 180px; overflow:auto;">
-                        <div class="form-check" *ngFor="let value of orderStatusOptions">
-                            <input class="form-check-input" type="checkbox"
-                                [checked]="isSelected('orderStatuses', value.value)"
-                                (change)="toggleSelection('orderStatuses', value.value, $any($event.target).checked)">
-                            <label class="form-check-label">{{ value.label }}</label>
-                        </div>
+                    <div class="col-md-2">
+                        <label class="form-label small mb-1">Book Number</label>
+                        <input type="text" class="form-control form-control-sm" [(ngModel)]="bookNumberFilter" />
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label small mb-1">Customer Name</label>
+                        <input type="text" class="form-control form-control-sm" [(ngModel)]="customerNameFilter" />
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label small mb-1">Customer Phone</label>
+                        <input type="text" class="form-control form-control-sm" [(ngModel)]="customerPhoneFilter" />
                     </div>
                 </div>
             </div>
