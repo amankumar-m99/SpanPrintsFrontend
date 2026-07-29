@@ -15,6 +15,8 @@ import { PrintJobType } from '../../model/order/printjobtype.model';
 import { EnumOption, enumToOptions } from '../../enums/enum-helper.';
 import { OrderStatus } from '../../enums/order-status.enum';
 import { PaymentStatus } from '../../enums/payment-status.enum';
+import { Constant } from '../../constant/Constant';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-orders',
@@ -38,7 +40,7 @@ export class OrdersComponent implements OnInit {
   toastMsg = '';
   showToast = false;
 
-  isFilterViewExpanded = true;
+  isFilterViewExpanded = this.loadFilterExpandedViewState();
 
   printJobTypeOptions: PrintJobType[] = [];
   orderStatusOptions: EnumOption[] = enumToOptions(OrderStatus);
@@ -88,26 +90,48 @@ export class OrdersComponent implements OnInit {
     this.loadOrders();
   }
 
+  private loadFilterExpandedViewState(): boolean {
+    if (typeof window === 'undefined') {
+      return false;
+    }
+
+    const storedValue = window.localStorage.getItem(Constant.ordersPageFilterExpandedKey);
+    return storedValue === 'true';
+  }
+
+  private saveFilterExpandedViewState(collapsed: boolean): void {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    window.localStorage.setItem(Constant.ordersPageFilterExpandedKey, String(collapsed));
+  }
+
+  toggleFilterView() {
+    this.isFilterViewExpanded = !this.isFilterViewExpanded;
+    this.saveFilterExpandedViewState(this.isFilterViewExpanded);
+  }
+
   private initFieldsVisibilityForm() {
     this.fieldsVisibilityForm = this.fb.group({
-      jobName: [true],
-      jobCode: [true],
-      quantity: [true],
-      deliveryDate: [true],
-      bookNumber: [false],
-      customerName: [true],
-      customerPhone: [true],
-      customerAddress: [false],
-      placedOn: [true],
-      orderStatus: [true],
-      paymentStatus: [true],
-      totalAmount: [true],
-      discountAmount: [false],
-      depositAmount: [false],
-      pendingAmount: [true],
-      updatedAt: [false],
-      createdAt: [false],
-      createdBy: [false]
+      jobName: [this.loadFieldsSelectionState('fieldJobName')],
+      jobCode: [this.loadFieldsSelectionState('fieldJobCode')],
+      quantity: [this.loadFieldsSelectionState('fieldQuantity')],
+      deliveryDate: [this.loadFieldsSelectionState('fieldDeliveryDate')],
+      bookNumber: [this.loadFieldsSelectionState('fieldBookNumber')],
+      customerName: [this.loadFieldsSelectionState('fieldCustomerName')],
+      customerPhone: [this.loadFieldsSelectionState('fieldCustomerPhone')],
+      customerAddress: [this.loadFieldsSelectionState('fieldCustomerAddress')],
+      placedOn: [this.loadFieldsSelectionState('fieldPlacedOn')],
+      orderStatus: [this.loadFieldsSelectionState('fieldOrderStatus')],
+      paymentStatus: [this.loadFieldsSelectionState('fieldPaymentStatus')],
+      totalAmount: [this.loadFieldsSelectionState('fieldTotalAmount')],
+      discountAmount: [this.loadFieldsSelectionState('fieldDiscountAmount')],
+      depositAmount: [this.loadFieldsSelectionState('fieldDepositAmount')],
+      pendingAmount: [this.loadFieldsSelectionState('fieldPendingAmount')],
+      updatedAt: [this.loadFieldsSelectionState('fieldUpdatedAt')],
+      createdAt: [this.loadFieldsSelectionState('fieldCreatedAt')],
+      createdBy: [this.loadFieldsSelectionState('fieldCreatedBy')]
     });
   }
 
@@ -136,10 +160,6 @@ export class OrdersComponent implements OnInit {
 
   get endIndex(): number {
     return Math.min(this.currentPage * this.pageSize, this.totalOrders);
-  }
-
-  toggleFilterView() {
-    this.isFilterViewExpanded = !this.isFilterViewExpanded;
   }
 
   private loadFilterOptions(): void {
@@ -252,6 +272,23 @@ export class OrdersComponent implements OnInit {
         this.isRefreshingData = false;
       },
     });
+  }
+
+  private loadFieldsSelectionState(field: string): boolean {
+    if (typeof window === 'undefined') {
+      return false;
+    }
+
+    const storedValue = window.localStorage.getItem(Constant.ordersFieldSelectionState + '.' + String(field));
+    return storedValue === 'true';
+  }
+
+  saveFieldsSelectionState(field: any, value: boolean): void {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    window.localStorage.setItem(Constant.ordersFieldSelectionState + '.' + String(field), String(value));
   }
 
   private buildPages(): void {

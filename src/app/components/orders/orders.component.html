@@ -26,9 +26,9 @@
                         <i class="bi bi-x-circle me-1"></i>Clear
                     </button>
                     <button class="btn btn-sm btn-outline-secondary" type="button" title="show/collapse filter controls"
-                    [title]="(isFilterViewExpanded)?'Hide':'Show' + ' filter controls'"
-                        data-bs-toggle="collapse" data-bs-target="#collapseFilter" aria-expanded="true"
-                        aria-controls="collapseFilterView" (click)="toggleFilterView()">
+                        [title]="(isFilterViewExpanded)?'Hide':'Show' + ' filter controls'" data-bs-toggle="collapse"
+                        data-bs-target="#collapseFilter" aria-expanded="true" aria-controls="collapseFilterView"
+                        (click)="toggleFilterView()">
                         @if(isFilterViewExpanded){
                         <i class="bi bi-caret-up-fill"></i>
                         }
@@ -38,7 +38,7 @@
                     </button>
                 </div>
             </div>
-            <div class="collapse show mt-1" id="collapseFilter">
+            <div id="collapseFilter" class="collapse mt-1" [class.show]="isFilterViewExpanded">
                 <div class="row g-2 align-items-end">
                     <div class="col-md-2">
                         <label class="form-label small mb-1">Payment Status</label>
@@ -50,9 +50,9 @@
                                 <span
                                     class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                                     {{selectedPaymentStatuses.length}}
-                                    <span class="visually-hidden">{{selectedPaymentStatuses.length }} filters selected
-                                        for
-                                        payment status</span>
+                                    <span class="visually-hidden">
+                                        {{selectedPaymentStatuses.length }} filters selected for payment status
+                                    </span>
                                 </span>
                                 }
                             </button>
@@ -191,86 +191,104 @@
             <div class="dropdown-menu p-2" style="min-width: 260px;">
                 <form [formGroup]="fieldsVisibilityForm">
                     <div class="form-check mb-2">
-                        <input class="form-check-input" type="checkbox" id="fieldJobName" formControlName="jobName">
+                        <input class="form-check-input" type="checkbox" id="fieldJobName" formControlName="jobName"
+                            (change)="saveFieldsSelectionState($any($event.target).id, $any($event.target).checked)">
                         <label class="form-check-label" for="fieldJobName">Job Name</label>
                     </div>
                     <div class="form-check mb-2">
-                        <input class="form-check-input" type="checkbox" id="fieldJobCode" formControlName="jobCode">
+                        <input class="form-check-input" type="checkbox" id="fieldJobCode" formControlName="jobCode"
+                            (change)="saveFieldsSelectionState($any($event.target).id, $any($event.target).checked)">
                         <label class="form-check-label" for="fieldJobCode">Job Code</label>
                     </div>
                     <div class="form-check mb-2">
-                        <input class="form-check-input" type="checkbox" id="fieldQuantity" formControlName="quantity">
+                        <input class="form-check-input" type="checkbox" id="fieldQuantity" formControlName="quantity"
+                            (change)="saveFieldsSelectionState($any($event.target).id, $any($event.target).checked)">
                         <label class="form-check-label" for="fieldQuantity">Quantity</label>
                     </div>
                     <div class="form-check mb-2">
                         <input class="form-check-input" type="checkbox" id="fieldDeliveryDate"
-                            formControlName="deliveryDate">
+                            formControlName="deliveryDate"
+                            (change)="saveFieldsSelectionState($any($event.target).id, $any($event.target).checked)">
                         <label class="form-check-label" for="fieldDeliveryDate">Delivery Date</label>
                     </div>
                     <div class="form-check mb-2">
                         <input class="form-check-input" type="checkbox" id="fieldBookNumber"
-                            formControlName="bookNumber">
+                            formControlName="bookNumber"
+                            (change)="saveFieldsSelectionState($any($event.target).id, $any($event.target).checked)">
                         <label class="form-check-label" for="fieldBookNumber">Book Number</label>
                     </div>
                     <div class="form-check mb-2">
                         <input class="form-check-input" type="checkbox" id="fieldCustomerName"
-                            formControlName="customerName">
+                            formControlName="customerName"
+                            (change)="saveFieldsSelectionState($any($event.target).id, $any($event.target).checked)">
                         <label class="form-check-label" for="fieldCustomerName">Customer Name</label>
                     </div>
                     <div class="form-check mb-2">
                         <input class="form-check-input" type="checkbox" id="fieldCustomerPhone"
-                            formControlName="customerPhone">
+                            formControlName="customerPhone"
+                            (change)="saveFieldsSelectionState($any($event.target).id, $any($event.target).checked)">
                         <label class="form-check-label" for="fieldCustomerPhone">Customer Phone</label>
                     </div>
                     <div class="form-check mb-2">
                         <input class="form-check-input" type="checkbox" id="fieldCustomerAddress"
-                            formControlName="customerAddress">
+                            formControlName="customerAddress"
+                            (change)="saveFieldsSelectionState($any($event.target).id, $any($event.target).checked)">
                         <label class="form-check-label" for="fieldCustomerAddress">Customer Address</label>
                     </div>
                     <div class="form-check mb-2">
-                        <input class="form-check-input" type="checkbox" id="fieldPlacedOn" formControlName="placedOn">
+                        <input class="form-check-input" type="checkbox" id="fieldPlacedOn" formControlName="placedOn"
+                            (change)="saveFieldsSelectionState($any($event.target).id, $any($event.target).checked)">
                         <label class="form-check-label" for="fieldPlacedOn">Placed On</label>
                     </div>
                     <div class="form-check mb-2">
                         <input class="form-check-input" type="checkbox" id="fieldOrderStatus"
-                            formControlName="orderStatus">
+                            formControlName="orderStatus"
+                            (change)="saveFieldsSelectionState($any($event.target).id, $any($event.target).checked)">
                         <label class="form-check-label" for="fieldOrderStatus">Order Status</label>
                     </div>
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="fieldPaymentStatus"
-                            formControlName="paymentStatus">
+                            formControlName="paymentStatus"
+                            (change)="saveFieldsSelectionState($any($event.target).id, $any($event.target).checked)">
                         <label class="form-check-label" for="fieldPaymentStatus">Payment Status</label>
                     </div>
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="fieldTotalAmount"
-                            formControlName="totalAmount">
+                            formControlName="totalAmount"
+                            (change)="saveFieldsSelectionState($any($event.target).id, $any($event.target).checked)">
                         <label class="form-check-label" for="fieldTotalAmount">Total Amount</label>
                     </div>
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="fieldDiscoutAmount"
-                            formControlName="discountAmount">
+                            formControlName="discountAmount"
+                            (change)="saveFieldsSelectionState($any($event.target).id, $any($event.target).checked)">
                         <label class="form-check-label" for="fieldDiscoutAmount">Discount Amount</label>
                     </div>
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="fieldDepositAmount"
-                            formControlName="depositAmount">
+                            formControlName="depositAmount"
+                            (change)="saveFieldsSelectionState($any($event.target).id, $any($event.target).checked)">
                         <label class="form-check-label" for="fieldDepositAmount">Deposit Amount</label>
                     </div>
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="fieldPendingAmount"
-                            formControlName="pendingAmount">
+                            formControlName="pendingAmount"
+                            (change)="saveFieldsSelectionState($any($event.target).id, $any($event.target).checked)">
                         <label class="form-check-label" for="fieldDepositAmount">Pending Amount</label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="fieldUpdatedAt" formControlName="updatedAt">
+                        <input class="form-check-input" type="checkbox" id="fieldUpdatedAt" formControlName="updatedAt"
+                            (change)="saveFieldsSelectionState($any($event.target).id, $any($event.target).checked)">
                         <label class="form-check-label" for="fieldUpdatedAt">Updated At</label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="fieldCreatedAt" formControlName="createdAt">
+                        <input class="form-check-input" type="checkbox" id="fieldCreatedAt" formControlName="createdAt"
+                            (change)="saveFieldsSelectionState($any($event.target).id, $any($event.target).checked)">
                         <label class="form-check-label" for="fieldCreatedAt">Created At</label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="fieldCreatedBy" formControlName="createdBy">
+                        <input class="form-check-input" type="checkbox" id="fieldCreatedBy" formControlName="createdBy"
+                            (change)="saveFieldsSelectionState($any($event.target).id, $any($event.target).checked)">
                         <label class="form-check-label" for="fieldCreatedBy">Created By</label>
                     </div>
                 </form>
