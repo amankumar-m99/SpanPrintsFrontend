@@ -141,9 +141,10 @@
                         </div>
                         <!-- Date of delivery -->
                         <div class="col-md-6">
-                            <label class="form-label">Date of delivery: <small
-                                    class="text-muted text-primary">{{dateOfDelivery?.value |
-                                    dayRelative}}</small></label>
+                            <label class="form-label">Date of delivery:
+                                <span class="badge text-bg-primary">{{dateOfDelivery?.value |
+                                    dayRelative}}</span>
+                            </label>
                             <input type="date" class="form-control" formControlName="dateOfDelivery"
                                 [ngClass]="{ 'is-invalid': dateOfDelivery?.invalid && dateOfDelivery?.touched }">
                             <div class="invalid-feedback" *ngIf="dateOfDelivery?.touched && dateOfDelivery?.invalid">
@@ -166,9 +167,10 @@
                         </div>
                         <!-- Date of order received -->
                         <div class="col-md-6">
-                            <label class="form-label">Date of order recieved: <small
-                                    class="text-muted text-primary">{{dateOfPlaced?.value |
-                                    dayRelative}}</small></label>
+                            <label class="form-label">Date of order recieved:
+                                <span class="badge text-bg-primary">{{dateOfPlaced?.value |
+                                    dayRelative}}</span>
+                            </label>
                             <input type="date" class="form-control" formControlName="dateOfPlaced"
                                 [ngClass]="{ 'is-invalid': dateOfPlaced?.invalid && dateOfPlaced?.touched }">
                             <div class="invalid-feedback" *ngIf="dateOfPlaced?.touched && dateOfPlaced?.invalid">
