@@ -68,7 +68,7 @@ export class OrdersComponent implements OnInit {
 
   // Pagination state
   pageSizes: number[] = [5, 10, 25, 50];
-  pageSize = 5;
+  pageSize = this.loadPageSizeState();
   currentPage = 1;
   totalPages = 1;
   totalOrders = 0;
@@ -306,7 +306,25 @@ export class OrdersComponent implements OnInit {
   changePageSize(size: number): void {
     this.pageSize = +size;
     this.currentPage = 1;
+    this.savePageSizeState(this.pageSize);
     this.loadOrders(this.currentPage, this.pageSize, this.buildFilterRequest());
+  }
+
+  private loadPageSizeState(): number {
+    if (typeof window === 'undefined') {
+      return 5;
+    }
+
+    const storedValue = window.localStorage.getItem(Constant.ordersPageSizeState);
+    return (!storedValue) ? 5 : Number(storedValue);
+  }
+
+  private savePageSizeState(pageSize: number): void {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    window.localStorage.setItem(Constant.ordersPageSizeState, String(pageSize));
   }
 
   prevPage(): void {
