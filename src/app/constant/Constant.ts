@@ -14,6 +14,7 @@ export const Constant = {
     UUID_REGEX: /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i,
     sidebarStateKey: 'dashboard.sidebarCollapsed',
     ordersPageFilterExpandedKey: 'orders.filter-pane-expanded',
-    ordersFieldSelectionState: 'orders.fieldSelectionState'
+    ordersFieldSelectionState: 'orders.fieldSelectionState',
+    ordersPageSizeState: 'orders.pageSizeState'
 
 }
