@@ -144,7 +144,7 @@
                         <span>
                             @if(order?.paymentStatus != "PAID"){
                             <button class="btn btn-sm btn-outline-primary me-2" data-bs-toggle="modal"
-                                data-bs-target="#depositOrderAmountModal" title="Deposite amount">Deposit
+                                data-bs-target="#depositOrderAmountModal" title="Deposit amount">Deposit
                                 Payment</button>
                             <button class="btn btn-sm btn-outline-success me-2" (click)="markAsPaid()">Mark as
                                 Paid</button>
@@ -290,10 +290,6 @@
                 </div>
                 <div class="row g-3 mt-1">
                     <div class="col-md-4">
-                        <small><span class="mx-1 text-info">#</span>Customer Id</small>
-                        <div>{{ order?.customerId || 'N/A' }}</div>
-                    </div>
-                    <div class="col-md-4">
                         <small><span class="mx-1 text-info"><i class="bi bi-person"></i></span>Customer Name</small>
                         <div>{{ order?.customerName || 'N/A' }}</div>
                     </div>
@@ -310,6 +306,10 @@
                     <div class="col-md-8">
                         <small><span class="mx-1 text-info"><i class="bi bi-geo-alt"></i></span>Customer Address</small>
                         <div>{{ order?.customerAddress || 'N/A' }}</div>
+                    </div>
+                    <div class="col-md-4">
+                        <small><span class="mx-1 text-info">#</span>Customer Id</small>
+                        <div>{{ order?.customerUuid + ' (' +order?.customerId + ')'}}</div>
                     </div>
                 </div>
             </div>
