@@ -1,3 +1,30 @@
+<div class="card" style="width: 20rem;">
+    <div class="d-flex justify-content-between">
+        <app-file-preview [fileId]="file?.uuid||''" [fileName]="fileNameWithExt" [mimeType]="file?.contentType||''">
+        </app-file-preview>
+        <div class="pt-1 pe-2 text-end">
+            <div class="my-1">
+                <button title="Download this file" class="btn btn-outline-primary btn-sm me-2"
+                    (click)="downloadFile()"><i class="bi bi-download"></i></button>
+                <button title="Delete this file" class="btn btn-outline-danger btn-sm"><i
+                        class="bi bi-trash3"></i></button>
+            </div>
+            <div>
+                <span class="badge rounded-pill text-bg-primary">{{previewType | titlecase}} file</span>
+            </div>
+            <div>
+                <small class="text-muted">Size: {{file?.size | fileSize}}</small>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <p class="card-text" [title]="fileNameWithExt">{{fileNameWithExt}}</p>
+    </div>
+    <div class="card-footer">
+        <small class="text-body-secondary">Updated on {{file?.updatedAt | timeElapsed}}</small>
+    </div>
+</div>
+
 <div class="card mb-3" style="max-width: 540px;">
     <div class="row g-0">
         <div class="col-md-4">
@@ -8,7 +35,7 @@
         <div class="col-md-8">
             <div class="card-body">
                 <h5 class="card-title">{{previewType}} file</h5>
-                <p class="card-text" [title]="fileNameWithExt" >{{fileNameWithExt}}</p>
+                <p class="card-text" [title]="fileNameWithExt">{{fileNameWithExt}}</p>
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
                         <div>
