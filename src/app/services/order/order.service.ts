@@ -103,6 +103,10 @@ export class OrderService {
     return this.http.post<Order>(`${this.url}/attatchments/${uuid}`, data);
   }
 
+  deleteFile(orderUuid: string, fileUuid: string) {
+    return this.http.delete(`${this.url}/delete-file/${orderUuid}/${fileUuid}`);
+  }
+
   deleteOrderByUuid(uuid: string) {
     return this.http.delete<any>(`${this.url}/uuid/${uuid}`);
   }

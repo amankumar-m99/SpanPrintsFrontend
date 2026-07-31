@@ -13,6 +13,9 @@ export class FileAttachmentService {
 
   constructor(private http: HttpClient) { }
 
+  getAllFileAttachments() {
+    return this.http.get<FileAttachment[]>(`${this.url}`);
+  }
   getFileAttachmentByOrderUuid(uuid: string) {
     return this.http.get<FileAttachment[]>(`${this.url}/uuid/${uuid}`);
   }

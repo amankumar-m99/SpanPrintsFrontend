@@ -5,6 +5,7 @@ import { FilePreviewComponent } from "../file-preview/file-preview.component";
 import { CommonModule } from '@angular/common';
 import { FileSizePipe } from "../../pipes/file-size/file-size.pipe";
 import { TimeElapsedPipe } from "../../pipes/timeElapsed/time-elapsed.pipe";
+import { OrderService } from '../../services/order/order.service';
 
 @Component({
   selector: 'app-file-attachment-card',
@@ -15,10 +16,11 @@ import { TimeElapsedPipe } from "../../pipes/timeElapsed/time-elapsed.pipe";
 })
 export class FileAttachmentCardComponent implements OnInit {
   @Input("fileAttachment") file?: FileAttachment;
+  @Input("orderUuid") orderUuid?: string;
   previewType?: PreviewType;
   fileNameWithExt: string = '';
 
-  constructor(private fileAttachmentService: FileAttachmentService) { }
+  constructor(private fileAttachmentService: FileAttachmentService, private orderService: OrderService) { }
 
   ngOnInit(): void {
     this.fileNameWithExt = this.file?.originalFileName + '.' + this.file?.fileType;
@@ -43,6 +45,13 @@ export class FileAttachmentCardComponent implements OnInit {
           // show a toast/snackbar to the user
         }
       });
+    }
+  }
+
+  deleteFile(): void {
+    const conf = confirm("Do you want to delete file '" + this.file?.originalFileName + "' ?");
+    if(conf && this.orderUuid && this.file?.uuid){
+      this.orderService.deleteFile(this.orderUuid, this.file?.uuid).subscribe();
     }
   }
 
