@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FileAttachment } from '../../model/file-attachment/file-attachment.model';
 import { FileAttachmentService, getPreviewType, PreviewType } from '../../services/file-attachment/file-attachment.service';
 import { FilePreviewComponent } from "../file-preview/file-preview.component";
@@ -6,6 +6,8 @@ import { CommonModule } from '@angular/common';
 import { FileSizePipe } from "../../pipes/file-size/file-size.pipe";
 import { TimeElapsedPipe } from "../../pipes/timeElapsed/time-elapsed.pipe";
 import { OrderService } from '../../services/order/order.service';
+import { SuccessResponse } from '../../model/text-responses/success-response.model';
+import { ErrorResponse } from '../../model/text-responses/error-response.model';
 
 @Component({
   selector: 'app-file-attachment-card',
@@ -14,9 +16,14 @@ import { OrderService } from '../../services/order/order.service';
   templateUrl: './file-attachment-card.component.html',
   styleUrl: './file-attachment-card.component.css'
 })
+
 export class FileAttachmentCardComponent implements OnInit {
+
   @Input("fileAttachment") file?: FileAttachment;
   @Input("orderUuid") orderUuid?: string;
+  @Output("deleteSuccessAction") deleteSuccessAction = new EventEmitter<SuccessResponse>();
+  @Output("deleteFailAction") deleteFailAction = new EventEmitter<ErrorResponse>();
+
   previewType?: PreviewType;
   fileNameWithExt: string = '';
 
@@ -41,7 +48,6 @@ export class FileAttachmentCardComponent implements OnInit {
           window.URL.revokeObjectURL(url);
         },
         error: (err) => {
-          console.error('Download failed', err);
           // show a toast/snackbar to the user
         }
       });
@@ -50,12 +56,22 @@ export class FileAttachmentCardComponent implements OnInit {
 
   deleteFile(): void {
     const conf = confirm("Do you want to delete file '" + this.file?.originalFileName + "' ?");
-    if(conf && this.orderUuid && this.file?.uuid){
-      this.orderService.deleteFile(this.orderUuid, this.file?.uuid).subscribe();
+    if (conf && this.orderUuid && this.file?.uuid) {
+      this.orderService.deleteFile(this.orderUuid, this.file?.uuid).subscribe({
+        next: (res) => {
+          const resp: SuccessResponse = { ...res };
+          this.deleteSuccessAction.emit(resp)
+        },
+        error: (err) => {
+          const resp: ErrorResponse = { ...err };
+          this.deleteFailAction.emit(resp)
+        }
+      });
     }
   }
 
   updatePreviewType(type: PreviewType) {
     this.previewType = type;
   }
+
 }

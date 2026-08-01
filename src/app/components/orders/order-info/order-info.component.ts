@@ -20,6 +20,8 @@ import { EnumOption, enumToOptions } from '../../../enums/enum-helper.';
 import { UpdateOrderDescriptionModalComponent } from "../update-order-description-modal/update-order-description-modal.component";
 import { UploadOrderAttachmentModalComponent } from "../upload-order-attachment-modal/upload-order-attachment-modal.component";
 import { OderDepositAmountModalComponent } from "../oder-deposit-amount-modal/oder-deposit-amount-modal.component";
+import { SuccessResponse } from '../../../model/text-responses/success-response.model';
+import { ErrorResponse } from '../../../model/text-responses/error-response.model';
 
 @Component({
   selector: 'app-order-info',
@@ -53,7 +55,6 @@ export class OrderInfoComponent implements OnInit {
       if (uuid) {
         this.orderUuid = uuid;
         this.fetchOrderDetails(false);
-        this.fetchFileAttachments();
       }
     });
   }
@@ -69,6 +70,7 @@ export class OrderInfoComponent implements OnInit {
         else {
           this.order = res;
         }
+        this.fetchFileAttachments();
       },
       error: (err) => {
         this.errorMsg = err?.error?.message || "Could not load order details!";
@@ -170,6 +172,15 @@ export class OrderInfoComponent implements OnInit {
 
   reload() {
     window.location.reload();
+  }
+
+  deleteSuccessAction(successResponse: SuccessResponse) {
+    this.showToastComponent("success", successResponse.message);
+    this.fetchOrderDetails(false);
+  }
+
+  deleteFailAction(errorResponse: ErrorResponse) {
+    this.showToastComponent("error", errorResponse.message);
   }
 
   validateUuid() {

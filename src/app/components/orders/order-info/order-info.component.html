@@ -244,7 +244,6 @@
                 <div class="row g-3">
                     <div class="col-12 pb-1 border-bottom d-flex justify-content-between">
                         <span><i class="bi bi-paperclip me-1 text-info"></i>Attached Files
-                            <span class="text-danger">{{order?.attachmentIds?.length}} , {{fileAttachments?.length}}</span>
                             @if(!(order?.attachmentIds?.length == 0)){
                             <small class="text-info ms-2">
                                 {{'( '+order?.attachmentIds?.length + ' attached files )'}}
@@ -271,7 +270,9 @@
                     <div class="mt-2">
                         <div class="row row-cols-1 row-cols-md-4 g-4">
                             @for (item of fileAttachments; track $index) {
-                            <app-file-attachment-card [fileAttachment]="item" [orderUuid]="order?.uuid"></app-file-attachment-card>
+                            <app-file-attachment-card [fileAttachment]="item" [orderUuid]="order?.uuid"
+                                (deleteSuccessAction)="deleteSuccessAction($event)"
+                                (deleteFailAction)="deleteFailAction($event)"></app-file-attachment-card>
                             }
                         </div>
                     </div>

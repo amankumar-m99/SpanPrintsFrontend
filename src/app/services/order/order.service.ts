@@ -8,6 +8,8 @@ import { UpdateOrderStatusRequest } from '../../model/order/update-order-status.
 import { UpdateOrderNonDependentFieldsRequest } from '../../model/order/update-order-non-dependent-fields.model';
 import { OrderDepositAmountRequest } from '../../model/order/order-deposit-amount-request.model';
 import { OrderFilterRequest } from '../../model/order/order-filter-request.model';
+import { SuccessResponse } from '../../model/text-responses/success-response.model';
+import { ErrorResponse } from '../../model/text-responses/error-response.model';
 
 @Injectable({
   providedIn: 'root'
@@ -104,7 +106,7 @@ export class OrderService {
   }
 
   deleteFile(orderUuid: string, fileUuid: string) {
-    return this.http.delete(`${this.url}/delete-file/${orderUuid}/${fileUuid}`);
+    return this.http.delete<SuccessResponse | ErrorResponse>(`${this.url}/delete-file/${orderUuid}/${fileUuid}`);
   }
 
   deleteOrderByUuid(uuid: string) {

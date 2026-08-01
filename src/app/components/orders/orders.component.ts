@@ -16,8 +16,6 @@ import { EnumOption, enumToOptions } from '../../enums/enum-helper.';
 import { OrderStatus } from '../../enums/order-status.enum';
 import { PaymentStatus } from '../../enums/payment-status.enum';
 import { Constant } from '../../constant/Constant';
-import { filter } from 'rxjs';
-
 @Component({
   selector: 'app-orders',
   standalone: true,

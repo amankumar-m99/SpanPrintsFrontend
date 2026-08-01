@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 import { Constant } from '../../constant/Constant';
 import { AppStorage } from '../../storage/AppStorage';
 import { Profile } from '../../model/profile/profile.model';
-import { SuccessResponse } from '../../model/success-response.model';
+import { SuccessResponse } from '../../model/text-responses/success-response.model';
 
 @Injectable({
   providedIn: 'root'
