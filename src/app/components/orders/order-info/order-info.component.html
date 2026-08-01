@@ -169,7 +169,7 @@
                     </div>
                     <div class="col-md-4">
                         <small><i class="bi bi-cash-stack me-1 text-info"></i>Payment Status</small>
-                        <div><span>{{ order?.paymentStatus | titlecase}}</span>
+                        <div><span>{{ order?.paymentStatus | enumdisplay | sentencecase}}</span>
                         </div>
                     </div>
                 </div>

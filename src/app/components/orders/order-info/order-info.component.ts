@@ -22,11 +22,13 @@ import { UploadOrderAttachmentModalComponent } from "../upload-order-attachment-
 import { OderDepositAmountModalComponent } from "../oder-deposit-amount-modal/oder-deposit-amount-modal.component";
 import { SuccessResponse } from '../../../model/text-responses/success-response.model';
 import { ErrorResponse } from '../../../model/text-responses/error-response.model';
+import { EnumdisplayPipe } from "../../../pipes/enumdisplay/enumdisplay.pipe";
+import { SentencecasePipe } from "../../../pipes/sentencecase/sentencecase.pipe";
 
 @Component({
   selector: 'app-order-info',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink, ToastComponent, ConfirmDialogComponent, OrderModalComponent, FileAttachmentCardComponent, DaysElapsedPipe, TimeElapsedPipe, UpdateOrderNoteModalComponent, UpdateOrderDescriptionModalComponent, UploadOrderAttachmentModalComponent, OderDepositAmountModalComponent],
+  imports: [CommonModule, FormsModule, RouterLink, ToastComponent, ConfirmDialogComponent, OrderModalComponent, FileAttachmentCardComponent, DaysElapsedPipe, TimeElapsedPipe, UpdateOrderNoteModalComponent, UpdateOrderDescriptionModalComponent, UploadOrderAttachmentModalComponent, OderDepositAmountModalComponent, EnumdisplayPipe, SentencecasePipe],
   templateUrl: './order-info.component.html',
   styleUrl: './order-info.component.css'
 })
