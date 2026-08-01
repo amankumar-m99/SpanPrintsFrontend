@@ -112,24 +112,24 @@ export class OrdersComponent implements OnInit {
 
   private initFieldsVisibilityForm() {
     this.fieldsVisibilityForm = this.fb.group({
-      jobName: [this.loadFieldsSelectionState('fieldJobName')],
-      jobCode: [this.loadFieldsSelectionState('fieldJobCode')],
-      quantity: [this.loadFieldsSelectionState('fieldQuantity')],
-      deliveryDate: [this.loadFieldsSelectionState('fieldDeliveryDate')],
-      bookNumber: [this.loadFieldsSelectionState('fieldBookNumber')],
-      customerName: [this.loadFieldsSelectionState('fieldCustomerName')],
-      customerPhone: [this.loadFieldsSelectionState('fieldCustomerPhone')],
-      customerAddress: [this.loadFieldsSelectionState('fieldCustomerAddress')],
-      placedOn: [this.loadFieldsSelectionState('fieldPlacedOn')],
-      orderStatus: [this.loadFieldsSelectionState('fieldOrderStatus')],
-      paymentStatus: [this.loadFieldsSelectionState('fieldPaymentStatus')],
-      totalAmount: [this.loadFieldsSelectionState('fieldTotalAmount')],
-      discountAmount: [this.loadFieldsSelectionState('fieldDiscountAmount')],
-      depositAmount: [this.loadFieldsSelectionState('fieldDepositAmount')],
-      pendingAmount: [this.loadFieldsSelectionState('fieldPendingAmount')],
-      updatedAt: [this.loadFieldsSelectionState('fieldUpdatedAt')],
-      createdAt: [this.loadFieldsSelectionState('fieldCreatedAt')],
-      createdBy: [this.loadFieldsSelectionState('fieldCreatedBy')]
+      jobName: [this.loadFieldsSelectionState('fieldJobName', true)],
+      jobCode: [this.loadFieldsSelectionState('fieldJobCode', false)],
+      quantity: [this.loadFieldsSelectionState('fieldQuantity', true)],
+      deliveryDate: [this.loadFieldsSelectionState('fieldDeliveryDate', true)],
+      bookNumber: [this.loadFieldsSelectionState('fieldBookNumber', true)],
+      customerName: [this.loadFieldsSelectionState('fieldCustomerName', true)],
+      customerPhone: [this.loadFieldsSelectionState('fieldCustomerPhone', false)],
+      customerAddress: [this.loadFieldsSelectionState('fieldCustomerAddress', false)],
+      placedOn: [this.loadFieldsSelectionState('fieldPlacedOn', true)],
+      orderStatus: [this.loadFieldsSelectionState('fieldOrderStatus', true)],
+      paymentStatus: [this.loadFieldsSelectionState('fieldPaymentStatus',true)],
+      totalAmount: [this.loadFieldsSelectionState('fieldTotalAmount', false)],
+      discountAmount: [this.loadFieldsSelectionState('fieldDiscountAmount', false)],
+      depositAmount: [this.loadFieldsSelectionState('fieldDepositAmount', false)],
+      pendingAmount: [this.loadFieldsSelectionState('fieldPendingAmount', true)],
+      updatedAt: [this.loadFieldsSelectionState('fieldUpdatedAt', false)],
+      createdAt: [this.loadFieldsSelectionState('fieldCreatedAt', false)],
+      createdBy: [this.loadFieldsSelectionState('fieldCreatedBy', false)]
     });
   }
 
@@ -272,13 +272,13 @@ export class OrdersComponent implements OnInit {
     });
   }
 
-  private loadFieldsSelectionState(field: string): boolean {
+  private loadFieldsSelectionState(field: string, defaultValue:boolean): boolean {
     if (typeof window === 'undefined') {
       return false;
     }
 
     const storedValue = window.localStorage.getItem(Constant.ordersFieldSelectionState + '.' + String(field));
-    return storedValue === 'true';
+    return storedValue === 'true' || defaultValue;
   }
 
   saveFieldsSelectionState(field: any, value: boolean): void {
