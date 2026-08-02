@@ -23,9 +23,9 @@
                             <label class="form-label">Customer Phone Number</label>
                             <input type="tel" class="form-control" [readOnly]="isEditMode"
                                 formControlName="customerPrimaryPhoneNumber"
-                                [ngClass]="{ 'is-invalid': customerPrimaryPhoneNumber?.invalid && customerPrimaryPhoneNumber?.touched }">
+                                [ngClass]="{ 'is-invalid': customerPrimaryPhoneNumber?.invalid && customerPrimaryPhoneNumber.touched }">
                             <div class="invalid-feedback"
-                                *ngIf="customerPrimaryPhoneNumber?.touched && customerPrimaryPhoneNumber?.invalid">
+                                *ngIf="customerPrimaryPhoneNumber?.touched && customerPrimaryPhoneNumber.invalid">
                                 Customer's phone name is required
                             </div>
                             <!-- Loading Indicator -->
@@ -56,8 +56,8 @@
                             <label class="form-label">Customer Name</label>
                             <input type="text" class="form-control" [readOnly]="isEditMode"
                                 formControlName="customerName"
-                                [ngClass]="{ 'is-invalid': customerName?.invalid && customerName?.touched }">
-                            <div class="invalid-feedback" *ngIf="customerName?.touched && customerName?.invalid">
+                                [ngClass]="{ 'is-invalid': customerName?.invalid && customerName.touched }">
+                            <div class="invalid-feedback" *ngIf="customerName?.touched && customerName.invalid">
                                 Customer name is required
                             </div>
                             <!-- Loading Indicator -->
@@ -89,8 +89,8 @@
                             <label class="form-label">Address</label>
                             <textarea class="form-control" rows="2" [readOnly]="isEditMode"
                                 formControlName="customerAddress"
-                                [ngClass]="{ 'is-invalid': customerAddress?.invalid && customerAddress?.touched }"></textarea>
-                            <div class="invalid-feedback" *ngIf="customerAddress?.touched && customerAddress?.invalid">
+                                [ngClass]="{ 'is-invalid': customerAddress?.invalid && customerAddress.touched }"></textarea>
+                            <div class="invalid-feedback" *ngIf="customerAddress?.touched && customerAddress.invalid">
                                 Invalid address
                             </div>
                         </div>
@@ -101,12 +101,12 @@
                         <div class="col-md-6">
                             <label class="form-label">Job Type</label>
                             <select class="form-select" formControlName="printJobTypeId"
-                                [ngClass]="{ 'is-invalid': printJobTypeId?.invalid && printJobTypeId?.touched }"
+                                [ngClass]="{ 'is-invalid': printJobTypeId?.invalid && printJobTypeId.touched }"
                                 (mousedown)="onJobTypeDropdownOpen()">
                                 <option value="" selected>-- Select Job Type --</option>
                                 <option *ngFor="let type of printJobTypes" [value]="type.id">{{ type.name }}</option>
                             </select>
-                            <div class="invalid-feedback" *ngIf="printJobTypeId?.touched && printJobTypeId?.invalid">
+                            <div class="invalid-feedback" *ngIf="printJobTypeId?.touched && printJobTypeId.invalid">
                                 Invalid Job Type
                             </div>
                             <!-- Loading Indicator -->
@@ -130,11 +130,11 @@
                                 </button>
                                 <input type="number" class="form-control" formControlName="quantity"
                                     aria-label="quantity"
-                                    [ngClass]="{ 'is-invalid': quantity?.invalid && quantity?.touched }">
+                                    [ngClass]="{ 'is-invalid': quantity?.invalid && quantity.touched }">
                                 <button class="btn btn-outline-secondary" type="button" (click)="incrementQuantity()">
                                     <i class="bi bi-plus"></i>
                                 </button>
-                                <div class="invalid-feedback" *ngIf="quantity?.touched && quantity?.invalid">
+                                <div class="invalid-feedback" *ngIf="quantity?.touched && quantity.invalid">
                                     Quantity must be at least 1
                                 </div>
                             </div>
@@ -146,8 +146,8 @@
                                     dayRelative}}</span>
                             </label>
                             <input type="date" class="form-control" formControlName="dateOfDelivery"
-                                [ngClass]="{ 'is-invalid': dateOfDelivery?.invalid && dateOfDelivery?.touched }">
-                            <div class="invalid-feedback" *ngIf="dateOfDelivery?.touched && dateOfDelivery?.invalid">
+                                [ngClass]="{ 'is-invalid': dateOfDelivery?.invalid && dateOfDelivery.touched }">
+                            <div class="invalid-feedback" *ngIf="dateOfDelivery?.touched && dateOfDelivery.invalid">
                                 Invalid date of delivery
                             </div>
                         </div>
@@ -155,8 +155,8 @@
                         <div class="col-md-6">
                             <label class="form-label">Book Number</label>
                             <input type="number" class="form-control" formControlName="bookNumber"
-                                [ngClass]="{ 'is-invalid': bookNumber?.invalid && bookNumber?.touched }">
-                            <div class="invalid-feedback" *ngIf="bookNumber?.touched && bookNumber?.invalid">
+                                [ngClass]="{ 'is-invalid': bookNumber?.invalid && bookNumber.touched }">
+                            <div class="invalid-feedback" *ngIf="bookNumber?.touched && bookNumber.invalid">
                                 Invalid book number
                             </div>
                         </div>
@@ -172,21 +172,21 @@
                                     dayRelative}}</span>
                             </label>
                             <input type="date" class="form-control" formControlName="dateOfPlaced"
-                                [ngClass]="{ 'is-invalid': dateOfPlaced?.invalid && dateOfPlaced?.touched }">
-                            <div class="invalid-feedback" *ngIf="dateOfPlaced?.touched && dateOfPlaced?.invalid">
+                                [ngClass]="{ 'is-invalid': dateOfPlaced?.invalid && dateOfPlaced.touched }">
+                            <div class="invalid-feedback" *ngIf="dateOfPlaced?.touched && dateOfPlaced.invalid">
                                 Invalid date of order-placed
                             </div>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Order Status</label>
                             <select class="form-select" formControlName="printJobStatus"
-                                [ngClass]="{ 'is-invalid': printJobStatus?.invalid && printJobStatus?.touched }">
+                                [ngClass]="{ 'is-invalid': printJobStatus?.invalid && printJobStatus.touched }">
                                 <option value="" selected>-- Select Status --</option>
                                 <option *ngFor="let opt of orderStatusOptions" [value]="opt.value">
                                     {{ opt.label }}
                                 </option>
                             </select>
-                            <div class="invalid-feedback" *ngIf="printJobStatus?.touched && printJobStatus?.invalid">
+                            <div class="invalid-feedback" *ngIf="printJobStatus?.touched && printJobStatus.invalid">
                                 Invalid Order status
                             </div>
                             <div>{{printJobStatus?.value}}</div>
@@ -198,8 +198,8 @@
                         <div class="col-md-6">
                             <label class="form-label">Total Amount</label>
                             <input type="number" class="form-control" formControlName="totalAmount"
-                                [ngClass]="{ 'is-invalid': totalAmount?.invalid && totalAmount?.touched }">
-                            <div class="invalid-feedback" *ngIf="totalAmount?.touched && totalAmount?.invalid">
+                                [ngClass]="{ 'is-invalid': totalAmount?.invalid && totalAmount.touched }">
+                            <div class="invalid-feedback" *ngIf="totalAmount?.touched && totalAmount.invalid">
                                 Invalid total amount
                             </div>
                         </div>
@@ -207,9 +207,8 @@
                         <div class="col-md-6">
                             <label class="form-label">Discounted Amount</label>
                             <input type="number" class="form-control" formControlName="discountedAmount"
-                                [ngClass]="{ 'is-invalid': discountedAmount?.invalid && discountedAmount?.touched }">
-                            <div class="invalid-feedback"
-                                *ngIf="discountedAmount?.touched && discountedAmount?.invalid">
+                                [ngClass]="{ 'is-invalid': discountedAmount?.invalid && discountedAmount.touched }">
+                            <div class="invalid-feedback" *ngIf="discountedAmount?.touched && discountedAmount.invalid">
                                 Invalid discounted amount
                             </div>
                         </div>
@@ -217,8 +216,8 @@
                         <div class="col-md-6">
                             <label class="form-label">Deposit Amount</label>
                             <input type="number" class="form-control" formControlName="depositAmount"
-                                [ngClass]="{ 'is-invalid': depositAmount?.invalid && depositAmount?.touched }">
-                            <div class="invalid-feedback" *ngIf="depositAmount?.touched && depositAmount?.invalid">
+                                [ngClass]="{ 'is-invalid': depositAmount?.invalid && depositAmount.touched }">
+                            <div class="invalid-feedback" *ngIf="depositAmount?.touched && depositAmount.invalid">
                                 Invalid deposit amount
                             </div>
                         </div>
@@ -226,8 +225,8 @@
                         <div class="col-md-6">
                             <label class="form-label">Pending Amount</label>
                             <input type="number" class="form-control" formControlName="pendingAmount"
-                                [ngClass]="{ 'is-invalid': pendingAmount?.invalid && pendingAmount?.touched }">
-                            <div class="invalid-feedback" *ngIf="pendingAmount?.touched && pendingAmount?.invalid">
+                                [ngClass]="{ 'is-invalid': pendingAmount?.invalid && pendingAmount.touched }">
+                            <div class="invalid-feedback" *ngIf="pendingAmount?.touched && pendingAmount.invalid">
                                 Pending amount is invalid
                             </div>
                         </div>
@@ -240,13 +239,13 @@
                         <div class="col-md-6">
                             <label class="form-label">Payment Status</label>
                             <select class="form-select" formControlName="paymentStatus"
-                                [ngClass]="{ 'is-invalid': paymentStatus?.invalid && paymentStatus?.touched }">
+                                [ngClass]="{ 'is-invalid': paymentStatus?.invalid && paymentStatus.touched }">
                                 <option value="" selected>-- Select Status --</option>
                                 <option *ngFor="let opt of paymentStatusOptions" [value]="opt.value">
                                     {{ opt.label }}
                                 </option>
                             </select>
-                            <div class="invalid-feedback" *ngIf="paymentStatus?.touched && paymentStatus?.invalid">
+                            <div class="invalid-feedback" *ngIf="paymentStatus?.touched && paymentStatus.invalid">
                                 Invalid Payment status
                             </div>
                         </div>
@@ -256,9 +255,9 @@
                         <div class="col-12">
                             <label class="form-label">Add Note</label>
                             <textarea class="form-control" rows="2" formControlName="note"
-                                [ngClass]="{ 'is-invalid': note?.invalid && note?.touched }"
+                                [ngClass]="{ 'is-invalid': note?.invalid && note.touched }"
                                 placeholder="Optional note about the order"></textarea>
-                            <div class="invalid-feedback" *ngIf="note?.touched && note?.invalid">
+                            <div class="invalid-feedback" *ngIf="note?.touched && note.invalid">
                                 Invalid note
                             </div>
                         </div>
@@ -267,9 +266,9 @@
                         <div class="col-12">
                             <label class="form-label">Description</label>
                             <textarea class="form-control" rows="3" formControlName="description"
-                                [ngClass]="{ 'is-invalid': description?.invalid && description?.touched }"
+                                [ngClass]="{ 'is-invalid': description?.invalid && description.touched }"
                                 placeholder="Detailed order description"></textarea>
-                            <div class="invalid-feedback" *ngIf="description?.touched && description?.invalid">
+                            <div class="invalid-feedback" *ngIf="description?.touched && description.invalid">
                                 Invalid description
                             </div>
                         </div>

@@ -68,9 +68,8 @@
         </div>
     </div>
     }
-    @else {
+    @else if(order) {
     <div class="container-fluid">
-
         <!-- order details -->
         <div class="card shadow-sm mb-3">
             <div class="card-body">
@@ -88,7 +87,7 @@
                                     @for (orderStatus of orderStatusOptions; track $index) {
                                     <li (click)="updateOrderStatus(orderStatus.value)"><span class="dropdown-item">
                                             {{orderStatus.label}}
-                                            @if(order?.printJobStatus === orderStatus.value){
+                                            @if(order.printJobStatus === orderStatus.value){
                                             <span class="ms-1 text-primary fw-bold"><i
                                                     class="bi bi-check-lg"></i></span>
                                             }
@@ -102,32 +101,32 @@
                     </div>
                     <div class="col-md-4 d-none">
                         <small><span class="me-1 text-info">#</span>Job Code</small>
-                        <div>{{ order?.printJobTypeCode || 'N/A'}}</div>
+                        <div>{{ order.printJobTypeCode || 'N/A'}}</div>
                     </div>
                     <div class="col-md-4">
                         <small><span class="me-1 text-info">#</span>Job Name</small>
-                        <div>{{order?.printJobTypeName }} <span><small class="text-muted">
-                                    &#40;{{order?.printJobTypeCode}}&#41;</small></span></div>
+                        <div>{{order.printJobTypeName }} <span><small class="text-muted">
+                                    &#40;{{order.printJobTypeCode}}&#41;</small></span></div>
                     </div>
                     <div class="col-md-4">
                         <small><span class="me-1 text-info">#</span>Quantity</small>
-                        <div>{{ order?.quantity }}</div>
+                        <div>{{ order.quantity }}</div>
                     </div>
                     <div class="col-md-4">
                         <small><i class="bi bi-journal-bookmark me-1 text-info"></i>Book Number</small>
-                        <div>{{ order?.bookNumber || 'N/A' }}</div>
+                        <div>{{ order.bookNumber || 'N/A' }}</div>
                     </div>
                     <div class="col-md-4">
                         <small><i class="bi bi-calendar-plus me-1 text-info"></i>Date of Placed</small>
-                        <div>{{ order?.dateOfPlaced | daysElapsed }}</div>
+                        <div>{{ order.dateOfPlaced | daysElapsed }}</div>
                     </div>
                     <div class="col-md-4">
                         <small><i class="bi bi-calendar-check me-1 text-info"></i>Date of delivery</small>
-                        <div>{{ order?.dateOfDelivery | daysElapsed }}</div>
+                        <div>{{ order.dateOfDelivery | daysElapsed }}</div>
                     </div>
                     <div class="col-md-4">
                         <small><i class="bi bi-box me-1 text-info"></i>Order Status</small>
-                        <div><span>{{ order?.printJobStatus | titlecase}}</span>
+                        <div><span>{{ order.printJobStatus | titlecase}}</span>
                         </div>
                     </div>
 
@@ -142,7 +141,7 @@
                     <div class="col-12 pb-1 border-bottom d-flex justify-content-between align-items-center">
                         <span><i class="bi bi-cash-stack me-2 text-info"></i>Payment Details</span>
                         <span>
-                            @if(order?.paymentStatus != "PAID"){
+                            @if(order.paymentStatus != "PAID"){
                             <button class="btn btn-sm btn-outline-primary me-2" data-bs-toggle="modal"
                                 data-bs-target="#depositOrderAmountModal" title="Deposit amount">Deposit
                                 Payment</button>
@@ -153,23 +152,23 @@
                     </div>
                     <div class="col-md-4">
                         <small><i class="bi bi-cash me-1 text-info"></i>Total Amount</small>
-                        <div>{{ order?.totalAmount }}</div>
+                        <div>{{ order.totalAmount }}</div>
                     </div>
                     <div class="col-md-4">
                         <small><i class="bi bi-cash me-1 text-info"></i>Discounted Amount</small>
-                        <div>{{ order?.discountedAmount}}</div>
+                        <div>{{ order.discountedAmount}}</div>
                     </div>
                     <div class="col-md-4">
                         <small><i class="bi bi-cash me-1 text-info"></i>Deposited Amount</small>
-                        <div>{{ order?.depositAmount}}</div>
+                        <div>{{ order.depositAmount}}</div>
                     </div>
                     <div class="col-md-4">
                         <small><i class="bi bi-cash me-1 text-info"></i>Pending Amount</small>
-                        <div>{{ order?.pendingAmount}}</div>
+                        <div>{{ order.pendingAmount}}</div>
                     </div>
                     <div class="col-md-4">
                         <small><i class="bi bi-cash-stack me-1 text-info"></i>Payment Status</small>
-                        <div><span>{{ order?.paymentStatus | enumdisplay | sentencecase}}</span>
+                        <div><span>{{ order.paymentStatus | enumdisplay | sentencecase}}</span>
                         </div>
                     </div>
                 </div>
@@ -189,8 +188,8 @@
                         </span>
                     </div>
                     <div class="col-12">
-                        @if( order?.note){
-                        <p class="w-100 px-2">{{ order?.note }}</p>
+                        @if( order.note){
+                        <p class="w-100 px-2">{{ order.note }}</p>
                         }
                         @else {
                         <div class="text-center">
@@ -220,8 +219,8 @@
                         </span>
                     </div>
                     <div class="mt-2">
-                        @if( order?.description){
-                        <p class="w-100 px-2">{{ order?.description }}</p>
+                        @if( order.description){
+                        <p class="w-100 px-2">{{ order.description }}</p>
                         }
                         @else {
                         <div class="text-center">
@@ -244,9 +243,9 @@
                 <div class="row g-3">
                     <div class="col-12 pb-1 border-bottom d-flex justify-content-between">
                         <span><i class="bi bi-paperclip me-1 text-info"></i>Attached Files
-                            @if(!(order?.attachmentIds?.length == 0)){
+                            @if(!(order.attachmentIds.length == 0)){
                             <small class="text-info ms-2">
-                                {{'( '+order?.attachmentIds?.length + ' attached files )'}}
+                                {{'( '+order.attachmentIds.length + ' attached files )'}}
                             </small>
                             }
                         </span>
@@ -256,7 +255,7 @@
                                     class="bi bi-cloud-plus text-info"></i></button>
                         </span>
                     </div>
-                    @if(order?.attachmentIds?.length == 0){
+                    @if(order.attachmentIds.length == 0){
                     <div class="text-center">
                         <small class="text-muted">
                             <span>No attached files.</span>
@@ -270,7 +269,7 @@
                     <div class="mt-2">
                         <div class="row row-cols-1 row-cols-md-4 g-4">
                             @for (item of fileAttachments; track $index) {
-                            <app-file-attachment-card [fileAttachment]="item" [orderUuid]="order?.uuid"
+                            <app-file-attachment-card [fileAttachment]="item" [orderUuid]="order.uuid"
                                 (deleteSuccessAction)="deleteSuccessAction($event)"
                                 (deleteFailAction)="deleteFailAction($event)"></app-file-attachment-card>
                             }
@@ -286,32 +285,31 @@
             <div class="card-body">
                 <div class="col-12 pb-1 border-bottom d-flex justify-content-between">
                     <span><i class="bi bi-person-lines-fill text-info me-2"></i>Customer Details</span>
-                    <small><a [routerLink]="'/dashboard/customer/'+order?.customerUuid"
-                            class="text-decoration-none">Show customer profile <i
-                                class="bi bi-arrow-right"></i></a></small>
+                    <small><a [routerLink]="'/dashboard/customer/'+order.customerUuid" class="text-decoration-none">Show
+                            customer profile <i class="bi bi-arrow-right"></i></a></small>
                 </div>
                 <div class="row g-3 mt-1">
                     <div class="col-md-4">
                         <small><span class="mx-1 text-info"><i class="bi bi-person"></i></span>Customer Name</small>
-                        <div>{{ order?.customerName || 'N/A' }}</div>
+                        <div>{{ order.customerName || 'N/A' }}</div>
                     </div>
                     <div class="col-md-4">
                         <small><span class="mx-1 text-info"><i class="bi bi-telephone"></i></span>Primary Phone
                             Number</small>
-                        <div>{{ order?.customerPrimaryPhoneNumber || 'N/A' }}</div>
+                        <div>{{ order.customerPrimaryPhoneNumber || 'N/A' }}</div>
                     </div>
                     <div class="col-md-4">
                         <small><span class="mx-1 text-info"><i class="bi bi-telephone-plus"></i></span>Alternate Phone
                             Number </small>
-                        <div>{{ order?.customerAlternatePhoneNumber || 'N/A' }}</div>
+                        <div>{{ order.customerAlternatePhoneNumber || 'N/A' }}</div>
                     </div>
                     <div class="col-md-8">
                         <small><span class="mx-1 text-info"><i class="bi bi-geo-alt"></i></span>Customer Address</small>
-                        <div>{{ order?.customerAddress || 'N/A' }}</div>
+                        <div>{{ order.customerAddress || 'N/A' }}</div>
                     </div>
                     <div class="col-md-4">
                         <small><span class="mx-1 text-info">#</span>Customer Id</small>
-                        <div>{{ order?.customerUuid + ' (' +order?.customerId + ')'}}</div>
+                        <div>{{ order.customerUuid + ' (' +order.customerId + ')'}}</div>
                     </div>
                 </div>
             </div>
@@ -340,19 +338,19 @@
                     </div>
                     <div class="col-md-4">
                         <small><i class="bi bi-person me-1 text-info"></i>Created By</small>
-                        <div>{{ order?.createdBy }}</div>
+                        <div>{{ order.createdBy }}</div>
                     </div>
                     <div class="col-md-4">
                         <small><i class="bi bi-calendar-plus me-1 text-info"></i>Created At</small>
-                        <div>{{ order?.createdAt | timeElapsed }}</div>
+                        <div>{{ order.createdAt | timeElapsed }}</div>
                     </div>
                     <div class="col-md-4">
                         <small><i class="bi bi-calendar-check me-1 text-info"></i>Updated At</small>
-                        <div>{{ order?.updatedAt | timeElapsed }}</div>
+                        <div>{{ order.updatedAt | timeElapsed }}</div>
                     </div>
                     <div class="col-md-4">
                         <small><span class="me-1 text-info">#</span>Order UUID</small>
-                        <div>{{ order?.uuid || 'N/A' }}</div>
+                        <div>{{ order.uuid || 'N/A' }}</div>
                     </div>
                 </div>
             </div>
@@ -362,7 +360,7 @@
         <div class="d-flex justify-content-between align-items-start border rounded p-2 mb-3">
             <div>
                 <strong><span class="me-1 text-info">#</span></strong>
-                <span class="small">{{order?.uuid}}</span>
+                <span class="small">{{order.uuid}}</span>
             </div>
             <div>
                 <button class="btn btn-sm btn-outline-primary me-2" data-bs-toggle="modal" data-bs-target="#orderModal">

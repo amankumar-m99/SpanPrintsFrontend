@@ -36,7 +36,7 @@ export class OrderInfoComponent implements OnInit {
 
   orderStatusOptions: EnumOption[] = enumToOptions(OrderStatus);
   orderUuid !: string;
-  order !: Order | null;
+  order !: Order;
   fileAttachments?: FileAttachment[];
   errorMsg = '';
   copied = false;
@@ -136,7 +136,6 @@ export class OrderInfoComponent implements OnInit {
     if (this.order) {
       this.orderService.deleteOrderByUuid(this.order.uuid).subscribe({
         next: () => {
-          this.order = null;
           this.showToastComponent("warning", "Customer deleted");
           this.router.navigate(['/dashboard/customers']);
         },
