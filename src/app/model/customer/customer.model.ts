@@ -6,6 +6,7 @@ export interface Customer {
   address: string;
   primaryPhoneNumber: string;
   alternatePhoneNumber: string;
+  note: string;
   updatedAt: string;
   createdAt: string;
   createdBy: string;

@@ -53,7 +53,8 @@ export class CustomerModalComponent implements OnInit, OnChanges {
       email: ['', [Validators.email]],
       address: ['', Validators.required],
       primaryPhoneNumber: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
-      alternatePhoneNumber: ['', [Validators.pattern(/^\d{10}$/)]]
+      alternatePhoneNumber: ['', [Validators.pattern(/^\d{10}$/)]],
+      note: ['']
     });
   }
 
@@ -62,6 +63,7 @@ export class CustomerModalComponent implements OnInit, OnChanges {
   get address() { return this.modalForm.get('address'); }
   get primaryPhoneNumber() { return this.modalForm.get('primaryPhoneNumber'); }
   get alternatePhoneNumber() { return this.modalForm.get('alternatePhoneNumber'); }
+  get note() { return this.modalForm.get('note'); }
 
   programmaticallyClickFormSubmitButton(): void {
     (document.querySelector('#customerModalFormSubmitButton') as HTMLElement)?.click();

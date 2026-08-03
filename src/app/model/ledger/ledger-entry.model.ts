@@ -8,8 +8,8 @@ export interface LedgerEntry {
     ledgerSource: string;
     transactionDateTime: string;
     description: string;
-    printJobId: number;
-    expenseId: number;
+    printJobUuid: string;
+    expenseUuid: string;
     addedByBy: string;
     addedById: number;
 }

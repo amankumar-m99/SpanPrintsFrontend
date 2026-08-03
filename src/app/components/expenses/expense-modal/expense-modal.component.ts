@@ -4,7 +4,8 @@ import { ReactiveFormsModule, FormsModule, FormGroup, FormBuilder, Validators } 
 import { UpdateExpenseRequest } from '../../../model/expense/update-expense-request.model';
 import { CreateExpenseRequest } from '../../../model/expense/create-expense-request.model';
 import { LedgerService } from '../../../services/ledger/ledger.service';
-import { LedgerEntry } from '../../../model/ledger/ledger-entry.model';
+import { Expense } from '../../../model/expense/expense.model';
+import { ExpenseService } from '../../../services/expense/expense.service';
 
 @Component({
   selector: 'app-expense-modal',
@@ -20,11 +21,11 @@ export class ExpenseModalComponent implements OnInit, OnChanges {
   showToast = false;
   isEditMode = false;
 
-  @Input() model: LedgerEntry | null = null;
-  @Output() successAction = new EventEmitter<LedgerEntry>();
+  @Input() model: Expense | null | undefined = null;
+  @Output() successAction = new EventEmitter<Expense>();
   @Output() errorAction = new EventEmitter<string>();
 
-  constructor(private fb: FormBuilder, private service: LedgerService) { }
+  constructor(private fb: FormBuilder, private service: ExpenseService) { }
 
   ngOnInit(): void {
     if (!this.modalForm) {
