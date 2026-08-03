@@ -4,4 +4,5 @@ export interface CreateCustomerRequest {
     address: string;
     primaryPhoneNumber: string;
     alternatePhoneNumber: string;
+    note: string;
 }

@@ -23,7 +23,7 @@ export class CustomerInfoComponent implements OnInit {
 
   customerUuid !: string;
   customer !: Customer | null;
-  orders !: Order[];
+  orders : Order[] = [];
   receivedAmount = 0;
   discountedAmount = 0;
   pendingAmount = 0;
@@ -46,18 +46,25 @@ export class CustomerInfoComponent implements OnInit {
       const uuid = params.get('uuid');
       if (uuid) {
         this.customerUuid = uuid;
-        this.fetchCustomerDetails();
-        this.fetchOrderDetails();
+        this.fetchCustomerDetails(false);
       }
     });
   }
 
-  fetchCustomerDetails() {
+  reloadCustomer() {
+    this.fetchCustomerDetails(true);
+  }
+
+  fetchCustomerDetails(isRelaod: boolean) {
     this.customerService.getCustomerByUuid(this.customerUuid).subscribe({
       next: (res) => {
         this.customer = res;
         this.errorMsg = '';
         this.deleteMsg = `Delete customer ${this.customer.name}?`;
+        if (isRelaod) {
+          this.showToastComponent("success", "Customer reloaded.");
+        }
+        this.fetchOrderDetails();
       },
       error: (err) => {
         this.errorMsg = err?.error?.message || "Could not load customer's data!";
@@ -82,7 +89,7 @@ export class CustomerInfoComponent implements OnInit {
     let rAmount = 0;
     let dAmount = 0;
     let pAmount = 0;
-    for(let order of this.orders){
+    for (let order of this.orders) {
       rAmount += order.depositAmount;
       dAmount += order.discountedAmount;
       pAmount += order.pendingAmount;
@@ -120,7 +127,7 @@ export class CustomerInfoComponent implements OnInit {
 
   customerSuccess(customer: Customer): void {
     this.showToastComponent("success", "Customer updated.");
-    this.fetchCustomerDetails();
+    this.fetchCustomerDetails(false);
   }
 
   customerError(errorStr: string): void {
