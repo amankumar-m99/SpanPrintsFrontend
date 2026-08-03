@@ -24,6 +24,7 @@ import { OrderInfoComponent } from './components/orders/order-info/order-info.co
 import { ForgotPasswordComponent } from './components/password/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './components/password/reset-password/reset-password.component';
 import { ChangePasswordComponent } from './components/password/change-password/change-password.component';
+import { ExpenseInfoComponent } from './components/expenses/expense-info/expense-info.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent, canActivate: [GuestGuard] },
@@ -42,6 +43,7 @@ export const routes: Routes = [
             { path: 'vendor/:uuid', component: VendorInfoComponent },
             { path: 'inventory', component: InventoryComponent },
             { path: 'expenses', component: ExpensesComponent },
+            { path: 'expense/:uuid', component: ExpenseInfoComponent },
             { path: 'ledger', component: LedgerComponent },
             { path: 'statistics', component: StatisticsComponent },
             { path: 'printjob', component: PrintjobComponent },

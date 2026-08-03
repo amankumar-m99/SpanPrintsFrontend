@@ -121,21 +121,20 @@
                 <tr>
                     <th>#</th>
                     <th>UUID</th>
-                    <th>Description</th>
-                    <th>Source</th>
                     <th>Date Time</th>
+                    <th>Source</th>
                     <th>Amount ₹</th>
                     <th>Debit/Credit</th>
                     <th class="text-end">Actions</th>
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let ledgerEntry of filteredTransactions; let i = index" class="cursor-pointer">
+                <tr *ngFor="let ledgerEntry of filteredTransactions; let i = index" class="cursor-pointer"
+                    (click)="openDetails(ledgerEntry)">
                     <td>{{ i + 1 }}</td>
                     <td>{{ ledgerEntry.uuid }}</td>
-                    <td>{{ ledgerEntry.description }}</td>
+                    <td>{{ ledgerEntry.transactionDateTime | timeElapsed }}</td>
                     <td>{{ ledgerEntry.ledgerSource }}</td>
-                    <td>{{ ledgerEntry.transactionDateTime }}</td>
                     <td> @if(ledgerEntry.ledgerType === 'CREDIT'){
                         <span class="text-success">+</span>
                         }
@@ -153,13 +152,7 @@
                     </td>
                     <!-- Actions -->
                     <td class="text-end" (click)="$event.stopPropagation()">
-                        <button class="btn btn-sm btn-outline-primary me-1">
-                            <i class="bi bi-pencil"></i>
-                        </button>
-                        <button class="btn btn-sm btn-outline-danger me-1">
-                            <i class="bi bi-trash"></i>
-                        </button>
-                        <button class="btn btn-sm btn-outline-info">
+                        <button class="btn btn-sm btn-outline-info" (click)="openDetails(ledgerEntry)">
                             <i class="bi bi-box-arrow-up-right"></i>
                         </button>
                     </td>

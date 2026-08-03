@@ -5,11 +5,14 @@ import { TransactionCardComponent } from '../transaction-card/transaction-card.c
 import { LedgerService } from '../../services/ledger/ledger.service';
 import { LedgerEntry } from '../../model/ledger/ledger-entry.model';
 import { ToastComponent } from "../utility/toast/toast.component";
+import { Router } from '@angular/router';
+import { _toLeftRightCenter } from 'chart.js/helpers';
+import { TimeElapsedPipe } from "../../pipes/timeElapsed/time-elapsed.pipe";
 
 @Component({
   selector: 'app-ledger',
   standalone: true,
-  imports: [CommonModule, FormsModule, TransactionCardComponent, ToastComponent],
+  imports: [CommonModule, FormsModule, TransactionCardComponent, ToastComponent, TimeElapsedPipe],
   templateUrl: './ledger.component.html',
   styleUrls: ['./ledger.component.css']
 })
@@ -31,7 +34,10 @@ export class LedgerComponent implements OnInit {
   toastMsg = '';
   showToast = false;
 
-  constructor(private ledgerService: LedgerService) { }
+  constructor(
+    private router: Router,
+    private ledgerService: LedgerService
+  ) { }
 
   ngOnInit(): void {
     this.loadData();
@@ -109,5 +115,14 @@ export class LedgerComponent implements OnInit {
 
   hideToastComponent(): void {
     this.showToast = false
+  }
+
+  openDetails(ledger: LedgerEntry) {
+    if (ledger.printJobUuid) {
+      this.router.navigate(['/dashboard/order', ledger.printJobUuid]);
+    }
+    else if (ledger.expenseUuid) {
+      this.router.navigate(['/dashboard/expense', ledger.expenseUuid]);
+    }
   }
 }

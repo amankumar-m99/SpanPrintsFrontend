@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { LedgerEntry } from '../../../model/ledger/ledger-entry.model';
 import { TimeElapsedPipe } from "../../../pipes/timeElapsed/time-elapsed.pipe";
+import { Expense } from '../../../model/expense/expense.model';
 
 @Component({
   selector: 'app-expense-card',
@@ -11,7 +11,7 @@ import { TimeElapsedPipe } from "../../../pipes/timeElapsed/time-elapsed.pipe";
   styleUrl: './expense-card.component.css'
 })
 export class ExpenseCardComponent {
-  @Input() ledgerEntry?: LedgerEntry;
+  @Input() expense?: Expense;
   @Output() edit = new EventEmitter<any>();
   @Output() delete = new EventEmitter<any>();
 }
