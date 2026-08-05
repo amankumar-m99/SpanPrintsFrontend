@@ -81,7 +81,8 @@ export class ExpenseModalComponent implements OnInit, OnChanges {
     let newModel: UpdateExpenseRequest = {
       ...this.modalForm.value
     };
-    if (this.model?.id) {
+    if (this.model?.uuid) {
+      newModel.uuid = this.model?.uuid;
       this.service.updateExpense(newModel).subscribe({
         next: (response) => {
           this.isSubmitting = false;

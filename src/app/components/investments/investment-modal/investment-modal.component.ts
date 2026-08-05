@@ -79,7 +79,8 @@ export class InvestmentModalComponent implements OnInit, OnChanges {
     let newModel: UpdateInvestmentRequest = {
       ...this.modalForm.value
     };
-    if (this.model?.id) {
+    if (this.model?.uuid) {
+      newModel.uuid = this.model?.uuid;
       this.service.updateInvestment(newModel).subscribe({
         next: (response) => {
           this.isSubmitting = false;
