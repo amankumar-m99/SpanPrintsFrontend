@@ -3,7 +3,6 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange
 import { ReactiveFormsModule, FormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { UpdateExpenseRequest } from '../../../model/expense/update-expense-request.model';
 import { CreateExpenseRequest } from '../../../model/expense/create-expense-request.model';
-import { LedgerService } from '../../../services/ledger/ledger.service';
 import { Expense } from '../../../model/expense/expense.model';
 import { ExpenseService } from '../../../services/expense/expense.service';
 
@@ -83,7 +82,7 @@ export class ExpenseModalComponent implements OnInit, OnChanges {
       ...this.modalForm.value
     };
     if (this.model?.id) {
-      this.service.updateExpense(this.model.id, newModel).subscribe({
+      this.service.updateExpense(newModel).subscribe({
         next: (response) => {
           this.isSubmitting = false;
           this.modalForm.reset();

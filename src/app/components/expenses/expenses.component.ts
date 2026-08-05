@@ -6,8 +6,6 @@ import { ExpenseModalComponent } from "./expense-modal/expense-modal.component";
 import { Router } from '@angular/router';
 import { ToastComponent } from "../utility/toast/toast.component";
 import { ConfirmDialogComponent } from "../utility/confirm-dialog/confirm-dialog.component";
-import { LedgerService } from '../../services/ledger/ledger.service';
-import { LedgerEntry } from '../../model/ledger/ledger-entry.model';
 import { TimeElapsedPipe } from "../../pipes/timeElapsed/time-elapsed.pipe";
 import { ExpenseService } from '../../services/expense/expense.service';
 import { Expense } from '../../model/expense/expense.model';

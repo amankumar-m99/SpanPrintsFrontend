@@ -5,7 +5,8 @@ export interface Expense {
     amount: number;
     description: string;
     dateOfExpense: string;
-    ledgerIds: number;
+    ledgerId: number;
+    ledgerUuid: string;
     updatedAt: string;
     createdAt: string;
     createdBy: string;
