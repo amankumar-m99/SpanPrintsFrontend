@@ -1,0 +1,73 @@
+<div class="modal fade" id="investmentModal" data-bs-backdrop="static" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    @if (isEditMode) {
+                    <i class="bi bi-currency-rupee me-2"></i>Update Investment
+                    }
+                    @else{
+                    <i class="bi bi-currency-rupee me-2"></i>Add Investment
+                    }
+                </h5>
+                <button id="investmentModalCloseBtn" type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="modalForm" (ngSubmit)="submitForm()">
+                    <div class="mb-3">
+                        <label class="form-label"><i class="bi bi-currency-rupee ms-1"></i>Amount</label>
+                        <input type="number" class="form-control" formControlName="amount"
+                            [ngClass]="{ 'is-invalid': amount?.invalid && amount?.touched }" />
+                        <div class="invalid-feedback" *ngIf="amount?.touched && amount?.invalid">
+                            Name is required
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label"><i class="bi bi-calendar2 me-1"></i>Date of Investment</label>
+                        <input type="date" class="form-control" formControlName="dateOfInvestment"
+                            [ngClass]="{ 'is-invalid': dateOfInvestment?.invalid && dateOfInvestment?.touched }" />
+                        <div class="invalid-feedback" *ngIf="dateOfInvestment?.touched && dateOfInvestment?.invalid">
+                            Date of investment is required
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label"><i class="bi bi-card-text me-1"></i>Description</label>
+                        <textarea class="form-control" formControlName="description"
+                            [ngClass]="{ 'is-invalid': description?.invalid && description?.touched }"></textarea>
+                        <div class="invalid-feedback" *ngIf="description?.touched && description?.invalid">
+                            Invalid description
+                        </div>
+                    </div>
+
+                    <div><button id="investmentModalFormSubmitButton" type="submit" class="d-none"
+                            [disabled]="isSubmitting"></button></div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" [disabled]="isSubmitting"
+                    (click)="programmaticallyClickFormSubmitButton()">
+                    @if(!isSubmitting){
+                    @if(isEditMode){
+                    <span>Save</span>
+                    }
+                    @else {
+                    <span>Add</span>
+                    }
+                    }
+                    @else {
+                    <span class="spinner-border spinner-border-sm me-2"></span>
+                    @if(isEditMode){
+                    <span>Saving...</span>
+                    }
+                    @else {
+                    <span>Adding...</span>
+                    }
+                    }
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
