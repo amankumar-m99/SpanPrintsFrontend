@@ -10,6 +10,7 @@ export interface LedgerEntry {
     description: string;
     printJobUuid: string;
     expenseUuid: string;
+    investmentUuid: string;
     addedByBy: string;
     addedById: number;
 }

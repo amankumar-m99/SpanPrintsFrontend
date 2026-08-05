@@ -118,11 +118,15 @@ export class LedgerComponent implements OnInit {
   }
 
   openDetails(ledger: LedgerEntry) {
-    if (ledger.printJobUuid) {
+    // ORDER, PURCHASE, REFUND, PERSONAL, INVESTMENT, OTHER
+    if (ledger.ledgerSource === 'ORDER' && ledger.printJobUuid) {
       this.router.navigate(['/dashboard/order', ledger.printJobUuid]);
     }
-    else if (ledger.expenseUuid) {
+    else if((ledger.ledgerSource === 'PURCHASE' || ledger.ledgerSource === 'PERSONAL') && ledger.expenseUuid) {
       this.router.navigate(['/dashboard/expense', ledger.expenseUuid]);
+    }
+    else if(ledger.ledgerSource === 'INVESTMENT' && ledger.investmentUuid) {
+      this.router.navigate(['/dashboard/investment', ledger.investmentUuid]);
     }
   }
 }
