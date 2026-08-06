@@ -51,7 +51,7 @@ export class InventoryItemModalComponent implements OnInit, OnChanges {
       rate: ['', Validators.required],
       quantity: ['', Validators.required],
       amount: [{ value: '', disabled: true }, Validators.required],
-      addToLedger: [true, Validators.required],
+      addToLedger: [true],
       description: [''],
     });
   }
