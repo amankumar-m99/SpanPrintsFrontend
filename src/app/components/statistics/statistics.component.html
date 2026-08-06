@@ -1,15 +1,51 @@
 <div class="container-fluid">
     <h3 class="mb-4"><i class="bi bi-graph-up-arrow text-warning me-2"></i>Statistics</h3>
     <div>
-        <p>Earning graph</p>
-        <p>Orders count graph</p>
-        <p>New customers added graph</p>
-        <p>Top customer by number of orders</p>
-        <p>Top customer by amount of payment</p>
+        <!-- Tabs -->
+        <ul class="nav nav-tabs mb-3">
+            <li class="nav-item">
+                <a class="nav-link active" data-bs-toggle="tab" href="#finance">Finance</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="tab" href="#orders">Orders</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="tab" href="#customers">Customers</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="tab" href="#inventory">Inventory</a>
+            </li>
+        </ul>
+
+        <!-- Tab Content -->
+        <div class="tab-content">
+            <!-- Finance -->
+            <div class="tab-pane fade show active" id="finance">
+                <div class="alert alert-info">
+                    Finance
+                </div>
+            </div>
+            <!-- Orders -->
+            <div class="tab-pane fade" id="orders">
+                <div class="alert alert-secondary">
+                    Orders
+                </div>
+            </div>
+            <!-- Customers -->
+            <div class="tab-pane fade" id="customers">
+                <div class="alert alert-light">
+                    Customers
+                </div>
+            </div>
+            <!-- Inventory -->
+            <div class="tab-pane fade" id="inventory">
+                <div class="alert alert-light">
+                    Inventory
+                </div>
+            </div>
+        </div>
     </div>
     <canvas id="MyChart" width="400" height="100">
-{{chart}}
+        {{chart}}
     </canvas>
-
-
 </div>
