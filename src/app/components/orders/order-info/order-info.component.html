@@ -323,7 +323,16 @@
                         <span><i class="bi bi-clock-history me-2 text-info"></i>Order History</span>
                     </div>
                     <div class="col-12 text-center">
-                        <small class="text-muted">Order history coming soon.</small>
+                        @if (order.printJobHistories.length == 0) {
+                        <small class="text-muted">No order history available for this order</small>
+                        }
+                        @else {
+                        @for(history of order.printJobHistories; track $index){
+                        <div><small>{{history.description}} by <span><a
+                                        [routerLink]="'/dashboard/profile/'+history.userUuid">{{history.username}}</a></span>
+                                at {{history.createdAt | timeElapsed}}</small></div>
+                        }
+                        }
                     </div>
                 </div>
             </div>

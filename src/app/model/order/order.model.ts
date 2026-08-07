@@ -1,3 +1,5 @@
+import { OrderHistory } from "./order-history.model";
+
 export interface Order {
     id: number;
     uuid: string;
@@ -20,6 +22,7 @@ export interface Order {
     attachmentIds: number[];
     ledgerIds: number[];
     ledgerUuids: string[];
+    printJobHistories: OrderHistory[];
     customerUuid: string;
     customerId: number;
     customerName: string;
