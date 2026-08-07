@@ -44,6 +44,9 @@ export class OrderInfoComponent implements OnInit {
   toastMsg = '';
   deleteMsg = '';
   showToast = false;
+  previewFile?: FileAttachment;
+  previewUrl: string | null = null;
+  isPreviewImage = false;
 
   enteredUuid = '';
   isUuidValid = false;
@@ -219,19 +222,50 @@ export class OrderInfoComponent implements OnInit {
     });
   }
 
-  previewAttachment(file: FileAttachment): void {
+  previewAttachment(file: FileAttachment, inNewTab: boolean): void {
     if (!file?.uuid) return;
+
+    this.previewFile = file;
+    this.isPreviewImage = (file.contentType || '').toLowerCase().includes('image');
 
     this.fileAttachmentService.downloadFile(file.uuid).subscribe({
       next: (blob: Blob) => {
-        const url = window.URL.createObjectURL(blob);
-        window.open(url, '_blank');
-        setTimeout(() => window.URL.revokeObjectURL(url), 10000);
+        this.previewUrl = window.URL.createObjectURL(blob);
+        if (inNewTab) {
+          window.open(this.previewUrl, '_blank');
+          setTimeout(() => {
+            if (this.previewUrl) {
+              window.URL.revokeObjectURL(this.previewUrl);
+            }
+            this.previewUrl = null;
+            this.previewFile = undefined;
+          }, 10000);
+        }
       },
       error: () => {
+        this.previewFile = undefined;
+        this.previewUrl = null;
+        this.isPreviewImage = false;
         this.showToastComponent('error', 'Unable to preview the selected file.');
       }
     });
+  }
+
+  openImagePreview(file: FileAttachment): void {
+    if (!this.supportsPreview(file)) {
+      return;
+    }
+
+    this.previewAttachment(file, false);
+  }
+
+  closePreview(): void {
+    if (this.previewUrl) {
+      window.URL.revokeObjectURL(this.previewUrl);
+    }
+    this.previewUrl = null;
+    this.previewFile = undefined;
+    this.isPreviewImage = false;
   }
 
   deleteAttachment(file: FileAttachment): void {
@@ -274,6 +308,11 @@ export class OrderInfoComponent implements OnInit {
   supportsPreview(file: FileAttachment): boolean {
     const contentType = (file?.contentType || '').toLowerCase();
     return contentType.includes('pdf') || contentType.includes('image');
+  }
+
+  supportsPreviewModal(file: FileAttachment): boolean {
+    const contentType = (file?.contentType || '').toLowerCase();
+    return (contentType || '').toLowerCase().includes('image');
   }
 
   validateUuid() {

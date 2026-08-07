@@ -126,6 +126,15 @@
     background: #fbfdff;
 }
 
+.preview-modal-backdrop {
+    background: rgba(0, 0, 0, 0.55);
+}
+
+.preview-image {
+    max-height: 70vh;
+    object-fit: contain;
+}
+
 @media (max-width: 576px) {
     .attachment-item {
         flex-direction: column;
