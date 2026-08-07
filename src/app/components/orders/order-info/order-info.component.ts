@@ -10,9 +10,9 @@ import { OrderService } from '../../../services/order/order.service';
 import { OrderModalComponent } from "../order-modal/order-modal.component";
 import { FileAttachmentService } from '../../../services/file-attachment/file-attachment.service';
 import { FileAttachment } from '../../../model/file-attachment/file-attachment.model';
-import { FileAttachmentCardComponent } from "../../file-attachment-card/file-attachment-card.component";
 import { TimeElapsedPipe } from "../../../pipes/timeElapsed/time-elapsed.pipe";
 import { DaysElapsedPipe } from "../../../pipes/days-elapsed/days-elapsed.pipe";
+import { FileSizePipe } from '../../../pipes/file-size/file-size.pipe';
 import { UpdateOrderNoteModalComponent } from "../update-order-note-modal/update-order-note-modal.component";
 import { UpdateOrderStatusRequest } from '../../../model/order/update-order-status.model';
 import { OrderStatus } from '../../../enums/order-status.enum';
@@ -28,7 +28,7 @@ import { SentencecasePipe } from "../../../pipes/sentencecase/sentencecase.pipe"
 @Component({
   selector: 'app-order-info',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink, ToastComponent, ConfirmDialogComponent, OrderModalComponent, FileAttachmentCardComponent, DaysElapsedPipe, TimeElapsedPipe, UpdateOrderNoteModalComponent, UpdateOrderDescriptionModalComponent, UploadOrderAttachmentModalComponent, OderDepositAmountModalComponent, EnumdisplayPipe, SentencecasePipe],
+  imports: [CommonModule, FormsModule, RouterLink, ToastComponent, ConfirmDialogComponent, OrderModalComponent, DaysElapsedPipe, TimeElapsedPipe, FileSizePipe, UpdateOrderNoteModalComponent, UpdateOrderDescriptionModalComponent, UploadOrderAttachmentModalComponent, OderDepositAmountModalComponent, EnumdisplayPipe, SentencecasePipe],
   templateUrl: './order-info.component.html',
   styleUrl: './order-info.component.css'
 })
@@ -199,6 +199,61 @@ export class OrderInfoComponent implements OnInit {
 
   deleteFailAction(errorResponse: ErrorResponse) {
     this.showToastComponent("error", errorResponse.message);
+  }
+
+  downloadAttachment(file: FileAttachment): void {
+    if (!file?.uuid) return;
+
+    this.fileAttachmentService.downloadFile(file.uuid).subscribe({
+      next: (blob: Blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = file.originalFileName || file.createdFileName || 'attachment';
+        link.click();
+        window.URL.revokeObjectURL(url);
+      },
+      error: () => {
+        this.showToastComponent('error', 'Unable to download the selected file.');
+      }
+    });
+  }
+
+  deleteAttachment(file: FileAttachment): void {
+    if (!this.order?.uuid || !file?.uuid) return;
+
+    const confirmed = confirm(`Delete file "${file.originalFileName}"?`);
+    if (!confirmed) return;
+
+    this.orderService.deleteFile(this.order.uuid, file.uuid).subscribe({
+      next: (res) => {
+        this.showToastComponent('success', res?.message || 'File deleted successfully.');
+        this.fetchOrderDetails(false);
+      },
+      error: (err) => {
+        this.showToastComponent('error', err?.error?.message || 'Unable to delete the selected file.');
+      }
+    });
+  }
+
+  getAttachmentIcon(file: FileAttachment): string {
+    const contentType = (file?.contentType || '').toLowerCase();
+    if (contentType.includes('pdf')) return 'bi-file-earmark-pdf-fill';
+    if (contentType.includes('image')) return 'bi-file-earmark-image-fill';
+    if (contentType.includes('word') || contentType.includes('officedocument')) return 'bi-file-earmark-word-fill';
+    if (contentType.includes('sheet') || contentType.includes('excel')) return 'bi-file-earmark-excel-fill';
+    if (contentType.includes('text')) return 'bi-file-earmark-text-fill';
+    return 'bi-file-earmark-fill';
+  }
+
+  getAttachmentBadge(file: FileAttachment): string {
+    const contentType = (file?.contentType || '').toLowerCase();
+    if (contentType.includes('pdf')) return 'PDF';
+    if (contentType.includes('image')) return 'Image';
+    if (contentType.includes('word')) return 'Word';
+    if (contentType.includes('sheet') || contentType.includes('excel')) return 'Sheet';
+    if (contentType.includes('text')) return 'Text';
+    return (file?.fileType || 'File').toUpperCase();
   }
 
   validateUuid() {

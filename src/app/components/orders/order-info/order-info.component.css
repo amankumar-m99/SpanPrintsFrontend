@@ -52,3 +52,88 @@
     border-radius: 0.9rem;
     background: #fbfdff;
 }
+
+.attachment-panel .card-body {
+    padding: 1rem 1.1rem;
+}
+
+.attachment-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.attachment-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.9rem 1rem;
+    border: 1px solid #e6edf7;
+    border-radius: 0.9rem;
+    background: linear-gradient(135deg, #fcfeff 0%, #f7faff 100%);
+}
+
+.attachment-main {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    flex: 1;
+    min-width: 0;
+}
+
+.attachment-icon {
+    width: 2.6rem;
+    height: 2.6rem;
+    border-radius: 0.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #eaf3ff;
+    color: #0d6efd;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+}
+
+.attachment-content {
+    min-width: 0;
+}
+
+.attachment-badge {
+    font-size: 0.72rem;
+    padding: 0.25rem 0.55rem;
+    border-radius: 999px;
+    background: #e9f2ff;
+    color: #0d6efd;
+    font-weight: 600;
+}
+
+.attachment-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.attachment-actions {
+    display: flex;
+    gap: 0.4rem;
+    flex-shrink: 0;
+}
+
+.attachment-empty-state {
+    border: 1px dashed #dce6f4;
+    border-radius: 0.9rem;
+    background: #fbfdff;
+}
+
+@media (max-width: 576px) {
+    .attachment-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .attachment-actions {
+        width: 100%;
+        justify-content: flex-end;
+    }
+}
