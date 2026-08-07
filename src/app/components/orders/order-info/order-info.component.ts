@@ -219,6 +219,21 @@ export class OrderInfoComponent implements OnInit {
     });
   }
 
+  previewAttachment(file: FileAttachment): void {
+    if (!file?.uuid) return;
+
+    this.fileAttachmentService.downloadFile(file.uuid).subscribe({
+      next: (blob: Blob) => {
+        const url = window.URL.createObjectURL(blob);
+        window.open(url, '_blank');
+        setTimeout(() => window.URL.revokeObjectURL(url), 10000);
+      },
+      error: () => {
+        this.showToastComponent('error', 'Unable to preview the selected file.');
+      }
+    });
+  }
+
   deleteAttachment(file: FileAttachment): void {
     if (!this.order?.uuid || !file?.uuid) return;
 
@@ -254,6 +269,11 @@ export class OrderInfoComponent implements OnInit {
     if (contentType.includes('sheet') || contentType.includes('excel')) return 'Sheet';
     if (contentType.includes('text')) return 'Text';
     return (file?.fileType || 'File').toUpperCase();
+  }
+
+  supportsPreview(file: FileAttachment): boolean {
+    const contentType = (file?.contentType || '').toLowerCase();
+    return contentType.includes('pdf') || contentType.includes('image');
   }
 
   validateUuid() {

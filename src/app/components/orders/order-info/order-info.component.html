@@ -289,6 +289,12 @@
                                     </div>
                                 </div>
                                 <div class="attachment-actions">
+                                    @if (supportsPreview(item)) {
+                                    <button class="btn btn-outline-info btn-sm" title="Preview file"
+                                        (click)="previewAttachment(item)">
+                                        <i class="bi bi-eye"></i>
+                                    </button>
+                                    }
                                     <button class="btn btn-outline-primary btn-sm" title="Download file"
                                         (click)="downloadAttachment(item)">
                                         <i class="bi bi-download"></i>
