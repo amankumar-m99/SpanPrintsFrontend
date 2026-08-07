@@ -79,7 +79,7 @@ export class OderDepositAmountModalComponent implements OnInit, OnChanges {
         depositAmount: this.depositAmount?.value
       }
 
-      this.service.depositAmount(newModel).subscribe({
+      this.service.depositPartialAmount(newModel).subscribe({
         next: (response) => {
           this.isSubmitting = false;
           this.modalForm.reset();

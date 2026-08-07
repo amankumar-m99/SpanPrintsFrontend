@@ -97,12 +97,29 @@ export class OrderInfoComponent implements OnInit {
     this.fetchOrderDetails(true);
   }
 
-  markAsPaid() {
+  depositPendingAmount() {
+    if (this.order) {
+      const userApproved = confirm("Deposit the pending amount and mark as paid ?");
+      if (!userApproved)
+        return;
+      this.orderService.depositPendingAmount(this.order.uuid).subscribe({
+        next: (res) => {
+          this.orderSuccess(res);
+        },
+        error: (err) => {
+          this.errorMsg = err?.error?.message || "Could not load order details!";
+          this.orderError(this.errorMsg);
+        }
+      });
+    }
+  }
+
+  discountPendingAmount() {
     if (this.order) {
       const userApproved = confirm("Convert the pending amont as discount and mark as paid ?");
       if (!userApproved)
         return;
-      this.orderService.markOrderAsPaid(this.order.uuid).subscribe({
+      this.orderService.discountPendingAmount(this.order.uuid).subscribe({
         next: (res) => {
           this.orderSuccess(res);
         },

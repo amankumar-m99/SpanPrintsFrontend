@@ -143,10 +143,12 @@
                         <span>
                             @if(order.paymentStatus != "PAID"){
                             <button class="btn btn-sm btn-outline-primary me-2" data-bs-toggle="modal"
-                                data-bs-target="#depositOrderAmountModal" title="Deposit amount">Deposit
+                                data-bs-target="#depositOrderAmountModal" title="Deposit amount">Partial
                                 Payment</button>
-                            <button class="btn btn-sm btn-outline-success me-2" (click)="markAsPaid()">Mark as
-                                Paid</button>
+                            <button class="btn btn-sm btn-outline-success me-2" (click)="depositPendingAmount()">Deposit
+                                Pending Amount</button>
+                            <button class="btn btn-sm btn-outline-warning me-2"
+                                (click)="discountPendingAmount()">Discount Pending Amount</button>
                             }
                         </span>
                     </div>

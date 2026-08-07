@@ -85,8 +85,16 @@ export class OrderService {
     return this.http.get<Order>(`${this.url}/uuid/${uuid}`);
   }
 
-  markOrderAsPaid(uuid: string) {
-    return this.http.patch<Order>(`${this.url}/mark-as-paid/${uuid}`, null);
+  depositPartialAmount(data: OrderDepositAmountRequest) {
+    return this.http.put<Order>(`${this.url}/deposit-partial-amount`, data);
+  }
+
+  depositPendingAmount(uuid: string) {
+    return this.http.patch<Order>(`${this.url}/deposit-pending-amount/${uuid}`, null);
+  }
+
+  discountPendingAmount(uuid: string) {
+    return this.http.patch<Order>(`${this.url}/discount-pending-amount/${uuid}`, null);
   }
 
   updateOrderStatus(request: UpdateOrderStatusRequest) {
@@ -95,10 +103,6 @@ export class OrderService {
 
   updateOrderNonDependentFields(data: UpdateOrderNonDependentFieldsRequest) {
     return this.http.put<Order>(`${this.url}/non-dependent`, data);
-  }
-
-  depositAmount(data: OrderDepositAmountRequest) {
-    return this.http.put<Order>(`${this.url}/deposit-amount`, data);
   }
 
   addOrderAttachment(uuid: string, data: FormData) {
