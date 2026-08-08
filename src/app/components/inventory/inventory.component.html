@@ -9,11 +9,11 @@
                 <button class="btn btn-primary ms-2" (click)="addInventoryItem()">
                     <i class="bi bi-plus-lg me-2"></i>Add Inventory Item
                 </button>
-                <button class="btn btn-danger ms-2" (click)="askDeleteAllInventoryItems()">
+                <button class="d-none btn btn-danger ms-2" (click)="askDeleteAllInventoryItems()">
                     <i class="bi bi-trash me-2"></i>Delete All
                 </button>
                 <a class="btn btn-primary ms-2" routerLink="../inventoryhistory">
-                    <i class="bi bi-clock-history expeme-2"></i>Inventory History
+                    <i class="bi bi-clock-history me-2"></i>Inventory History
                 </a>
             </div>
         </div>
@@ -56,8 +56,8 @@
                     <th>Item Rate</th>
                     <th>Stock Value</th>
                     <th>Description</th>
-                    <th>Updated At</th>
-                    <th>Created At</th>
+                    <!-- <th>Updated At</th>
+                    <th>Created At</th> -->
                     <th class="text-end">Actions</th>
                 </tr>
             </thead>
@@ -71,11 +71,17 @@
                     <td>{{ inventoryItem.rate }}</td>
                     <td>{{ inventoryItem.rate * inventoryItem.quantity }}</td>
                     <td>{{ inventoryItem.description }}</td>
-                    <td>{{ inventoryItem.updatedAt | timeElapsed }}</td>
-                    <td>{{ inventoryItem.createdAt | timeElapsed }}</td>
+                    <!-- <td>{{ inventoryItem.updatedAt | timeElapsed }}</td>
+                    <td>{{ inventoryItem.createdAt | timeElapsed }}</td> -->
 
                     <!-- Actions -->
                     <td class="text-end" (click)="$event.stopPropagation()">
+                        <button class="btn btn-sm btn-outline-warning me-1">
+                            <i class="bi bi-dash-lg"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline-success me-1">
+                            <i class="bi bi-plus-lg"></i>
+                        </button>
                         <button class="btn btn-sm btn-outline-primary me-1" (click)="editInventoryItem(inventoryItem)">
                             <i class="bi bi-pencil"></i>
                         </button>

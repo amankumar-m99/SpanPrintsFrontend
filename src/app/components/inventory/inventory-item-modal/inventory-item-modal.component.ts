@@ -50,8 +50,6 @@ export class InventoryItemModalComponent implements OnInit, OnChanges {
       name: ['', Validators.required],
       rate: ['', Validators.required],
       quantity: ['', Validators.required],
-      amount: [{ value: '', disabled: true }, Validators.required],
-      addToLedger: [true],
       description: [''],
     });
   }
@@ -60,8 +58,6 @@ export class InventoryItemModalComponent implements OnInit, OnChanges {
   get name() { return this.modalForm.get('name'); }
   get rate() { return this.modalForm.get('rate'); }
   get quantity() { return this.modalForm.get('quantity'); }
-  get amount() { return this.modalForm.get('amount'); }
-  get addToLedger() { return this.modalForm.get('addToLedger'); }
   get description() { return this.modalForm.get('description'); }
 
   private setupDerivedCalculations(): void {
