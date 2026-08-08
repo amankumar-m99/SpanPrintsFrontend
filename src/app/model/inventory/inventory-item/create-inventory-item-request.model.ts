@@ -3,5 +3,4 @@ export interface CreateInventoryItemRequest {
     code: string;
     rate: number;
     description: string;
-    quantity: number;
 }

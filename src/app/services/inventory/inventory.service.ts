@@ -5,6 +5,8 @@ import { InventoryItem } from '../../model/inventory/inventory-item/inventory-it
 import { Inventory } from '../../model/inventory/inventory.model';
 import { CreateInventoryItemRequest } from '../../model/inventory/inventory-item/create-inventory-item-request.model';
 import { UpdateInventoryItemRequest } from '../../model/inventory/inventory-item/update-inventory-item-request.model';
+import { AddStockRequest } from '../../model/inventory/inventory-item/add-stock-request.model';
+import { SubStockRequest } from '../../model/inventory/inventory-item/sub-stock-request.model';
 
 @Injectable({
   providedIn: 'root'
@@ -41,5 +43,13 @@ export class InventoryService {
 
   getAllInventoryRecords() {
     return this.http.get<Inventory[]>(this.url);
+  }
+
+  addStock(data: AddStockRequest) {
+    return this.http.put<InventoryItem>(`${this.url}/add-stock`, data);
+  }
+
+  subtractStock(data: SubStockRequest) {
+    return this.http.put<InventoryItem>(`${this.url}/subtract-stock`, data);
   }
 }

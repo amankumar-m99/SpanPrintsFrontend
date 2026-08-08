@@ -56,8 +56,8 @@
                     <th>Item Rate</th>
                     <th>Stock Value</th>
                     <th>Description</th>
-                    <!-- <th>Updated At</th>
-                    <th>Created At</th> -->
+                    <th>Updated At</th>
+                    <th>Created At</th>
                     <th class="text-end">Actions</th>
                 </tr>
             </thead>
@@ -71,15 +71,17 @@
                     <td>{{ inventoryItem.rate }}</td>
                     <td>{{ inventoryItem.rate * inventoryItem.quantity }}</td>
                     <td>{{ inventoryItem.description }}</td>
-                    <!-- <td>{{ inventoryItem.updatedAt | timeElapsed }}</td>
-                    <td>{{ inventoryItem.createdAt | timeElapsed }}</td> -->
+                    <td>{{ inventoryItem.updatedAt | timeElapsed: 'T' }}</td>
+                    <td>{{ inventoryItem.createdAt | timeElapsed: 'T' }}</td>
 
                     <!-- Actions -->
                     <td class="text-end" (click)="$event.stopPropagation()">
-                        <button class="btn btn-sm btn-outline-warning me-1">
+                        <button class="btn btn-sm btn-outline-warning me-1"
+                            (click)="openSubtractInventoryModal(inventoryItem)" title="Subtract stock">
                             <i class="bi bi-dash-lg"></i>
                         </button>
-                        <button class="btn btn-sm btn-outline-success me-1">
+                        <button class="btn btn-sm btn-outline-success me-1"
+                            (click)="openAddInventoryModal(inventoryItem)" title="Add stock">
                             <i class="bi bi-plus-lg"></i>
                         </button>
                         <button class="btn btn-sm btn-outline-primary me-1" (click)="editInventoryItem(inventoryItem)">
@@ -100,6 +102,66 @@
     data-bs-target="#inventoryItemModal">Launch Inventory Item Modal</button>
 <app-inventory-item-modal [model]="tempInventoryItem" (successAction)="successAction($event)"
     (errorAction)="errorAction($event)"></app-inventory-item-modal>
+
+<button #launchAdjustmentModalButton class="btn btn-info d-none" data-bs-toggle="modal"
+    data-bs-target="#inventoryAdjustmentModal">Launch Adjustment Modal</button>
+<div class="modal fade" id="inventoryAdjustmentModal" data-bs-backdrop="static" tabindex="-1"
+    aria-labelledby="inventoryAdjustmentModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="inventoryAdjustmentModalLabel">{{ activeAdjustmentLabel }}</h5>
+                <button type="button" class="btn-close" id="inventoryAdjustmentModalCloseBtn" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="adjustmentForm" (ngSubmit)="submitAdjustment()">
+                    <div class="mb-3">
+                        <label class="form-label">Quantity
+                            @if(adjustmentMode === 'add'){
+                            <span> to add</span>
+                            }
+                            @else {
+                            <span> to subtract</span>
+                            }
+                        </label>
+                        <input type="number" class="form-control" formControlName="quantity" />
+                    </div>
+                    @if(adjustmentMode === 'add'){
+                    <div class="mb-3">
+                        <label class="form-label">Amount paid</label>
+                        <input type="number" class="form-control" formControlName="amountPaid" />
+                    </div>
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" formControlName="addToLedger" />
+                            <label class="form-check-label">Add to ledger</label>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Vendor</label>
+                        <select class="form-select" formControlName="vendorId">
+                            <option [ngValue]="null">Select vendor</option>
+                            <option *ngFor="let vendor of vendors" [ngValue]="vendor.id">{{ vendor.name }}</option>
+                        </select>
+                    </div>
+                    }
+                    <div class="mb-3">
+                        <label class="form-label">Description</label>
+                        <textarea class="form-control" rows="3" formControlName="description"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" (click)="submitAdjustment()" [disabled]="isSubmitting">
+                    <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm me-2"></span>
+                    {{ adjustmentMode === 'add' ? 'Add Stock' : 'Subtract Stock' }}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <button #launchConfirmDeleteInventoryItemButton class="btn btn-info d-none" data-bs-toggle="modal"
     data-bs-target="#confirmDeleteInventoryItemDialog">Launch Confirm Delete Modal</button>
