@@ -58,7 +58,7 @@ export class InventoryComponent implements OnInit {
   initAdjustmentForm(): void {
     this.adjustmentForm = this.fb.group({
       quantity: ['', [Validators.required, Validators.min(1)]],
-      description: ['', Validators.required],
+      description: [''],
       vendorId: [null],
       rate: ['', [Validators.min(0)]],
       amountPaid: ['', [Validators.min(0)]],

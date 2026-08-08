@@ -125,12 +125,22 @@
                             <span> to subtract</span>
                             }
                         </label>
-                        <input type="number" class="form-control" formControlName="quantity" />
+                        <input type="number" class="form-control" formControlName="quantity"
+                            [class.is-invalid]="adjustmentForm.get('quantity')?.invalid && adjustmentForm.get('quantity')?.touched"
+                            [class.is-valid]="adjustmentForm.get('quantity')?.valid && adjustmentForm.get('quantity')?.touched" />
+                        <div class="invalid-feedback" *ngIf="adjustmentForm.get('quantity')?.invalid && adjustmentForm.get('quantity')?.touched">
+                            Quantity is required and must be at least 1.
+                        </div>
                     </div>
                     @if(adjustmentMode === 'add'){
                     <div class="mb-3">
                         <label class="form-label">Amount paid</label>
-                        <input type="number" class="form-control" formControlName="amountPaid" />
+                        <input type="number" class="form-control" formControlName="amountPaid"
+                            [class.is-invalid]="adjustmentForm.get('amountPaid')?.invalid && adjustmentForm.get('amountPaid')?.touched"
+                            [class.is-valid]="adjustmentForm.get('amountPaid')?.valid && adjustmentForm.get('amountPaid')?.touched" />
+                        <div class="invalid-feedback" *ngIf="adjustmentForm.get('amountPaid')?.invalid && adjustmentForm.get('amountPaid')?.touched">
+                            Amount paid cannot be negative.
+                        </div>
                     </div>
                     <div class="mb-3">
                         <div class="form-check">
@@ -140,15 +150,25 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Vendor</label>
-                        <select class="form-select" formControlName="vendorId">
+                        <select class="form-select" formControlName="vendorId"
+                            [class.is-invalid]="adjustmentForm.get('vendorId')?.invalid && adjustmentForm.get('vendorId')?.touched"
+                            [class.is-valid]="adjustmentForm.get('vendorId')?.valid && adjustmentForm.get('vendorId')?.touched">
                             <option [ngValue]="null">Select vendor</option>
                             <option *ngFor="let vendor of vendors" [ngValue]="vendor.id">{{ vendor.name }}</option>
                         </select>
+                        <div class="invalid-feedback" *ngIf="adjustmentForm.get('vendorId')?.invalid && adjustmentForm.get('vendorId')?.touched">
+                            Please select a vendor.
+                        </div>
                     </div>
                     }
                     <div class="mb-3">
                         <label class="form-label">Description</label>
-                        <textarea class="form-control" rows="3" formControlName="description"></textarea>
+                        <textarea class="form-control" rows="3" formControlName="description"
+                            [class.is-invalid]="adjustmentForm.get('description')?.invalid && adjustmentForm.get('description')?.touched"
+                            [class.is-valid]="adjustmentForm.get('description')?.valid && adjustmentForm.get('description')?.touched"></textarea>
+                        <div class="invalid-feedback" *ngIf="adjustmentForm.get('description')?.invalid && adjustmentForm.get('description')?.touched">
+                            Description is required.
+                        </div>
                     </div>
                 </form>
             </div>
