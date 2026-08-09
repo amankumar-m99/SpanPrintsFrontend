@@ -61,7 +61,8 @@ export class InventoryComponent implements OnInit {
       description: [''],
       vendorId: [null],
       rate: ['', [Validators.min(0)]],
-      amountPaid: ['', [Validators.min(0)]],
+      amountPaid: [null, [Validators.min(0)]],
+      dateOfTransaction: [null, Validators.required],
       addToLedger: [false]
     });
   }

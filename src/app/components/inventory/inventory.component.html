@@ -67,7 +67,7 @@
                     <td>{{ i + 1 }}</td>
                     <td>{{ inventoryItem.code }}</td>
                     <td>{{ inventoryItem.name }}</td>
-                    <td>{{ inventoryItem.quantity }}</td>
+                    <td>{{ inventoryItem.quantity || '0' }}</td>
                     <td>{{ inventoryItem.rate }}</td>
                     <td>{{ inventoryItem.rate * inventoryItem.quantity }}</td>
                     <td>{{ inventoryItem.description }}</td>
@@ -128,7 +128,8 @@
                         <input type="number" class="form-control" formControlName="quantity"
                             [class.is-invalid]="adjustmentForm.get('quantity')?.invalid && adjustmentForm.get('quantity')?.touched"
                             [class.is-valid]="adjustmentForm.get('quantity')?.valid && adjustmentForm.get('quantity')?.touched" />
-                        <div class="invalid-feedback" *ngIf="adjustmentForm.get('quantity')?.invalid && adjustmentForm.get('quantity')?.touched">
+                        <div class="invalid-feedback"
+                            *ngIf="adjustmentForm.get('quantity')?.invalid && adjustmentForm.get('quantity')?.touched">
                             Quantity is required and must be at least 1.
                         </div>
                     </div>
@@ -138,7 +139,8 @@
                         <input type="number" class="form-control" formControlName="amountPaid"
                             [class.is-invalid]="adjustmentForm.get('amountPaid')?.invalid && adjustmentForm.get('amountPaid')?.touched"
                             [class.is-valid]="adjustmentForm.get('amountPaid')?.valid && adjustmentForm.get('amountPaid')?.touched" />
-                        <div class="invalid-feedback" *ngIf="adjustmentForm.get('amountPaid')?.invalid && adjustmentForm.get('amountPaid')?.touched">
+                        <div class="invalid-feedback"
+                            *ngIf="adjustmentForm.get('amountPaid')?.invalid && adjustmentForm.get('amountPaid')?.touched">
                             Amount paid cannot be negative.
                         </div>
                     </div>
@@ -156,17 +158,30 @@
                             <option [ngValue]="null">Select vendor</option>
                             <option *ngFor="let vendor of vendors" [ngValue]="vendor.id">{{ vendor.name }}</option>
                         </select>
-                        <div class="invalid-feedback" *ngIf="adjustmentForm.get('vendorId')?.invalid && adjustmentForm.get('vendorId')?.touched">
+                        <div class="invalid-feedback"
+                            *ngIf="adjustmentForm.get('vendorId')?.invalid && adjustmentForm.get('vendorId')?.touched">
                             Please select a vendor.
                         </div>
                     </div>
                     }
                     <div class="mb-3">
+                        <label class="form-label"><i class="bi bi-calendar2 me-1"></i>Date of Expense</label>
+                        <input type="date" class="form-control" formControlName="dateOfExpense"
+                            [class.is-invalid]="adjustmentForm.get('dateOfTransaction')?.invalid && adjustmentForm.get('dateOfTransaction')?.touched"
+                            [class.is-valid]="adjustmentForm.get('dateOfTransaction')?.valid && adjustmentForm.get('dateOfTransaction')?.touched"
+                            />
+                        <div class="invalid-feedback"
+                            *ngIf="adjustmentForm.get('dateOfTransaction')?.invalid && adjustmentForm.get('dateOfTransaction')?.touched">
+                            Date of transaction is required.
+                        </div>
+                    </div>
+                    <div class="mb-3">
                         <label class="form-label">Description</label>
                         <textarea class="form-control" rows="3" formControlName="description"
                             [class.is-invalid]="adjustmentForm.get('description')?.invalid && adjustmentForm.get('description')?.touched"
                             [class.is-valid]="adjustmentForm.get('description')?.valid && adjustmentForm.get('description')?.touched"></textarea>
-                        <div class="invalid-feedback" *ngIf="adjustmentForm.get('description')?.invalid && adjustmentForm.get('description')?.touched">
+                        <div class="invalid-feedback"
+                            *ngIf="adjustmentForm.get('description')?.invalid && adjustmentForm.get('description')?.touched">
                             Description is required.
                         </div>
                     </div>

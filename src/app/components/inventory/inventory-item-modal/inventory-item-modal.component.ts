@@ -49,7 +49,6 @@ export class InventoryItemModalComponent implements OnInit, OnChanges {
       code: ['', Validators.required],
       name: ['', Validators.required],
       rate: ['', Validators.required],
-      quantity: ['', Validators.required],
       description: [''],
     });
   }
@@ -57,7 +56,6 @@ export class InventoryItemModalComponent implements OnInit, OnChanges {
   get code() { return this.modalForm.get('code'); }
   get name() { return this.modalForm.get('name'); }
   get rate() { return this.modalForm.get('rate'); }
-  get quantity() { return this.modalForm.get('quantity'); }
   get description() { return this.modalForm.get('description'); }
 
   private setupDerivedCalculations(): void {
