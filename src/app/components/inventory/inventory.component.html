@@ -166,7 +166,7 @@
                     }
                     <div class="mb-3">
                         <label class="form-label"><i class="bi bi-calendar2 me-1"></i>Date of Expense</label>
-                        <input type="date" class="form-control" formControlName="dateOfExpense"
+                        <input type="date" class="form-control" formControlName="dateOfTransaction"
                             [class.is-invalid]="adjustmentForm.get('dateOfTransaction')?.invalid && adjustmentForm.get('dateOfTransaction')?.touched"
                             [class.is-valid]="adjustmentForm.get('dateOfTransaction')?.valid && adjustmentForm.get('dateOfTransaction')?.touched"
                             />

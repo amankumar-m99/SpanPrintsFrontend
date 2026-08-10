@@ -5,4 +5,5 @@ export interface AddStockRequest {
   amountPaid?: number;
   vendorId?: number;
   addToLedger?: boolean;
+  dateOfTransaction: string;
 }

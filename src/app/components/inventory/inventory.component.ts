@@ -148,7 +148,8 @@ export class InventoryComponent implements OnInit {
       const payload: SubStockRequest = {
         itemId: this.selectedInventoryItemForAdjustment.id,
         quantity: this.adjustmentForm.value.quantity,
-        description: this.adjustmentForm.value.description
+        description: this.adjustmentForm.value.description,
+        dateOfTransaction: this.adjustmentForm.value.dateOfTransaction
       };
       payload.quantity = -Math.abs(payload.quantity);
       this.isSubmitting = true;
@@ -174,7 +175,8 @@ export class InventoryComponent implements OnInit {
         description: this.adjustmentForm.value.description,
         vendorId: this.adjustmentForm.value.vendorId || undefined,
         amountPaid: this.adjustmentForm.value.amountPaid,
-        addToLedger: this.adjustmentForm.value.addToLedger
+        addToLedger: this.adjustmentForm.value.addToLedger,
+        dateOfTransaction: this.adjustmentForm.value.dateOfTransaction
       };
       payload.quantity = -Math.abs(payload.quantity);
       this.isSubmitting = true;
