@@ -27,6 +27,7 @@ import { ChangePasswordComponent } from './components/password/change-password/c
 import { ExpenseInfoComponent } from './components/expenses/expense-info/expense-info.component';
 import { InvestmentsComponent } from './components/investments/investments.component';
 import { InvestmentInfoComponent } from './components/investments/investment-info/investment-info.component';
+import { InventoryHistoryComponent } from './components/inventory/inventory-history/inventory-history.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent, canActivate: [GuestGuard] },
@@ -44,6 +45,7 @@ export const routes: Routes = [
             { path: 'vendors', component: VendorsComponent },
             { path: 'vendor/:uuid', component: VendorInfoComponent },
             { path: 'inventory', component: InventoryComponent },
+            { path: 'inventory-history', component: InventoryHistoryComponent },
             { path: 'expenses', component: ExpensesComponent },
             { path: 'expense/:uuid', component: ExpenseInfoComponent },
             { path: 'ledger', component: LedgerComponent },

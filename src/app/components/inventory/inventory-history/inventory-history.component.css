@@ -1,0 +1,37 @@
+.inventory-history-page {
+    padding-bottom: 20px;
+}
+
+.history-card {
+    min-height: 100px;
+}
+
+.history-card .card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 100px;
+}
+
+.search-filter-row .form-label {
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+}
+
+.inventory-history-table table {
+    min-width: 1200px;
+}
+
+.inventory-history-table td,
+.inventory-history-table th {
+    vertical-align: middle;
+}
+
+.inventory-history-table .badge {
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.text-break {
+    word-break: break-word;
+}
