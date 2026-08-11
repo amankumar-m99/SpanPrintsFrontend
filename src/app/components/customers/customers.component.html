@@ -45,9 +45,13 @@
                     <td>{{ customer.alternatePhoneNumber }}</td>
                     <td> N/A</td>
                     <td>{{ customer.printJobIds.length }}</td>
-                    <td>{{ customer.updatedAt| timeElapsed }}</td>
-                    <td>{{ customer.createdAt | timeElapsed }}</td>
-                    <td>{{ customer.createdBy }}</td>
+                    <td>{{ customer.updatedAt| timeElapsed: 'D' }}
+                        <span class="badge text-bg-primary">{{customer.updatedAt| timeElapsed:'T' }}</span>
+                    </td>
+                    <td>{{ customer.createdAt| timeElapsed: 'D' }}
+                        <span class="badge text-bg-success">{{customer.createdAt| timeElapsed:'T' }}</span>
+                    </td>
+                    <td> <span><a [routerLink]="'/dashboard/profile/'+customer.uuid">{{ customer.createdBy }}</a></span></td>
 
                     <!-- Actions -->
                     <td class="text-end" (click)="$event.stopPropagation()">

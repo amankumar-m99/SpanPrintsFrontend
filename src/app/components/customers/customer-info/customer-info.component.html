@@ -100,30 +100,33 @@
                     </div>
                 </div>
 
-
                 <div class="row g-3">
                     <div class="col-md-4">
-                        <strong><i class="bi bi-envelope-at me-1 text-info"></i>Email</strong>
+                        <span><i class="bi bi-envelope-at me-1 text-info"></i><span
+                                class="text-muted">Email</span></span>
                         <div>{{ customer?.email || 'N/A' }}</div>
                     </div>
 
                     <div class="col-md-4">
-                        <strong><i class="bi bi-telephone me-1 text-info"></i>Primary Phone</strong>
+                        <span><i class="bi bi-telephone me-1 text-info"></i><span class="text-muted">Primary
+                                Phone</span></span>
                         <div>{{ customer?.primaryPhoneNumber }}</div>
                     </div>
 
                     <div class="col-md-4">
-                        <strong><i class="bi bi-telephone-plus me-1 text-info"></i>Alternate Phone</strong>
+                        <span><i class="bi bi-telephone-plus me-1 text-info"></i><span class="text-muted">Alternate
+                                Phone</span></span>
                         <div>{{ customer?.alternatePhoneNumber || 'N/A' }}</div>
                     </div>
 
                     <div class="col-md-8">
-                        <strong><i class="bi bi-geo-alt me-1 text-info"></i>Address</strong>
+                        <span><i class="bi bi-geo-alt me-1 text-info"></i><span class="text-muted">Address</span></span>
                         <div>{{ customer?.address || 'N/A' }}</div>
                     </div>
 
                     <div class="col-md-4">
-                        <strong><i class="bi bi-shield-lock me-1 text-info"></i>Customer UUID</strong>
+                        <span><i class="bi bi-shield-lock me-1 text-info"></i><span class="text-muted">Customer
+                                UUID</span></span>
                         <div>
                             {{ customer?.uuid }}
                             <span>
@@ -140,18 +143,23 @@
                     </div>
 
                     <div class="col-md-4">
-                        <strong><i class="bi bi-person me-1 text-info"></i>Created By</strong>
+                        <span><i class="bi bi-person me-1 text-info"></i><span class="text-muted">Created
+                                By</span></span>
                         <div>{{ customer?.createdBy }}</div>
                     </div>
 
                     <div class="col-md-4">
-                        <strong><i class="bi bi-calendar-plus me-1 text-info"></i>Created At</strong>
-                        <div>{{ customer?.createdAt | timeElapsed }}</div>
+                        <span><i class="bi bi-calendar-plus me-1 text-info"></i><span class="text-muted">Created
+                                At</span></span>
+                        <div>{{ customer?.createdAt | timeElapsed:'D' }} <span class="badge text-bg-primary">{{
+                                customer?.createdAt | timeElapsed:'T' }}</span></div>
                     </div>
 
                     <div class="col-md-4">
-                        <strong><i class="bi bi-calendar-check me-1 text-info"></i>Updated At</strong>
-                        <div>{{ customer?.updatedAt | timeElapsed }}</div>
+                        <span><i class="bi bi-calendar-check me-1 text-info"></i><span class="text-muted">Updated
+                                At</span></span>
+                        <div>{{ customer?.updatedAt | timeElapsed:'D' }} <span class="badge text-bg-primary">{{
+                                customer?.updatedAt | timeElapsed:'T' }}</span></div>
                     </div>
                 </div>
             </div>
