@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Customer } from '../../model/customer/customer.model';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { CustomerModalComponent } from "./customer-modal/customer-modal.component";
 import { CustomerService } from '../../services/customer/customer.service';
 import { ToastComponent } from "../utility/toast/toast.component";
@@ -11,7 +11,7 @@ import { TimeElapsedPipe } from "../../pipes/timeElapsed/time-elapsed.pipe";
 @Component({
   selector: 'app-customers',
   standalone: true,
-  imports: [CommonModule, CustomerModalComponent, ToastComponent, ConfirmDialogComponent, TimeElapsedPipe],
+  imports: [CommonModule, CustomerModalComponent, ToastComponent, ConfirmDialogComponent, TimeElapsedPipe, RouterLink],
   templateUrl: './customers.component.html',
   styleUrl: './customers.component.css'
 })
