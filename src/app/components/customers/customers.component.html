@@ -9,7 +9,7 @@
                 <button class="btn btn-primary ms-2" (click)="addCustomer()">
                     <i class="bi bi-person-plus me-2"></i>Add Customer
                 </button>
-                <button class="btn btn-danger ms-2" (click)="askDeleteAllCustomers()">
+                <button class="d-none btn btn-danger ms-2" (click)="askDeleteAllCustomers()">
                     <i class="bi bi-trash me-2"></i>Delete All
                 </button>
             </div>
@@ -51,7 +51,7 @@
                     <td>{{ customer.createdAt| timeElapsed: 'D' }}
                         <span class="badge text-bg-success">{{customer.createdAt| timeElapsed:'T' }}</span>
                     </td>
-                    <td> <span><a [routerLink]="'/dashboard/profile/'+customer.uuid">{{ customer.createdBy }}</a></span></td>
+                    <td><a [routerLink]="'/dashboard/profile/'+customer.uuid">{{ customer.createdBy }}</a></td>
 
                     <!-- Actions -->
                     <td class="text-end" (click)="$event.stopPropagation()">
