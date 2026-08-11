@@ -34,8 +34,11 @@ export class CustomersComponent implements OnInit {
   nameFilter: string | null = null;
   emailFilter: string | null = null;
   phoneFilter: string | null = null;
+  addressFilter: string | null = null;
   outstandingMin: number | null = null;
   outstandingMax: number | null = null;
+  orderCountMin: number | null = null;
+  orderCountMax: number | null = null;
 
   pageSizes: number[] = [5, 10, 25, 50];
   pageSize = this.loadPageSizeState();
@@ -90,8 +93,11 @@ export class CustomersComponent implements OnInit {
     this.nameFilter = null;
     this.emailFilter = null;
     this.phoneFilter = null;
+    this.addressFilter = null;
     this.outstandingMin = null;
     this.outstandingMax = null;
+    this.orderCountMin = null;
+    this.orderCountMax = null;
     this.currentPage = 1;
     this.saveCurrentPageState(this.currentPage);
     this.loadData(this.currentPage, this.pageSize, this.buildFilterRequest());
@@ -199,8 +205,11 @@ export class CustomersComponent implements OnInit {
       name: this.nameFilter,
       email: this.emailFilter,
       phone: this.phoneFilter,
+      address: this.addressFilter,
       outstandingAmountMin: this.outstandingMin,
-      outstandingAmountMax: this.outstandingMax
+      outstandingAmountMax: this.outstandingMax,
+      orderCountMin: this.orderCountMin,
+      orderCountMax: this.orderCountMax
     };
   }
 
