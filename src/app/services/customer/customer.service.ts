@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Constant } from '../../constant/Constant';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Customer } from '../../model/customer/customer.model';
 import { CreateCustomerRequest } from '../../model/customer/create-customer-request.model';
 import { UpdateCustomerRequest } from '../../model/customer/update-customer-request.model';
+import { CustomerFilterRequest } from '../../model/customer/customer-filter-request.model';
+import { CustomerPagination } from '../../model/customer/customer-pagination.model';
 
 @Injectable({
   providedIn: 'root'
@@ -40,6 +42,16 @@ export class CustomerService {
 
   getAllCustomers() {
     return this.http.get<Customer[]>(this.url);
+  }
+
+  getCustomersPaginated(pageNumber: number, pageSize: number, filter: CustomerFilterRequest) {
+    const body = {
+      ...filter,
+      pageNumber,
+      pageSize
+    };
+
+    return this.http.post<CustomerPagination>(`${this.url}/paginated`, body);
   }
 
   deleteCustomerById(id: number) {

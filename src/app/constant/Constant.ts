@@ -15,6 +15,9 @@ export const Constant = {
     sidebarStateKey: 'dashboard.sidebarCollapsed',
     ordersPageFilterExpandedKey: 'orders.filter-pane-expanded',
     ordersFieldSelectionState: 'orders.fieldSelectionState',
-    ordersPageSizeState: 'orders.pageSizeState'
+    ordersPageSizeState: 'orders.pageSizeState',
+    customersPageFilterExpandedKey: 'customers.filter-pane-expanded',
+    customersPageSizeState: 'customers.pageSizeState',
+    customersCurrentPageState: 'customers.currentPageState'
 
 }
