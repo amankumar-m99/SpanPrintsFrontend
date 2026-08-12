@@ -85,7 +85,8 @@ export class VendorInfoComponent implements OnInit {
   }
 
   successAction(vendor: Vendor): void {
-    this.showToastComponent("error", "Vendor updated.");
+    this.showToastComponent("success", "Vendor updated.");
+    this.vendor = vendor;
   }
 
   errorAction(errorStr: string): void {

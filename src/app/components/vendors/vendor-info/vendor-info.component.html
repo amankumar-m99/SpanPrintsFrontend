@@ -100,27 +100,31 @@
 
                 <div class="row g-3">
                     <div class="col-md-4">
-                        <strong><i class="bi bi-envelope-at me-1 text-info"></i>Email</strong>
+                        <span><i class="bi bi-envelope-at me-1 text-info"></i><span
+                                class="text-muted">Email</span></span>
                         <div>{{ vendor?.email || 'N/A' }}</div>
                     </div>
 
                     <div class="col-md-4">
-                        <strong><i class="bi bi-telephone me-1 text-info"></i>Primary Phone</strong>
+                        <span><i class="bi bi-telephone me-1 text-info"></i><span class="text-muted">Primary
+                                Phone</span></span>
                         <div>{{ vendor?.primaryPhoneNumber }}</div>
                     </div>
 
                     <div class="col-md-4">
-                        <strong><i class="bi bi-telephone-plus me-1 text-info"></i>Alternate Phone</strong>
+                        <span><i class="bi bi-telephone-plus me-1 text-info"></i><span class="text-muted">Alternate
+                                Phone</span></span>
                         <div>{{ vendor?.alternatePhoneNumber || 'N/A' }}</div>
                     </div>
 
                     <div class="col-md-8">
-                        <strong><i class="bi bi-geo-alt me-1 text-info"></i>Address</strong>
-                        <div>{{ vendor?.address }}</div>
+                        <span><i class="bi bi-geo-alt me-1 text-info"></i><span class="text-muted">Address</span></span>
+                        <div>{{ vendor?.address || 'N/A' }}</div>
                     </div>
 
                     <div class="col-md-4">
-                        <strong><i class="bi bi-shield-lock me-1 text-info"></i>Vendor UUID</strong>
+                        <span><i class="bi bi-shield-lock me-1 text-info"></i><span class="text-muted">Vendor
+                                UUID</span></span>
                         <div>
                             {{ vendor?.uuid }}
                             <span>
@@ -137,66 +141,38 @@
                     </div>
 
                     <div class="col-md-4">
-                        <strong><i class="bi bi-person me-1 text-info"></i>Created By</strong>
+                        <span><i class="bi bi-person me-1 text-info"></i><span class="text-muted">Created
+                                By</span></span>
                         <div>{{ vendor?.createdBy }}</div>
                     </div>
 
                     <div class="col-md-4">
-                        <strong><i class="bi bi-calendar-plus me-1 text-info"></i>Created At</strong>
-                        <div>{{ vendor?.createdAt | timeElapsed }}</div>
+                        <span><i class="bi bi-calendar-plus me-1 text-info"></i><span class="text-muted">Created
+                                At</span></span>
+                        <div>{{ vendor?.createdAt | timeElapsed:'D' }} <span class="badge text-bg-primary">{{
+                                vendor?.createdAt | timeElapsed:'T' }}</span></div>
                     </div>
 
                     <div class="col-md-4">
-                        <strong><i class="bi bi-calendar-check me-1 text-info"></i>Updated At</strong>
-                        <div>{{ vendor?.updatedAt | timeElapsed }}</div>
+                        <span><i class="bi bi-calendar-check me-1 text-info"></i><span class="text-muted">Updated
+                                At</span></span>
+                        <div>{{ vendor?.updatedAt | timeElapsed:'D' }} <span class="badge text-bg-primary">{{
+                                vendor?.updatedAt | timeElapsed:'T' }}</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row g-4">
+            <div class="col-12">
+                <div class="border rounded p-2">
+                    <small><i class="bi bi-chat-left-text me-1 text-info"></i>Note</small>
+                    <div class="mt-2">
+                        <p class="w-100 px-2" placeholder="No note">{{vendor?.note || 'N/A'}}</p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Tabs -->
-        <ul class="nav nav-tabs mb-3">
-            <li class="nav-item">
-                <a class="nav-link active" data-bs-toggle="tab" href="#orders">
-                    Orders
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="tab" href="#activity">
-                    Activity
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="tab" href="#notes">
-                    Notes
-                </a>
-            </li>
-        </ul>
-
-        <!-- Tab Content -->
-        <div class="tab-content">
-
-            <!-- Orders -->
-            <div class="tab-pane fade show active" id="orders">
-                <div class="alert alert-info">
-                    Total number of orders so far: 0
-                </div>
-            </div>
-
-            <!-- Activity -->
-            <div class="tab-pane fade" id="activity">
-                <div class="alert alert-secondary">
-                    Vendor activity timeline coming soon.
-                </div>
-            </div>
-
-            <!-- Notes -->
-            <div class="tab-pane fade" id="notes">
-                <div class="alert alert-light">
-                    Internal notes related to this vendor.
-                </div>
-            </div>
-        </div>
     </div>
     <app-vendor-modal [model]="vendor" (successAction)="successAction($event)"
         (errorAction)="errorAction($event)"></app-vendor-modal>

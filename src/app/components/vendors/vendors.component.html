@@ -9,7 +9,7 @@
                 <button class="btn btn-primary ms-2" (click)="addVendor()">
                     <i class="bi bi-plus-lg me-2"></i>Add Vendor
                 </button>
-                <button class="btn btn-danger ms-2" (click)="askDeleteAllVendors()">
+                <button class="d-none btn btn-danger ms-2" (click)="askDeleteAllVendors()">
                     <i class="bi bi-trash me-2"></i>Delete All
                 </button>
             </div>
@@ -39,9 +39,13 @@
                     <td>{{ vendor.address }}</td>
                     <td>{{ vendor.primaryPhoneNumber }}</td>
                     <td>{{ vendor.alternatePhoneNumber }}</td>
-                    <td>{{ vendor.updatedAt | timeElapsed }}</td>
-                    <td>{{ vendor.createdAt | timeElapsed }}</td>
-                    <td>{{ vendor.createdBy }}</td>
+                    <td>{{ vendor.updatedAt| timeElapsed: 'D' }}
+                        <span class="badge text-bg-primary">{{vendor.updatedAt| timeElapsed:'T' }}</span>
+                    </td>
+                    <td>{{ vendor.createdAt| timeElapsed: 'D' }}
+                        <span class="badge text-bg-success">{{vendor.createdAt| timeElapsed:'T' }}</span>
+                    </td>
+                    <td><a [routerLink]="'/dashboard/profile/'+vendor.uuid">{{ vendor.createdBy }}</a></td>
                     <!-- Actions -->
                     <td class="text-end" (click)="$event.stopPropagation()">
                         <button class="btn btn-sm btn-outline-primary me-1" (click)="editVendor(vendor)">

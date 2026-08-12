@@ -51,6 +51,7 @@ export class VendorModalComponent implements OnInit, OnChanges {
       name: ['', Validators.required],
       email: ['', Validators.email],
       address: [''],
+      note: [''],
       primaryPhoneNumber: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
       alternatePhoneNumber: ['', [Validators.pattern(/^\d{10}$/)]],
     });
@@ -59,6 +60,7 @@ export class VendorModalComponent implements OnInit, OnChanges {
   get name() { return this.modalForm.get('name'); }
   get email() { return this.modalForm.get('email'); }
   get address() { return this.modalForm.get('address'); }
+  get note() { return this.modalForm.get('note'); }
   get primaryPhoneNumber() { return this.modalForm.get('primaryPhoneNumber'); }
   get alternatePhoneNumber() { return this.modalForm.get('alternatePhoneNumber'); }
 

@@ -1,6 +1,6 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { Vendor } from '../../model/vendor/vendor.model';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { VendorModalComponent } from "./vendor-modal/vendor-modal.component";
 import { ToastComponent } from '../utility/toast/toast.component';
@@ -11,7 +11,7 @@ import { TimeElapsedPipe } from "../../pipes/timeElapsed/time-elapsed.pipe";
 @Component({
   selector: 'app-vendors',
   standalone: true,
-  imports: [CommonModule, VendorModalComponent, ToastComponent, ConfirmDialogComponent, TimeElapsedPipe],
+  imports: [CommonModule, VendorModalComponent, ToastComponent, ConfirmDialogComponent, TimeElapsedPipe, RouterLink],
   templateUrl: './vendors.component.html',
   styleUrl: './vendors.component.css'
 })
