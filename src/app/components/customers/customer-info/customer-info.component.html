@@ -145,7 +145,7 @@
                     <div class="col-md-4">
                         <span><i class="bi bi-person me-1 text-info"></i><span class="text-muted">Created
                                 By</span></span>
-                        <div>{{ customer?.createdBy }}</div>
+                        <div><a [routerLink]="'/dashboard/profile/'+ customer?.uuid">{{ customer?.createdBy }}</a></div>
                     </div>
 
                     <div class="col-md-4">

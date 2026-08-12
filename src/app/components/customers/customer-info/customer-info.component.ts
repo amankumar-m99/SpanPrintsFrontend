@@ -15,7 +15,7 @@ import { TimeElapsedPipe } from "../../../pipes/timeElapsed/time-elapsed.pipe";
 @Component({
   selector: 'app-customer-info',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink, CustomerModalComponent, ToastComponent, ConfirmDialogComponent, TimeElapsedPipe],
+  imports: [CommonModule, FormsModule, RouterLink, CustomerModalComponent, ToastComponent, ConfirmDialogComponent, TimeElapsedPipe, RouterLink],
   templateUrl: './customer-info.component.html',
   styleUrl: './customer-info.component.css'
 })
