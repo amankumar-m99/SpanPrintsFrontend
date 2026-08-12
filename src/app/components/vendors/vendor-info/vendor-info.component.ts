@@ -27,7 +27,6 @@ export class VendorInfoComponent implements OnInit {
   toastType = 'info';
   toastMsg = '';
   showToast = false;
-
   enteredUuid = '';
   isUuidValid = false;
   private uuidRegex: RegExp = Constant.UUID_REGEX;
@@ -39,7 +38,7 @@ export class VendorInfoComponent implements OnInit {
       const uuid = params.get('uuid');
       if (uuid) {
         this.vendorUuid = uuid;
-        this.fetchVendorDetails(uuid);
+        this.fetchVendorDetails(false);
       }
     });
   }
@@ -55,16 +54,19 @@ export class VendorInfoComponent implements OnInit {
     }
   }
 
-  fetchVendorDetails(uuid: string) {
+  fetchVendorDetails(isReload: boolean) {
     this.vendorService.getVendorByUuid(this.vendorUuid).subscribe({
       next: (res) => {
         this.vendor = res;
-        console.log(this.vendor);
         this.errorMsg = '';
         this.deleteMsg = `Delete vendor ${this.vendor.name}?`;
+        if (isReload) {
+          this.showToastComponent("success", "Vendor reloaded.");
+        }
       },
       error: (err) => {
         this.errorMsg = err?.error?.message || "Could not load vendor's data!";
+        this.showToastComponent("error", this.errorMsg);
       }
     });
   }
@@ -84,6 +86,11 @@ export class VendorInfoComponent implements OnInit {
     }
   }
 
+  reloadVendor() {
+    console.log("reloaded");
+    this.fetchVendorDetails(true);
+  }
+
   successAction(vendor: Vendor): void {
     this.showToastComponent("success", "Vendor updated.");
     this.vendor = vendor;
@@ -97,6 +104,7 @@ export class VendorInfoComponent implements OnInit {
     this.toastType = type;
     this.toastMsg = msg;
     this.showToast = true;
+    console.log(type + "|" + msg);
   }
 
   hideToastComponent(): void {
