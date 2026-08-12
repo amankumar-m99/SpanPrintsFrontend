@@ -42,9 +42,7 @@ export class ToastComponent implements OnChanges {
   }
 
   closeButtonClicked(): void {
-    console.log("one");
     if (this.closeAction != null) {
-      console.log("two");
       this.closeAction.emit();
     }
   }
