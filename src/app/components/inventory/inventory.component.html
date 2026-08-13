@@ -24,7 +24,7 @@
             <div class="card shadow-sm border-success">
                 <div class="card-body">
                     <h6>Stock Worth</h6>
-                    <h4 class="text-success">₹{{ totalStockWorth }}</h4>
+                    <h4 class="text-success">{{ totalStockWorth | currency:'INR' }}</h4>
                 </div>
             </div>
         </div>
