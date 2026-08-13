@@ -31,10 +31,6 @@ export class InvestmentsComponent implements OnInit {
   filteredOrders: any[] = [];   // filtered & sorted list
   filterStatus: string = '';    // holds dropdown value
   sortBy: string = 'createdAt_desc';
-  searchTerm: string = '';
-  activeFiltersCount = 0;
-  activeFiltersSummary = '';
-  viewType = "list";
 
   @ViewChild('launchInvestmentModalButton') launchInvestmentModalButton!: ElementRef;
   @ViewChild('launchConfirmDeleteInvestmentButton') launchConfirmDeleteButton!: ElementRef;
@@ -50,7 +46,6 @@ export class InvestmentsComponent implements OnInit {
     this.investmentService.getAllInvestments().subscribe({
       next: (res) => {
         this.investments = res;
-        this.applyFilters();
         if (this.isRefreshingData) {
           this.showToastComponent("success", "Investments data refreshed.");
           this.isRefreshingData = false;
@@ -66,71 +61,6 @@ export class InvestmentsComponent implements OnInit {
   refreshData(): void {
     this.isRefreshingData = true;
     this.loadData();
-  }
-
-  applyFilters() {
-    let data = [...this.investments];
-    // Search filter
-    if (this.searchTerm) {
-      const term = this.searchTerm.toLowerCase();
-      data = data.filter(o =>
-        o.description.toLowerCase().includes(term) ||
-        o.amount.toString().includes(term)
-      );
-    }
-    // Status filter
-    // Sorting
-    switch (this.sortBy) {
-      case 'createdAt_desc':
-        data.sort((a, b) => +new Date(b.dateOfInvestment) - +new Date(a.dateOfInvestment));
-        break;
-      case 'createdAt_asc':
-        data.sort((a, b) => +new Date(a.dateOfInvestment) - +new Date(b.dateOfInvestment));
-        break;
-      case 'amount_desc':
-        data.sort((a, b) => b.amount - a.amount);
-        break;
-      case 'amount_asc':
-        data.sort((a, b) => a.amount - b.amount);
-        break;
-    }
-    this.activeFiltersCount = 0;
-    let summaries: string[] = [];
-
-    if (this.searchTerm && this.searchTerm.trim() !== '') {
-      this.activeFiltersCount++;
-      summaries.push(`Search: "${this.searchTerm}"`);
-    }
-
-    if (this.filterStatus && this.filterStatus !== '') {
-      this.activeFiltersCount++;
-      summaries.push(`Status: ${this.filterStatus}`);
-    }
-
-    if (this.sortBy && this.sortBy !== 'createdAt_desc') {
-      this.activeFiltersCount++;
-      let label = '';
-      switch (this.sortBy) {
-        case 'createdAt_asc': label = 'Oldest First'; break;
-        case 'amount_desc': label = 'Amount High→Low'; break;
-        case 'amount_asc': label = 'Amount Low→High'; break;
-      }
-      summaries.push(`Sort: ${label}`);
-    }
-
-    this.activeFiltersSummary = summaries.join(', ');
-    this.filteredOrders = data;
-  }
-
-  clearFilters() {
-    this.searchTerm = '';
-    this.filterStatus = '';
-    this.sortBy = 'createdAt_desc';
-    this.applyFilters(); // reset filters count
-  }
-
-  changeViewType(type: string): void {
-    this.viewType = type;
   }
 
   addInvestment(): void {

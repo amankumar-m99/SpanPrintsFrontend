@@ -5,11 +5,12 @@ import { CreateInvestmentRequest } from '../../../model/investment/create-invest
 import { Investment } from '../../../model/investment/investment.model';
 import { UpdateInvestmentRequest } from '../../../model/investment/update-investment-request.model';
 import { InvestmentService } from '../../../services/investment/investment.service';
+import { DaysElapsedPipe } from "../../../pipes/days-elapsed/days-elapsed.pipe";
 
 @Component({
   selector: 'app-investment-modal',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, DaysElapsedPipe],
   templateUrl: './investment-modal.component.html',
   styleUrl: './investment-modal.component.css'
 })

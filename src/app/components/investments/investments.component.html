@@ -1,87 +1,16 @@
 <div class="me-3">
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h3><i class="bi bi-bank me-2 text-primary"></i>Investments</h3>
-        <div class="d-flex">
-            <div class="">
-                <div class="d-flex flex-column align-items-end me-2">
-                    <button class="btn btn-outline-primary position-relative" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#filterToolbar" aria-expanded="false" aria-controls="filterToolbar">
-                        <i class="bi bi-funnel"></i> Filters
-                        <span *ngIf="activeFiltersCount > 0"
-                            class="badge bg-danger position-absolute top-0 start-100 translate-middle">
-                            {{ activeFiltersCount }}
-                        </span>
-                    </button>
-                    <!-- Filter summary below button -->
-                    <div *ngIf="activeFiltersSummary" class="small text-muted mt-1">
-                        {{ activeFiltersSummary }}
-                    </div>
-                </div>
-            </div>
-            <div class="btn-group me-2" role="group" aria-label="Basic outlined example">
-                <button type="button" class="btn btn-outline-primary" (click)="changeViewType('list')"><i
-                        class="bi bi-list"></i></button>
-                <button type="button" class="btn btn-outline-primary" (click)="changeViewType('card')"><i
-                        class="bi bi-card-heading"></i></button>
-            </div>
-            <div class="ms-2">
-                <button class="btn btn-primary ms-2" (click)="refreshData()">
-                    <i class="bi bi-arrow-clockwise me-2"></i>Refresh Investments
-                </button>
-                <button class="btn btn-primary ms-2" (click)="addInvestment()">
-                    <i class="bi bi-plus-lg me-2"></i>Add Investment
-                </button>
-                <button class="d-none btn btn-danger ms-2" (click)="askDeleteAllInvestments()">
-                    <i class="bi bi-trash me-2"></i>Delete All
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Collapsible Sticky Toolbar -->
-    <div id="filterToolbar" class="collapse d-md-block position-sticky top-0 bg-body shadow-sm z-3 mb-2"
-        style="z-index: 1020;"> <!-- z-index keeps it above other elements -->
-
-        <div class="filter-toolbar p-2 rounded">
-            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
-
-                <!-- Search -->
-                <div class="d-flex align-items-center gap-2">
-                    <input type="text" class="form-control" placeholder="Search..." style="min-width: 250px;"
-                        [(ngModel)]="searchTerm" (input)="applyFilters()" />
-                </div>
-
-                <!-- Filter -->
-                <div class="d-flex align-items-center gap-2">
-                    <label for="statusFilter" class="form-label mb-0">Type:</label>
-                    <select id="statusFilter" class="form-select" style="width: auto;" [(ngModel)]="filterStatus"
-                        (change)="applyFilters()">
-                        <option value="">All</option>
-                        <option value="paid">Personal</option>
-                        <option value="partially paid">Business</option>
-                    </select>
-                </div>
-
-                <!-- Sort -->
-                <div class="d-flex align-items-center gap-2">
-                    <label for="sortBy" class="form-label mb-0">Sort by:</label>
-                    <select id="sortBy" class="form-select" style="width: auto;" [(ngModel)]="sortBy"
-                        (change)="applyFilters()">
-                        <option value="createdAt_desc">Newest First</option>
-                        <option value="createdAt_asc">Oldest First</option>
-                        <option value="amount_desc">Amount High → Low</option>
-                        <option value="amount_asc">Amount Low → High</option>
-                    </select>
-                </div>
-
-                <!-- Clear -->
-                <div>
-                    <button class="btn btn-outline-secondary btn-sm" (click)="clearFilters()">
-                        Clear All
-                    </button>
-                </div>
-
-            </div>
+        <div class="ms-2">
+            <button class="btn btn-primary ms-2" (click)="refreshData()">
+                <i class="bi bi-arrow-clockwise me-1"></i>Refresh Investments
+            </button>
+            <button class="btn btn-primary ms-2" (click)="addInvestment()">
+                <i class="bi bi-plus-lg me-1"></i>Add Investment
+            </button>
+            <button class="d-none btn btn-danger ms-2" (click)="askDeleteAllInvestments()">
+                <i class="bi bi-trash me-1"></i>Delete All
+            </button>
         </div>
     </div>
 
@@ -100,7 +29,7 @@
             <tbody>
                 <tr *ngFor="let Investment of investments; let i = index" (click)="openDetails(Investment)">
                     <td>{{ i + 1 }}</td>
-                    <td>{{ Investment.dateOfInvestment | timeElapsed }}</td>
+                    <td>{{ Investment.dateOfInvestment | timeElapsed:'D' }} <span class="badge text-bg-primary">{{ Investment.dateOfInvestment | timeElapsed:'T' }}</span></td>
                     <td>{{ Investment.amount | currency:'INR' }}</td>
                     <td><span>{{ Investment.description }}</span></td>
                     <td (click)="$event.stopPropagation()">

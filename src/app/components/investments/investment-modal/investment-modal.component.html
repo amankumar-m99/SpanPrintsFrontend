@@ -3,12 +3,10 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">
-                    @if (isEditMode) {
-                    <i class="bi bi-currency-rupee me-2"></i>Update Investment
-                    }
-                    @else{
-                    <i class="bi bi-currency-rupee me-2"></i>Add Investment
-                    }
+                    <i class="bi bi-bank me-2"></i>
+                    @if (isEditMode) { Update }
+                    @else { Add }
+                    Investment
                 </h5>
                 <button id="investmentModalCloseBtn" type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
@@ -25,6 +23,7 @@
 
                     <div class="mb-3">
                         <label class="form-label"><i class="bi bi-calendar2 me-1"></i>Date of Investment</label>
+                        <span class="badge text-bg-primary ms-1">{{dateOfInvestment?.value | daysElapsed: 'T'}}</span>
                         <input type="date" class="form-control" formControlName="dateOfInvestment"
                             [ngClass]="{ 'is-invalid': dateOfInvestment?.invalid && dateOfInvestment?.touched }" />
                         <div class="invalid-feedback" *ngIf="dateOfInvestment?.touched && dateOfInvestment?.invalid">
