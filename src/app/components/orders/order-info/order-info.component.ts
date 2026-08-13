@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ToastComponent } from "../../utility/toast/toast.component";
@@ -24,6 +24,7 @@ import { SuccessResponse } from '../../../model/text-responses/success-response.
 import { ErrorResponse } from '../../../model/text-responses/error-response.model';
 import { EnumdisplayPipe } from "../../../pipes/enumdisplay/enumdisplay.pipe";
 import { SentencecasePipe } from "../../../pipes/sentencecase/sentencecase.pipe";
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-order-info',
@@ -32,7 +33,9 @@ import { SentencecasePipe } from "../../../pipes/sentencecase/sentencecase.pipe"
   templateUrl: './order-info.component.html',
   styleUrl: './order-info.component.css'
 })
-export class OrderInfoComponent implements OnInit {
+export class OrderInfoComponent implements OnInit, OnDestroy {
+
+  private destroy$ = new Subject<void>();
 
   orderStatusOptions: EnumOption[] = enumToOptions(OrderStatus);
   orderUuid !: string;
@@ -55,13 +58,18 @@ export class OrderInfoComponent implements OnInit {
   constructor(private router: Router, private route: ActivatedRoute, private orderService: OrderService, private fileAttachmentService: FileAttachmentService) { }
 
   ngOnInit(): void {
-    this.route.paramMap.subscribe(params => {
+    this.route.paramMap.pipe(takeUntil(this.destroy$)).subscribe(params => {
       const uuid = params.get('uuid');
       if (uuid) {
         this.orderUuid = uuid;
         this.fetchOrderDetails(false);
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   fetchOrderDetails(isRefresh: boolean) {

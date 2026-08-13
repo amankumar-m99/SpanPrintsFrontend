@@ -20,6 +20,7 @@ import { takeUntil } from 'rxjs/operators';
   styleUrl: './vendor-info.component.css'
 })
 export class VendorInfoComponent implements OnInit, OnDestroy {
+
   private destroy$ = new Subject<void>();
 
   vendorUuid !: string;
@@ -44,6 +45,11 @@ export class VendorInfoComponent implements OnInit, OnDestroy {
         this.fetchVendorDetails(false);
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   copyUuid() {
@@ -135,10 +141,5 @@ export class VendorInfoComponent implements OnInit, OnDestroy {
     } catch {
       alert('Clipboard access denied');
     }
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

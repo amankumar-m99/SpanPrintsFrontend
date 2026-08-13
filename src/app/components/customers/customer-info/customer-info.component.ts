@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { CustomerService } from '../../../services/customer/customer.service';
 import { Customer } from '../../../model/customer/customer.model';
@@ -11,6 +11,7 @@ import { Constant } from '../../../constant/Constant';
 import { OrderService } from '../../../services/order/order.service';
 import { Order } from '../../../model/order/order.model';
 import { TimeElapsedPipe } from "../../../pipes/timeElapsed/time-elapsed.pipe";
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-customer-info',
@@ -19,11 +20,13 @@ import { TimeElapsedPipe } from "../../../pipes/timeElapsed/time-elapsed.pipe";
   templateUrl: './customer-info.component.html',
   styleUrl: './customer-info.component.css'
 })
-export class CustomerInfoComponent implements OnInit {
+export class CustomerInfoComponent implements OnInit, OnDestroy {
+
+  private destroy$ = new Subject<void>();
 
   customerUuid !: string;
   customer !: Customer | null;
-  orders : Order[] = [];
+  orders: Order[] = [];
   receivedAmount = 0;
   discountedAmount = 0;
   pendingAmount = 0;
@@ -42,13 +45,18 @@ export class CustomerInfoComponent implements OnInit {
   constructor(private router: Router, private route: ActivatedRoute, private customerService: CustomerService, private orderService: OrderService) { }
 
   ngOnInit(): void {
-    this.route.paramMap.subscribe(params => {
+    this.route.paramMap.pipe(takeUntil(this.destroy$)).subscribe(params => {
       const uuid = params.get('uuid');
       if (uuid) {
         this.customerUuid = uuid;
         this.fetchCustomerDetails(false);
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   reloadCustomer() {
