@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ToastComponent } from "../../utility/toast/toast.component";
@@ -9,6 +9,8 @@ import { Constant } from '../../../constant/Constant';
 import { FormsModule } from '@angular/forms';
 import { ConfirmDialogComponent } from '../../utility/confirm-dialog/confirm-dialog.component';
 import { TimeElapsedPipe } from "../../../pipes/timeElapsed/time-elapsed.pipe";
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-vendor-info',
@@ -17,7 +19,8 @@ import { TimeElapsedPipe } from "../../../pipes/timeElapsed/time-elapsed.pipe";
   templateUrl: './vendor-info.component.html',
   styleUrl: './vendor-info.component.css'
 })
-export class VendorInfoComponent implements OnInit {
+export class VendorInfoComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
 
   vendorUuid !: string;
   vendor !: Vendor | null;
@@ -34,7 +37,7 @@ export class VendorInfoComponent implements OnInit {
   constructor(private router: Router, private route: ActivatedRoute, private vendorService: VendorService) { }
 
   ngOnInit(): void {
-    this.route.paramMap.subscribe(params => {
+    this.route.paramMap.pipe(takeUntil(this.destroy$)).subscribe(params => {
       const uuid = params.get('uuid');
       if (uuid) {
         this.vendorUuid = uuid;
@@ -55,7 +58,7 @@ export class VendorInfoComponent implements OnInit {
   }
 
   fetchVendorDetails(isReload: boolean) {
-    this.vendorService.getVendorByUuid(this.vendorUuid).subscribe({
+    this.vendorService.getVendorByUuid(this.vendorUuid).pipe(takeUntil(this.destroy$)).subscribe({
       next: (res) => {
         this.vendor = res;
         this.errorMsg = '';
@@ -73,7 +76,7 @@ export class VendorInfoComponent implements OnInit {
 
   deleteVendor() {
     if (this.vendor) {
-      this.vendorService.deleteVendorByUuid(this.vendor.uuid).subscribe({
+      this.vendorService.deleteVendorByUuid(this.vendor.uuid).pipe(takeUntil(this.destroy$)).subscribe({
         next: () => {
           this.vendor = null;
           this.showToastComponent("warning", "Vendor deleted");
@@ -132,5 +135,10 @@ export class VendorInfoComponent implements OnInit {
     } catch {
       alert('Clipboard access denied');
     }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
