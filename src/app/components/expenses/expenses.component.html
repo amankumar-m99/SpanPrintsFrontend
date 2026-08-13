@@ -1,101 +1,19 @@
 <div class="me-3">
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h3><i class="bi bi-currency-rupee me-2 text-danger"></i>Expenses</h3>
-        <div class="d-flex">
-            <div class="">
-                <div class="d-flex flex-column align-items-end me-2">
-                    <button class="btn btn-outline-primary position-relative" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#filterToolbar" aria-expanded="false" aria-controls="filterToolbar">
-                        <i class="bi bi-funnel"></i> Filters
-                        <span *ngIf="activeFiltersCount > 0"
-                            class="badge bg-danger position-absolute top-0 start-100 translate-middle">
-                            {{ activeFiltersCount }}
-                        </span>
-                    </button>
-                    <!-- Filter summary below button -->
-                    <div *ngIf="activeFiltersSummary" class="small text-muted mt-1">
-                        {{ activeFiltersSummary }}
-                    </div>
-                </div>
-            </div>
-            <div class="btn-group me-2" role="group" aria-label="Basic outlined example">
-                <button type="button" class="btn btn-outline-primary" (click)="changeViewType('list')"><i
-                        class="bi bi-list"></i></button>
-                <button type="button" class="btn btn-outline-primary" (click)="changeViewType('card')"><i
-                        class="bi bi-card-heading"></i></button>
-            </div>
-            <div class="ms-2">
-                <button class="btn btn-primary ms-2" (click)="refreshData()">
-                    <i class="bi bi-arrow-clockwise me-2"></i>Refresh Expenses
-                </button>
-                <button class="btn btn-primary ms-2" (click)="addExpense()">
-                    <i class="bi bi-plus-lg me-2"></i>Add Expense
-                </button>
-                <button class="btn btn-danger ms-2" (click)="askDeleteAllExpenses()">
-                    <i class="bi bi-trash me-2"></i>Delete All
-                </button>
-            </div>
+        <div>
+            <button class="btn btn-primary ms-2" (click)="refreshData()">
+                <i class="bi bi-arrow-clockwise me-2"></i>Refresh Expenses
+            </button>
+            <button class="btn btn-primary ms-2" (click)="addExpense()">
+                <i class="bi bi-plus-lg me-2"></i>Add Expense
+            </button>
+            <button class="d-none btn btn-danger ms-2" (click)="askDeleteAllExpenses()">
+                <i class="bi bi-trash me-2"></i>Delete All
+            </button>
         </div>
     </div>
 
-    <!-- Collapsible Sticky Toolbar -->
-    <div id="filterToolbar" class="collapse d-md-block position-sticky top-0 bg-body shadow-sm z-3 mb-2"
-        style="z-index: 1020;"> <!-- z-index keeps it above other elements -->
-
-        <div class="filter-toolbar p-2 rounded">
-            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
-
-                <!-- Search -->
-                <div class="d-flex align-items-center gap-2">
-                    <input type="text" class="form-control" placeholder="Search..." style="min-width: 250px;"
-                        [(ngModel)]="searchTerm" (input)="applyFilters()" />
-                </div>
-
-                <!-- Filter -->
-                <div class="d-flex align-items-center gap-2">
-                    <label for="statusFilter" class="form-label mb-0">Type:</label>
-                    <select id="statusFilter" class="form-select" style="width: auto;" [(ngModel)]="filterStatus"
-                        (change)="applyFilters()">
-                        <option value="">All</option>
-                        <option value="paid">Personal</option>
-                        <option value="partially paid">Business</option>
-                    </select>
-                </div>
-
-                <!-- Sort -->
-                <div class="d-flex align-items-center gap-2">
-                    <label for="sortBy" class="form-label mb-0">Sort by:</label>
-                    <select id="sortBy" class="form-select" style="width: auto;" [(ngModel)]="sortBy"
-                        (change)="applyFilters()">
-                        <option value="createdAt_desc">Newest First</option>
-                        <option value="createdAt_asc">Oldest First</option>
-                        <option value="amount_desc">Amount High → Low</option>
-                        <option value="amount_asc">Amount Low → High</option>
-                    </select>
-                </div>
-
-                <!-- Clear -->
-                <div>
-                    <button class="btn btn-outline-secondary btn-sm" (click)="clearFilters()">
-                        Clear All
-                    </button>
-                </div>
-
-            </div>
-        </div>
-    </div>
-
-    @if(viewType == 'card'){
-    <!-- Expenses Cards -->
-    <div class="container-fluid mt-3" *ngIf="viewType == 'card'">
-        <div class="row g-3">
-            <div class="col-12 col-sm-6 col-md-4 col-lg-3" *ngFor="let expense of expenses">
-                <app-expense-card [expense]="expense"></app-expense-card>
-            </div>
-        </div>
-    </div>
-    }
-    @else {
     <!-- Expenses List -->
     <div class="table-responsive">
         <table class="table table-striped table-hover align-middle">
@@ -131,7 +49,6 @@
             </tbody>
         </table>
     </div>
-    }
 </div>
 
 <button #launchExpenseModalButton class="btn btn-info d-none" data-bs-toggle="modal"

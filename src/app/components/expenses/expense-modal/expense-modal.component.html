@@ -43,6 +43,7 @@
 
                     <div class="mb-3">
                         <label class="form-label"><i class="bi bi-calendar2 me-1"></i>Date of Expense</label>
+                        <span class="badge text-bg-primary ms-1">{{dateOfExpense?.value | daysElapsed:'T' }}</span>
                         <input type="date" class="form-control" formControlName="dateOfExpense"
                             [ngClass]="{ 'is-invalid': dateOfExpense?.invalid && dateOfExpense?.touched }" />
                         <div class="invalid-feedback" *ngIf="dateOfExpense?.touched && dateOfExpense?.invalid">

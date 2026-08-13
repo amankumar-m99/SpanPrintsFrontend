@@ -5,11 +5,12 @@ import { UpdateExpenseRequest } from '../../../model/expense/update-expense-requ
 import { CreateExpenseRequest } from '../../../model/expense/create-expense-request.model';
 import { Expense } from '../../../model/expense/expense.model';
 import { ExpenseService } from '../../../services/expense/expense.service';
+import { DaysElapsedPipe } from "../../../pipes/days-elapsed/days-elapsed.pipe";
 
 @Component({
   selector: 'app-expense-modal',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, DaysElapsedPipe],
   templateUrl: './expense-modal.component.html',
   styleUrl: './expense-modal.component.css'
 })

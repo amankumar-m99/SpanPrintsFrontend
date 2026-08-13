@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
-import { ExpenseCardComponent } from './expense-card/expense-card.component';
 import { ExpenseModalComponent } from "./expense-modal/expense-modal.component";
 import { Router } from '@angular/router';
 import { ToastComponent } from "../utility/toast/toast.component";
@@ -13,7 +12,7 @@ import { Expense } from '../../model/expense/expense.model';
 @Component({
   selector: 'app-expenses',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule, ExpenseCardComponent, ExpenseModalComponent, ToastComponent, ConfirmDialogComponent, TimeElapsedPipe],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, ExpenseModalComponent, ToastComponent, ConfirmDialogComponent, TimeElapsedPipe],
   templateUrl: './expenses.component.html',
   styleUrl: './expenses.component.css'
 })
@@ -29,14 +28,6 @@ export class ExpensesComponent implements OnInit {
   toastMsg = '';
   showToast = false;
 
-  filteredOrders: any[] = [];   // filtered & sorted list
-  filterStatus: string = '';    // holds dropdown value
-  sortBy: string = 'createdAt_desc';
-  searchTerm: string = '';
-  activeFiltersCount = 0;
-  activeFiltersSummary = '';
-  viewType = "list";
-
   @ViewChild('launchExpenseModalButton') launchExpenseModalButton!: ElementRef;
   @ViewChild('launchConfirmDeleteExpenseButton') launchConfirmDeleteButton!: ElementRef;
   @ViewChild('launchConfirmDeleteAllExpensesButton') launchConfirmDeleteAllButton!: ElementRef;
@@ -51,7 +42,6 @@ export class ExpensesComponent implements OnInit {
     this.expenseService.getAllExpenses().subscribe({
       next: (res) => {
         this.expenses = res;
-        this.applyFilters();
         if (this.isRefreshingData) {
           this.showToastComponent("success", "Expenses data refreshed.");
           this.isRefreshingData = false;
@@ -67,74 +57,6 @@ export class ExpensesComponent implements OnInit {
   refreshData(): void {
     this.isRefreshingData = true;
     this.loadData();
-  }
-
-  applyFilters() {
-    let data = [...this.expenses];
-    // Search filter
-    if (this.searchTerm) {
-      const term = this.searchTerm.toLowerCase();
-      data = data.filter(o =>
-        o.description.toLowerCase().includes(term) ||
-        o.amount.toString().includes(term)
-      );
-    }
-    // Status filter
-    if (this.filterStatus) {
-      data = data.filter(o => o.expenseType === this.filterStatus);
-    }
-    // Sorting
-    switch (this.sortBy) {
-      case 'createdAt_desc':
-        data.sort((a, b) => +new Date(b.dateOfExpense) - +new Date(a.dateOfExpense));
-        break;
-      case 'createdAt_asc':
-        data.sort((a, b) => +new Date(a.dateOfExpense) - +new Date(b.dateOfExpense));
-        break;
-      case 'amount_desc':
-        data.sort((a, b) => b.amount - a.amount);
-        break;
-      case 'amount_asc':
-        data.sort((a, b) => a.amount - b.amount);
-        break;
-    }
-    this.activeFiltersCount = 0;
-    let summaries: string[] = [];
-
-    if (this.searchTerm && this.searchTerm.trim() !== '') {
-      this.activeFiltersCount++;
-      summaries.push(`Search: "${this.searchTerm}"`);
-    }
-
-    if (this.filterStatus && this.filterStatus !== '') {
-      this.activeFiltersCount++;
-      summaries.push(`Status: ${this.filterStatus}`);
-    }
-
-    if (this.sortBy && this.sortBy !== 'createdAt_desc') {
-      this.activeFiltersCount++;
-      let label = '';
-      switch (this.sortBy) {
-        case 'createdAt_asc': label = 'Oldest First'; break;
-        case 'amount_desc': label = 'Amount High→Low'; break;
-        case 'amount_asc': label = 'Amount Low→High'; break;
-      }
-      summaries.push(`Sort: ${label}`);
-    }
-
-    this.activeFiltersSummary = summaries.join(', ');
-    this.filteredOrders = data;
-  }
-
-  clearFilters() {
-    this.searchTerm = '';
-    this.filterStatus = '';
-    this.sortBy = 'createdAt_desc';
-    this.applyFilters(); // reset filters count
-  }
-
-  changeViewType(type: string): void {
-    this.viewType = type;
   }
 
   addExpense(): void {

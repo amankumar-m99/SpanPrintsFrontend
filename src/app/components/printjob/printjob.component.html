@@ -4,12 +4,12 @@
         <div class="d-flex">
             <div class="ms-2">
                 <button class="btn btn-primary ms-2" (click)="refreshData()">
-                    <i class="bi bi-arrow-clockwise me-2"></i>Refresh Print Jobs
+                    <i class="bi bi-arrow-clockwise me-1"></i>Refresh Print Jobs
                 </button>
                 <button class="btn btn-primary ms-2" (click)="addPrintJobType()">
-                    <i class="bi bi-plus-lg me-2"></i>Add Print Job
+                    <i class="bi bi-plus-lg me-1"></i>Add Print Job
                 </button>
-                <button class="btn btn-danger ms-2" (click)="askDeleteAllPrintJobTypes()">
+                <button class="d-none btn btn-danger ms-2" (click)="askDeleteAllPrintJobTypes()">
                     <i class="bi bi-trash me-2"></i>Delete All
                 </button>
             </div>
@@ -37,8 +37,10 @@
                     <td>{{ printJob.code }}</td>
                     <td>{{ printJob.uuid }}</td>
                     <td>{{ printJob.description }}</td>
-                    <td>{{ printJob.updatedAt | timeElapsed }}</td>
-                    <td>{{ printJob.createdAt | timeElapsed }}</td>
+                    <td>{{ printJob.updatedAt | timeElapsed:'D' }} <span class="badge text-bg-primary">{{
+                            printJob.updatedAt | timeElapsed:'T' }}</span></td>
+                    <td>{{ printJob.createdAt | timeElapsed:'D' }} <span class="badge text-bg-primary">{{
+                            printJob.createdAt | timeElapsed:'T' }}</span></td>
 
                     <!-- Actions -->
                     <td class="text-end" (click)="$event.stopPropagation()">
