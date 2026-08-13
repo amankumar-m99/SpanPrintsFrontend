@@ -151,7 +151,7 @@ export class InventoryComponent implements OnInit {
         description: this.adjustmentForm.value.description,
         dateOfTransaction: this.adjustmentForm.value.dateOfTransaction
       };
-      payload.quantity = -Math.abs(payload.quantity);
+      payload.quantity = Math.abs(payload.quantity);
       this.isSubmitting = true;
       this.inventoryService.subtractStock(payload).subscribe({
         next: () => {
@@ -178,7 +178,7 @@ export class InventoryComponent implements OnInit {
         addToLedger: this.adjustmentForm.value.addToLedger,
         dateOfTransaction: this.adjustmentForm.value.dateOfTransaction
       };
-      payload.quantity = -Math.abs(payload.quantity);
+      payload.quantity = Math.abs(payload.quantity);
       this.isSubmitting = true;
       this.inventoryService.addStock(payload).subscribe({
         next: () => {
