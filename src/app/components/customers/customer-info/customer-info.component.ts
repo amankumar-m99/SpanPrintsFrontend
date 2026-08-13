@@ -142,7 +142,7 @@ export class CustomerInfoComponent implements OnInit, OnDestroy {
     this.showToastComponent("error", errorStr)
   }
 
-  reload() {
+  reloadWindow() {
     window.location.reload();
   }
 

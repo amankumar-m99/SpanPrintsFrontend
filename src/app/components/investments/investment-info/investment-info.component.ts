@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ToastComponent } from "../../utility/toast/toast.component";
@@ -9,6 +9,7 @@ import { TimeElapsedPipe } from "../../../pipes/timeElapsed/time-elapsed.pipe";
 import { InvestmentModalComponent } from '../investment-modal/investment-modal.component';
 import { InvestmentService } from '../../../services/investment/investment.service';
 import { Investment } from '../../../model/investment/investment.model';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-investment-info',
@@ -17,7 +18,9 @@ import { Investment } from '../../../model/investment/investment.model';
   templateUrl: './investment-info.component.html',
   styleUrl: './investment-info.component.css'
 })
-export class InvestmentInfoComponent implements OnInit {
+export class InvestmentInfoComponent implements OnInit, OnDestroy {
+
+  private destroy$ = new Subject<void>();
 
   investmentUuid !: string;
   investment?: Investment;
@@ -36,13 +39,18 @@ export class InvestmentInfoComponent implements OnInit {
   constructor(private router: Router, private route: ActivatedRoute, private investmentService: InvestmentService) { }
 
   ngOnInit(): void {
-    this.route.paramMap.subscribe(params => {
+    this.route.paramMap.pipe(takeUntil(this.destroy$)).subscribe(params => {
       const uuid = params.get('uuid');
       if (uuid) {
         this.investmentUuid = uuid;
         this.fetchInvestmentDetails();
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   fetchInvestmentDetails() {
@@ -91,7 +99,7 @@ export class InvestmentInfoComponent implements OnInit {
     this.showToastComponent("error", errorStr)
   }
 
-  reload() {
+  reloadWindow() {
     window.location.reload();
   }
 

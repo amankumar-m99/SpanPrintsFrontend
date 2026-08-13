@@ -199,7 +199,7 @@ export class OrderInfoComponent implements OnInit, OnDestroy {
     this.showToastComponent("error", errorStr)
   }
 
-  reload() {
+  reloadWindow() {
     window.location.reload();
   }
 

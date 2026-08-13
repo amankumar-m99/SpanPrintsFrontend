@@ -5,7 +5,6 @@ import { ToastComponent } from "../../utility/toast/toast.component";
 import { ConfirmDialogComponent } from "../../utility/confirm-dialog/confirm-dialog.component";
 import { FormsModule } from '@angular/forms';
 import { Constant } from '../../../constant/Constant';
-import { Order } from '../../../model/order/order.model';
 import { TimeElapsedPipe } from "../../../pipes/timeElapsed/time-elapsed.pipe";
 import { ExpenseModalComponent } from '../expense-modal/expense-modal.component';
 import { ExpenseService } from '../../../services/expense/expense.service';
@@ -92,7 +91,7 @@ export class ExpenseInfoComponent implements OnInit {
     this.showToastComponent("error", errorStr)
   }
 
-  reload() {
+  reloadWindow() {
     window.location.reload();
   }
 

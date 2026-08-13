@@ -120,7 +120,7 @@ export class VendorInfoComponent implements OnInit, OnDestroy {
     this.showToast = false
   }
 
-  reload() {
+  reloadWindow() {
     window.location.reload();
   }
 
