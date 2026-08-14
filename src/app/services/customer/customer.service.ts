@@ -45,10 +45,13 @@ export class CustomerService {
   }
 
   getCustomersPaginated(pageNumber: number, pageSize: number, filter: CustomerFilterRequest) {
+    const paginationRequest = {
+      'pageNumber': pageNumber,
+      'pageSize': pageSize
+    }
     const body = {
       ...filter,
-      pageNumber,
-      pageSize
+      paginationRequest
     };
 
     return this.http.post<CustomerPagination>(`${this.url}/paginated`, body);

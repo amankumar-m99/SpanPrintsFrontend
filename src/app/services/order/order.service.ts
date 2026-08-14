@@ -49,10 +49,13 @@ export class OrderService {
       params = params.set('orderStatuses', filter.orderStatuses.join(','));
     }
 
+    const paginationRequest = {
+      'pageNumber': pageNumber,
+      'pageSize': pageSize
+    }
     const body = {
       ...filter,
-      pageNumber,
-      pageSize
+      paginationRequest
     };
     return this.http.post<OrderPagination>(`${this.url}/paginated`, body);
   }
