@@ -256,7 +256,7 @@ export class OrdersComponent implements OnInit {
     this.pageSize = size;
     this.orderService.getAllOrdersPaginated(this.currentPage - 1, this.pageSize, filter).subscribe({
       next: (resp) => {
-        this.orders = resp.orders;
+        this.orders = resp.elements;
         this.totalOrders = resp.totalElements;
         this.totalPages = resp.numberOfTotalPages;
         this.buildPages();

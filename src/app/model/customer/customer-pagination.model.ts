@@ -1,7 +1,7 @@
 import { Customer } from './customer.model';
 
 export interface CustomerPagination {
-  customers: Customer[];
+  elements: Customer[];
   currentPageNumber: number;
   numberOfTotalPages: number;
   totalElements: number;

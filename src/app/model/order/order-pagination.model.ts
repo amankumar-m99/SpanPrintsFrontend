@@ -1,7 +1,7 @@
 import { Order } from "./order.model";
 
 export interface OrderPagination {
-    orders: Order[];
+    elements: Order[];
     currentPageNumber: number;
     numberOfTotalPages: number;
     totalElements: number;

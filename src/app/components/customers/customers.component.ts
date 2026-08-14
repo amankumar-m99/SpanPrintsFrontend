@@ -62,7 +62,7 @@ export class CustomersComponent implements OnInit {
     this.pageSize = size;
     this.customerService.getCustomersPaginated(this.currentPage - 1, this.pageSize, filter).subscribe({
       next: (res) => {
-        this.customers = res.customers;
+        this.customers = res.elements;
         this.totalCustomers = res.totalElements;
         this.totalPages = res.numberOfTotalPages;
         this.buildPages();
