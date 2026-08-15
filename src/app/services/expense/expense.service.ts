@@ -4,6 +4,8 @@ import { HttpClient } from '@angular/common/http';
 import { CreateExpenseRequest } from '../../model/expense/create-expense-request.model';
 import { Expense } from '../../model/expense/expense.model';
 import { UpdateExpenseRequest } from '../../model/expense/update-expense-request.model';
+import { ExpenseFilterRequest } from '../../model/expense/expense-filter-request.model';
+import { ExpensePagination } from '../../model/expense/expense-pagination.model';
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +22,20 @@ export class ExpenseService {
 
   getAllExpenses() {
     return this.http.get<Expense[]>(this.url);
+  }
+
+  getExpensesPaginated(pageNumber: number, pageSize: number, filter?: ExpenseFilterRequest) {
+    const paginationRequest = {
+      pageNumber,
+      pageSize
+    };
+
+    const body = {
+      ...filter,
+      paginationRequest
+    };
+
+    return this.http.post<ExpensePagination>(`${this.url}/paginated`, body);
   }
 
   getExpenseByUuid(uuid: String) {
