@@ -27,7 +27,8 @@
                     </button>
                     <button class="btn btn-sm btn-outline-secondary" type="button" title="show/collapse filter controls"
                         (click)="toggleFilterView()">
-                        <i class="bi" [ngClass]="{'bi-caret-up-fill': isFilterViewExpanded, 'bi-caret-down-fill': !isFilterViewExpanded}"></i>
+                        <i class="bi"
+                            [ngClass]="{'bi-caret-up-fill': isFilterViewExpanded, 'bi-caret-down-fill': !isFilterViewExpanded}"></i>
                     </button>
                 </div>
             </div>
@@ -44,12 +45,36 @@
                     </div>
                     <div class="col-md-3">
                         <label class="form-label small mb-1">Expense Source</label>
-                        <select class="form-select form-select-sm" [(ngModel)]="expenseSourceFilter">
+                        <div class="dropdown form-control form-control-sm">
+                            <button class="btn btn-sm dropdown-toggle w-100 text-end" type="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                <span class="d-none">Order Status</span>
+                                @if (selectedExpenseTypes.length != 0) {
+                                <span
+                                    class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                    {{selectedExpenseTypes.length}}
+                                    <span class="visually-hidden">{{selectedExpenseTypes.length }} filters selected for
+                                        order status</span>
+                                </span>
+                                }
+                            </button>
+                            <div class="dropdown-menu p-2" style="min-width: 260px;">
+                                <div class="form-check" *ngFor="let value of expenseTypeOptions">
+                                    <input class="form-check-input" type="checkbox" [checked]="isSelected(value.value)"
+                                        (change)="toggleSelection(value.value, $any($event.target).checked)">
+                                    <label class="form-check-label">{{ value.label }}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-none col-md-3">
+                        <label class="form-label small mb-1">Expense Source</label>
+                        <!-- <select class="form-select form-select-sm" [(ngModel)]="expenseSourceFilter">
                             <option [ngValue]="null">All</option>
                             <option *ngFor="let option of expenseSourceOptions" [ngValue]="option.value">
                                 {{ option.label }}
                             </option>
-                        </select>
+                        </select> -->
                     </div>
                     <div class="col-md-3">
                         <label class="form-label small mb-1">Description</label>
@@ -71,7 +96,8 @@
     <div class="d-flex justify-content-between align-items-center mt-2">
         <div class="d-flex align-items-center">
             <label class="me-2 mb-0">Show</label>
-            <select class="form-select form-select-sm w-auto" [(ngModel)]="pageSize" (change)="changePageSize(pageSize)">
+            <select class="form-select form-select-sm w-auto" [(ngModel)]="pageSize"
+                (change)="changePageSize(pageSize)">
                 <option *ngFor="let s of pageSizes" [value]="s">{{ s }}</option>
             </select>
             <span class="ms-3">Showing {{ startIndex }} to {{ endIndex }} of {{ totalExpenses }}</span>

@@ -10,6 +10,8 @@ import { ExpenseService } from '../../services/expense/expense.service';
 import { Expense } from '../../model/expense/expense.model';
 import { EnumdisplayPipe } from "../../pipes/enumdisplay/enumdisplay.pipe";
 import { ExpenseFilterRequest } from '../../model/expense/expense-filter-request.model';
+import { ExpenseType } from '../../enums/expense-type.enum';
+import { EnumOption, enumToOptions } from '../../enums/enum-helper.';
 
 @Component({
   selector: 'app-expenses',
@@ -32,6 +34,10 @@ export class ExpensesComponent implements OnInit {
   showToast = false;
   isFilterViewExpanded = this.loadFilterExpandedViewState();
 
+  expenseTypeOptions: EnumOption[] = enumToOptions(ExpenseType);
+
+
+  selectedExpenseTypes: string[] = [];
   pageSizes: number[] = [5, 10, 25, 50];
   pageSize = this.loadPageSizeState();
   currentPage = 1;
@@ -41,7 +47,7 @@ export class ExpensesComponent implements OnInit {
 
   dateOfExpenseFrom: string | null = null;
   dateOfExpenseTo: string | null = null;
-  expenseSourceFilter: string | null = null;
+  // expenseSourceFilter: string | null = null;
   descriptionFilter: string | null = null;
   amountMin: number | null = null;
   amountMax: number | null = null;
@@ -128,8 +134,8 @@ export class ExpensesComponent implements OnInit {
       filtered = filtered.filter((expense) => this.parseLocalDate(expense.dateOfExpense) <= toDate);
     }
 
-    if (this.expenseSourceFilter) {
-      filtered = filtered.filter((expense) => expense.expenseType === this.expenseSourceFilter);
+    if (this.selectedExpenseTypes && this.selectedExpenseTypes.length != 0) {
+      filtered = filtered.filter((expense) => this.selectedExpenseTypes.includes(expense.expenseType));
     }
 
     if (this.amountMin !== null && this.amountMin !== undefined) {
@@ -182,6 +188,35 @@ export class ExpensesComponent implements OnInit {
     });
   }
 
+  isSelected(value: string): boolean {
+    return this.getSelectedValues().includes(value);
+  }
+
+  private getSelectedValues(): string[] {
+    return this.selectedExpenseTypes;
+  }
+
+  toggleSelection(value: string, checked: boolean): void {
+    const selectedValues = this.getSelectedValues();
+
+    if (checked) {
+      if (!selectedValues.includes(value)) {
+        selectedValues.push(value);
+      }
+    } else {
+      const index = selectedValues.indexOf(value);
+      if (index >= 0) {
+        selectedValues.splice(index, 1);
+      }
+    }
+
+    this.syncSelection(selectedValues);
+  }
+
+  private syncSelection(values: string[]): void {
+    this.selectedExpenseTypes = values;
+  }
+
   refreshData(): void {
     this.isRefreshingData = true;
     this.loadData();
@@ -191,7 +226,7 @@ export class ExpensesComponent implements OnInit {
     return {
       dateOfExpenseFrom: this.dateOfExpenseFrom,
       dateOfExpenseTo: this.dateOfExpenseTo,
-      expenseType: this.expenseSourceFilter,
+      expenseTypes: this.selectedExpenseTypes,
       description: this.descriptionFilter,
       amountMin: this.amountMin,
       amountMax: this.amountMax
@@ -206,7 +241,7 @@ export class ExpensesComponent implements OnInit {
   clearFilters(): void {
     this.dateOfExpenseFrom = null;
     this.dateOfExpenseTo = null;
-    this.expenseSourceFilter = null;
+    this.selectedExpenseTypes = [];
     this.descriptionFilter = null;
     this.amountMin = null;
     this.amountMax = null;
