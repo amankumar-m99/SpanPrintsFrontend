@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { TransactionCardComponent } from '../transaction-card/transaction-card.component';
 import { LedgerService } from '../../services/ledger/ledger.service';
 import { LedgerEntry } from '../../model/ledger/ledger-entry.model';
 import { ToastComponent } from "../utility/toast/toast.component";
@@ -12,7 +11,7 @@ import { TimeElapsedPipe } from "../../pipes/timeElapsed/time-elapsed.pipe";
 @Component({
   selector: 'app-ledger',
   standalone: true,
-  imports: [CommonModule, FormsModule, TransactionCardComponent, ToastComponent, TimeElapsedPipe],
+  imports: [CommonModule, FormsModule, ToastComponent, TimeElapsedPipe],
   templateUrl: './ledger.component.html',
   styleUrls: ['./ledger.component.css']
 })
@@ -20,15 +19,7 @@ export class LedgerComponent implements OnInit {
 
   ledgerEntries: LedgerEntry[] = [];
 
-  activeFiltersCount = 0;
-  activeFiltersSummary = '';
   isRefreshingData = false;
-  // Filters
-  filters = {
-    timePeriod: 'thisMonth',
-    type: 'all',
-    domain: 'all'
-  };
 
   toastType = 'info';
   toastMsg = '';
@@ -64,41 +55,14 @@ export class LedgerComponent implements OnInit {
     this.loadData();
   }
 
-  get filteredTransactions() {
-    return this.ledgerEntries.filter(t => {
-      const typeOk = this.filters.type === 'all' || t.ledgerType === this.filters.type;
-      return typeOk;
-    });
-  }
-
-  // Simulate time-period filtering logic
-  filterByTimePeriod(date: Date): boolean {
-    const now = new Date();
-    const d = new Date(date);
-    switch (this.filters.timePeriod) {
-      case 'today':
-        return d.toDateString() === now.toDateString();
-      case 'thisWeek':
-        const startOfWeek = new Date(now);
-        startOfWeek.setDate(now.getDate() - now.getDay());
-        return d >= startOfWeek;
-      case 'thisMonth':
-        return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
-      case 'thisYear':
-        return d.getFullYear() === now.getFullYear();
-      default:
-        return true;
-    }
-  }
-
   get totalCredit() {
-    return this.filteredTransactions
+    return this.ledgerEntries
       .filter(t => t.ledgerType === 'CREDIT')
       .reduce((sum, t) => sum + t.amount, 0);
   }
 
   get totalDebit() {
-    return this.filteredTransactions
+    return this.ledgerEntries
       .filter(t => t.ledgerType === 'DEBIT')
       .reduce((sum, t) => sum + t.amount, 0);
   }
@@ -122,10 +86,10 @@ export class LedgerComponent implements OnInit {
     if (ledger.ledgerSource === 'ORDER' && ledger.printJobUuid) {
       this.router.navigate(['/dashboard/order', ledger.printJobUuid]);
     }
-    else if((ledger.ledgerSource === 'PURCHASE' || ledger.ledgerSource === 'PERSONAL') && ledger.expenseUuid) {
+    else if ((ledger.ledgerSource === 'PURCHASE' || ledger.ledgerSource === 'PERSONAL') && ledger.expenseUuid) {
       this.router.navigate(['/dashboard/expense', ledger.expenseUuid]);
     }
-    else if(ledger.ledgerSource === 'INVESTMENT' && ledger.investmentUuid) {
+    else if (ledger.ledgerSource === 'INVESTMENT' && ledger.investmentUuid) {
       this.router.navigate(['/dashboard/investment', ledger.investmentUuid]);
     }
   }
