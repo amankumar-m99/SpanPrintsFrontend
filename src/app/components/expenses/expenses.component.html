@@ -67,15 +67,6 @@
                             </div>
                         </div>
                     </div>
-                    <div class="d-none col-md-3">
-                        <label class="form-label small mb-1">Expense Source</label>
-                        <!-- <select class="form-select form-select-sm" [(ngModel)]="expenseSourceFilter">
-                            <option [ngValue]="null">All</option>
-                            <option *ngFor="let option of expenseSourceOptions" [ngValue]="option.value">
-                                {{ option.label }}
-                            </option>
-                        </select> -->
-                    </div>
                     <div class="col-md-3">
                         <label class="form-label small mb-1">Description</label>
                         <input type="text" class="form-control form-control-sm" [(ngModel)]="descriptionFilter" />
@@ -155,24 +146,25 @@
             </tbody>
         </table>
     </div>
-</div>
 
-<button #launchExpenseModalButton class="btn btn-info d-none" data-bs-toggle="modal"
-    data-bs-target="#expenseModal">Launch
-    Expense Modal</button>
-<app-expense-modal [model]="tempExpense" (successAction)="successAction($event)"
-    (errorAction)="errorAction($event)"></app-expense-modal>
+    <button #launchExpenseModalButton class="btn btn-info d-none" data-bs-toggle="modal"
+        data-bs-target="#expenseModal">Launch
+        Expense Modal</button>
+    <app-expense-modal [model]="tempExpense" (successAction)="successAction($event)"
+        (errorAction)="errorAction($event)"></app-expense-modal>
 
-<button #launchConfirmDeleteExpenseButton class="btn btn-info d-none" data-bs-toggle="modal"
-    data-bs-target="#confirmDeleteExpenseDialog">Launch Confirm Delete Modal</button>
-<app-confirm-dialog [id]="'confirmDeleteExpenseDialog'" [title]="'Confirm Delete'" [message]="deleteMsg"
-    [confirmText]="'Delete'" [cancelText]="'Cancel'" [confirmBtnClass]="'btn-danger'" (confirmed)="deleteExpense()">
-</app-confirm-dialog>
+    <button #launchConfirmDeleteExpenseButton class="btn btn-info d-none" data-bs-toggle="modal"
+        data-bs-target="#confirmDeleteExpenseDialog">Launch Confirm Delete Modal</button>
+    <app-confirm-dialog [id]="'confirmDeleteExpenseDialog'" [title]="'Confirm Delete'" [message]="deleteMsg"
+        [confirmText]="'Delete'" [cancelText]="'Cancel'" [confirmBtnClass]="'btn-danger'" (confirmed)="deleteExpense()">
+    </app-confirm-dialog>
 
-<button #launchConfirmDeleteAllExpensesButton class="btn btn-info d-none" data-bs-toggle="modal"
-    data-bs-target="#confirmDeleteAllExpensesDialog">Launch Confirm Delete All Modal</button>
-<app-confirm-dialog [id]="'confirmDeleteAllExpensesDialog'" [title]="'Confirm Delete All'" [message]="deleteMsg"
-    [confirmText]="'Delete'" [cancelText]="'Cancel'" [confirmBtnClass]="'btn-danger'" (confirmed)="deleteAllExpenses()">
-</app-confirm-dialog>
+    <button #launchConfirmDeleteAllExpensesButton class="btn btn-info d-none" data-bs-toggle="modal"
+        data-bs-target="#confirmDeleteAllExpensesDialog">Launch Confirm Delete All Modal</button>
+    <app-confirm-dialog [id]="'confirmDeleteAllExpensesDialog'" [title]="'Confirm Delete All'" [message]="deleteMsg"
+        [confirmText]="'Delete'" [cancelText]="'Cancel'" [confirmBtnClass]="'btn-danger'"
+        (confirmed)="deleteAllExpenses()">
+    </app-confirm-dialog>
 
-<app-toast *ngIf="showToast" [type]='toastType' [message]='toastMsg' (closeAction)="hideToastComponent()"></app-toast>
+    <app-toast *ngIf="showToast" [type]='toastType' [message]='toastMsg'
+        (closeAction)="hideToastComponent()"></app-toast>
