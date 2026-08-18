@@ -21,7 +21,8 @@
                     </button>
                     <button class="btn btn-sm btn-outline-secondary" type="button" title="show/collapse filter controls"
                         (click)="toggleFilterView()">
-                        <i class="bi" [ngClass]="{'bi-caret-up-fill': isFilterViewExpanded, 'bi-caret-down-fill': !isFilterViewExpanded}"></i>
+                        <i class="bi"
+                            [ngClass]="{'bi-caret-up-fill': isFilterViewExpanded, 'bi-caret-down-fill': !isFilterViewExpanded}"></i>
                     </button>
                 </div>
             </div>
@@ -29,19 +30,21 @@
             <div *ngIf="isFilterViewExpanded" class="mt-1">
                 <div class="row g-2 align-items-end">
                     <div class="col-md-3">
-                        <label class="form-label small mb-1">Ledger Type</label>
+                        <label class="form-label small mb-1">Ledger Entry Type</label>
                         <div class="dropdown form-control form-control-sm">
-                            <button class="btn btn-sm dropdown-toggle w-100 text-end" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <span class="d-none">Ledger Type</span>
-                                <span *ngIf="selectedLedgerTypes.length > 0" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                                    {{ selectedLedgerTypes.length }}
+                            <button class="btn btn-sm dropdown-toggle w-100 text-end" type="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                <span class="d-none">Ledger Entry Type</span>
+                                <span *ngIf="selectedLedgerEntryTypes.length > 0"
+                                    class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                    {{ selectedLedgerEntryTypes.length }}
                                 </span>
                             </button>
                             <div class="dropdown-menu p-2" style="min-width: 220px;">
-                                <div class="form-check" *ngFor="let value of ledgerTypeOptions">
+                                <div class="form-check" *ngFor="let value of ledgerEntryTypeOptions">
                                     <input class="form-check-input" type="checkbox"
-                                        [checked]="isSelected('ledgerTypes', value)"
-                                        (change)="toggleSelection('ledgerTypes', value, $any($event.target).checked)">
+                                        [checked]="isSelected('ledgerEntryTypes', value)"
+                                        (change)="toggleSelection('ledgerEntryTypes', value, $any($event.target).checked)">
                                     <label class="form-check-label">{{ value }}</label>
                                 </div>
                             </div>
@@ -49,19 +52,21 @@
                     </div>
 
                     <div class="col-md-3">
-                        <label class="form-label small mb-1">Ledger Source</label>
+                        <label class="form-label small mb-1">Ledger Entry Source</label>
                         <div class="dropdown form-control form-control-sm">
-                            <button class="btn btn-sm dropdown-toggle w-100 text-end" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <span class="d-none">Ledger Source</span>
-                                <span *ngIf="selectedLedgerSources.length > 0" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                                    {{ selectedLedgerSources.length }}
+                            <button class="btn btn-sm dropdown-toggle w-100 text-end" type="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                <span class="d-none">Ledger Entry Source</span>
+                                <span *ngIf="selectedLedgerEntrySources.length > 0"
+                                    class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                    {{ selectedLedgerEntrySources.length }}
                                 </span>
                             </button>
                             <div class="dropdown-menu p-2" style="min-width: 260px;">
-                                <div class="form-check" *ngFor="let value of ledgerSourceOptions">
+                                <div class="form-check" *ngFor="let value of ledgerEntrySourceOptions">
                                     <input class="form-check-input" type="checkbox"
-                                        [checked]="isSelected('ledgerSources', value)"
-                                        (change)="toggleSelection('ledgerSources', value, $any($event.target).checked)">
+                                        [checked]="isSelected('ledgerEntrySources', value)"
+                                        (change)="toggleSelection('ledgerEntrySources', value, $any($event.target).checked)">
                                     <label class="form-check-label">{{ value }}</label>
                                 </div>
                             </div>
@@ -133,7 +138,8 @@
     <div class="d-flex justify-content-between align-items-center mt-2">
         <div class="d-flex align-items-center">
             <label class="me-2 mb-0">Show</label>
-            <select class="form-select form-select-sm w-auto" [(ngModel)]="pageSize" (change)="changePageSize(pageSize)">
+            <select class="form-select form-select-sm w-auto" [(ngModel)]="pageSize"
+                (change)="changePageSize(pageSize)">
                 <option *ngFor="let s of pageSizes" [value]="s">{{ s }}</option>
             </select>
             <span class="ms-3">Showing {{ startIndex }} to {{ endIndex }} of {{ totalLedgerEntries }}</span>
@@ -173,18 +179,18 @@
                     <td>{{ startIndex + i }}</td>
                     <td>{{ ledgerEntry.uuid }}</td>
                     <td>{{ ledgerEntry.transactionDateTime | timeElapsed }}</td>
-                    <td>{{ ledgerEntry.ledgerSource }}</td>
+                    <td>{{ ledgerEntry.ledgerEntrySource }}</td>
                     <td>
-                        <span *ngIf="ledgerEntry.ledgerType === 'CREDIT'" class="text-success">+</span>
-                        <span *ngIf="ledgerEntry.ledgerType !== 'CREDIT'" class="text-danger">-</span>
-                        <span [ngClass]="ledgerEntry?.ledgerType === 'CREDIT' ? 'text-success' : 'text-danger'">
+                        <span *ngIf="ledgerEntry.ledgerEntryType === 'CREDIT'" class="text-success">+</span>
+                        <span *ngIf="ledgerEntry.ledgerEntryType !== 'CREDIT'" class="text-danger">-</span>
+                        <span [ngClass]="ledgerEntry?.ledgerEntryType === 'CREDIT' ? 'text-success' : 'text-danger'">
                             {{ ledgerEntry?.amount }}
                         </span>
                     </td>
                     <td>
                         <span class="badge text-capitalize"
-                            [ngClass]="ledgerEntry?.ledgerType === 'CREDIT' ? 'bg-success' : 'bg-danger'">
-                            {{ ledgerEntry.ledgerType }}
+                            [ngClass]="ledgerEntry?.ledgerEntryType === 'CREDIT' ? 'bg-success' : 'bg-danger'">
+                            {{ ledgerEntry.ledgerEntryType }}
                         </span>
                     </td>
                     <td class="text-end" (click)="$event.stopPropagation()">

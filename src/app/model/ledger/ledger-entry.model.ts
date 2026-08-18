@@ -4,8 +4,8 @@ export interface LedgerEntry {
 	createdAt: string;
 	updatedAt: string;
     amount: number;
-    ledgerType: string;
-    ledgerSource: string;
+    ledgerEntryType: string;
+    ledgerEntrySource: string;
     transactionDateTime: string;
     description: string;
     printJobUuid: string;

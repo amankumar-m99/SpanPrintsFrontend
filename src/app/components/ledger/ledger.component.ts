@@ -32,11 +32,11 @@ export class LedgerComponent implements OnInit {
   totalLedgerEntries = 0;
   pages: number[] = [];
 
-  ledgerTypeOptions: string[] = ['CREDIT', 'DEBIT'];
-  ledgerSourceOptions: string[] = ['ORDER', 'PURCHASE', 'PERSONAL', 'INVESTMENT', 'REFUND', 'OTHER'];
+  ledgerEntryTypeOptions: string[] = ['CREDIT', 'DEBIT'];
+  ledgerEntrySourceOptions: string[] = ['ORDER', 'PURCHASE', 'PERSONAL', 'INVESTMENT', 'REFUND', 'OTHER'];
 
-  selectedLedgerTypes: string[] = [];
-  selectedLedgerSources: string[] = [];
+  selectedLedgerEntryTypes: string[] = [];
+  selectedLedgerEntrySources: string[] = [];
   amountMin: number | null = null;
   amountMax: number | null = null;
   transactionDateMin: string | null = null;
@@ -55,8 +55,8 @@ export class LedgerComponent implements OnInit {
 
   private buildFilterRequest(): LedgerFilterRequest {
     return {
-      ledgerTypes: [...this.selectedLedgerTypes],
-      ledgerSources: [...this.selectedLedgerSources],
+      ledgerEntryTypes: [...this.selectedLedgerEntryTypes],
+      ledgerEntrySources: [...this.selectedLedgerEntrySources],
       amountMin: this.amountMin,
       amountMax: this.amountMax,
       transactionDateMin: this.transactionDateMin,
@@ -101,8 +101,8 @@ export class LedgerComponent implements OnInit {
   }
 
   clearFilters(): void {
-    this.selectedLedgerTypes = [];
-    this.selectedLedgerSources = [];
+    this.selectedLedgerEntryTypes = [];
+    this.selectedLedgerEntrySources = [];
     this.amountMin = null;
     this.amountMax = null;
     this.transactionDateMin = null;
@@ -114,8 +114,8 @@ export class LedgerComponent implements OnInit {
     this.loadData(this.currentPage, this.pageSize, this.buildFilterRequest());
   }
 
-  toggleSelection(field: 'ledgerTypes' | 'ledgerSources', value: string, checked: boolean): void {
-    const selectedValues = field === 'ledgerTypes' ? this.selectedLedgerTypes : this.selectedLedgerSources;
+  toggleSelection(field: 'ledgerEntryTypes' | 'ledgerEntrySources', value: string, checked: boolean): void {
+    const selectedValues = field === 'ledgerEntryTypes' ? this.selectedLedgerEntryTypes : this.selectedLedgerEntrySources;
 
     if (checked) {
       if (!selectedValues.includes(value)) {
@@ -129,8 +129,8 @@ export class LedgerComponent implements OnInit {
     }
   }
 
-  isSelected(field: 'ledgerTypes' | 'ledgerSources', value: string): boolean {
-    const selectedValues = field === 'ledgerTypes' ? this.selectedLedgerTypes : this.selectedLedgerSources;
+  isSelected(field: 'ledgerEntryTypes' | 'ledgerEntrySources', value: string): boolean {
+    const selectedValues = field === 'ledgerEntryTypes' ? this.selectedLedgerEntryTypes : this.selectedLedgerEntrySources;
     return selectedValues.includes(value);
   }
 
@@ -226,13 +226,13 @@ export class LedgerComponent implements OnInit {
 
   get totalCredit() {
     return this.ledgerEntries
-      .filter(t => t.ledgerType === 'CREDIT')
+      .filter(t => t.ledgerEntryType === 'CREDIT')
       .reduce((sum, t) => sum + t.amount, 0);
   }
 
   get totalDebit() {
     return this.ledgerEntries
-      .filter(t => t.ledgerType === 'DEBIT')
+      .filter(t => t.ledgerEntryType === 'DEBIT')
       .reduce((sum, t) => sum + t.amount, 0);
   }
 
@@ -252,13 +252,13 @@ export class LedgerComponent implements OnInit {
 
   openDetails(ledger: LedgerEntry) {
     // ORDER, PURCHASE, REFUND, PERSONAL, INVESTMENT, OTHER
-    if (ledger.ledgerSource === 'ORDER' && ledger.printJobUuid) {
+    if (ledger.ledgerEntrySource === 'ORDER' && ledger.printJobUuid) {
       this.router.navigate(['/dashboard/order', ledger.printJobUuid]);
     }
-    else if ((ledger.ledgerSource === 'PURCHASE' || ledger.ledgerSource === 'PERSONAL') && ledger.expenseUuid) {
+    else if ((ledger.ledgerEntrySource === 'PURCHASE' || ledger.ledgerEntrySource === 'PERSONAL') && ledger.expenseUuid) {
       this.router.navigate(['/dashboard/expense', ledger.expenseUuid]);
     }
-    else if (ledger.ledgerSource === 'INVESTMENT' && ledger.investmentUuid) {
+    else if (ledger.ledgerEntrySource === 'INVESTMENT' && ledger.investmentUuid) {
       this.router.navigate(['/dashboard/investment', ledger.investmentUuid]);
     }
   }

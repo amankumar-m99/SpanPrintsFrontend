@@ -1,6 +1,6 @@
 export interface LedgerFilterRequest {
-  ledgerTypes?: string[];
-  ledgerSources?: string[];
+  ledgerEntryTypes?: string[];
+  ledgerEntrySources?: string[];
   amountMin?: number | null;
   amountMax?: number | null;
   transactionDateMin?: string | null;
