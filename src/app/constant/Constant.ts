@@ -18,6 +18,9 @@ export const Constant = {
     ordersPageSizeState: 'orders.pageSizeState',
     customersPageFilterExpandedKey: 'customers.filter-pane-expanded',
     customersPageSizeState: 'customers.pageSizeState',
-    customersCurrentPageState: 'customers.currentPageState'
+    customersCurrentPageState: 'customers.currentPageState',
+    ledgerPageFilterExpandedKey: 'ledger.filter-pane-expanded',
+    ledgerPageSizeState: 'ledger.pageSizeState',
+    ledgerCurrentPageState: 'ledger.currentPageState'
 
 }
