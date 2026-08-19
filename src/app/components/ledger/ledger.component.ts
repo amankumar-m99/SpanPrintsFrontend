@@ -8,11 +8,12 @@ import { Router } from '@angular/router';
 import { TimeElapsedPipe } from "../../pipes/timeElapsed/time-elapsed.pipe";
 import { LedgerFilterRequest } from '../../model/ledger/ledger-filter-request.model';
 import { Constant } from '../../constant/Constant';
+import { EnumdisplayPipe } from "../../pipes/enumdisplay/enumdisplay.pipe";
 
 @Component({
   selector: 'app-ledger',
   standalone: true,
-  imports: [CommonModule, FormsModule, ToastComponent, TimeElapsedPipe],
+  imports: [CommonModule, FormsModule, ToastComponent, TimeElapsedPipe, EnumdisplayPipe],
   templateUrl: './ledger.component.html',
   styleUrls: ['./ledger.component.css']
 })

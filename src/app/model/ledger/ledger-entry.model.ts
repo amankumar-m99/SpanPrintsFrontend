@@ -7,7 +7,6 @@ export interface LedgerEntry {
     ledgerEntryType: string;
     ledgerEntrySource: string;
     transactionDateTime: string;
-    description: string;
     printJobUuid: string;
     expenseUuid: string;
     investmentUuid: string;

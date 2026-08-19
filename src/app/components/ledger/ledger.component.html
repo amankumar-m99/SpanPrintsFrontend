@@ -179,7 +179,7 @@
                     <td>{{ startIndex + i }}</td>
                     <td>{{ ledgerEntry.uuid }}</td>
                     <td>{{ ledgerEntry.transactionDateTime | timeElapsed }}</td>
-                    <td>{{ ledgerEntry.ledgerEntrySource }}</td>
+                    <td>{{ ledgerEntry.ledgerEntrySource | enumdisplay | titlecase}}</td>
                     <td>
                         <span *ngIf="ledgerEntry.ledgerEntryType === 'CREDIT'" class="text-success">+</span>
                         <span *ngIf="ledgerEntry.ledgerEntryType !== 'CREDIT'" class="text-danger">-</span>
